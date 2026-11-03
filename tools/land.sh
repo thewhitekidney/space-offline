@@ -139,3 +139,18 @@ else
     git push "$remote" "$branch"
 fi
 echo "land: pushed"
+
+# **The maintainer's after-push step.** A maintainer's checkout may hold an
+# executable `private/post-land.sh` (never exported); it gets the pushed sha and
+# the remote. A contributor's checkout has none, so nothing runs. Its failure is
+# loud and exits 3: the push above already happened, the follow-up did not.
+hook=private/post-land.sh
+if [[ -x $hook && -z ${EVE_NO_POST_LAND:-} ]]; then
+    echo "land: running $hook"
+    hstatus=0
+    "$hook" "$sha" "$remote" || hstatus=$?
+    if ((hstatus != 0)); then
+        echo "land: $hook FAILED (exit $hstatus) -- $sha is pushed to $remote, the follow-up is not done" >&2
+        exit 3
+    fi
+fi

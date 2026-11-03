@@ -353,6 +353,7 @@ Not an environment variable: `EVE_SERVERS_SUFFIX` is a Rust constant in
 | `EVE_BOT_TEST_THREADS` | `tools/gate.sh` | unset | `--test-threads` for the bot socket tests | `EVE_BOT_TEST_THREADS=2` |
 | `EVE_GATE_SERIAL_TESTS` | `tools/gate.sh` | unset | `1` forces serial test jobs | `EVE_GATE_SERIAL_TESTS=1` |
 | `EVE_LAND_DIR` | `tools/land.sh` | `$HOME/code/eve-offline-lanes/land` | the landing build copy | `EVE_LAND_DIR=$HOME/land` |
+| `EVE_NO_POST_LAND` | `tools/land.sh` | unset | set: skip the maintainer's after-push hook for this landing (a contributor has none) | `EVE_NO_POST_LAND=1` |
 | `EVE_LANES_DIR` | `tools/lanes-gc.sh` | `$HOME/code/eve-offline-lanes` | lane build copies | `EVE_LANES_DIR=$HOME/lanes` |
 | `EVE_LANES_IDLE_MIN` | `tools/lanes-gc.sh` | 60 | idle minutes before a lane's target/ is removed | `EVE_LANES_IDLE_MIN=120` |
 | `EVE_PATCH_REAL_CLIENT` | `tools/test_eve_patch.py` | unset (skipped) | a real install for a read-only patcher test | `EVE_PATCH_REAL_CLIENT=$HOME/.../tq-offline` |

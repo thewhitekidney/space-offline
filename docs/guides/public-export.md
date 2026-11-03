@@ -8,15 +8,17 @@ the export.
 
 ## The mirror publishes after each green landing
 
-After a landing passes the gate and is pushed, the maintainer runs the mirror
-step (`tools/mirror-github.sh`, maintainer-only):
+After a landing passes the gate and is pushed, the mirror step
+(`tools/mirror-github.sh`, maintainer-only) runs by itself: `tools/land.sh`
+calls a maintainer-only after-push hook, which syncs that same gated sha. The
+steps:
 
 1. `tools/public-export.py --check` must pass: no client data, no personal data,
    no private pointers. A leak stops the sync.
 2. The export goes into a separate checkout, never inside the main tree.
 3. One commit per sync, authored and committed by the project's public alias.
-   Its message lists the landed subjects with the private hashes stripped, and is
-   scanned like a file.
+   Its message is the date and the exported files that changed, never a private
+   commit subject, and is scanned like a file.
 4. The commit is pushed to the public repo. The last synced private sha is kept
    outside the mirror.
 

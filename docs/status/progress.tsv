@@ -235,5 +235,5 @@ Tools and the friends path	Args reader for service arms	missing	no Args reader; 
 Tools and the friends path	Hand-kept extracted values moved to the bundle	partial	CONCORD done in lane concord-ids; others remain	#160	3.10	
 Tools and the friends path	Admin web page: status, pilots, systems, map; bot, broadcast and save actions (token, off by default)	built-unproved	admin_web.rs tests; deployed on the maintainer server 11-03; no scenario or human check yet	#187	3.1	
 Tools and the friends path	Public release	parked	owner paused	#47	3.11	
-Tools and the friends path	Fleet clean-room rewrite	parked	owner paused	#49	3.11	
+Tools and the friends path	Fleet clean-room rewrite	done	b4150be (fleet.rs), aea9611 (service/fleet.rs); fleet and wing scenarios green (regress-fleet 2026-11-03)	#49		
 Tools and the friends path	Tier H client patches	parked	owner paused	#46	3.11	

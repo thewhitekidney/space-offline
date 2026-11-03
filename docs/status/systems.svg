@@ -100,15 +100,15 @@ text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}
 <text x="323.0" y="589.0" class="in-part sm" text-anchor="middle">2</text>
 <text x="407.0" y="589.0" class="in-missing sm" text-anchor="middle">4</text>
 <text x="16.0" y="620" class="t">Tools and the friends path</text>
-<text x="464.0" y="620" class="s sm" text-anchor="end">6 of 15 proved</text>
+<text x="464.0" y="620" class="s sm" text-anchor="end">7 of 16 proved</text>
 <rect x="16.0" y="628" width="448.0" height="20" rx="4" class="track"/>
-<rect x="16.0" y="628" width="177.2" height="20" rx="4" class="proved"/>
-<text x="104.6" y="643.0" class="in-proved sm" text-anchor="middle">6</text>
-<rect x="195.2" y="628" width="87.6" height="20" rx="4" class="built"/>
-<text x="239.0" y="643.0" class="in-built sm" text-anchor="middle">3</text>
-<rect x="284.8" y="628" width="57.7" height="20" rx="4" class="part"/>
-<text x="313.7" y="643.0" class="in-part sm" text-anchor="middle">2</text>
-<text x="403.3" y="643.0" class="in-missing sm" text-anchor="middle">4</text>
+<rect x="16.0" y="628" width="194.0" height="20" rx="4" class="proved"/>
+<text x="113.0" y="643.0" class="in-proved sm" text-anchor="middle">7</text>
+<rect x="212.0" y="628" width="82.0" height="20" rx="4" class="built"/>
+<text x="253.0" y="643.0" class="in-built sm" text-anchor="middle">3</text>
+<rect x="296.0" y="628" width="54.0" height="20" rx="4" class="part"/>
+<text x="323.0" y="643.0" class="in-part sm" text-anchor="middle">2</text>
+<text x="407.0" y="643.0" class="in-missing sm" text-anchor="middle">4</text>
 <text x="16.0" y="674" class="t">Bots</text>
 <text x="464.0" y="674" class="s sm" text-anchor="end">7 of 23 proved</text>
 <rect x="16.0" y="682" width="448.0" height="20" rx="4" class="track"/>
