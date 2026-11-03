@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "build": 3628513,
+  "comment": "eve_patch manifest for EVE client build 3628513 (out/research/R-BUILD.md 1.4). Derived from 3619879.json: every site is at the same offset with the same stock window (tools/build-delta.py; findings/build-delta-3619879-3628513.tsv); only the whole-file hashes moved, because CCP re-signed the binaries. Hashes, offsets and OUR replacement bytes only: no original client bytes. Checked with tools/eve_patch_author.py check against the stock tq install, read-only.",
+  "identify": {"start_ini_build": "3628513"},
+  "files": {
+    "bin64/blue.dll": {
+      "id": "B0",
+      "tier": "B",
+      "kind": "bytes",
+      "size": 12078768,
+      "sha256_stock": "c5b44c6af2f3f81cfc724eadb8081831b181580a699e47495d8cfabd4f82a259",
+      "sha256_patched": "cf82c6ea7198a6a23b0cc2f59d4b8f551d03e9a888712c729be09e2462bab844",
+      "why": "neutralise the root:/manifest.dat self-check so the client accepts our other edits (mov rbx,[rax+0x10] -> xor rbx,rbx; nop)",
+      "mark": "V",
+      "sites": [
+        {"offset": 2051478, "after_hex": "4831db90", "window": 16,
+         "window_sha256_stock": "f276b3d534e4cc869353586dd367ea38bb7f5f47178dcccd547942764bf6dd43",
+         "window_sha256_patched": "87b0b6416b1fae17e5f80a8c2db87081a988b8cd36e82cccea2d4580b73f7f95",
+         "note": "after the VerifyManifestFile call"}
+      ]
+    },
+    "start.ini": {
+      "id": "P0",
+      "tier": "B",
+      "kind": "ini",
+      "size": 315,
+      "sha256_stock": "6c6157c3870b8a65e625b7e364fc5fe357ec154579a27b4eec38275171c9e697",
+      "sha256_patched": "25d9e1daf82d38e8b5908def3a914817f55fcaae5999bde94057d32fbe643448",
+      "set": {"main.cryptoPack": "Placebo"},
+      "eol": "lf",
+      "why": "cryptoPack = Placebo: the stream to our server is plain (not phone-home; needed to talk to our server). eol lf reproduces the bytes tools/client-prepare.py has always written, so an install prepared by it reads as patched",
+      "mark": "V"
+    },
+    "bin64/exefile.exe": {
+      "id": "B1",
+      "tier": "B",
+      "kind": "bytes",
+      "size": 1003184,
+      "sha256_stock": "118776e2ccae5bd9eeb0d964025ae7a9074cd070b741ae4403d2c339987ba7aa",
+      "sha256_patched": "8f4d4691fc7e1a6133d45540fd61d60924e441966a6ddd66b93aa3a740bcead3",
+      "why": "Crashpad upload URL built with length 0 (imm32 of mov r8d,len before lea rdx,[sentry.io minidump URL]); Crashpad passes no --url and starts no upload thread [I]",
+      "mark": "I",
+      "sites": [
+        {"offset": 43732, "after_hex": "00000000", "window": 16,
+         "window_sha256_stock": "c48a6da991fd9051236ca7b99c5951d102c6181f90ad86545194088f4289baf5",
+         "window_sha256_patched": "4f3c94e6bb84fbf00835d280cc827c7589fc17d68ba1824b4f66d5d69f289320",
+         "note": "sentry.io minidump URL length"}
+      ]
+    },
+    "bin64/launchdarkly_stackless_client_sdk.pyd": {
+      "id": "B2",
+      "tier": "B",
+      "kind": "bytes",
+      "size": 11090096,
+      "sha256_stock": "3ca1f9956cee25fb531831f0720bd61342b123dedabda2408d2db56b2bac1eeb",
+      "sha256_patched": "fdf10e4df54bb3524886d73d0cf916c8d9c14f6c0a0189cad3c94c63d8587563",
+      "why": "LaunchDarkly has no offline switch in this client; rename its six hosts to the same-length reserved name lndarkly.invalid (RFC 6761), which never resolves",
+      "mark": "V",
+      "sites": [
+        {"offset": 8300079, "after_ascii": "lndarkly.invalid", "window": 16,
+         "window_sha256_stock": "5a794030296da025e8bfb74dcf9aea046c131eb1f98d24f68a6b820c7bc7d1c5",
+         "window_sha256_patched": "dba68cf10f8d4f68bf34094afed11acc4c47aee5dba2da683ddf42e95eb1f6e9",
+         "note": "mobile.launchdarkly.com"},
+        {"offset": 8300117, "after_ascii": "lndarkly.invalid", "window": 16,
+         "window_sha256_stock": "9a5c351b936d4c1521bbd1a6ec4e3c18972da83b2474d533b64e2c9c2f462a45",
+         "window_sha256_patched": "6606727b9558dc0440a914e3ba977220319ec60c06e5ecea4d0b0675a5b58a0e",
+         "note": "clientstream.launchdarkly.com"},
+        {"offset": 8300154, "after_ascii": "lndarkly.invalid", "window": 16,
+         "window_sha256_stock": "882b43f8cfe5811bb78ba60ee5103aa9508fcaf6fe1c061277f10304b90b28e1",
+         "window_sha256_patched": "31f996d7466f82e7ef891dd59ba4f61f7e0799bdfb1b1f0805ad021e2d8a74f4",
+         "note": "clientsdk.launchdarkly.com"},
+        {"offset": 8300191, "after_ascii": "lndarkly.invalid", "window": 16,
+         "window_sha256_stock": "8b3274df36e7cc374a3d18415d41681410d859a1630d93f51897b32c53db0d2d",
+         "window_sha256_patched": "c2cda118ecc6efc1f2f64c4d3afec99e4dcfd9ab731c39e061d65a06abd3a855",
+         "note": "events.launchdarkly.com"},
+        {"offset": 8300223, "after_ascii": "lndarkly.invalid", "window": 16,
+         "window_sha256_stock": "9f0f63f051f9f5ebf4833a76706856940617550f1cc1620bf7cc368da5abf20d",
+         "window_sha256_patched": "cfb70f6ec278d532e48c9b61b28b0343f61224c9defc4716aaca24d402bbb132",
+         "note": "stream.launchdarkly.com"},
+        {"offset": 8300252, "after_ascii": "lndarkly.invalid", "window": 16,
+         "window_sha256_stock": "8224d2ede31ddd7e83766547164e0cd996a41bfbd660dfede434b3e2f3c15993",
+         "window_sha256_patched": "760091e9f587bdeeeccc76053d6fd207005c2f7a790d7789245e26419f7fa0d1",
+         "note": "sdk.launchdarkly.com"}
+      ]
+    }
+  },
+  "requires": {"B1": ["B0"], "B2": ["B0"], "P0": ["B0"]},
+  "prefs": {
+    "set": {"breakpadUpload": "0", "sentry_io_dsn": "http://0@127.0.0.1:9/0", "chatserver_disable_tls": "1"},
+    "forbid": ["networkLogging", "http", "GOPYCHARM"]
+  },
+  "launch": {
+    "server_default": "10.137.0.1",
+    "env": {
+      "HTTP_PROXY": "http://127.0.0.1:9",
+      "HTTPS_PROXY": "http://127.0.0.1:9",
+      "NO_PROXY": "{server},localhost,127.0.0.1",
+      "EVE_PUBLIC_GATEWAY_ADDRESS": "{server}:8443",
+      "EVE_CLIENT_SENTRY_DSN": "http://0@127.0.0.1:9/0"
+    },
+    "args": ["/noCrashReportUpload", "/resfileserver=http://127.0.0.1:9/"],
+    "forbid_args": ["/refreshToken", "/enableTelemetry", "/py", "/tools=", "/thinclient"]
+  },
+  "resfiles_check": ["resfileindex.txt", "resfileindex_Windows.txt"]
+}

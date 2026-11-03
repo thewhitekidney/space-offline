@@ -1,0 +1,1650 @@
+# Character names for the bots (server/crates/eve-server/src/bot_names.rs).
+# Invented for this repository: no real player, streamer or developer is meant,
+# and a likeness is chance. One row per name: flavour, TAB, name. The flavour is
+# only a label (amarr, caldari, gallente, minmatar, handle, nick, title,
+# epithet, tag, suffix, hyphen, apos). Rules (the server's name rule,
+# start::name_shape, plus the project's): 3 to 24 letters, digits, space, - _ '
+# at most 2 spaces, no leading/trailing space, unique ignoring case. The ORDER
+# matters: a bot's pick starts at a hash of its group and number and walks on
+# to the next free row, so appending is safe and reordering renames new bots.
+title	Ser Ember
+title	Lord Xeno
+minmatar	Bjarn Bjornsen
+nick	Fearless Ghost
+caldari	Aiko Aizawa
+title	Old Jinx
+nick	Grumpy_Comet
+nick	Sleepy_Moth
+nick	Stoic_Wrench
+amarr	Fenna Sulemar
+gallente	Henri Lemaire
+amarr	Mazrael Orsin
+minmatar	Aksel Vagnes
+hyphen	Elissa-Besharal
+title	Mama Zealot
+tag	Jackal_o7
+minmatar	Fenrik Ulvsund
+epithet	Perrin the Lost
+nick	GrumpyGoblin
+caldari	Kaito Miyazono
+gallente	Odile Nadeau
+minmatar	Thyra Vindahl
+suffix	Florian Pelletier II
+minmatar	Ragnar Langfjell
+epithet	Oriel the Careful
+amarr	Oriel Ishvar
+hyphen	Orsala-Yoshikawa
+handle	TheArgent
+handle	Obsidian_42
+nick	LazyNoodle
+handle	Kestrel
+amarr	Saphir Karazim
+minmatar	Torvald Eikeland
+caldari	Daichi Imamura
+suffix	Jessael Kesharin VII
+suffix	Isamu Kuroda VII
+nick	SaltyPigeon
+amarr	Oriel Zoar
+gallente	Solene Chevalier
+amarr	Kaleb Besharal
+caldari	Satoshi Tachibana
+tag	Rook1337
+amarr	Kasim Ardishapur
+minmatar	Grimar Frostmark
+amarr	Taliel Tavaris
+amarr	Nadira Rasmir
+tag	Pyre-X
+epithet	Lucan the Careful
+amarr	Ismara Fashadi
+title	Baron Roamer
+caldari	Zenji Mizuhara
+amarr	Basheen Maraket
+amarr	Rhiannel Ishvar
+title	Captain Jinx
+amarr	Casiel Kor-Azor
+title	Captain Sentinel
+nick	Sleepy Heron
+suffix	Ragna Halvorsen VII
+minmatar	Saga Skarholm
+amarr	Ezrin Hadrane
+minmatar	Embla Langfjell
+hyphen	Galiel-Hakato
+caldari	Sora Hakato
+handle	Talon_42
+gallente	Remy Duval
+gallente	Pascal Rochefort
+amarr	Hadrel Vandris
+title	Lady Omen
+hyphen	Qadir-Sugita
+nick	Gloomy_Newt
+amarr	Lucan Jaravel
+suffix	Nanna Jotunson II
+nick	Hungry_Ferret
+handle	Dagger
+gallente	Brigitte Esteve
+handle	TheZenith
+minmatar	Njall Drakenvik
+nick	FrozenWrench
+minmatar	Nanna Kaldvik
+gallente	Quentin Hebert
+caldari	Tomoe Mizuhara
+handle	Valkyr_77
+minmatar	Aksel Vindahl
+suffix	Alain Alarie Sr
+title	Boss Prospector
+caldari	Yuudai Kitamura
+gallente	Nicolas Sauveterre
+caldari	Eiji Sakamoto
+gallente	Theo Esteve
+gallente	Helene Lafleur
+minmatar	Hild Vagnes
+nick	Witty_Gecko
+nick	Stormy_Pilot
+handle	TheMarauder
+handle	Nebula_77
+gallente	Cedric Valmont
+gallente	Lilou Hebert
+gallente	Florian Thibault
+gallente	Theo Moreau
+handle	Corsair_42
+handle	Sable
+title	Papa Rook
+minmatar	Bodvar Aasmund
+gallente	Gilles Lacombe
+title	Captain Zealot
+title	Uncle Falcon
+title	Lord Nyx
+gallente	Josephine Pomeroy
+gallente	Florian Esteve
+minmatar	Dagur Bergstrand
+epithet	Eiji the Grey
+title	Admiral Cinder
+minmatar	Ulfar Vagnes
+title	Doc Jinx
+amarr	Jessael Tashmurkon
+minmatar	Ragna Ulvsund
+gallente	Helene Cormier
+nick	Sleepy Prospector
+amarr	Uriah Vandris
+handle	Raptor_Z
+epithet	Valeth the Lost
+title	Ser Bastion
+minmatar	Magnus Kaldvik
+gallente	Yvette Gagnon
+tag	LazyTrader99
+amarr	Kasim Tashmurkon
+gallente	Yvette Rousseau
+minmatar	Arnbjorn Isfjord
+nick	PatientMantis
+nick	Dizzy Heron
+epithet	Aiko the Unlucky
+tag	LazyGunner99
+handle	TheCipher
+amarr	Jessael Gorvath
+title	Doc Argent
+nick	ShadyBadger
+gallente	Solene Cormier
+suffix	Rhiannel Dumarek II
+epithet	Ivar the Wary
+handle	Zephyr_42
+minmatar	Arnbjorn Westerlund
+caldari	Mamoru Sanjo
+title	Papa Zephyr
+tag	Peddler1337
+title	Baron Welder
+caldari	Sayuri Nagase
+suffix	Elissa Civire Sr
+apos	Q'Dorian
+title	Lady Raze
+apos	M'Elissa
+caldari	Tomoe Tsurugi
+gallente	Alain Duval
+title	Mama Kiro
+suffix	Delphine Villeneuve Jr
+minmatar	Orlyg Jotunson
+nick	HollowHauler
+title	Lady Talon
+tag	HollowTrader88
+suffix	Calista Vandris VII
+handle	TheQuill
+nick	Wobbly Prospector
+minmatar	Dagny Ostergard
+epithet	Eirik the Quiet
+title	Lady Shade
+handle	Roamer
+title	Papa Driller
+caldari	Chiyo Sakamoto
+handle	TheOnyx
+epithet	Ferrin the Unlucky
+apos	K'Joram
+handle	Wisp
+amarr	Halric Qaltin
+handle	Rook
+handle	TheJackal
+handle	ThePyre
+amarr	Calista Zadiran
+title	Ser Shade
+tag	Zephyr42
+tag	LazyMiner7
+title	Old Mirage
+caldari	Kenji Munakata
+caldari	Kaito Uchida
+caldari	Hana Kurosawa
+hyphen	Astrid-Yamashiro
+hyphen	Ragnar-Shinoda
+gallente	Isidore Valmont
+minmatar	Vigdis Isfjord
+handle	TheYonder
+nick	FearlessProspector
+amarr	Zarek Ishvar
+nick	Sleepy_Pigeon
+handle	TheFalcon
+gallente	Henri Girard
+amarr	Kaleb Ishvar
+title	Doc Havoc
+caldari	Ryuu Ueno
+amarr	Oriel Velmar
+handle	TheUmbra
+tag	Hauler2
+caldari	Zenji Nagase
+caldari	Zenji Uchida
+gallente	Fleur Lemaire
+caldari	Taro Takeda
+minmatar	Leif Tvedt
+handle	Pyre
+suffix	Chiyo Fujimoto Jr
+epithet	Kenji the Red
+minmatar	Sigurd Ironvale
+handle	Zenith_Prime
+amarr	Idris Orazad
+epithet	Fabien the Wary
+minmatar	Ragna Dyrnes
+hyphen	Pellara-Tachibana
+suffix	Ylva Kaldvik Jr
+epithet	Ishmael the Elder
+caldari	Masato Tachibana
+tag	Harbinger404
+tag	WobblyHauler_o7
+minmatar	Knut Brekke
+title	Doc Nomad
+nick	Salty_Weasel
+suffix	Noriko Hoshino VII
+handle	TheDagger
+nick	Nervous_Hauler
+caldari	Haruto Kagawa
+gallente	Delphine Nadeau
+handle	Raze_42
+gallente	Renee Pelletier
+handle	Ember_42
+tag	Driller_II
+suffix	Jorun Ilmaran II
+amarr	Hadrel Shadrach
+caldari	Raiden Okamura
+hyphen	Hild-Ueno
+caldari	Eiji Hoshino
+nick	Rusty Biscuit
+handle	TheVex
+handle	Glint
+minmatar	Ulla Ulvsund
+handle	Lynx_Prime
+epithet	Zenji the Wary
+nick	Rusty Badger
+amarr	Rahel Gorvath
+handle	Jinx
+title	Sir Cipher
+tag	Drift13
+handle	Shade_Z
+suffix	Nobu Tsukamoto II
+hyphen	Nathar-Shinoda
+epithet	Osamu the Brave
+title	Uncle Drift
+minmatar	Vidar Dyrnes
+title	Lord Scrapper
+gallente	Vivien Rousseau
+amarr	Pellara Sarum
+suffix	Orlyg Svalbard VII
+minmatar	Dagur Lundgren
+hyphen	Kaleb-Kurosawa
+gallente	Helene Fournier
+caldari	Haruto Shiranui
+handle	Fable
+caldari	Eiji Fujimoto
+nick	LazyBadger
+nick	Sleepy Hermit
+suffix	Benoit Perrault Jr
+handle	ThePhantom
+title	Admiral Zane
+caldari	Naoki Ueno
+amarr	Venya Jaravel
+caldari	Masato Kitamura
+minmatar	Fenrik Olavsen
+handle	TheKiro
+caldari	Midori Sakamoto
+amarr	Jessael Hazarik
+tag	Dagger-X
+suffix	Ferrin Dumarek Jr
+title	Mad Pyre
+amarr	Ezrin Fashadi
+amarr	Tamsil Jaravel
+minmatar	Njall Jotunson
+amarr	Fenna Zadiran
+amarr	Ferrin Jarmund
+title	Papa Talon
+nick	ShadySmuggler
+handle	Wisp_X
+title	Uncle Wraith
+title	Doc Fable
+handle	Yonder
+caldari	Yuudai Hakato
+amarr	Kasim Dumarek
+amarr	Calista Kador
+gallente	Quentin Villeneuve
+minmatar	Ylva Drakenvik
+nick	DustyFerret
+gallente	Renee Vasseur
+title	Baron Zealot
+amarr	Nadira Gorvath
+minmatar	Hild Dyrnes
+nick	Patient Ferret
+tag	FrozenMiner_jr
+gallente	Pascal Dufresne
+caldari	Yuki Matsuda
+minmatar	Knut Raudsand
+title	Big Fable
+title	Papa Spotter
+tag	Cipher2
+handle	Argent
+gallente	Aurelien Dufresne
+handle	TheCorsair
+nick	SleepyCrab
+minmatar	Bodvar Rimstad
+hyphen	Njall-Kesharin
+nick	Dizzy Crab
+gallente	Alain Rochefort
+handle	Omen
+handle	Tinker
+suffix	Colette Lafleur Jr
+nick	Dusty Walrus
+gallente	Esme Alarie
+minmatar	Halvar Aasmund
+tag	Fable404
+title	Old Scout
+suffix	Ivar Westerlund VII
+handle	TheEmber
+apos	V'Kalira
+caldari	Hiroshi Hakato
+suffix	Pascal Perrault VII
+apos	Y'Lucan
+title	Ser Sentinel
+handle	Cinder_9
+suffix	Helene Alarie Jr
+gallente	Odile Moreau
+tag	Scrapper-X
+nick	Clumsy_Newt
+tag	HollowMiner88
+handle	Rift
+handle	TheFlint
+handle	Zealot_9
+gallente	Ines Rousseau
+caldari	Takeo Ueno
+title	Sir Umbra
+nick	Jolly Hermit
+gallente	Octave Brassard
+nick	SleepyMantis
+title	Uncle Wisp
+title	Boss Lynx
+amarr	Mazrael Maraket
+nick	RustyHauler
+handle	Drift_X
+minmatar	Bjarn Havnor
+suffix	Qadir Kesharin Jr
+gallente	Fabien Moreau
+nick	Gloomy Heron
+caldari	Chiyo Uchida
+apos	U'Kalira
+handle	Bastion
+suffix	Nanna Skarholm Jr
+nick	Frugal Roughneck
+caldari	Akira Ishiyama
+amarr	Tamsil Jarmund
+suffix	Kaito Uchida III
+handle	Iron_Jr
+amarr	Lucan Zoar
+nick	Gentle Pilot
+minmatar	Bodvar Skarholm
+nick	Stormy_Ranger
+title	Mama Bastion
+minmatar	Hrolf Fjellheim
+title	Mad Corsair
+handle	Wraith
+handle	Onyx
+handle	Jackal_Jr
+gallente	Noemie Fournier
+minmatar	Tormod Westerlund
+nick	Wobbly Goblin
+nick	Silent Biscuit
+gallente	Henri Valmont
+title	Old Hauler
+title	Captain Falcon
+amarr	Elyas Velmar
+amarr	Saphir Zadiran
+amarr	Yosef Sarum
+nick	QuietComet
+handle	Titan_Prime
+title	Sir Rift
+gallente	Fleur Sauveterre
+handle	Harbinger_Jr
+nick	Stormy_Cutter
+suffix	Lilou Navarre Jr
+nick	WittyWrench
+suffix	Naoki Yoshikawa III
+nick	Rapid_Pickle
+hyphen	Dorian-Takeda
+nick	Dizzy Moth
+title	Old Vortex
+amarr	Venya Maraket
+minmatar	Ulfar Bergstrand
+title	Ser Spotter
+epithet	Daichi the Careful
+nick	Stormy Heron
+gallente	Adele Jouvet
+caldari	Gorou Daikoku
+gallente	Lilou Nadeau
+amarr	Lucan Sarum
+epithet	Fenrik the Patient
+suffix	Gideon Uldrath Sr
+handle	TheGlint
+handle	Zephyr
+gallente	Ines Cormier
+hyphen	Yosef-Yamashiro
+tag	Wanderer1337
+handle	Scrapper
+amarr	Halric Kesharin
+nick	Feral_Pigeon
+nick	BrazenComet
+suffix	Manon Villeneuve III
+nick	Gentle Biscuit
+suffix	Ivar Kaldvik II
+handle	Welder
+epithet	Halric the Lost
+handle	Rift_77
+amarr	Idris Alvarek
+minmatar	Arnbjorn Kolsvik
+nick	Gloomy_Ferret
+minmatar	Ylva Olavsen
+handle	TheTitan
+amarr	Jorun Corvanis
+title	Lord Bastion
+tag	LazyPilot_II
+gallente	Florian Cormier
+caldari	Hana Uchida
+handle	Spotter
+title	Mama Quasar
+title	Lady Yonder
+caldari	Fumio Sugita
+handle	Rook_X
+gallente	Brigitte Brassard
+gallente	Adele Olivier
+minmatar	Eirik Langfjell
+caldari	Kaito Kagawa
+nick	Reckless Ferret
+caldari	Hana Munakata
+gallente	Fleur Fournier
+amarr	Mirelle Zoar
+gallente	Gilles Perrault
+amarr	Basheen Dumarek
+amarr	Idris Karazim
+amarr	Jessael Dumarek
+handle	Vanguard
+minmatar	Gudrun Ironvale
+title	Lady Rigger
+caldari	Renji Kagawa
+minmatar	Vigdis Mjolnes
+nick	Gentle Roughneck
+gallente	Lilou Delacroix
+title	Big Gambit
+gallente	Theo Vasseur
+title	Papa Quill
+nick	Golden Drifter
+gallente	Lucien Rousseau
+nick	Witty_Hermit
+minmatar	Freydis Raudsand
+handle	Kestrel_9
+suffix	Daichi Shinoda Jr
+tag	Yonder42
+tag	Ember88
+gallente	Henri Esteve
+gallente	Lilou Lacombe
+caldari	Kaori Kirishima
+title	Boss Glint
+caldari	Kaito Sakamoto
+title	Mad Sable
+nick	RecklessComet
+epithet	Orm the Stubborn
+caldari	Kaito Tachibana
+title	Lord Umbra
+handle	Sable_77
+epithet	Chiyo the Wary
+tag	FrozenPilot2
+nick	Patient Hermit
+tag	Roamer404
+title	Captain Argent
+handle	TheTempest
+handle	Specter_42
+tag	GrumpyPilot1337
+gallente	Jules Dufresne
+epithet	Jules the Slow
+hyphen	Tormod-Khanid
+nick	LazyWeasel
+apos	B'Abbas
+handle	Quasar_9
+minmatar	Ivar Bergstrand
+nick	Crooked_Nomad
+amarr	Jorun Kor-Azor
+nick	JollyNomad
+nick	Salty Heron
+nick	CrookedGunner
+minmatar	Torvald Ashfjord
+caldari	Jiro Tachibana
+amarr	Nathar Ishvar
+nick	DizzyGhost
+tag	Titan42
+tag	Gambit1337
+minmatar	Brenna Isfjord
+amarr	Ishmael Sarum
+nick	Witty_Pigeon
+caldari	Tomoe Daikoku
+hyphen	Arnbjorn-Munakata
+tag	HollowPilot_o7
+caldari	Emiko Mizuhara
+caldari	Tetsu Munakata
+handle	Talon
+amarr	Delaine Fashadi
+suffix	Leif Gullsmed Sr
+title	Big Marauder
+minmatar	Katla Myrland
+gallente	Emile Tremblay
+tag	Valkyr_jr
+nick	SaltyMoth
+amarr	Joram Ni-Kunni
+minmatar	Ulla Olavsen
+amarr	Saphir Deteis
+title	Captain Salvager
+tag	Vex_II
+hyphen	Elissa-Kagawa
+nick	Dizzy_Pickle
+caldari	Sora Okabe
+handle	Specter
+amarr	Kalira Civire
+amarr	Lunara Ishvar
+suffix	Gunnar Halvorsen II
+epithet	Nathar the Grey
+amarr	Idris Fashadi
+gallente	Baptiste Navarre
+suffix	Maxime Rochefort III
+amarr	Sabine Kor-Azor
+caldari	Kazuo Kitamura
+amarr	Rahel Yazhim
+handle	Vortex_9
+nick	Quiet_Falcon
+gallente	Octave Jouvet
+gallente	Solene Valmont
+caldari	Zenji Arakawa
+title	Boss Yonder
+title	Mad Vex
+apos	A'Delaine
+amarr	Gideon Ardishapur
+tag	Nyx88
+nick	Salty Goblin
+tag	LuckyHauler2
+minmatar	Kolbein Bergstrand
+handle	Titan
+caldari	Jiro Asahina
+nick	Hollow Driller
+minmatar	Vigdis Nesheim
+caldari	Takeo Daikoku
+tag	Phantom-X
+caldari	Sayuri Hayashida
+hyphen	Rahel-Munakata
+title	Old Quasar
+title	Mad Bastion
+gallente	Nicolas Lemaire
+gallente	Nicolas Lacombe
+caldari	Raiden Tsukamoto
+minmatar	Nanna Eldvik
+gallente	Quentin Navarre
+handle	TheKraken
+handle	TheHavoc
+title	Mama Lynx
+tag	SilentGunner404
+caldari	Haruto Ogawa
+nick	Jolly Ghost
+tag	Kiro88
+nick	StoicRanger
+title	Ser Gleaner
+title	Lady Obsidian
+tag	Onyx2
+amarr	Rahel Sulemar
+title	Baron Talon
+caldari	Hideo Kagawa
+nick	Rapid_Falcon
+tag	GrumpyGunner13
+title	Admiral Raze
+gallente	Delphine Cormier
+amarr	Ulara Fashadi
+title	Doc Dagger
+gallente	Gaspard Quesnel
+caldari	Aiko Kitamura
+hyphen	Mirelle-Fashadi
+nick	GrumpyTrader
+tag	Prospector13
+gallente	Sylvain Marchand
+caldari	Ikki Wakabayashi
+caldari	Gorou Hayashida
+nick	Rapid_Driller
+minmatar	Magnus Vagnes
+handle	Wanderer
+caldari	Midori Sugita
+tag	Quill-X
+handle	Outrider
+tag	LuckyPilot_II
+nick	WobblyDrifter
+handle	TheVortex
+nick	Brazen Gunner
+nick	Golden Noodle
+title	Big Quill
+handle	TheSpecter
+amarr	Mazrael Ardishapur
+title	Doc Zane
+apos	B'Gideon
+title	Sir Zane
+minmatar	Astrid Drakenvik
+handle	Prospector
+suffix	Lucan Nebuchal II
+nick	Golden Ferret
+tag	Argent-X
+minmatar	Brenna Olavsen
+handle	Flint
+gallente	Josephine Delacroix
+caldari	Naoki Fujimoto
+epithet	Alain the Wary
+caldari	Akira Uchida
+caldari	Yoshi Sanjo
+hyphen	Abbas-Hoshino
+amarr	Zarek Alvarek
+handle	Lancer
+gallente	Quentin Moreau
+title	Lady Wisp
+minmatar	Grimar Bjornsen
+tag	SilentPilot88
+minmatar	Tormod Eldvik
+tag	Wisp2
+nick	Dusty Goblin
+tag	Vortex-X
+gallente	Delphine Alarie
+nick	Brazen Mantis
+minmatar	Leif Raudsand
+handle	Umbra
+apos	B'Elyas
+title	Old Rift
+amarr	Saphir Nebuchal
+handle	Nomad_77
+nick	Nervous Weasel
+nick	Rusty_Trader
+minmatar	Saga Svalbard
+hyphen	Galiel-Orsin
+caldari	Aiko Miyazono
+amarr	Oriel Sarum
+minmatar	Dagny Thorsvik
+apos	A'Saphir
+gallente	Remy Delacroix
+suffix	Gideon Orsin II
+minmatar	Vigdis Eldvik
+suffix	Maren Brekke VII
+nick	GentleLlama
+caldari	Gorou Shiranui
+handle	Onyx_9
+handle	Jinx_Jr
+caldari	Ryuu Hoshino
+apos	K'Delaine
+gallente	Esme Valmont
+hyphen	Katla-Orsin
+suffix	Daigo Imamura III
+amarr	Sabine Shadrach
+title	Big Lancer
+apos	A'Nathar
+caldari	Gorou Okamura
+tag	Omen1337
+minmatar	Knut Eldvik
+minmatar	Ragnar Nordvik
+gallente	Hugo Valmont
+caldari	Yuki Morishita
+handle	TheEcho
+nick	SavageFalcon
+amarr	Oriel Maraket
+nick	Nimble Moth
+minmatar	Jorunn Nesheim
+minmatar	Vigdis Kaldvik
+minmatar	Bjarn Tvedt
+title	Admiral Fable
+nick	Rusty_Noodle
+apos	L'Uriah
+handle	Zenith
+handle	Nyx_42
+minmatar	Ingrid Ironvale
+handle	Corsair
+minmatar	Hild Myrland
+apos	Y'Aurelian
+minmatar	Torvald Ulvsund
+hyphen	Venya-Shadrach
+suffix	Osamu Ogawa VII
+title	Lord Zenith
+amarr	Mirelle Sarum
+amarr	Perrin Ni-Kunni
+handle	Eclipse
+title	Doc Warden
+caldari	Daigo Sanjo
+minmatar	Vigdis Ulvsund
+epithet	Ryuu the Elder
+tag	Tinker42
+caldari	Kazuo Kagawa
+nick	Feral_Gecko
+caldari	Fumio Hayashida
+title	Big Roamer
+amarr	Orsala Rasmir
+suffix	Arnbjorn Langfjell II
+minmatar	Magnus Halvorsen
+minmatar	Orm Skarholm
+epithet	Kaleb the Grey
+caldari	Eiji Nakashima
+suffix	Amara Khanid II
+minmatar	Orm Svalbard
+epithet	Leif the Unlucky
+tag	Raptor_jr
+handle	Phantom
+apos	T'Amara
+title	Mama Wisp
+hyphen	Liv-Alvarek
+title	Uncle Salvager
+epithet	Rahel the Slow
+nick	Hungry_Hermit
+suffix	Jorun Arzad II
+tag	SaltyMiner_o7
+nick	Furious_Newt
+caldari	Kazuo Ueno
+minmatar	Ulfar Aasmund
+handle	Quasar
+title	Papa Kiro
+gallente	Ines Moreau
+caldari	Renji Morishita
+title	Captain Wisp
+title	Sir Falcon
+hyphen	Orsala-Kuroda
+epithet	Itsuki the Careful
+nick	Rapid Roughneck
+nick	FrugalYak
+caldari	Takeo Ogawa
+title	Mad Welder
+suffix	Amara Velmar Sr
+nick	Reckless Pigeon
+minmatar	Arnbjorn Dalgaard
+minmatar	Jorunn Vindahl
+gallente	Baptiste Lafleur
+title	Old Flint
+suffix	Etienne Pomeroy Jr
+minmatar	Nanna Thorsvik
+tag	Nebula7
+title	Papa Kraken
+tag	Welder2k
+nick	CosmicNoodle
+amarr	Amara Jaravel
+epithet	Knut the Lost
+nick	GoldenWalrus
+tag	Lancer_II
+handle	TheWraith
+suffix	Gideon Jarmund III
+nick	Patient Pilot
+tag	Wraith1337
+tag	RustyMiner42
+nick	Rusty_Comet
+caldari	Taro Wakabayashi
+hyphen	Bjarn-Tsukamoto
+gallente	Baptiste Chevalier
+amarr	Gideon Dumarek
+gallente	Solene Perrault
+gallente	Colette Aubry
+title	Papa Pyre
+amarr	Uriah Kesharin
+handle	TheSable
+title	Sir Corsair
+tag	CrimsonPilot_o7
+handle	TheRaptor
+caldari	Midori Miyazono
+title	Sir Peddler
+title	Uncle Vanguard
+handle	TheNebula
+minmatar	Orm Bergstrand
+minmatar	Eirik Ulvsund
+nick	Lazy_Hermit
+tag	Rift_II
+amarr	Haniya Tavaris
+gallente	Noemie Olivier
+nick	Crimson_Prospector
+hyphen	Halric-Maraket
+handle	TheZephyr
+nick	LazyWrench
+handle	Nomad
+gallente	Noemie Duval
+caldari	Satoshi Tsukamoto
+handle	TheShade
+nick	QuietCrab
+handle	TheMirage
+minmatar	Magnus Ashfjord
+nick	Silent Badger
+gallente	Emile Rochefort
+suffix	Nicolas Navarre III
+title	Ser Outrider
+handle	Mirage
+amarr	Orsala Karazim
+gallente	Adele Marchand
+handle	TheRift
+title	Old Kraken
+hyphen	Ylva-Nagase
+title	Captain Dagger
+minmatar	Gunnar Westerlund
+title	Baron Sable
+caldari	Yuki Kirishima
+title	Lord Rook
+minmatar	Freydis Ashfjord
+handle	Echo_X
+amarr	Zephara Dumarek
+nick	Wobbly_Pilot
+minmatar	Brenna Arnesen
+gallente	Isidore Jouvet
+tag	Spotter_jr
+caldari	Akira Daikoku
+caldari	Renji Nagase
+gallente	Alain Montclair
+caldari	Kaito Matsuda
+nick	Quiet_Raccoon
+amarr	Joram Kesharin
+title	Baron Flint
+hyphen	Tamsil-Sanjo
+epithet	Yuudai the Elder
+amarr	Halric Yazhim
+handle	TheRaze
+suffix	Noemie Duval Jr
+handle	Nebula
+nick	Humble Prospector
+minmatar	Jorgen Gullsmed
+nick	Hollow Turnip
+title	Baron Marauder
+tag	Gleaner_II
+apos	E'Uriah
+suffix	Henri Hebert Jr
+nick	Wobbly Roughneck
+title	Big Cipher
+nick	Crimson Goblin
+nick	SavageRaccoon
+suffix	Grimar Havnor III
+caldari	Reiko Sanjo
+nick	Golden Llama
+handle	Yonder_Jr
+minmatar	Hrolf Nordvik
+minmatar	Eldjarn Ironvale
+tag	Marauder7
+nick	Nervous_Noodle
+gallente	Ines Alarie
+title	Papa Salvager
+amarr	Casiel Ardishapur
+nick	CrimsonMoth
+handle	Obsidian
+amarr	Yosef Gorvath
+suffix	Gorou Kitamura VII
+gallente	Damien Thibault
+handle	TheWarden
+nick	Wobbly Pickle
+gallente	Benoit Lacombe
+gallente	Remy Servant
+nick	Frozen Prospector
+caldari	Kaito Okamura
+amarr	Rahel Kesharin
+caldari	Noriko Wakabayashi
+nick	GrumpySmuggler
+amarr	Zarek Jaravel
+nick	Quiet_Nomad
+caldari	Fumio Kirishima
+nick	GoldenBadger
+tag	HollowGunner-X
+nick	SleepyAnvil
+minmatar	Leif Ulvsund
+minmatar	Eldjarn Skarholm
+gallente	Odile Esteve
+title	Uncle Omen
+suffix	Tormod Bergstrand Jr
+nick	Silent_Anvil
+minmatar	Ylva Isfjord
+amarr	Taliel Ardishapur
+gallente	Odile Chevalier
+amarr	Valeth Civire
+gallente	Maxime Gautier
+caldari	Aiko Nakashima
+caldari	Jiro Sugita
+tag	FrozenHauler99
+hyphen	Oriel-Okamura
+amarr	Jessael Zadiran
+caldari	Renji Takeda
+minmatar	Halvar Myrland
+amarr	Taliel Besharal
+amarr	Casiel Orazad
+nick	Witty Comet
+gallente	Manon Duval
+epithet	Pascal the Grey
+amarr	Zarek Rasmir
+suffix	Daichi Kagawa Jr
+gallente	Colette Chevalier
+handle	Jackal
+handle	TheKestrel
+tag	Umbra_jr
+tag	Sentinel1337
+nick	Frozen_Turnip
+caldari	Mamoru Arakawa
+caldari	Kaito Shiranui
+epithet	Jorgen the Grey
+handle	Xeno_9
+handle	Havoc_X
+caldari	Noriko Tachibana
+handle	Rigger
+minmatar	Freydis Drakenvik
+nick	Brazen Ferret
+title	Uncle Sable
+nick	Cosmic_Walrus
+gallente	Remy Hebert
+gallente	Octave Sauveterre
+epithet	Quentin the Tall
+handle	Hauler
+epithet	Gunnar the Brave
+amarr	Saphir Jarmund
+handle	TheHarbinger
+minmatar	Embla Bjornsen
+apos	F'Joram
+nick	Jolly_Newt
+gallente	Aurelien Marchand
+caldari	Renji Aizawa
+nick	DizzyHermit
+minmatar	Torvald Ironvale
+tag	RustyPilot88
+hyphen	Ishmael-Ni-Kunni
+tag	SilentTrader_jr
+amarr	Casiel Orsin
+nick	Crooked_Mantis
+hyphen	Rahel-Ni-Kunni
+amarr	Aurelian Maraket
+caldari	Gorou Kagawa
+apos	V'Tamsil
+handle	TheLancer
+tag	SaltyTrader_jr
+caldari	Tetsu Uchida
+title	Big Vanguard
+handle	Ember
+minmatar	Orlyg Havnor
+tag	RustyTrader2k
+suffix	Venya Orazad Sr
+nick	Dusty Heron
+caldari	Takeo Tachibana
+title	Boss Nyx
+caldari	Raiden Daikoku
+hyphen	Orm-Kuroda
+apos	Y'Galiel
+caldari	Daichi Wakabayashi
+minmatar	Bjarn Jotunson
+gallente	Esme Rousseau
+title	Admiral Rigger
+nick	Humble_Comet
+epithet	Vidar the Red
+minmatar	Kolbein Langfjell
+tag	Reaver_jr
+hyphen	Leif-Orazad
+gallente	Brigitte Beaumont
+amarr	Nadira Vandris
+suffix	Venya Sulemar III
+handle	Mirage_42
+nick	FrozenGhost
+handle	Tempest
+handle	Kraken_Prime
+title	Boss Nebula
+tag	Obsidian99
+epithet	Gaspard the Stubborn
+nick	Golden_Miner
+title	Mama Sable
+handle	TheGambit
+tag	Zenith_jr
+nick	Frozen Mantis
+handle	Zane
+nick	Hollow Cutter
+handle	TheTalon
+title	Mama Tempest
+gallente	Yvette Valmont
+minmatar	Tormod Isfjord
+nick	CrookedNoodle
+minmatar	Leif Mjolnes
+handle	Cipher_9
+suffix	Delphine Hebert Sr
+title	Sir Xeno
+amarr	Aurelian Tashmurkon
+handle	Driller
+minmatar	Orm Gullsmed
+handle	Vortex
+handle	Kraken
+nick	RogueCrab
+minmatar	Njall Eldvik
+gallente	Noemie Delacroix
+minmatar	Jorgen Kaldvik
+caldari	Satoshi Kirishima
+handle	Pyre_Prime
+minmatar	Yngvar Ashfjord
+amarr	Dorian Fashadi
+handle	TheObsidian
+tag	Nomad_II
+caldari	Yuki Okamura
+suffix	Calista Civire Jr
+nick	ClumsyGoblin
+tag	RustyHauler_II
+caldari	Kenji Okamura
+amarr	Basheen Corvanis
+nick	RecklessCrab
+nick	Cosmic Goblin
+caldari	Kazuo Daikoku
+gallente	Genevieve Girard
+epithet	Maxime the Lost
+handle	Flint_42
+handle	Shade
+caldari	Emiko Hoshino
+title	Big Prospector
+title	Lady Nebula
+suffix	Fabien Olivier III
+suffix	Adele Marchand II
+gallente	Odile Perrault
+tag	Falcon7
+gallente	Pascal Jouvet
+minmatar	Eirik Olavsen
+epithet	Dagur the Late
+gallente	Alain Sauveterre
+hyphen	Bjarn-Yazhim
+suffix	Kalira Zadiran III
+caldari	Hiroshi Yamashiro
+minmatar	Leif Eldvik
+minmatar	Jorunn Eldvik
+gallente	Benoit Valmont
+caldari	Masato Ishiyama
+tag	WobblyPilot42
+minmatar	Knut Jotunson
+nick	Witty Goblin
+minmatar	Sigurd Gullsmed
+handle	Peddler
+nick	Nervous Wrench
+nick	RecklessScavenger
+tag	SaltyPilot42
+gallente	Fabien Nadeau
+handle	Vex
+caldari	Fumio Matsuda
+nick	Rusty Newt
+nick	DustyNomad
+hyphen	Ylva-Orazad
+amarr	Nathar Velmar
+title	Mad Vortex
+apos	S'Casiel
+nick	CrimsonTrader
+minmatar	Hrolf Grimsby
+handle	TheQuasar
+gallente	Hugo Gautier
+handle	Valkyr
+hyphen	Kalira-Hayashida
+handle	Sentinel
+minmatar	Halvar Raudsand
+title	Uncle Zenith
+title	Sir Specter
+gallente	Cedric Sauveterre
+hyphen	Perrin-Nagase
+hyphen	Orsala-Kagawa
+title	Boss Cinder
+gallente	Renee Brassard
+gallente	Alain Marchand
+handle	Umbra_42
+minmatar	Thyra Isfjord
+caldari	Kenji Nakashima
+minmatar	Aksel Mjolnes
+minmatar	Ulla Grimsby
+suffix	Ivar Tvedt VII
+suffix	Kaito Wakabayashi III
+amarr	Kalira Yazhim
+handle	TheFable
+gallente	Vivien Thibault
+amarr	Joram Orazad
+epithet	Masato the Careful
+nick	CrookedRoughneck
+gallente	Delphine Roussel
+amarr	Nathar Sarum
+minmatar	Ulla Rimstad
+epithet	Etienne the Younger
+minmatar	Fenrik Langfjell
+suffix	Katla Ulvsund III
+apos	N'Saphir
+gallente	Fleur Marchand
+minmatar	Yngvar Nesheim
+suffix	Kalira Qaltin VII
+handle	TheNyx
+handle	Marauder_X
+amarr	Lunara Tashmurkon
+gallente	Isidore Aubry
+minmatar	Hild Dalgaard
+nick	Gloomy Ranger
+amarr	Lunara Uldrath
+hyphen	Mazrael-Uchida
+tag	Talon_II
+handle	Phantom_Prime
+nick	Nimble Smuggler
+nick	Patient_Ghost
+nick	FearlessYak
+handle	TheWisp
+minmatar	Thyra Kolsvik
+amarr	Ulara Jarmund
+suffix	Remy Nadeau Sr
+nick	Frugal Falcon
+nick	Shady_Nomad
+title	Boss Quill
+nick	Reckless_Hauler
+hyphen	Aksel-Fashadi
+epithet	Emiko the Careful
+handle	Gambit_X
+hyphen	Ulara-Hoshino
+amarr	Orsala Orazad
+handle	Fable_42
+tag	Flint1337
+amarr	Aurelian Vandris
+nick	Nervous Newt
+caldari	Ryuu Nakashima
+title	Mama Phantom
+tag	Eclipse2k
+minmatar	Ingrid Nesheim
+amarr	Aurelian Sarum
+caldari	Satoshi Morishita
+caldari	Itsuki Imamura
+handle	TheEclipse
+title	Admiral Talon
+nick	BrazenNoodle
+gallente	Quentin Girard
+title	Ser Cipher
+title	Mad Peddler
+handle	Glint_Prime
+nick	FearlessMoth
+gallente	Pauline Cormier
+apos	P'Gideon
+caldari	Ikki Miyazono
+handle	Zealot
+suffix	Joram Karazim Sr
+title	Old Tramp
+gallente	Theo Beaumont
+gallente	Renee Dufresne
+title	Lord Jinx
+nick	Hungry_Badger
+title	Mad Titan
+apos	V'Lucan
+hyphen	Njall-Uldrath
+amarr	Venya Civire
+epithet	Aksel the Slow
+minmatar	Jorgen Halvorsen
+apos	S'Gideon
+title	Sir Lynx
+nick	Stoic_Wolf
+caldari	Yuki Sakamoto
+hyphen	Ismara-Karazim
+handle	TheNomad
+apos	D'Pellara
+nick	Nervous Heron
+title	Mad Phantom
+handle	Havoc
+caldari	Yoshi Tsurugi
+caldari	Yuki Nagase
+minmatar	Katla Brekke
+gallente	Quentin Thibault
+suffix	Solene Beaumont III
+caldari	Hana Yamashiro
+amarr	Mirelle Hazarik
+amarr	Ulara Ilmaran
+epithet	Isidore the Brave
+title	Boss Dagger
+amarr	Lucan Elmarin
+nick	Sleepy Comet
+title	Baron Quill
+hyphen	Sigurd-Dumarek
+gallente	Lucien Aubry
+minmatar	Gudrun Dalgaard
+title	Mama Iron
+nick	Savage_Ghost
+apos	F'Abbas
+nick	Nimble_Raccoon
+handle	Wraith_Jr
+nick	CrimsonNewt
+apos	P'Elyas
+suffix	Kaito Yamashiro VII
+minmatar	Orm Vagnes
+handle	Raptor
+handle	Quill_77
+suffix	Florian Valmont Sr
+minmatar	Hild Raudsand
+nick	Stormy_Miner
+title	Doc Peddler
+nick	Gentle Comet
+minmatar	Grimar Eldvik
+suffix	Nanna Skarholm Sr
+nick	Shady Biscuit
+hyphen	Taliel-Hadrane
+nick	Patient_Raccoon
+handle	Warden_Z
+hyphen	Aksel-Nagase
+suffix	Tomoe Miyazono III
+amarr	Perrin Zadiran
+tag	Kestrel99
+amarr	Zarek Nebuchal
+minmatar	Ragna Halvorsen
+title	Captain Gambit
+caldari	Shinji Shiranui
+amarr	Sabine Hadrane
+amarr	Nathar Civire
+suffix	Ragnar Nordvik II
+amarr	Ferrin Kesharin
+gallente	Renee Navarre
+nick	Nervous_Hermit
+minmatar	Bodvar Ulvsund
+epithet	Octave the Wary
+gallente	Solene Lafleur
+tag	GrumpyHauler_jr
+nick	ClumsyBiscuit
+epithet	Haruto the Brave
+handle	Haggler
+amarr	Tamsil Zoar
+nick	Cosmic_Trader
+tag	Outrider-X
+title	Mad Hauler
+caldari	Raiden Nakashima
+caldari	Yuki Tsurugi
+amarr	Basheen Tashmurkon
+title	Ser Phantom
+handle	Harbinger
+suffix	Florian Gagnon II
+handle	Kiro_X
+gallente	Thais Pomeroy
+minmatar	Yngvar Raudsand
+nick	CrookedHauler
+suffix	Ragnar Grimsby Sr
+title	Lady Gleaner
+title	Admiral Wraith
+minmatar	Tormod Nesheim
+minmatar	Hild Olavsen
+handle	Gambit
+suffix	Pellara Deteis II
+amarr	Elyas Gorvath
+caldari	Sayuri Kuroda
+apos	B'Mazrael
+handle	Eclipse_Z
+handle	Gleaner
+nick	Hungry_Walrus
+nick	Wobbly_Turnip
+amarr	Dorian Orazad
+nick	RapidNoodle
+epithet	Ragnar the Late
+caldari	Kazuo Yamashiro
+epithet	Jorun the Wary
+amarr	Taliel Sulemar
+epithet	Naoki the Red
+gallente	Maxime Valmont
+suffix	Nicolas Servant Jr
+minmatar	Saga Olavsen
+nick	Clumsy Prospector
+amarr	Ferrin Nebuchal
+minmatar	Vidar Isfjord
+suffix	Jiro Hoshino III
+suffix	Soren Aasmund II
+minmatar	Ylva Dyrnes
+amarr	Ishmael Yazhim
+gallente	Gilles Pomeroy
+amarr	Elyas Besharal
+title	Lady Vex
+tag	FrozenTrader2k
+handle	Vex_9
+gallente	Helene Quesnel
+gallente	Josephine Marchand
+tag	Mirage13
+title	Big Vortex
+hyphen	Halric-Rasmir
+amarr	Zephara Kador
+title	Captain Sable
+handle	Lynx
+tag	Specter2
+gallente	Josephine Tremblay
+gallente	Solene Vasseur
+amarr	Hadrel Tavaris
+title	Lady Reaver
+caldari	Ikki Imamura
+caldari	Eiji Sanjo
+handle	TheOmen
+gallente	Octave Perrault
+nick	Sleepy Drifter
+handle	Cinder
+gallente	Remy Lafleur
+tag	Sable42
+gallente	Sylvain Cormier
+handle	Salvager
+title	Ser Zenith
+nick	Sleepy Weasel
+epithet	Theo the Red
+caldari	Noriko Kurosawa
+handle	TheZealot
+amarr	Jorun Yazhim
+tag	Tempest42
+gallente	Pauline Valmont
+amarr	Ulara Dumarek
+minmatar	Ivar Kaldvik
+hyphen	Torvald-Kesharin
+nick	Stormy Gecko
+nick	Gentle_Wrench
+caldari	Fumio Tachibana
+handle	Cipher
+minmatar	Astrid Westerlund
+title	Lord Ember
+amarr	Mirelle Ilmaran
+nick	SavageHauler
+title	Big Mirage
+minmatar	Katla Skarholm
+nick	Feral_Pickle
+hyphen	Kaleb-Imamura
+nick	WobblyMoth
+nick	Shady_Otter
+handle	TheLynx
+caldari	Fumio Ishiyama
+caldari	Nobu Fujimoto
+nick	CrimsonFerret
+gallente	Colette Roussel
+title	Papa Welder
+amarr	Basheen Vandris
+caldari	Sayuri Imamura
+hyphen	Bjarn-Sulemar
+handle	TheZane
+epithet	Yngvar the Wary
+caldari	Haruto Asahina
+title	Captain Drift
+title	Old Vex
+minmatar	Dagny Gullsmed
+nick	SaltyNomad
+title	Lord Wisp
+caldari	Akira Shiranui
+nick	Wobbly Crab
+gallente	Benoit Lafleur
+handle	Omen_9
+nick	CrookedPickle
+amarr	Dorian Velmar
+apos	V'Joram
+caldari	Shinji Sakamoto
+handle	TheXeno
+handle	Bastion_Prime
+title	Mama Wraith
+title	Captain Gleaner
+nick	Frozen Drifter
+nick	Dizzy_Miner
+epithet	Qadir the Stubborn
+nick	NervousWolf
+tag	Haggler_jr
+suffix	Taro Kanzaki II
+caldari	Mamoru Kirishima
+caldari	Sora Shiranui
+handle	Drift
+handle	TheBastion
+tag	Kraken99
+gallente	Yvette Navarre
+hyphen	Gudrun-Ishiyama
+handle	Quill
+caldari	Takeo Munakata
+minmatar	Gudrun Dyrnes
+nick	HungryRoughneck
+amarr	Nadira Uldrath
+tag	Zane1337
+gallente	Pauline Marchand
+handle	TheJinx
+nick	Nervous_Raccoon
+suffix	Aurelien Olivier Sr
+gallente	Pauline Dufresne
+gallente	Esme Beaumont
+nick	GentlePigeon
+nick	CosmicProspector
+nick	DizzyWrench
+gallente	Noemie Jouvet
+handle	Zane_77
+gallente	Damien Esteve
+apos	V'Kaleb
+amarr	Valeth Yazhim
+nick	Dizzy_Mantis
+nick	Rogue_Driller
+suffix	Yoshi Mizuhara Sr
+nick	Gentle Wolf
+nick	Fearless Roughneck
+amarr	Gideon Orsin
+suffix	Gudrun Skarholm VII
+suffix	Ayame Uchida III
+caldari	Kenji Okabe
+caldari	Fumio Arakawa
+gallente	Renee Tremblay
+minmatar	Arnbjorn Dyrnes
+nick	Patient Comet
+suffix	Joram Jaravel Jr
+gallente	Genevieve Jouvet
+handle	Marauder
+nick	Savage_Gecko
+minmatar	Leif Brekke
+caldari	Sayuri Yoshikawa
+hyphen	Basheen-Sakamoto
+hyphen	Fenna-Sulemar
+nick	RecklessRaccoon
+title	Uncle Raze
+tag	Echo_jr
+minmatar	Bjarn Westerlund
+nick	NervousTrader
+nick	Cosmic Pilot
+amarr	Galiel Hazarik
+amarr	Mirelle Kesharin
+amarr	Zarek Corvanis
+handle	TheRook
+nick	Brazen_Walrus
+handle	Falcon
+minmatar	Astrid Mjolnes
+caldari	Haruto Ishiyama
+title	Boss Rift
+amarr	Nathar Kesharin
+epithet	Magnus the Careful
+gallente	Florian Moreau
+epithet	Isamu the Stubborn
+title	Baron Kraken
+title	Lord Wraith
+tag	CrimsonGunner2k
+caldari	Gorou Yamashiro
+handle	Iron
+minmatar	Tormod Bergstrand
+nick	Frugal Mantis
+title	Admiral Outrider
+handle	Warden
+caldari	Akira Shinoda
+tag	HollowHauler1337
+apos	F'Aurelian
+suffix	Masato Kitamura Sr
+amarr	Basheen Gorvath
+handle	Xeno
+gallente	Quentin Dufresne
+nick	Stormy_Prospector
+amarr	Galiel Ni-Kunni
+epithet	Dorian the Grey
+suffix	Jorgen Nordvik II
+minmatar	Njall Myrland
+gallente	Florian Fournier
+nick	Reckless_Yak
+tag	Tramp13
+caldari	Kenji Kurosawa
+nick	SilverCutter
+caldari	Takeo Imamura
+suffix	Katla Jotunson III
+epithet	Bjarn the Brave
+title	Admiral Havoc
+handle	TheCinder
+minmatar	Bodvar Halvorsen
+minmatar	Thyra Fjellheim
+nick	Hollow Wolf
+suffix	Liv Langfjell VII
+epithet	Henri the Younger
+minmatar	Ragnar Ashfjord
+amarr	Abbas Vandris
+amarr	Gideon Sulemar
+nick	FuriousBiscuit
+suffix	Venya Zadiran Jr
+title	Papa Gleaner
+handle	Lancer_Jr
+minmatar	Ylva Vindahl
+nick	FrugalNomad
+gallente	Lucien Fontaine
+suffix	Takeo Kuroda Sr
+tag	LuckyTrader13
+gallente	Gaspard Rochefort
+amarr	Dorian Uldrath
+tag	Quasar2k
+nick	Quiet Hermit
+title	Lord Havoc
+handle	TheDrift
+handle	Nyx
+apos	B'Elissa
+apos	M'Ferrin
+caldari	Noriko Kanzaki
+caldari	Mamoru Matsuda
+minmatar	Embla Gullsmed
+minmatar	Yngvar Fjellheim
+gallente	Cedric Duval
+gallente	Pauline Gagnon
+gallente	Fabien Navarre
+nick	Dizzy_Pigeon
+suffix	Zenji Nagase III
+suffix	Midori Arakawa II
+tag	GrumpyMiner13
+nick	Dusty_Crab
+minmatar	Orlyg Westerlund
+handle	Reaver
+gallente	Delphine Delacroix
+title	Ser Rift
+title	Old Zane
+title	Baron Nomad
+nick	FeralBadger
+title	Uncle Havoc
+caldari	Kaori Munakata
+caldari	Hideo Miyazono
+handle	TheValkyr
+apos	S'Zarek
+epithet	Satoshi the Lost
+amarr	Abbas Ishvar
+amarr	Galiel Dumarek
+apos	J'Taliel
+nick	LazyFalcon
+epithet	Taliel the Red
+caldari	Hiroshi Takeda
+nick	FrozenAnvil
+nick	Brazen Otter
+caldari	Emiko Aizawa
+tag	Zealot13
+caldari	Aiko Uchida
+nick	FuriousDrifter
+caldari	Tomoe Kurosawa
+amarr	Kasim Nebuchal
+nick	FeralWrench
+minmatar	Thyra Myrland
+amarr	Kalira Fashadi
+amarr	Qadir Tavaris
+amarr	Galiel Ardishapur
+amarr	Amara Nebuchal
+amarr	Casiel Hadrane
+nick	CosmicMiner
+caldari	Takeo Fujimoto
+minmatar	Ingrid Gullsmed
+nick	Furious_Smuggler
+title	Sir Quill
+amarr	Valeth Kor-Azor
+amarr	Qadir Elmarin
+epithet	Lucien the Tall
+handle	Tempest_Jr
+apos	V'Amara
+nick	Hungry Miner
+gallente	Camille Pomeroy
+nick	Hollow Gunner
+hyphen	Brenna-Ishiyama
+amarr	Pellara Fashadi
+tag	WobblyMiner2
+title	Boss Vex
+title	Ser Jackal
+amarr	Basheen Kador
+apos	T'Dathan
+hyphen	Eirik-Kurosawa
+handle	Pilgrim
+gallente	Nicolas Villeneuve
+nick	WobblySmuggler
+title	Baron Haggler
+caldari	Kenji Miyazono
+caldari	Chiyo Nagase
+amarr	Casiel Ni-Kunni
+gallente	Esme Lemaire
+suffix	Njall Grimsby Jr
+tag	Xeno404
+caldari	Noriko Hoshino
+nick	Nimble_Noodle
+suffix	Sora Tsukamoto II
+amarr	Nadira Sarum
+title	Admiral Onyx
+epithet	Mazrael the Stubborn
+nick	Stoic Prospector
+minmatar	Arnbjorn Lundgren
+title	Uncle Talon
+handle	Echo
+title	Mama Umbra
+minmatar	Gunnar Fjellheim
+suffix	Pascal Aubry Sr
+caldari	Masato Ogawa
+handle	Raze
+tag	WobblyGunner2k
+hyphen	Jorun-Kanzaki
+gallente	Yvette Lafleur
+tag	LuckyMiner42
+caldari	Reiko Kurosawa
+caldari	Osamu Hoshino
+tag	Shade2k
+title	Baron Mirage
+handle	Kiro
+gallente	Renee Aubry
+nick	HumbleYak
+caldari	Raiden Uchida
+tag	Warden_II
+handle	Argent_9
+minmatar	Dagur Gullsmed
+gallente	Isidore Gagnon
+title	Doc Ember
+caldari	Gorou Matsuda
+caldari	Mamoru Ishiyama
+title	Admiral Argent
+gallente	Noemie Cormier
+minmatar	Dagur Bjornsen
+minmatar	Ivar Drakenvik
+handle	Tramp
+caldari	Noriko Uchida
+epithet	Ulfar the Careful
+gallente	Alain Aubry
+tag	RustyGunner-X
+minmatar	Magnus Grimsby
+nick	Rogue_Gecko
+tag	Lynx_jr
+nick	Patient_Scavenger
+suffix	Sigurd Kolsvik Jr
+gallente	Nicolas Beaumont
+amarr	Ismara Ni-Kunni
+handle	Dagger_Jr
+gallente	Manon Thibault
+tag	Jinx99
+hyphen	Elyas-Ogawa
+minmatar	Eirik Raudsand
+caldari	Takeo Kanzaki
+caldari	Kenji Hayashida
+suffix	Daigo Hayashida Sr
+title	Doc Hauler
+gallente	Odile Roussel
+minmatar	Ivar Raudsand
+amarr	Jessael Corvanis
+title	Doc Lancer
+handle	Falcon_77
+gallente	Yvette Perrault
+hyphen	Elissa-Kitamura
+hyphen	Ulara-Corvanis
+handle	TheIron
+apos	M'Zephara
+gallente	Ines Thibault
+suffix	Lucien Rochefort Jr
+apos	E'Valeth
+tag	Cinder_II
+title	Sir Scout
+title	Mad Nomad
+gallente	Hugo Pomeroy
+suffix	Ikki Hakato VII
+title	Admiral Lancer
+suffix	Ismara Orazad II
+tag	SilentHauler7
+handle	Scout
+amarr	Dorian Zadiran
+title	Big Ember
+caldari	Isamu Kitamura
+tag	Vanguard_jr
+title	Boss Mirage
+caldari	Itsuki Tsukamoto
+hyphen	Amara-Uchida
+minmatar	Freydis Ostergard
+amarr	Zephara Maraket
+suffix	Dorian Yazhim Sr

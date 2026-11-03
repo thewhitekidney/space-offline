@@ -1,0 +1,9 @@
+# DEV-MODE roster: two 10-ship fleets of different doctrines, opposite sides, one system.
+# Pick a low-sec or null-sec home system (--home): hunters fight only where there is no law.
+# red: Rifters (projectile guns); blue: Merlins (hybrid guns). Boss = first bot of a group.
+redf	red	hunter	10	role	Rifter
+bluf	blue	hunter	10	role	Merlin
+# roam: a gang of 6 on its own side (hostile to both): the FC (roam1) stages, the fastest hull scouts the
+# neighbouring systems, and the body engages together once a scout reports a fight it clears the bar for.
+# Needs a gate map (--content) and --society-pvp; set --roster-home to a low-sec or null-sec system.
+roam	roamers	roamgang	6	role	Rifter

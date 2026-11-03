@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 220" role="img" aria-label="70 percent proved, 84 percent built, of 231 features">
+<title>70 percent proved, 84 percent built, of 231 features</title>
+<style>
+.bg{fill:#fcfcfb}.t{fill:#0b0b0b}.s{fill:#52514e}.track{fill:#e1e0d9}
+.proved{fill:#184f95}.built{fill:#3987e5}.part{fill:#86b6ef}.missing{fill:#e1e0d9}.unknown{fill:#eb6834}
+.bad{fill:#eb6834}.none{fill:#c3c2b7}
+.in-proved,.in-built,.in-unknown,.in-bad{fill:#fff}.in-part,.in-missing,.in-none{fill:#0b0b0b}
+@media (prefers-color-scheme:dark){
+.bg{fill:#1a1a19}.t{fill:#f0efec}.s{fill:#c3c2b7}.track{fill:#383835}
+.proved{fill:#86b6ef}.built{fill:#3987e5}.part{fill:#184f95}.missing{fill:#383835}.unknown{fill:#d95926}
+.bad{fill:#d95926}.none{fill:#52514e}
+.in-proved{fill:#0b0b0b}.in-part,.in-missing,.in-none{fill:#f0efec}
+}
+text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}
+.big{font-size:40px;font-weight:600}.b{font-weight:600}.sm{font-size:13px}
+</style>
+<rect width="480" height="220" rx="8" class="bg"/>
+<text x="16.0" y="56" class="t big">70%</text>
+<text x="16.0" y="78" class="s sm">proved</text>
+<text x="248.0" y="56" class="t big">84%</text>
+<text x="248.0" y="78" class="s sm">built, proved or not</text>
+<rect x="16.0" y="96" width="448.0" height="32" rx="4" class="track"/>
+<rect x="16.0" y="96" width="312.2" height="32" rx="4" class="proved"/>
+<text x="172.1" y="117.0" class="in-proved sm" text-anchor="middle">162</text>
+<rect x="330.2" y="96" width="58.1" height="32" rx="4" class="built"/>
+<text x="359.2" y="117.0" class="in-built sm" text-anchor="middle">31</text>
+<rect x="390.3" y="96" width="19.3" height="32" rx="4" class="part"/>
+<text x="433.9" y="117.0" class="in-missing sm" text-anchor="middle">24</text>
+<rect x="458.2" y="96" width="3.8" height="32" class="unknown"/>
+<rect x="16.0" y="141" width="12.0" height="12" rx="2" class="proved"/>
+<text x="34.0" y="152" class="s sm">Proved: 162</text>
+<rect x="240.0" y="141" width="12.0" height="12" rx="2" class="built"/>
+<text x="258.0" y="152" class="s sm">Built, not proved: 31</text>
+<rect x="16.0" y="163" width="12.0" height="12" rx="2" class="part"/>
+<text x="34.0" y="174" class="s sm">Part built: 11</text>
+<rect x="240.0" y="163" width="12.0" height="12" rx="2" class="missing"/>
+<text x="258.0" y="174" class="s sm">Missing: 24</text>
+<rect x="16.0" y="185" width="12.0" height="12" rx="2" class="unknown"/>
+<text x="34.0" y="196" class="s sm">Unknown: 3</text>
+</svg>

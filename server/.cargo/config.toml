@@ -1,0 +1,9 @@
+# Crates come from the build image's apt-installed registry, never crates.io.
+[source.crates-io]
+replace-with = "distro"
+
+[source.distro]
+directory = "/usr/share/cargo/registry"
+
+[net]
+offline = true

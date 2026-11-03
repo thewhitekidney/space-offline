@@ -1,0 +1,34 @@
+# Mission reward multipliers per (scale, level): our numbers, not CCP's and
+# ruling 9. Read by the server (`mission_rewards::TABLE`,
+# CP26b-2); header frozen in docs/content/schema.md. Edit and restart.
+#
+# The ISK a mission pays is k_isk x the level's ISK base. The base is not
+# here: the server computes it from the client's own data at load, as the
+# median, over that level's kill missions, of the bounty sum of the squads
+# CP22 fills each mission's dungeon spawns with (C5 §5.4, erratum 11).
+# - scale: `security` pays kill missions, `distribution` everything else
+#   that pays (courier, mining, trade).
+# - k_isk: x the base. Security follows C5 §5.4 (1.0, 1.5, 2.0, 3.0; L5
+#   extends the step to 4.0), so a mission pays about what ratting its
+#   pocket pays. Distribution is a quarter of that: a courier run takes
+#   about a quarter of the time a pocket does.
+# - k_bonus: the time bonus as a fraction of the reward (C5 §5.4: 0.5).
+# - k_lp: LP = k_lp x (reward value / 1,000 ISK per LP) (C5 §5.6: 0.5),
+#   unless the mission carries its own fixed_lp (erratum 13: Omega).
+# - bonus_minutes: the bonus window. An hour per level for a pocket, half
+#   that for a run.
+# - agent_gain, corp_gain: the standing gained on a turn-in. Level 1 keeps
+#   what mission.rs paid before (0.10 and 0.02); each level adds as much
+#   again. Distribution gains half.
+# why: the falsifier. Every value is [A].
+scale	level	k_isk	k_bonus	k_lp	bonus_minutes	agent_gain	corp_gain	why
+security	1	1.0	0.5	0.5	60	0.10	0.02	[A] C5 §5.4; falsified by an L1 pocket paying far more or less than ratting the same rats
+security	2	1.5	0.5	0.5	120	0.20	0.04	[A] C5 §5.4; falsified by players skipping L2 for L1 or for belts
+security	3	2.0	0.5	0.5	180	0.30	0.06	[A] C5 §5.4; falsified by players skipping L3 for L2 or for belts
+security	4	3.0	0.5	0.5	240	0.40	0.08	[A] C5 §5.4; falsified by L4 income outpacing every other faucet in the daily ledger
+security	5	4.0	0.5	0.5	300	0.50	0.10	[A] C5 §5.4's step extended; falsified by L5 income outpacing L4 by far more than the risk
+distribution	1	0.25	0.5	0.5	30	0.05	0.01	[A] a quarter of security; falsified by couriers out-earning pockets per hour
+distribution	2	0.375	0.5	0.5	60	0.10	0.02	[A] a quarter of security; falsified by couriers out-earning pockets per hour
+distribution	3	0.5	0.5	0.5	90	0.15	0.03	[A] a quarter of security; falsified by couriers out-earning pockets per hour
+distribution	4	0.75	0.5	0.5	120	0.20	0.04	[A] a quarter of security; falsified by couriers out-earning pockets per hour
+distribution	5	1.0	0.5	0.5	150	0.25	0.05	[A] a quarter of security; falsified by couriers out-earning pockets per hour

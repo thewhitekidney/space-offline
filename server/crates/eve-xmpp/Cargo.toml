@@ -1,0 +1,13 @@
+[package]
+name = "eve-xmpp"
+version.workspace = true
+edition.workspace = true
+license-file.workspace = true
+publish.workspace = true
+
+# Nothing. The XML subset the client speaks is small enough to parse by hand,
+# and a parser crate is a supply-chain dependency bought for six tags.
+[dependencies]
+
+[lints]
+workspace = true

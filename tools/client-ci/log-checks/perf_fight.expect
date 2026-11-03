@@ -1,0 +1,15 @@
+# Log check for HC-PERF-FIGHT (docs/lanes/perf-fight.md): no client part.
+#
+# Run a soak on a QUIET machine, then read the SERVER log it produced:
+#     tools/soak.sh --release --closed --ratters 5
+#     python3 -I tools/client-ci/server-expect.py perf_fight --log <the soak's eve-server.log>
+# `[world] tick health` is one line per report window (tick.rs REPORT_EVERY);
+# the first windows include start-up and the bots logging in, so they are skipped.
+# The limits are the lane note's own: held max over 25 ms, a stage max over 10 ms.
+#
+# SERVER-MAX[skip=3]: world lock held mean [0-9.]+ ms max ([0-9.]+) ms <= 25
+# SERVER-MAX[skip=3]: \bsite mean [0-9.]+ ms max ([0-9.]+) ms <= 10
+# SERVER-MAX[skip=3]: \bpopulation mean [0-9.]+ ms max ([0-9.]+) ms <= 10
+# SERVER-MAX[skip=3]: \bgrid mean [0-9.]+ ms max ([0-9.]+) ms <= 10
+# SERVER-EXPECT: present \[world\] tick health:
+# SERVER-EXPECT: absent  panicked at

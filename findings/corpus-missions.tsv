@@ -1,0 +1,133 @@
+# res:/staticdata/missions.fsdbinary -- SHAPE ONLY, plus six sample rows.
+#
+# 2,892 rows, 224-byte records, uint32 key (= missionID), hash on
+# key % 2892 buckets, variable-length arena per bucket. Decoded in
+# `docs/re/mission-model.md`.
+#
+# Every field name, record offset, type and presence bit below comes from
+# `findings/pyd-schemas.tsv`, i.e. from the client's own generated loader
+# bin64/missionsLoader.pyd, and was then re-read against the data. [V]
+#
+# OFFSETS ARE RECORD-RELATIVE AND ALREADY INCLUDE THE RECORD'S delta=8.
+# Do not add 8. Nested-struct fields are listed at parent_offset +
+# struct_relative_offset, i.e. already absolute within the record too.
+#
+# Three readings of `findings/pyd-schemas.tsv` are corrected here, see
+# `docs/re/mission-model.md` section 7:
+#   extraStandings is dict<u32 factionID, f32>, not dict<str,f64>
+#   a cFSD dict field occupies 16 bytes: pointer, then total entry count
+#   divisionID / solarSystemID / stationID exist but are never populated
+#
+# Validation, all [V]: 13 FK columns close with zero misses; nameID resolves
+# for 2,892/2,892 and the 17,268 message ids for 17,268/17,268 in en-us; the
+# four presence words account for every byte of the 224-byte record.
+#
+# NOT the table. The contents of the client are not committed here: the rows
+# below exist only to show the reader produces the right thing, and anyone
+# who wants the data obtains the client themselves.
+field	record_offset	kind	optional_bit	notes
+(key) missionID	0	u32	-	the primary key; the hash is key % bucketCount
+clientObjectives	8	struct	0x2	32 bytes; the AIR/Agency objective-chain block
+clientObjectives.contextParameters	8	list<struct>	0x1 (word +36)	not decoded by this lane
+clientObjectives.overrides	16	dict<str,struct>	0x2 (word +36)	not decoded by this lane
+clientObjectives.objectiveChainID	32	i32	-	FK -> objectivechains, 187/187
+contentTags	40	list<str>	0x4	15 distinct tags over 131 missions
+contentTemplate	48	str	-	18 distinct; the courier/kill/trade family
+extraStandings	56	dict<u32,f32>	0x80	factionID -> standing; 41 rows, 1 entry each
+(extraStandings entry count)	64	u64	-	second half of the 16-byte dict field
+messages	72	dict<str,i32>	0x8000	prose slot name -> message id; 17,268 entries
+(messages entry count)	80	u64	-	second half of the 16-byte dict field
+agentTypeID	88	i32	0x1	FK -> agenttypes, 238/238
+corporationID	92	i32	0x8	FK -> npccorporations, 81/81
+courierMission	96	struct	0x10	16 bytes; present iff the family is courier/trade/heraldry
+courierMission.objectiveQuantity	96	i32	0x1 (word +108)	1..100,000
+courierMission.objectiveTypeID	100	i32	-	FK -> types, 1155/1155
+courierMission.objectiveSingleton	104	u8	0x2 (word +108)	
+divisionID	112	i32	0x20	NEVER POPULATED: bit never set, slot always 0
+expirationTime	116	i32	0x40	0,120,240,480,720,1440,2880,4320,5760,10080,43200 -- [I] minutes
+factionID	120	i32	0x100	FK -> factions, 820/820
+fixedLpRewardAlpha	124	i32	0x200	0 on 2,814 rows; nonzero only on HeraldryMission
+fixedLpRewardOmega	128	i32	0x400	same 78 rows, 10x the alpha value
+initialAgentGiftQuantity	132	i32	0x1000	
+initialAgentGiftTypeID	136	i32	0x2000	FK -> types, 174/174
+killMission	140	struct	0x4000	24 bytes; present iff the family is kill/mining
+killMission.dropItemInMissionContainer	140	i32	0x1 (word +160)	FK -> types, 3/3
+killMission.dungeonID	144	i32	0x2 (word +160)	FK -> dungeons, 1661/1661, 1,460 distinct
+killMission.objectiveGroupID	148	i32	0x4 (word +160)	FK -> groups, 4/4
+killMission.objectiveQuantity	152	i32	0x8 (word +160)	
+killMission.objectiveTypeID	156	i32	0x10 (word +160)	FK -> types, 560/560
+missionRewards	164	struct	0x10000	32 bytes
+missionRewards.bonusReward	164	struct	0x1 (word +192)	12 bytes
+missionRewards.bonusReward.rewardQuantity	164	i32	0x1 (word +172)	
+missionRewards.bonusReward.rewardTypeID	168	i32	0x2 (word +172)	FK -> types; typeID 29 = Credits = ISK
+missionRewards.bonusTimeInterval	176	i32	0x2 (word +192)	1..11,000 plus one 10,500,000 outlier -- [I] minutes
+missionRewards.reward	180	struct	0x4 (word +192)	12 bytes
+missionRewards.reward.rewardQuantity	180	i32	0x1 (word +188)	
+missionRewards.reward.rewardTypeID	184	i32	0x2 (word +188)	FK -> types; typeID 29 = Credits = ISK on 374 rows
+nameID	196	msgid	-	the 'Mission Title ID'; resolves 2,892/2,892
+nodeGraphID	200	i32	0x20000	FK -> nodegraphs, 131/131
+solarSystemID	204	i32	0x40000	NEVER POPULATED: bit never set, slot always 0
+stationID	208	i32	0x80000	NEVER POPULATED: bit never set, slot always 0
+hasStandingRewards	212	u8	0x800	1 on 2,817 rows, 0 on 75
+(presence bitfield)	216	u32	-	top-level; bits above 0x20000 are never set
+(padding)	220	-	-	always zero; stride is 224
+
+# --- sample rows, six of 2,892 ------------------------------------------
+missionID	name	contentTemplate	family struct	faction	exp	message slots	notes
+4832	Slave Shipment	BasicCourierMission	courierMission	500003	None	10	the mission specified in docs/re/mission-model.md section 1
+4837	Salve for Sis	BasicCourierMission	courierMission	None	10080	17	a BasicCourierMission whose prose needs no keyword at all
+1084	Attack the Angel Hideout	BasicKillMission	killMission	None	10080	13	the agents-missions lane's first worked example
+1210	Vengeance	BasicKillMission	killMission	None	None	1	its second; briefing 141308, dungeon 301
+14467	Dal Segno al Fine	EpicArcKillMission	killMission	None	None	5	one of the 41 rows with a non-empty extraStandings
+14558	Two Steps into Hell	EpicArcKillMission	killMission	None	None	11	the largest reward in the table: 40,000,000 of typeID 29 = ISK
+
+# --- the 27 prose slot names, with how many missions carry each ---------
+messages key	missions
+messages.mission.briefing	2885
+messages.mission.offered.agentsays	1983
+messages.mission.accepted.agentsays	1432
+messages.mission.completed.agentsays	1292
+messages.mission.declined.agentsays	1015
+messages.mission.quitted.agentsays	934
+messages.mission.accept.charsays	919
+messages.mission.ask.charsays	916
+messages.mission.complete.charsays	823
+messages.mission.completed.nextmission.agentsays	692
+messages.mission.decline.charsays	626
+messages.mission.extrainfo.body	582
+messages.mission.extrainfo.header	568
+messages.mission.quit.charsays	513
+messages.mission.timeout.emailbody	307
+messages.mission.offerexpired.email.body	299
+messages.epicMission.journalText.completedMessage	278
+messages.epicMission.journalText.inProgressMessage	278
+messages.mission.timeout.emailheader	267
+messages.mission.offerexpired.email.header	261
+messages.root.agentsays	188
+messages.root.missioninprogress.agentsays	147
+messages.epicMission.journalText.chapterTitle	45
+messages.mission.option1.charsays	8
+messages.mission.option2.charsays	8
+messages.mission.option3.charsays	1
+messages.mission.option4.charsays	1
+
+# --- contentTemplate vs the family struct: a partition with no exceptions
+contentTemplate	rows	courierMission	killMission	clientObjectives	appConst missionType* label path
+BasicKillMission	992	0	992	0	UI/Agents/MissionTypes/Encounter
+StorylineTradeMission	443	443	0	48	UI/Agents/MissionTypes/StorylineTrade
+StorylineKillMission	301	0	301	112	UI/Agents/MissionTypes/StorylineEncounter
+StorylineCourierMission	242	242	0	20	UI/Agents/MissionTypes/StorylineCourier
+BasicCourierMission	238	238	0	0	UI/Agents/MissionTypes/Courier
+EpicArcKillMission	186	0	186	7	UI/Agents/MissionTypes/EpicArcEncounter
+GenericStorylineKillMission	143	0	143	0	UI/Agents/MissionTypes/StorylineEncounter [I]
+GenericStorylineCourierMission	115	115	0	0	UI/Agents/MissionTypes/StorylineCourier [I]
+HeraldryMission	78	78	0	0	UI/Agents/MissionTypes/Heraldry
+EpicArcTalkToAgentMission	53	0	0	0	UI/Agents/MissionTypes/EpicArcTalkToAgent
+BasicMiningMission	42	0	42	0	UI/Agents/MissionTypes/Mining
+EpicArcCourierMission	21	21	0	0	UI/Agents/MissionTypes/EpicArcCourier
+EpicArcAgentInteractionMission	20	0	0	0	UI/Agents/MissionTypes/EpicArcAgentInteraction
+GenericStorylineTradeMission	5	5	0	0	UI/Agents/MissionTypes/StorylineTrade [I]
+EpicArcTradeMission	4	4	0	0	UI/Agents/MissionTypes/EpicArcTrade
+BasicTradeMission	4	4	0	0	UI/Agents/MissionTypes/Trade
+ResearchTradeMission	4	4	0	0	UI/Agents/MissionTypes/ResearchTrade
+ResearchCourierMission	1	1	0	0	UI/Agents/MissionTypes/ResearchCourier

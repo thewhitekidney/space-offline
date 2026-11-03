@@ -1,0 +1,83 @@
+# Labels a pull request after `check` has run. It only adds labels; it never merges.
+#
+# Trigger is `workflow_run`, not `pull_request`: a PR from a fork gets a read-only
+# token from `pull_request`, so it could not label. workflow_run runs the workflow
+# from the DEFAULT branch with a write token, so this file checks out nothing from
+# the PR and runs no PR code: it reads the PR body and file names through the API
+# only, and passes them to the shell as environment variables, never as text.
+#
+#   needs-human      template not filled in, a guarded path touched, or the checks failed
+#   ready-to-import  everything passed; waits for our import (tools/import-pr.sh)
+#
+# The two labels must exist in the repo (create them once by hand).
+name: label
+on:
+  workflow_run:
+    workflows: [check]
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  label:
+    if: github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+      HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+      HEAD_OWNER: ${{ github.event.workflow_run.head_repository.owner.login }}
+      CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+    steps:
+      # the default branch (trusted code): needs tools/pr_guard.py. actions/checkout v4.2.2 (SHA checked against the tag 2026-11-03)
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Find the pull request
+        id: pr
+        run: |
+          set -euo pipefail
+          n="$(gh pr list --repo "$REPO" --state open --head "$HEAD_BRANCH" \
+                 --json number,headRefOid,headRepositoryOwner \
+               | jq -r --arg sha "$HEAD_SHA" --arg owner "$HEAD_OWNER" \
+                 '[.[] | select(.headRefOid == $sha and .headRepositoryOwner.login == $owner)][0].number // empty')"
+          [[ "$n" =~ ^[0-9]+$ ]] || { echo "no open PR for this run"; exit 0; }
+          echo "number=$n" >> "$GITHUB_OUTPUT"
+      - name: Decide and label
+        if: steps.pr.outputs.number != ''
+        env:
+          N: ${{ steps.pr.outputs.number }}
+        run: |
+          set -euo pipefail
+          reasons=()
+          gh pr view "$N" --repo "$REPO" --json body --jq .body > "$RUNNER_TEMP/body.txt"
+          python3 -I - "$RUNNER_TEMP/body.txt" <<'PY' || reasons+=("PR template not filled in")
+          import re, sys
+          body = open(sys.argv[1], encoding="utf-8").read().replace("\r", "")
+          ok = "space-offline-pr-template" in body and "- [ ]" not in body and body.count("- [x]") + body.count("- [X]") >= 6
+          for h in ("What changed, and why", "Issue", "Owned files", "Tests added", "[A] values", "Agent and model"):
+              m = re.search(r"^## " + re.escape(h) + r"[^\n]*\n(.*?)(?=^## |\Z)", body, re.S | re.M)
+              text = re.sub(r"<!--.*?-->", "", m.group(1), flags=re.S).strip() if m else ""
+              # the template's own prompt lines do not count as an answer
+              if not text or text.endswith(":") or text == "#" or text.endswith(": #"):
+                  ok = False
+          sys.exit(0 if ok else 1)
+          PY
+          gh pr diff "$N" --repo "$REPO" --name-only > "$RUNNER_TEMP/names.txt"
+          python3 -I tools/pr_guard.py names < "$RUNNER_TEMP/names.txt" > "$RUNNER_TEMP/guard.txt" \
+            || reasons+=("guarded path touched")
+          [[ "$CONCLUSION" == success ]] || reasons+=("checks did not pass: $CONCLUSION")
+          if ((${#reasons[@]})); then
+            printf 'needs-human: %s\n' "${reasons[@]}"
+            gh pr edit "$N" --repo "$REPO" --add-label needs-human --remove-label ready-to-import || \
+              gh pr edit "$N" --repo "$REPO" --add-label needs-human
+          else
+            echo "ready-to-import"
+            gh pr edit "$N" --repo "$REPO" --add-label ready-to-import --remove-label needs-human || \
+              gh pr edit "$N" --repo "$REPO" --add-label ready-to-import
+          fi

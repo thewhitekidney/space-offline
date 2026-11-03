@@ -1,0 +1,23 @@
+# BOT-PANEL presets (docs/lanes/bot-panel.md): what each button of the dev "Bot Control" agent spawns.
+# One row per roster row. Columns: preset  label  prefix  side  role  count  skills  ship  where
+#   preset  the button's key; rows of one preset are issued together, in file order
+#   label   the link text in the agent window (plain words, no tabs)
+#   prefix  letters and digits; the group is <prefix><serial> (the serial is unique per press)
+#   side    ally = the caller's side (bots join the caller's corporation); foe = a hostile side
+#   role    a --loop role (roamgang is ROAM-GANG's: fan out, report, gather, engage together)
+#   skills  all5 | role | a plan name;  ship a type NAME resolved by the bundle at run time, or -
+#   where   here = the caller's system;  near1..near3 = a system up to that many jumps away
+# Each row becomes: /bots spawn <group> <side word> <role> <count> <skills> <ship> <system id>
+ally-miners	Spawn 10 allied miners (with an Orca)	ao	ally	foreman	1	role	Orca	here
+ally-miners	Spawn 10 allied miners (with an Orca)	am	ally	mine	10	role	Hulk	here
+ally-escorts	Spawn 10 allied escorts	ae	ally	escort	10	role	-	here
+ally-pve	Spawn an allied PvE group (5 sites, 3 missions)	as	ally	sites	5	role	Vexor	here
+ally-pve	Spawn an allied PvE group (5 sites, 3 missions)	aq	ally	missions	3	role	Caracal	here
+ally-industry	Spawn an allied industry and trade group	at	ally	trader	3	role	-	here
+ally-industry	Spawn an allied industry and trade group	ab	ally	builder	4	role	-	here
+ally-industry	Spawn an allied industry and trade group	ah	ally	huff	3	role	-	here
+foe-gang-small	Spawn a small hostile roaming gang (4 frigates)	hs	foe	roamgang	4	role	Rifter	near3
+foe-gang-medium	Spawn a medium hostile roaming gang (8 cruisers)	hm	foe	roamgang	8	role	Stabber	near3
+foe-gang-large	Spawn a large hostile roaming gang (16 battlecruisers)	hl	foe	roamgang	16	role	Hurricane	near3
+foe-campers	Spawn hostile campers on the gate (4 frigates)	hc	foe	hunter	4	role	Rifter	here
+foe-dictor	Spawn a hostile dictor that comes for you and camps (open mode only)	hd	foe	roamgang	1	all5	Sabre	here

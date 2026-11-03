@@ -1,0 +1,16 @@
+# eve-offline build registry (R-BUILD §3.4; owner decision O17). The source of
+# truth for which client builds the tools (tools/dogma.py, tools/content.py) and
+# the server (eve-marshal::build::BUILDS, whose test parses this file) accept.
+# tools/client-pin.sha256 pins FILES of one install; this pins MEANING.
+#   build      start.ini `build`
+#   line       release line: codename (start.ini `codename`); one line shares
+#              machoVersion, boot.version, codename and region
+#   status     pinned      the build the RE corpus is anchored to (exactly one)
+#              equivalent  tools/build-delta.py PINNED THIS says `equivalent`
+#              unverified  seen, not measured: refused by default
+#   data_hash  a content bundle data_hash proved equal for this build, or -
+#   evidence   how the status was earned
+#build	line	status	data_hash	evidence
+3619879	V24.01	unverified	-	former reference, pinned until 2026-10-31 (tools/client-pin.sha256 2026-10-24); kept, not retired
+3628513	V24.01	unverified	-	build-delta 2026-10-26 against 3619879: equivalent (findings/build-delta-3619879-3628513.tsv); kept at unverified when 3662168 became the reference
+3662168	V24.01	pinned	-	owner decision 2026-10-31: the reference. build-delta against 3619879 differs, protocol layer signature-only, same line (findings/build-delta-3619879-3662168.tsv); regression and jailed census clean. The 11-09 build repeats this re-pin

@@ -1,0 +1,53 @@
+# Checks for a pull request. Trigger is `pull_request` ONLY, never
+# `pull_request_target`: an outside PR runs here with a read-only token and no secrets.
+# The Rust steps run in the repo's own image through tools/dev.sh (no network, no
+# capabilities, repo mounted read-only), like the local gate.
+# Labelling is a separate workflow (label.yml); this one never writes anything.
+name: check
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      EVE_MIN_FREE_GB: "0"
+      EVE_MAX_JOBS: "4"
+    steps:
+      # actions/checkout v4.2.2 (SHA checked against the tag 2026-11-03)
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0   # status-guard diffs against the base branch
+      - name: Build the toolchain image (the only networked step)
+        run: tools/dev.sh --image
+      - name: fmt
+        run: tools/dev.sh cargo fmt --all -- --check
+      - name: clippy
+        run: tools/dev.sh cargo clippy --locked --workspace --all-targets -- -D warnings
+      - name: tests
+        run: tools/dev.sh cargo test --locked --workspace
+      - name: docs lint
+        run: python3 -I tools/test_docs.py
+      - name: progress table moves with the code
+        # The PR body reaches the script through the environment only, never the
+        # shell text, so nothing in it can run. A waiver is a body line
+        # `Status: none (<reason>)`.
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          BASE_REF: ${{ github.base_ref }}
+        run: python3 -I tools/status-guard.py --base "origin/$BASE_REF"
+      - name: status audit (skips without var/)
+        run: python3 -I tools/status-page.py --audit --no-stamp
+      - name: export leak scan
+        run: python3 -I tools/public-export.py --check
+      - name: deps.allow is empty
+        run: |
+          if grep -vE '^[[:space:]]*(#|$)' server/deps.allow; then
+            echo "server/deps.allow must stay empty" >&2
+            exit 1
+          fi

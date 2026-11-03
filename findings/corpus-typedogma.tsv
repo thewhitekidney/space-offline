@@ -1,0 +1,57 @@
+# res:/staticdata/typedogma.fsdbinary -- SHAPE ONLY, plus three sample rows.
+#
+# 27,162 rows, 24-byte records, uint32 key (= typeID), hash on
+# key % 27162 buckets. The record is two list pointers; the data is in the
+# arena -- 648,930 attribute values and 54,336 effect entries in total.
+# Read with `tools/dogma.py`, decoded in `docs/re/dogma.md`.
+#
+# Every field name, offset and type below was read out of the client's own
+# generated loader, bin64/typeDogmaLoader.pyd, and is reproducible with
+# `tools/dogma.py derive typedogma`. The two element strides come from the
+# generated sequence-item functions' own index arithmetic (`shl rbx, 4` for
+# dogmaAttributes, `lea rbx, [rcx + rdx*8]` for dogmaEffects). [V]
+#
+# NOT the table. This is the single biggest content lever in the client and
+# it stays in the client: the rows below exist only to show the reader
+# produces the published EVE numbers, and anyone who wants the data obtains
+# the client themselves.
+field	record_offset	kind	optional_bit
+(key)	0	u32	-
+dogmaAttributes	8	list	-
+dogmaEffects	16	list	-
+
+# element of dogmaAttributes: stride 16 bytes, offsets relative to the element
+field	element_offset	kind	optional_bit
+value	0	f64	-
+attributeID	8	u32	-
+
+# element of dogmaEffects: stride 8 bytes, offsets relative to the element
+field	element_offset	kind	optional_bit
+effectID	0	u32	-
+isDefault	4	bool	-
+
+# the whole table is 27,162 rows carrying 648,930 attribute values; it is not here.
+# three sample rows, counts only:
+typeID	typeName	attributeCount	effectCount
+587	Rifter	90	2
+638	Raven	90	6
+1230	Veldspar	7	0
+
+# and twelve of the Rifter's ninety attribute values, which are the published EVE numbers:
+typeID	attributeID	attributeName	value
+587	9	hp	350
+587	12	lowSlots	4
+587	13	medSlots	3
+587	14	hiSlots	3
+587	37	maxVelocity	365
+587	101	launcherSlotsLeft	2
+587	102	turretSlotsLeft	3
+587	263	shieldCapacity	450
+587	265	armorHP	450
+587	482	capacitorCapacity	250
+587	552	signatureRadius	35
+587	1137	rigSlots	3
+
+typeID	effectID	effectName	isDefault
+587	5779	shipBonusSPTFalloffMF2	0
+587	7248	shipPBonusROFMF	0

@@ -1,0 +1,14 @@
+# Log check for #63 / HK4 (docs/lanes/hk4.md): explorer bots hacking data cans.
+# No client part: the bots play the board themselves.  Run
+#     sudo -v && tools/bots.sh --no-client 20 explorers      (or tools/soak.sh with --society)
+# for long enough that some explorer reaches a site, then:
+#     python3 -I tools/client-ci/server-expect.py hk4_bots
+# The act line carries one `[hack] can ... won|lost in N turns` clause a game.
+# What this cannot see, and the owner still does: the bracket turning "hacked"
+# on a client's screen.
+#
+# BOTS-EXPECT:   present \+[0-9:.]+ hack\s.*\[hack\] can .* (won|lost) in [0-9]+ turns
+# BOTS-EXPECT:   present \[hack\] can .* won in [0-9]+ turns
+# BOTS-EXPECT:   absent  panicked at
+# SERVER-EXPECT: absent  UNANSWERED hackingMgr
+# SERVER-EXPECT: absent  panicked at

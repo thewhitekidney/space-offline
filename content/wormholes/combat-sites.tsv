@@ -1,0 +1,37 @@
+# J-space combat anomalies: which wormhole class each one belongs to, by the
+# client's en-us name (no ids). The client's dungeon rows carry no wormhole
+# class, so this is public game knowledge (the community's well-known lists of
+# wormhole combat sites), written here from memory in our own words; it follows
+# the pattern of content/econ/geode-picks.tsv. `tools/content_wormholes.py`
+# matches `name` EXACTLY against each combat dungeon's name and writes the
+# class into wormholes/sites.tsv. A name that matches no dungeon stops the
+# extraction.
+#
+# Every row is an assumption, marked [A]. Falsifier for all of them: a
+# J-space combat site a human sees in a different class than its row says
+# (the client's difficulty 3/4/5 already agrees with C1-2, C3-4, C5-6).
+name	class	why
+Perimeter Ambush Point	1	[A] a Perimeter anomaly seen in class 1; falsified by one found elsewhere
+Perimeter Camp	1	[A] a Perimeter anomaly seen in class 1; falsified by one found elsewhere
+Phase Catalyst Node	1	[A] a small unstemmed anomaly of class 1; falsified by one found elsewhere
+The Line	1	[A] a small unstemmed anomaly of class 1; falsified by one found elsewhere
+Perimeter Checkpoint	2	[A] a Perimeter anomaly seen in class 2; falsified by one found elsewhere
+Perimeter Hangar	2	[A] a Perimeter anomaly seen in class 2; falsified by one found elsewhere
+The Ruins of Enclave Cohort 27	2	[A] an unstemmed anomaly of class 2; falsified by one found elsewhere
+Sleeper Data Sanctuary	2	[A] an unstemmed anomaly of class 2; falsified by one found elsewhere
+Fortification Frontier Stronghold	3	[A] a Frontier stronghold seen in class 3; falsified by one found elsewhere
+Outpost Frontier Stronghold	3	[A] a Frontier stronghold seen in class 3; falsified by one found elsewhere
+Solar Cell	3	[A] an unstemmed anomaly of class 3; falsified by one found elsewhere
+The Oruze Construct	3	[A] an unstemmed anomaly of class 3; falsified by one found elsewhere
+Frontier Barracks	4	[A] a Frontier anomaly seen in class 4; falsified by one found elsewhere
+Frontier Command Post	4	[A] a Frontier anomaly seen in class 4; falsified by one found elsewhere
+Integrated Terminus	4	[A] an unstemmed anomaly of class 4; falsified by one found elsewhere
+Sleeper Information Sanctum	4	[A] an unstemmed anomaly of class 4; falsified by one found elsewhere
+Core Garrison	5	[A] a Core anomaly seen in class 5; falsified by one found elsewhere
+Core Stronghold	5	[A] a Core anomaly seen in class 5; falsified by one found elsewhere
+Oruze Osobnyk	5	[A] an unstemmed anomaly of class 5; falsified by one found elsewhere
+Quarantine Area	5	[A] an unstemmed anomaly of class 5; falsified by one found elsewhere
+Core Citadel	6	[A] a Core anomaly seen in class 6; falsified by one found elsewhere
+Core Bastion	6	[A] a Core anomaly seen in class 6; falsified by one found elsewhere
+The Mirror	6	[A] an unstemmed anomaly of class 6; falsified by one found elsewhere
+Strange Energy Readings	6	[A] an unstemmed anomaly of class 6; falsified by one found elsewhere

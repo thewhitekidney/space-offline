@@ -1,0 +1,41 @@
+# Every PyPI artifact the analysis image installs, pinned and hashed (V6 F12).
+# Installed with `pip install --require-hashes`, so a changed or substituted
+# file on PyPI fails the build instead of landing in the image.
+#
+# The versions are exactly the ones the image already carried (`pip freeze`);
+# the hashes are of the cp311 manylinux x86_64 wheels pip picks for
+# python:3.11-slim, and each wheel's RECORD was checked against the files
+# installed in the previous image. Bump a version and its hash together.
+#
+# Direct requirements.
+uncompyle6==3.9.1 \
+    --hash=sha256:1528eb7c2b2d656084ccd7d3fe2487ca4124ae4b5a659a235da57bc46f552beb
+xdis==6.1.0 \
+    --hash=sha256:aa9954c1aa2bde974ee620a23a100b63a46113abdbb703b97c3f11b7f5873db8
+spark-parser==1.8.9 \
+    --hash=sha256:e4d366116268010100f054ebda99b3b880c64e4b0aa3d58629ec79e6d033b077
+pefile==2024.8.26 \
+    --hash=sha256:76f8b485dcd3b1bb8166f1128d395fa3d87af26360c2358fb75b80019b957c6f
+capstone==5.0.1 \
+    --hash=sha256:ea8d0be06d2faa39545937fe88db239fd62227915f9744d8990439011c479f05
+protobuf==4.21.12 \
+    --hash=sha256:78a28c9fa223998472886c77042e9b9afb6fe4242bd2a2a5aced88e3f4422aa7
+grpcio-tools==1.60.0 \
+    --hash=sha256:b8f7a5094adb49e85db13ea3df5d99a976c2bdfd83b0ba26af20ebb742ac6786
+# Transitive requirements (hash-checking mode needs every one pinned).
+grpcio==1.84.0 \
+    --hash=sha256:bd8ea8eb3817b226057cc1c0e7ec4b378dcda52043b972b6ff12b1152178967d
+click==8.5.0 \
+    --hash=sha256:255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360
+term-background==1.0.5 \
+    --hash=sha256:acad2edbe43b216781d69cffa71f95638f6f73cecdda7c81ad2b4f391a1dbe5b
+six==1.17.0 \
+    --hash=sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274
+Pygments==2.21.0 \
+    --hash=sha256:2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9
+typing_extensions==4.16.0 \
+    --hash=sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8
+# Already in the base image; pinned here so grpcio-tools' dependency on it
+# is hash-checked too.
+setuptools==79.0.1 \
+    --hash=sha256:e147c0549f27767ba362f9da434eab9c5dc0045d5304feb602a0af001089fc51

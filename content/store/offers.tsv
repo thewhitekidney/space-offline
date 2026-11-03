@@ -1,0 +1,9 @@
+key	category	selector	qty	price_plx	base_plx	single	why
+extractor	services/skills	const:skill_extractor	1	100	100	0	Owner decision #35 [A]: 100 PLEX. The only source of extractors, so PLEX to extractor to injector is a closed named loop.
+bonus_remap	services/character	service:bonus_remap	1	150	150	0	Owner decision #35 [A]: 150 PLEX. A service, applied at purchase.
+skin_frigate	skins/frigate	skin:hullclass=frigate:permanent:cap=40	1	50	50	1	Owner decision #35 [A]: 50 PLEX. cap is [A]: a store of seven thousand SKINs is a slow window.
+skin_destroyer	skins/destroyer	skin:hullclass=destroyer:permanent:cap=40	1	75	75	1	Owner decision #35 [A]: 75 PLEX.
+skin_cruiser	skins/cruiser	skin:hullclass=cruiser:permanent:cap=40	1	125	125	1	Owner decision #35 [A]: 125 PLEX.
+skin_battlecruiser	skins/battlecruiser	skin:hullclass=battlecruiser:permanent:cap=40	1	175	175	1	Owner decision #35 [A]: 175 PLEX.
+skin_battleship	skins/battleship	skin:hullclass=battleship:permanent:cap=40	1	250	250	1	Owner decision #35 [A]: 250 PLEX.
+skin_capital	skins/capital	skin:hullclass=capital:permanent:cap=40	1	500	500	1	Owner decision #35 [A]: 500 PLEX.

@@ -1,0 +1,1802 @@
+{
+ "AbyssalService": {
+  "module": "abyss.client.abyssal_service",
+  "class": "AbyssalService",
+  "guid": "svc.abyss",
+  "methods": []
+ },
+ "AssetHoldingService": {
+  "module": "assetholding.client.assetholding_svc",
+  "class": "AssetHoldingService",
+  "guid": "svc.assetHoldingSvc",
+  "methods": []
+ },
+ "BannedWordsClientService": {
+  "module": "bannedwords.client.bannedwords_client",
+  "class": "BannedWordsClientService",
+  "guid": "svc.bannedwords_client",
+  "methods": []
+ },
+ "AudioService": {
+  "module": "carbon.client.script.environment.audioService",
+  "class": "AudioService",
+  "guid": "svc.audio",
+  "methods": []
+ },
+ "DebugRenderClient": {
+  "module": "carbon.client.script.graphics.debugRenderClient",
+  "class": "DebugRenderClient",
+  "guid": "svc.debugRenderClient",
+  "methods": []
+ },
+ "PaperDollClient": {
+  "module": "carbon.client.script.graphics.paperDollClient",
+  "class": "PaperDollClient",
+  "guid": "svc.paperDollClient",
+  "methods": []
+ },
+ "LocalizationClient": {
+  "module": "carbon.client.script.localization.localizationClient",
+  "class": "LocalizationClient",
+  "guid": "svc.localizationClient",
+  "methods": []
+ },
+ "connection": {
+  "module": "carbon.client.script.remote.connectionService",
+  "class": "ConnectionService",
+  "guid": "svc.connection",
+  "methods": []
+ },
+ "InformationGatheringSvc": {
+  "module": "carbon.client.script.sys.infoGatheringSvc",
+  "class": "InformationGatheringSvc",
+  "guid": "svc.infoGatheringSvc",
+  "methods": []
+ },
+ "CacheDirectoryLimitService": {
+  "module": "carbon.client.script.util.cacheDirectoryLimitSvc",
+  "class": "CacheDirectoryLimitService",
+  "guid": "svc.cacheDirectoryLimit",
+  "methods": []
+ },
+ "LoggingSvc": {
+  "module": "carbon.client.script.util.logsvc",
+  "class": "LoggingSvc",
+  "guid": "svc.log",
+  "methods": []
+ },
+ "monitor": {
+  "module": "carbon.client.script.util.monitor",
+  "class": "Monitor",
+  "guid": "svc.monitor",
+  "methods": []
+ },
+ "WSGIService": {
+  "module": "carbon.common.script.net.WSGIService",
+  "class": "WSGIService",
+  "guid": "svc.WSGIService",
+  "methods": []
+ },
+ "EmailSvc": {
+  "module": "carbon.common.script.net.emailSvc",
+  "class": "EmailSvc",
+  "guid": "svc.emailSvc",
+  "methods": []
+ },
+ "CherryServer": {
+  "module": "carbon.common.script.net.http2Service",
+  "class": "CherryServer",
+  "guid": "svc.http2",
+  "methods": []
+ },
+ "HttpGate": {
+  "module": "carbon.common.script.net.httpGate",
+  "class": "HttpGate",
+  "guid": "svc.httpGate",
+  "methods": []
+ },
+ "ConnectionService": {
+  "module": "carbon.common.script.net.httpService",
+  "class": "ConnectionService",
+  "guid": "svc.http",
+  "methods": []
+ },
+ "MachoNetService": {
+  "module": "carbon.common.script.net.machoNet",
+  "class": "MachoNetService",
+  "guid": "svc.machoNet",
+  "methods": []
+ },
+ "CoreObjectCachingSvc": {
+  "module": "carbon.common.script.net.objectCaching",
+  "class": "CoreObjectCachingSvc",
+  "guid": "svc.objectCaching",
+  "methods": []
+ },
+ "XmlrpcClient": {
+  "module": "carbon.common.script.net.xmlrpcClient",
+  "class": "XmlrpcClient",
+  "guid": "svc.xmlrpcClient",
+  "methods": []
+ },
+ "Alert": {
+  "module": "eve.common.script.sys.eveAlert",
+  "class": "Alert",
+  "guid": "svc.eveAlert",
+  "methods": []
+ },
+ "dataconfig": {
+  "module": "carbon.common.script.sys.cfg",
+  "class": "DataConfig",
+  "guid": "svc.dataconfig",
+  "methods": []
+ },
+ "CoreCounterService": {
+  "module": "carbon.common.script.sys.counterService",
+  "class": "CoreCounterService",
+  "guid": "svc.counter",
+  "methods": []
+ },
+ "debugSvc": {
+  "module": "carbon.common.script.sys.debugSvc",
+  "class": "debugSvc",
+  "guid": "svc.debug",
+  "methods": []
+ },
+ "LoadService": {
+  "module": "carbon.common.script.sys.loadService",
+  "class": "LoadService",
+  "guid": "svc.loadService",
+  "methods": []
+ },
+ "NetworkLogging": {
+  "module": "carbon.common.script.sys.networkLogging",
+  "class": "NetworkLogging",
+  "guid": "svc.networkLogging",
+  "methods": []
+ },
+ "processHealth": {
+  "module": "carbon.common.script.sys.processHealthSvc",
+  "class": "ProcessHealthSvc",
+  "guid": "svc.processHealth",
+  "methods": []
+ },
+ "SessionMgr": {
+  "module": "eve.common.script.sys.eveSessions",
+  "class": "SessionMgr",
+  "guid": "svc.eveSessionMgr",
+  "methods": []
+ },
+ "_ServiceListener": {
+  "module": "carbon.common.script.sys.test.test_scatterEventTracing",
+  "class": "_ServiceListener",
+  "guid": "svc.scatterEventTracingCoverage",
+  "methods": []
+ },
+ "PrioritizedLoadManager": {
+  "module": "carbon.common.script.util.prioritizedLoadManager",
+  "class": "PrioritizedLoadManager",
+  "guid": "svc.prioritizedLoadManager",
+  "methods": []
+ },
+ "BrowserImage": {
+  "module": "carbonui.control.browser.browserImageSvc",
+  "class": "BrowserImage",
+  "guid": "svc.browserImage",
+  "methods": []
+ },
+ "ImageCache": {
+  "module": "carbonui.control.browser.imageCacheSvc",
+  "class": "ImageCache",
+  "guid": "svc.imageCache",
+  "methods": []
+ },
+ "SitesSvc": {
+  "module": "carbonui.control.browser.sites",
+  "class": "SitesSvc",
+  "guid": "svc.sites",
+  "methods": []
+ },
+ "Fps Monitor Service": {
+  "module": "carbonui.modules.monitor",
+  "class": "FpsMonitorSvc",
+  "guid": "svc.fpsMonitorSvc",
+  "methods": []
+ },
+ "CommandService": {
+  "module": "carbonui.services.command",
+  "class": "CommandService",
+  "guid": "svc.cmd",
+  "methods": []
+ },
+ "device": {
+  "module": "carbonui.services.device",
+  "class": "DeviceMgr",
+  "guid": "svc.device",
+  "methods": []
+ },
+ "SettingsSvc": {
+  "module": "carbonui.services.settingsSvc",
+  "class": "SettingsSvc",
+  "guid": "svc.settings",
+  "methods": []
+ },
+ "ChatSvc": {
+  "module": "chat.client.chat_service",
+  "class": "ChatSvc",
+  "guid": "svc.chat",
+  "methods": []
+ },
+ "ContextualOfferService": {
+  "module": "contextualOffers.client.contextualOffersSvc",
+  "class": "ContextualOfferService",
+  "guid": "svc.contextualOfferSvc",
+  "methods": []
+ },
+ "ConversationService": {
+  "module": "conversations.conversationswithhighlights.conversationservice",
+  "class": "ConversationService",
+  "guid": "svc.ConversationService",
+  "methods": []
+ },
+ "CosmeticsLicenseService": {
+  "module": "cosmetics.client.cosmeticsLicenseSvc",
+  "class": "CosmeticsLicenseService",
+  "guid": "svc.cosmeticsLicenseSvc",
+  "methods": []
+ },
+ "CosmeticsService": {
+  "module": "cosmetics.client.cosmeticsSvc",
+  "class": "CosmeticsService",
+  "guid": "svc.cosmeticsSvc",
+  "methods": []
+ },
+ "ClientDogma": {
+  "module": "eve.client.script.dogma.clientDogma",
+  "class": "ClientDogma",
+  "guid": "svc.dogma",
+  "methods": []
+ },
+ "ClientDogmaInstanceManager": {
+  "module": "eve.client.script.dogma.clientDogmaIM",
+  "class": "ClientDogmaInstanceManager",
+  "guid": "svc.clientDogmaIM",
+  "methods": []
+ },
+ "ClientDogmaStaticSvc": {
+  "module": "eve.client.script.dogma.clientDogmaStaticSvc",
+  "class": "ClientDogmaStaticSvc",
+  "guid": "svc.clientDogmaStaticSvc",
+  "methods": []
+ },
+ "ClientEffectCompiler": {
+  "module": "eve.client.script.dogma.clientEffectCompiler",
+  "class": "ClientEffectCompiler",
+  "guid": "svc.clientEffectCompiler",
+  "methods": []
+ },
+ "DynamicItemSvc": {
+  "module": "eve.client.script.dogma.dynamicItemSvc",
+  "class": "DynamicItemSvc",
+  "guid": "svc.dynamicItemSvc",
+  "methods": []
+ },
+ "fittingSvc": {
+  "module": "eve.client.script.environment.fittingSvc",
+  "class": "fittingSvc",
+  "guid": "svc.fittingSvc",
+  "methods": []
+ },
+ "Godma": {
+  "module": "eve.client.script.environment.godma",
+  "class": "Godma",
+  "guid": "svc.godma",
+  "methods": []
+ },
+ "invCache": {
+  "module": "eve.client.script.environment.invCache",
+  "class": "invCache",
+  "guid": "svc.invCache",
+  "methods": []
+ },
+ "NoddiTestRunner": {
+  "module": "eve.client.script.environment.nodditestrunner",
+  "class": "NoddiTestRunner",
+  "guid": "svc.noddiTestRunner",
+  "methods": []
+ },
+ "planetSvc": {
+  "module": "eve.client.script.environment.planetSvc",
+  "class": "PlanetService",
+  "guid": "svc.planetSvc",
+  "methods": []
+ },
+ "PrefetchSvc": {
+  "module": "eve.client.script.environment.prefetchSvc",
+  "class": "PrefetchSvc",
+  "guid": "svc.prefetchSvc",
+  "methods": []
+ },
+ "sofService": {
+  "module": "eve.client.script.environment.sofService",
+  "class": "sofService",
+  "guid": "svc.sofService",
+  "methods": []
+ },
+ "vgsSvc": {
+  "module": "eve.client.script.environment.vgsService",
+  "class": "VgsService",
+  "guid": "svc.vgsService",
+  "methods": []
+ },
+ "EvePaperDollClient": {
+  "module": "eve.client.script.graphics.paperDollClient",
+  "class": "EvePaperDollClient",
+  "guid": "svc.evePaperDollClient",
+  "methods": []
+ },
+ "Blueprint": {
+  "module": "eve.client.script.industry.blueprintSvc",
+  "class": "BlueprintService",
+  "guid": "svc.blueprintSvc",
+  "methods": []
+ },
+ "Facility Service": {
+  "module": "eve.client.script.industry.facilitySvc",
+  "class": "FacilityService",
+  "guid": "svc.facilitySvc",
+  "methods": []
+ },
+ "Industry": {
+  "module": "eve.client.script.industry.industrySvc",
+  "class": "IndustryService",
+  "guid": "svc.industrySvc",
+  "methods": []
+ },
+ "AutoPilot": {
+  "module": "eve.client.script.parklife.autopilot",
+  "class": "AutoPilot",
+  "guid": "svc.autoPilot",
+  "methods": []
+ },
+ "BracketMgr": {
+  "module": "eve.client.script.parklife.bracketMgr",
+  "class": "BracketMgr",
+  "guid": "svc.bracket",
+  "methods": []
+ },
+ "cloaking": {
+  "module": "eve.client.script.parklife.cloakingSvc",
+  "class": "CloakingSvc",
+  "guid": "svc.cloaking",
+  "methods": []
+ },
+ "ConsiderSvc": {
+  "module": "eve.client.script.parklife.consider",
+  "class": "ConsiderSvc",
+  "guid": "svc.consider",
+  "methods": []
+ },
+ "CynoTravel": {
+  "module": "eve.client.script.parklife.cynoTravelSvc",
+  "class": "CynoTravelSvc",
+  "guid": "svc.cynoTravel",
+  "methods": []
+ },
+ "DamageService": {
+  "module": "eve.client.script.parklife.damageSvc",
+  "class": "DamageService",
+  "guid": "svc.damage",
+  "methods": []
+ },
+ "DbuffClientService": {
+  "module": "eve.client.script.parklife.dbuffClient",
+  "class": "DbuffClientService",
+  "guid": "svc.dbuffClient",
+  "methods": []
+ },
+ "svc.directionalScanSvc": {
+  "module": "eve.client.script.parklife.directionalScanSvc",
+  "class": "DirectionalScanSvc",
+  "guid": "svc.directionalScanSvc",
+  "methods": []
+ },
+ "DotWeaponSvc": {
+  "module": "eve.client.script.parklife.dotWeaponSvc",
+  "class": "DotWeaponSvc",
+  "guid": "svc.dotWeaponSvc",
+  "methods": []
+ },
+ "DungeonTracking": {
+  "module": "eve.client.script.parklife.dungeonTracking",
+  "class": "DungeonTracking",
+  "guid": "svc.dungeonTracking",
+  "methods": []
+ },
+ "environment": {
+  "module": "eve.client.script.parklife.environmentSvc",
+  "class": "EnvironmentService",
+  "guid": "svc.environment",
+  "methods": []
+ },
+ "fighters": {
+  "module": "eve.client.script.parklife.fightersSvc",
+  "class": "FightersSvc",
+  "guid": "svc.fighters",
+  "methods": []
+ },
+ "FleetSvc": {
+  "module": "eve.client.script.parklife.fleetSvc",
+  "class": "FleetSvc",
+  "guid": "svc.fleet",
+  "methods": []
+ },
+ "FxSequencer": {
+  "module": "eve.client.script.parklife.fxSequencer",
+  "class": "FxSequencer",
+  "guid": "svc.FxSequencer",
+  "methods": []
+ },
+ "GameUI": {
+  "module": "eve.client.script.parklife.gameui",
+  "class": "GameUI",
+  "guid": "svc.gameui",
+  "methods": []
+ },
+ "MoonScanSvc": {
+  "module": "eve.client.script.parklife.moonscan",
+  "class": "MoonScanSvc",
+  "guid": "svc.moonScan",
+  "methods": []
+ },
+ "OverviewPresetSvc": {
+  "module": "eve.client.script.parklife.overview.presetservice",
+  "class": "OverviewPresetSvc",
+  "guid": "svc.overviewPresetSvc",
+  "methods": []
+ },
+ "OwnerPrimer": {
+  "module": "eve.client.script.parklife.ownerprimer",
+  "class": "OwnerPrimer",
+  "guid": "svc.ownerprimer",
+  "methods": []
+ },
+ "PlanetInfo": {
+  "module": "eve.client.script.parklife.planetInfoSvc",
+  "class": "PlanetInfoSvc",
+  "guid": "svc.planetInfo",
+  "methods": []
+ },
+ "PlayerOwned": {
+  "module": "eve.client.script.parklife.playerOwned",
+  "class": "PlayerOwned",
+  "guid": "svc.pwn",
+  "methods": []
+ },
+ "PlayerOwnedTargetMgr": {
+  "module": "eve.client.script.parklife.playerOwnedTargetMgr",
+  "class": "PlayerOwnedTargetMgr",
+  "guid": "svc.pwntarget",
+  "methods": []
+ },
+ "PosAnchorSvc": {
+  "module": "eve.client.script.parklife.posAnchorSvc",
+  "class": "PosAnchorSvc",
+  "guid": "svc.posAnchor",
+  "methods": []
+ },
+ "EventRecorder": {
+  "module": "eve.client.script.parklife.recorder",
+  "class": "EventRecorder",
+  "guid": "svc.recorder",
+  "methods": []
+ },
+ "svc.scanSvc": {
+  "module": "eve.client.script.parklife.scanSvc",
+  "class": "ScanSvc",
+  "guid": "svc.scanSvc",
+  "methods": []
+ },
+ "ScenarioMgr": {
+  "module": "eve.client.script.parklife.scenarioMgr",
+  "class": "ScenarioMgr",
+  "guid": "svc.scenario",
+  "methods": []
+ },
+ "SceneManager": {
+  "module": "eve.client.script.parklife.sceneManager",
+  "class": "SceneManager",
+  "guid": "svc.sceneManager",
+  "methods": []
+ },
+ "SensorSuiteService": {
+  "module": "eve.client.script.parklife.sensorSuiteService",
+  "class": "SensorSuiteService",
+  "guid": "svc.sensorSuite",
+  "methods": []
+ },
+ "Shipcaster": {
+  "module": "eve.client.script.parklife.shipcasterSvc",
+  "class": "ShipcasterSvc",
+  "guid": "svc.shipcaster",
+  "methods": []
+ },
+ "SpaceMgr": {
+  "module": "eve.client.script.parklife.spaceMgr",
+  "class": "SpaceMgr",
+  "guid": "svc.space",
+  "methods": []
+ },
+ "StateSvc": {
+  "module": "eve.client.script.parklife.state",
+  "class": "StateSvc",
+  "guid": "svc.stateSvc",
+  "methods": []
+ },
+ "subway": {
+  "module": "eve.client.script.parklife.subwaySvc",
+  "class": "SubwayService",
+  "guid": "svc.subway",
+  "methods": []
+ },
+ "SystemWideEffectSvc": {
+  "module": "eve.client.script.parklife.systemWideEffectSvc",
+  "class": "SystemWideEffectSvc",
+  "guid": "svc.systemWideEffectSvc",
+  "methods": []
+ },
+ "TacticalSvc": {
+  "module": "eve.client.script.parklife.tactical",
+  "class": "TacticalSvc",
+  "guid": "svc.tactical",
+  "methods": []
+ },
+ "TargetMgr": {
+  "module": "eve.client.script.parklife.targetMgr",
+  "class": "TargetMgr",
+  "guid": "svc.target",
+  "methods": []
+ },
+ "TransmissionSvc": {
+  "module": "eve.client.script.parklife.transmissionMgr",
+  "class": "TransmissionSvc",
+  "guid": "svc.transmission",
+  "methods": []
+ },
+ "Triggers": {
+  "module": "eve.client.script.parklife.triggerMgr",
+  "class": "Triggers",
+  "guid": "svc.trigger",
+  "methods": []
+ },
+ "turret": {
+  "module": "eve.client.script.parklife.turret",
+  "class": "TurretSvc",
+  "guid": "svc.turret",
+  "methods": []
+ },
+ "Michelle": {
+  "module": "eve.client.script.remote.michelle",
+  "class": "Michelle",
+  "guid": "svc.michelle",
+  "methods": []
+ },
+ "ClientStatsSvc": {
+  "module": "eve.client.script.sys.clientStatsSvc",
+  "class": "ClientStatsSvc",
+  "guid": "svc.clientStatsSvc",
+  "methods": []
+ },
+ "EveCommandService": {
+  "module": "eve.client.script.ui.eveCommands",
+  "class": "EveCommandService",
+  "guid": "svc.eveCmd",
+  "methods": []
+ },
+ "TourneyUISvc": {
+  "module": "eve.client.script.ui.extras.tourneyUISvc",
+  "class": "TourneyUISvc",
+  "guid": "svc.tourneyUISvc",
+  "methods": []
+ },
+ "hackingUI": {
+  "module": "eve.client.script.ui.hacking.hackingUISvc",
+  "class": "HackingSvc",
+  "guid": "svc.hackingUI",
+  "methods": []
+ },
+ "heroNotification": {
+  "module": "eve.client.script.ui.heronotification.service",
+  "class": "HeroNotificationService",
+  "guid": "svc.heroNotification",
+  "methods": []
+ },
+ "SchedulingSvc": {
+  "module": "eve.client.script.ui.moonmining.schedulingSvc",
+  "class": "SchedulingSvc",
+  "guid": "svc.scheduling",
+  "methods": []
+ },
+ "PodGuideService": {
+  "module": "eve.client.script.ui.podGuide.podGuideService",
+  "class": "PodGuideService",
+  "guid": "svc.podguide",
+  "methods": []
+ },
+ "account": {
+  "module": "eve.client.script.ui.services.factionsvc",
+  "class": "Faction",
+  "guid": "svc.faction",
+  "methods": []
+ },
+ "ActivitiesService": {
+  "module": "eve.client.script.ui.services.activitiesSvc",
+  "class": "ActivitiesService",
+  "guid": "svc.activities",
+  "methods": []
+ },
+ "alliance": {
+  "module": "eve.client.script.ui.services.alliances.all_cso",
+  "class": "Alliances",
+  "guid": "svc.alliance",
+  "methods": []
+ },
+ "BugReportingService": {
+  "module": "eve.client.script.ui.services.bugReporting",
+  "class": "BugReportingService",
+  "guid": "svc.bugReporting",
+  "methods": []
+ },
+ "CCSvc": {
+  "module": "eve.client.script.ui.services.ccSvc",
+  "class": "CCSvc",
+  "guid": "svc.cc",
+  "methods": []
+ },
+ "certificates": {
+  "module": "eve.client.script.ui.services.certificateSvc",
+  "class": "Certificates",
+  "guid": "svc.certificates",
+  "methods": []
+ },
+ "Character": {
+  "module": "eve.client.script.ui.services.character",
+  "class": "Character",
+  "guid": "svc.character",
+  "methods": []
+ },
+ "CharacterEnergySvc": {
+  "module": "eve.client.script.ui.services.characterEnergySvc",
+  "class": "CharacterEnergySvc",
+  "guid": "svc.characterEnergySvc",
+  "methods": []
+ },
+ "CharacterSettingsSvc": {
+  "module": "eve.client.script.ui.services.characterSettingsSvc",
+  "class": "CharacterSettingsSvc",
+  "guid": "svc.characterSettings",
+  "methods": []
+ },
+ "CloneJump": {
+  "module": "eve.client.script.ui.services.clonejumpsvc",
+  "class": "CloneJump",
+  "guid": "svc.clonejump",
+  "methods": []
+ },
+ "corp": {
+  "module": "eve.client.script.ui.services.corporation.base_corporation",
+  "class": "Corporation",
+  "guid": "svc.corp",
+  "methods": []
+ },
+ "ItemLocking": {
+  "module": "eve.client.script.ui.services.corporation.itemLocking",
+  "class": "ItemLocking",
+  "guid": "svc.lockedItems",
+  "methods": []
+ },
+ "Office Manager": {
+  "module": "eve.client.script.ui.services.corporation.officeManager",
+  "class": "OfficeManager",
+  "guid": "svc.officeManager",
+  "methods": []
+ },
+ "corpvotes": {
+  "module": "eve.client.script.ui.services.corporation.voting",
+  "class": "CorporationVotes",
+  "guid": "svc.corpvotes",
+  "methods": []
+ },
+ "CorruptionSuppressionSvc": {
+  "module": "eve.client.script.ui.services.corruptionSuppressionSvc",
+  "class": "CorruptionSuppressionSvc",
+  "guid": "svc.corruptionSuppressionSvc",
+  "methods": []
+ },
+ "CrimewatchService": {
+  "module": "eve.client.script.ui.services.crimewatchSvc",
+  "class": "CrimewatchService",
+  "guid": "svc.crimewatchSvc",
+  "methods": []
+ },
+ "DeathzoneSvc": {
+  "module": "eve.client.script.ui.services.deathzoneSvc",
+  "class": "DeathzoneSvc",
+  "guid": "svc.deathzoneSvc",
+  "methods": []
+ },
+ "CalendarSvc": {
+  "module": "eve.client.script.ui.services.eveCalendarsvc",
+  "class": "CalendarSvc",
+  "guid": "svc.calendar",
+  "methods": []
+ },
+ "EvePhoto": {
+  "module": "eve.client.script.ui.services.evePhotosvc",
+  "class": "EvePhoto",
+  "guid": "svc.photo",
+  "methods": []
+ },
+ "EveSettingsSvc": {
+  "module": "eve.client.script.ui.services.eveSettingsSvc",
+  "class": "EveSettingsSvc",
+  "guid": "svc.eveSettings",
+  "methods": []
+ },
+ "facwar": {
+  "module": "eve.client.script.ui.services.facWarSvc",
+  "class": "FactionalWarfare",
+  "guid": "svc.facwar",
+  "methods": []
+ },
+ "FlightControls": {
+  "module": "eve.client.script.ui.services.flightControls",
+  "class": "FlightControls",
+  "guid": "svc.flightControls",
+  "methods": []
+ },
+ "FlightPrediction": {
+  "module": "eve.client.script.ui.services.flightPredictionSvc",
+  "class": "FlightPredictionService",
+  "guid": "svc.flightPredictionSvc",
+  "methods": []
+ },
+ "FwAdvantageSvc": {
+  "module": "eve.client.script.ui.services.fwAdvantageSvc",
+  "class": "FwAdvantageSvc",
+  "guid": "svc.fwAdvantageSvc",
+  "methods": []
+ },
+ "FwEnlistmentSvc": {
+  "module": "eve.client.script.ui.services.fwEnlistmentSvc",
+  "class": "FwEnlistmentSvc",
+  "guid": "svc.fwEnlistmentSvc",
+  "methods": []
+ },
+ "FwVictoryPointSvc": {
+  "module": "eve.client.script.ui.services.fwVictoryPointSvc",
+  "class": "FwVictoryPointSvc",
+  "guid": "svc.fwVictoryPointSvc",
+  "methods": []
+ },
+ "FwWarzoneSvc": {
+  "module": "eve.client.script.ui.services.fwWarzoneSvc",
+  "class": "FwWarzoneSvc",
+  "guid": "svc.fwWarzoneSvc",
+  "methods": []
+ },
+ "InsurgencyDashboardSvc": {
+  "module": "eve.client.script.ui.services.insurgenceDashboardSvc",
+  "class": "InsurgencyDashboardSvc",
+  "guid": "svc.insurgencyDashboardSvc",
+  "methods": []
+ },
+ "InsurgencyCampaignSvc": {
+  "module": "eve.client.script.ui.services.insurgencyCampaignSvc",
+  "class": "InsurgencyCampaignSvc",
+  "guid": "svc.insurgencyCampaignSvc",
+  "methods": []
+ },
+ "InventorySvc": {
+  "module": "eve.client.script.ui.services.inventorysvc",
+  "class": "InventorySvc",
+  "guid": "svc.inv",
+  "methods": []
+ },
+ "JumpQueue": {
+  "module": "eve.client.script.ui.services.jumpQueue",
+  "class": "JumpQueue",
+  "guid": "svc.jumpQueue",
+  "methods": []
+ },
+ "mailSvc": {
+  "module": "eve.client.script.ui.services.mail.mailSvc",
+  "class": "mailSvc",
+  "guid": "svc.mailSvc",
+  "methods": []
+ },
+ "mailinglists": {
+  "module": "eve.client.script.ui.services.mail.mailingListsSvc",
+  "class": "MailingLists",
+  "guid": "svc.mailinglists",
+  "methods": []
+ },
+ "notificationSvc": {
+  "module": "eve.client.script.ui.services.mail.notificationSvc",
+  "class": "notificationSvc",
+  "guid": "svc.notificationSvc",
+  "methods": []
+ },
+ "marketquote": {
+  "module": "eve.client.script.ui.services.marketsvc",
+  "class": "MarketQuote",
+  "guid": "svc.marketQuote",
+  "methods": []
+ },
+ "medals": {
+  "module": "eve.client.script.ui.services.medals",
+  "class": "Medals",
+  "guid": "svc.medals",
+  "methods": []
+ },
+ "MenuSvc": {
+  "module": "eve.client.script.ui.services.menusvc",
+  "class": "MenuSvc",
+  "guid": "svc.menu",
+  "methods": []
+ },
+ "nonDiminishingInjection": {
+  "module": "eve.client.script.ui.services.nonDiminishingInjectionService",
+  "class": "NonDiminishingInjection",
+  "guid": "svc.nonDiminishingInjection",
+  "methods": []
+ },
+ "RedeemService": {
+  "module": "eve.client.script.ui.services.redeemsvc",
+  "class": "RedeemService",
+  "guid": "svc.redeem",
+  "methods": []
+ },
+ "reprocessing": {
+  "module": "eve.client.script.ui.services.reprocessingsvc",
+  "class": "ReprocessingSvc",
+  "guid": "svc.reprocessing",
+  "methods": []
+ },
+ "ShipConfigSvc": {
+  "module": "eve.client.script.ui.services.shipConfigSvc",
+  "class": "ShipConfigSvc",
+  "guid": "svc.shipConfig",
+  "methods": []
+ },
+ "skillqueue": {
+  "module": "eve.client.script.ui.services.skillQueueSvc",
+  "class": "SkillQueueService",
+  "guid": "svc.skillqueue",
+  "methods": []
+ },
+ "skills": {
+  "module": "eve.client.script.ui.services.skillsvc",
+  "class": "SkillsSvc",
+  "guid": "svc.skills",
+  "methods": []
+ },
+ "skyhookSvc": {
+  "module": "eve.client.script.ui.services.skyhookSvc",
+  "class": "SkyhookSvc",
+  "guid": "svc.skyhookSvc",
+  "methods": []
+ },
+ "SolarsystemInterferenceSvc": {
+  "module": "eve.client.script.ui.services.solarsystemInterferenceSvc",
+  "class": "SolarsystemInterferenceSvc",
+  "guid": "svc.solarsystemInterferenceSvc",
+  "methods": []
+ },
+ "Sov Hub": {
+  "module": "eve.client.script.ui.services.sovHubSvc",
+  "class": "SovHubSvc",
+  "guid": "svc.sovHubSvc",
+  "methods": []
+ },
+ "SovService": {
+  "module": "eve.client.script.ui.services.sovSvc",
+  "class": "SovService",
+  "guid": "svc.sov",
+  "methods": []
+ },
+ "Sovereignty Resources": {
+  "module": "eve.client.script.ui.services.sovereigntyResourceSvc",
+  "class": "SovereigntyResourceSvc",
+  "guid": "svc.sovereigntyResourceSvc",
+  "methods": []
+ },
+ "standing": {
+  "module": "eve.client.script.ui.services.standingsvc",
+  "class": "Standing",
+  "guid": "svc.standing",
+  "methods": []
+ },
+ "StructureControl": {
+  "module": "eve.client.script.ui.services.structure.structureControl",
+  "class": "StructureControl",
+  "guid": "svc.structureControl",
+  "methods": []
+ },
+ "StructureDeployment": {
+  "module": "eve.client.script.ui.services.structure.structureDeployment",
+  "class": "StructureDeployment",
+  "guid": "svc.structureDeployment",
+  "methods": []
+ },
+ "StructureDirectory": {
+  "module": "eve.client.script.ui.services.structure.structureDirectory",
+  "class": "StructureDirectory",
+  "guid": "svc.structureDirectory",
+  "methods": []
+ },
+ "StructureDocking": {
+  "module": "eve.client.script.ui.services.structure.structureDocking",
+  "class": "StructureDocking",
+  "guid": "svc.structureDocking",
+  "methods": []
+ },
+ "StructureGuests": {
+  "module": "eve.client.script.ui.services.structure.structureGuests",
+  "class": "StructureGuests",
+  "guid": "svc.structureGuests",
+  "methods": []
+ },
+ "StructureHangarViewSvc": {
+  "module": "eve.client.script.ui.services.structure.structureHangarViewSvc",
+  "class": "StructureHangarViewSvc",
+  "guid": "svc.structureHangarViewSvc",
+  "methods": []
+ },
+ "StructureProximityTracker": {
+  "module": "eve.client.script.ui.services.structure.structureProximityTracker",
+  "class": "StructureProximityTracker",
+  "guid": "svc.structureProximityTracker",
+  "methods": []
+ },
+ "StructureServices": {
+  "module": "eve.client.script.ui.services.structure.structureServices",
+  "class": "StructureServices",
+  "guid": "svc.structureServices",
+  "methods": []
+ },
+ "StructureSettings": {
+  "module": "eve.client.script.ui.services.structure.structureSettings",
+  "class": "StructureSettings",
+  "guid": "svc.structureSettings",
+  "methods": []
+ },
+ "survey": {
+  "module": "eve.client.script.ui.services.surveySvc",
+  "class": "SurveySvc",
+  "guid": "svc.survey",
+  "methods": []
+ },
+ "TowGameSvc": {
+  "module": "eve.client.script.ui.services.towGameSvc",
+  "class": "TowGameSvc",
+  "guid": "svc.towGameSvc",
+  "methods": []
+ },
+ "uiColor": {
+  "module": "eve.client.script.ui.services.uiColorSvc",
+  "class": "UIColor",
+  "guid": "svc.uiColor",
+  "methods": []
+ },
+ "UIPointers": {
+  "module": "eve.client.script.ui.services.uipointersvc",
+  "class": "UIPointerSvc",
+  "guid": "svc.uipointerSvc",
+  "methods": []
+ },
+ "UI": {
+  "module": "eve.client.script.ui.services.uisvc",
+  "class": "UI",
+  "guid": "svc.ui",
+  "methods": []
+ },
+ "YouSureBoutThat": {
+  "module": "eve.client.script.ui.services.usure",
+  "class": "YouSureBoutThat",
+  "guid": "svc.usure",
+  "methods": []
+ },
+ "view state manager": {
+  "module": "eve.client.script.ui.services.viewStateSvc",
+  "class": "ViewStateSvc",
+  "guid": "svc.viewState",
+  "methods": []
+ },
+ "mutualWarInvites": {
+  "module": "eve.client.script.ui.services.wars.mutualWarInvites",
+  "class": "MutualWarInvites",
+  "guid": "svc.mutualWarInvites",
+  "methods": []
+ },
+ "warPermit": {
+  "module": "eve.client.script.ui.services.wars.warPermit",
+  "class": "WarPermit",
+  "guid": "svc.warPermit",
+  "methods": []
+ },
+ "war": {
+  "module": "eve.client.script.ui.services.wars.war_cso",
+  "class": "Wars",
+  "guid": "svc.war",
+  "methods": []
+ },
+ "window": {
+  "module": "eve.client.script.ui.services.windowsvc",
+  "class": "WindowMgr",
+  "guid": "svc.window",
+  "methods": []
+ },
+ "WreckService": {
+  "module": "eve.client.script.ui.services.wrecksvc",
+  "class": "WreckService",
+  "guid": "svc.wreck",
+  "methods": []
+ },
+ "AgencySvc": {
+  "module": "eve.client.script.ui.shared.agencyNew.agencySvc",
+  "class": "AgencySvc",
+  "guid": "svc.agencyNew",
+  "methods": []
+ },
+ "assetSafety": {
+  "module": "eve.client.script.ui.shared.assets.assetSafetySvc",
+  "class": "AssetSafetySvc",
+  "guid": "svc.assetSafety",
+  "methods": []
+ },
+ "BookmarkSvc": {
+  "module": "eve.client.script.ui.shared.bookmarks.bookmarkSvc",
+  "class": "BookmarkSvc",
+  "guid": "svc.bookmarkSvc",
+  "methods": []
+ },
+ "BountyService": {
+  "module": "eve.client.script.ui.shared.bountySvc",
+  "class": "BountyService",
+  "guid": "svc.bountySvc",
+  "methods": []
+ },
+ "focus": {
+  "module": "eve.client.script.ui.shared.comtool.focus",
+  "class": "Focus",
+  "guid": "svc.focus",
+  "methods": []
+ },
+ "OnlineStatus": {
+  "module": "eve.client.script.ui.shared.comtool.onlineStatus",
+  "class": "OnlineStatus",
+  "guid": "svc.onlineStatus",
+  "methods": []
+ },
+ "undocking": {
+  "module": "eve.client.script.ui.shared.dockedUI.undockingSvc",
+  "class": "UndockingSvc",
+  "guid": "svc.undocking",
+  "methods": []
+ },
+ "DynamicResourceSvc": {
+  "module": "eve.client.script.ui.shared.dynamicResource.dynamicResourceSvc",
+  "class": "DynamicResourceSvc",
+  "guid": "svc.dynamicResourceSvc",
+  "methods": []
+ },
+ "EpicArcSvc": {
+  "module": "eve.client.script.ui.shared.epicArcSvc",
+  "class": "EpicArcSvc",
+  "guid": "svc.epicArc",
+  "methods": []
+ },
+ "GhostFittingEffectCompiler": {
+  "module": "eve.client.script.ui.shared.fittingScreen.ghostFittingEffectCompiler",
+  "class": "GhostFittingEffectCompiler",
+  "guid": "svc.ghostFittingEffectCompiler",
+  "methods": []
+ },
+ "GhostFittingSvc": {
+  "module": "eve.client.script.ui.shared.fittingScreen.ghostFittingSvc",
+  "class": "GhostFittingSvc",
+  "guid": "svc.ghostFittingSvc",
+  "methods": []
+ },
+ "IncursionSvc": {
+  "module": "eve.client.script.ui.shared.incursionSvc",
+  "class": "IncursionSvc",
+  "guid": "svc.incursion",
+  "methods": []
+ },
+ "info": {
+  "module": "eve.client.script.ui.shared.info.infosvc",
+  "class": "Info",
+  "guid": "svc.info",
+  "methods": []
+ },
+ "InfoPanelSvc": {
+  "module": "eve.client.script.ui.shared.infoPanels.infoPanelSvc",
+  "class": "InfoPanelSvc",
+  "guid": "svc.infoPanel",
+  "methods": []
+ },
+ "ItemFilterSvc": {
+  "module": "eve.client.script.ui.shared.inventory.filterSvc",
+  "class": "ItemFilterSvc",
+  "guid": "svc.itemFilter",
+  "methods": []
+ },
+ "LedgerSvc": {
+  "module": "eve.client.script.ui.shared.ledger.ledgerSvc",
+  "class": "LedgerSvc",
+  "guid": "svc.ledger",
+  "methods": []
+ },
+ "loading": {
+  "module": "eve.client.script.ui.shared.loading",
+  "class": "Loading",
+  "guid": "svc.loading",
+  "methods": []
+ },
+ "map": {
+  "module": "eve.client.script.ui.shared.maps.mapSvc",
+  "class": "MapSvc",
+  "guid": "svc.map",
+  "methods": []
+ },
+ "starmap": {
+  "module": "eve.client.script.ui.shared.maps.starMapSvc",
+  "class": "StarMapSvc",
+  "guid": "svc.starmap",
+  "methods": []
+ },
+ "systemmap": {
+  "module": "eve.client.script.ui.shared.maps.systemMapSvc",
+  "class": "SystemMapSvc",
+  "guid": "svc.systemmap",
+  "methods": []
+ },
+ "Market Utils": {
+  "module": "eve.client.script.ui.shared.market.quote",
+  "class": "MarketUtils",
+  "guid": "svc.marketutils",
+  "methods": []
+ },
+ "Market": {
+  "module": "eve.client.script.ui.shared.marketSvc",
+  "class": "Market",
+  "guid": "svc.market",
+  "methods": []
+ },
+ "addressbook": {
+  "module": "eve.client.script.ui.shared.neocom.addressBook.addressbookService",
+  "class": "AddressBookSvc",
+  "guid": "svc.addressbook",
+  "methods": []
+ },
+ "assets": {
+  "module": "eve.client.script.ui.shared.neocom.assetsinfo",
+  "class": "AssetsSvc",
+  "guid": "svc.assets",
+  "methods": []
+ },
+ "charactersheet": {
+  "module": "eve.client.script.ui.shared.neocom.charactersheet",
+  "class": "CharacterSheet",
+  "guid": "svc.charactersheet",
+  "methods": []
+ },
+ "Contracts": {
+  "module": "eve.client.script.ui.shared.neocom.contracts.contracts",
+  "class": "ContractsSvc",
+  "guid": "svc.contracts",
+  "methods": []
+ },
+ "corpui": {
+  "module": "eve.client.script.ui.shared.neocom.corporation.base_corporation_ui",
+  "class": "CorporationUI",
+  "guid": "svc.corpui",
+  "methods": []
+ },
+ "journal": {
+  "module": "eve.client.script.ui.shared.neocom.journal",
+  "class": "JournalSvc",
+  "guid": "svc.journal",
+  "methods": []
+ },
+ "NeocomSvc": {
+  "module": "eve.client.script.ui.shared.neocom.neocom.neocomSvc",
+  "class": "NeocomSvc",
+  "guid": "svc.neocom",
+  "methods": []
+ },
+ "petition": {
+  "module": "eve.client.script.ui.shared.neocom.petition",
+  "class": "PetitionSvc",
+  "guid": "svc.petition",
+  "methods": []
+ },
+ "loyaltyPointsWallet": {
+  "module": "eve.client.script.ui.shared.neocom.wallet.loyaltyPointsWalletSvc",
+  "class": "LoyaltyPointsWalletSvc",
+  "guid": "svc.loyaltyPointsWallet",
+  "methods": []
+ },
+ "wallet": {
+  "module": "eve.client.script.ui.shared.neocom.wallet.walletSvc",
+  "class": "WalletSvc",
+  "guid": "svc.wallet",
+  "methods": []
+ },
+ "planetUI": {
+  "module": "eve.client.script.ui.shared.planet.planetUISvc",
+  "class": "PlanetUISvc",
+  "guid": "svc.planetUI",
+  "methods": []
+ },
+ "helpPointer": {
+  "module": "eve.client.script.ui.shared.pointerTool.helpPointerSvc",
+  "class": "HelpPointerSvc",
+  "guid": "svc.helpPointer",
+  "methods": []
+ },
+ "preview": {
+  "module": "eve.client.script.ui.shared.preview",
+  "class": "Preview",
+  "guid": "svc.preview",
+  "methods": []
+ },
+ "RadialMenuSvc": {
+  "module": "eve.client.script.ui.shared.radialMenu.radialMenuSvc",
+  "class": "RadialMenuSvc",
+  "guid": "svc.radialmenu",
+  "methods": []
+ },
+ "RecommendationService": {
+  "module": "eve.client.script.ui.shared.recommendation.recommendationSvc",
+  "class": "RecommendationService",
+  "guid": "svc.recommendationSvc",
+  "methods": []
+ },
+ "Ship tree service": {
+  "module": "eve.client.script.ui.shared.shipTree.shipTreeSvc",
+  "class": "ShipTree",
+  "guid": "svc.shipTree",
+  "methods": []
+ },
+ "Ship tree UI service": {
+  "module": "eve.client.script.ui.shared.shipTree.shipTreeUISvc",
+  "class": "ShipTreeUI",
+  "guid": "svc.shipTreeUI",
+  "methods": []
+ },
+ "logger": {
+  "module": "eve.client.script.ui.shared.uilog",
+  "class": "Logger",
+  "guid": "svc.logger",
+  "methods": []
+ },
+ "ReportSystemService": {
+  "module": "eve.client.script.ui.shared.zhReport.reportSvc",
+  "class": "ReportService",
+  "guid": "svc.reportClientSvc",
+  "methods": []
+ },
+ "agents": {
+  "module": "eve.client.script.ui.station.agents.agents",
+  "class": "Agents",
+  "guid": "svc.agents",
+  "methods": []
+ },
+ "StationSvc": {
+  "module": "eve.client.script.ui.station.base",
+  "class": "StationSvc",
+  "guid": "svc.station",
+  "methods": []
+ },
+ "insurance": {
+  "module": "eve.client.script.ui.station.insurance.base_insurance",
+  "class": "InsuranceSvc",
+  "guid": "svc.insurance",
+  "methods": []
+ },
+ "LPStoreSvc": {
+  "module": "eve.client.script.ui.station.loyaltyPointStore.lpStoreSvc",
+  "class": "LPStoreSvc",
+  "guid": "svc.lpstore",
+  "methods": []
+ },
+ "PVPTradeService": {
+  "module": "eve.client.script.ui.station.pvptrade.pvptradesvc",
+  "class": "PVPTradeService",
+  "guid": "svc.pvptrade",
+  "methods": []
+ },
+ "repair": {
+  "module": "eve.client.script.ui.station.repairshop.base_repairshop",
+  "class": "RepairSvc",
+  "guid": "svc.repair",
+  "methods": []
+ },
+ "SecurityOfficeService": {
+  "module": "eve.client.script.ui.station.securityOfficeSvc",
+  "class": "SecurityOfficeService",
+  "guid": "svc.securityOfficeSvc",
+  "methods": []
+ },
+ "structureControllers": {
+  "module": "eve.client.script.ui.structure.structureControllersSvc",
+  "class": "StructureControllerSvc",
+  "guid": "svc.structureControllers",
+  "methods": []
+ },
+ "form": {
+  "module": "eve.client.script.ui.util.form",
+  "class": "Form",
+  "guid": "svc.form",
+  "methods": []
+ },
+ "dockingHeroNotification": {
+  "module": "eve.client.script.ui.view.dockingHeroNotificationService",
+  "class": "DockingHeroNotificationService",
+  "guid": "svc.dockingHeroNotification",
+  "methods": []
+ },
+ "pathfinderSvc": {
+  "module": "eve.client.script.util.clientPathfinderService",
+  "class": "ClientPathfinderService",
+  "guid": "svc.clientPathfinderService",
+  "methods": []
+ },
+ "jumpMonitor": {
+  "module": "eve.client.script.util.jumpMonitor",
+  "class": "jumpMonitor",
+  "guid": "svc.jumpMonitor",
+  "methods": []
+ },
+ "ProfilingScheduler": {
+  "module": "eve.client.script.util.profiling",
+  "class": "ProfilingScheduler",
+  "guid": "svc.profiling",
+  "methods": []
+ },
+ "publicQaToolsClient": {
+  "module": "eve.client.script.util.publicQaToolsClient",
+  "class": "PublicQaToolsClient",
+  "guid": "svc.publicQaToolsClient",
+  "methods": []
+ },
+ "WebTools": {
+  "module": "eve.client.script.util.webtools",
+  "class": "WebTools",
+  "guid": "svc.webtools",
+  "methods": []
+ },
+ "BaseDogma": {
+  "module": "eve.common.script.dogma.baseDogma",
+  "class": "BaseDogma",
+  "guid": "svc.baseDogma",
+  "methods": []
+ },
+ "BaseDogmaStaticSvc": {
+  "module": "eve.common.script.dogma.baseDogmaStaticSvc",
+  "class": "BaseDogmaStaticSvc",
+  "guid": "svc.baseDogmaStaticSvc",
+  "methods": []
+ },
+ "BaseEffectCompiler": {
+  "module": "eve.common.script.dogma.baseEffectCompiler",
+  "class": "BaseEffectCompiler",
+  "guid": "svc.baseEffectCompiler",
+  "methods": []
+ },
+ "EveEmailSvc": {
+  "module": "eve.common.script.net.eveEmailSvc",
+  "class": "EveEmailSvc",
+  "guid": "svc.eveEmailSvc",
+  "methods": []
+ },
+ "EveMachoNetService": {
+  "module": "eve.common.script.net.eveMachoNet",
+  "class": "EveMachoNetService",
+  "guid": "svc.eveMachoNet",
+  "methods": []
+ },
+ "EveObjectCachingSvc": {
+  "module": "eve.common.script.net.eveObjectCaching",
+  "class": "EveObjectCachingSvc",
+  "guid": "svc.eveObjectCaching",
+  "methods": []
+ },
+ "EveDataConfig": {
+  "module": "eve.common.script.sys.eveCfg",
+  "class": "EveDataConfig",
+  "guid": "svc.eveDataconfig",
+  "methods": []
+ },
+ "eveProcessHealth": {
+  "module": "eve.common.script.sys.eveProcessHealthSvc",
+  "class": "EveProcessHealthSvc",
+  "guid": "svc.eveProcessHealth",
+  "methods": []
+ },
+ "AutoBotService": {
+  "module": "eve.devtools.script.autobot",
+  "class": "AutoBotService",
+  "guid": "svc.autobot",
+  "methods": []
+ },
+ "insider": {
+  "module": "eve.devtools.script.insider",
+  "class": "InsiderService",
+  "guid": "svc.insider",
+  "methods": []
+ },
+ "charge": {
+  "module": "eve.devtools.script.menu_charge",
+  "class": "ChargeService",
+  "guid": "svc.charge",
+  "methods": []
+ },
+ "implant": {
+  "module": "eve.devtools.script.menu_implant",
+  "class": "ImplantService",
+  "guid": "svc.implant",
+  "methods": []
+ },
+ "BallparkExporterSvc": {
+  "module": "eve.devtools.script.svc_ballparkExporter",
+  "class": "BallparkExporterSvc",
+  "guid": "svc.ballparkExporter",
+  "methods": []
+ },
+ "ConsoleService": {
+  "module": "eve.devtools.script.svc_console",
+  "class": "ConsoleService",
+  "guid": "svc.console",
+  "methods": []
+ },
+ "CopycatService": {
+  "module": "eve.devtools.script.svc_copycat2",
+  "class": "CopycatService",
+  "guid": "svc.copycat",
+  "methods": []
+ },
+ "destroyableItems": {
+  "module": "eve.devtools.script.svc_destroyableitems",
+  "class": "destroyableItems",
+  "guid": "svc.destroyableItems",
+  "methods": []
+ },
+ "FittingSpawner": {
+  "module": "eve.devtools.script.svc_fittingspawner",
+  "class": "FittingSpawner",
+  "guid": "svc.fittingspawner",
+  "methods": []
+ },
+ "GridLoadSimulationTool": {
+  "module": "eve.devtools.script.svc_gridload",
+  "class": "GridLoadSimulationTool",
+  "guid": "svc.GridLoadSimulationTool",
+  "methods": []
+ },
+ "GridUtilService": {
+  "module": "eve.devtools.script.svc_gridutils",
+  "class": "GridUtilService",
+  "guid": "svc.gridutils",
+  "methods": []
+ },
+ "invtools": {
+  "module": "eve.devtools.script.svc_invtools",
+  "class": "InvTools",
+  "guid": "svc.invtools",
+  "methods": []
+ },
+ "ModTest": {
+  "module": "eve.devtools.script.svc_modtest",
+  "class": "ModTest",
+  "guid": "svc.modtest",
+  "methods": []
+ },
+ "PoserService": {
+  "module": "eve.devtools.script.svc_poser",
+  "class": "PoserService",
+  "guid": "svc.poser",
+  "methods": []
+ },
+ "SettingsLoaderSvc": {
+  "module": "eve.devtools.script.svc_settingsLoader",
+  "class": "SettingsLoaderSvc",
+  "guid": "svc.settingsLoader",
+  "methods": []
+ },
+ "SimulatorService": {
+  "module": "eve.devtools.script.svc_simulator",
+  "class": "SimulatorService",
+  "guid": "svc.capsim",
+  "methods": []
+ },
+ "SlashService": {
+  "module": "eve.devtools.script.svc_slash",
+  "class": "SlashService",
+  "guid": "svc.slash",
+  "methods": []
+ },
+ "TrainerService": {
+  "module": "eve.devtools.script.svc_trainer",
+  "class": "TrainerService",
+  "guid": "svc.trainer",
+  "methods": []
+ },
+ "TypeBrowser": {
+  "module": "eve.devtools.script.svc_typebrowser",
+  "class": "TypeBrowser",
+  "guid": "svc.itemdb",
+  "methods": []
+ },
+ "AllianceTournamentSvc": {
+  "module": "eve.devtools.script.tournamentRefereeTools",
+  "class": "AllianceTournamentSvc",
+  "guid": "svc.allianceTournamentSvc",
+  "methods": []
+ },
+ "UISnapshotSvc": {
+  "module": "eve.devtools.script.uiDebugger",
+  "class": "UISnapshotSvc",
+  "guid": "svc.UISnapshot",
+  "methods": []
+ },
+ "DynamicMusicService": {
+  "module": "eveaudio.eveMusicService",
+  "class": "DynamicMusicService",
+  "guid": "svc.dynamicMusic",
+  "methods": []
+ },
+ "musicDebugger": {
+  "module": "eveaudio.musicDebuggerSvc",
+  "class": "MusicDebuggerSvc",
+  "guid": "svc.musicDebugger",
+  "methods": []
+ },
+ "BannerAdService": {
+  "module": "evebannerads.banner_ad_service",
+  "class": "BannerAdService",
+  "guid": "svc.BannerAdService",
+  "methods": []
+ },
+ "LinkService": {
+  "module": "evelink.client.service",
+  "class": "LinkService",
+  "guid": "svc.link",
+  "methods": []
+ },
+ "expertSystemSvc": {
+  "module": "expertSystems.client.service",
+  "class": "ExpertSystemService",
+  "guid": "svc.expertSystemSvc",
+  "methods": []
+ },
+ "FastCheckoutClientService": {
+  "module": "fastcheckout.client.fastCheckoutClientService",
+  "class": "FastCheckoutClientService",
+  "guid": "svc.FastCheckoutClientService",
+  "methods": []
+ },
+ "GatekeeperService": {
+  "module": "gatekeeper.client.service",
+  "class": "GatekeeperService",
+  "guid": "svc.gatekeeper",
+  "methods": []
+ },
+ "home_station": {
+  "module": "homestation.client.service",
+  "class": "Service",
+  "guid": "svc.home_station",
+  "methods": []
+ },
+ "LiveUpdateSvc": {
+  "module": "liveupdates.liveupdatesvc",
+  "class": "LiveUpdateSvc",
+  "guid": "svc.LiveUpdateSvc",
+  "methods": []
+ },
+ "LogControlSvc": {
+  "module": "logcontrol.logcontrolsvc",
+  "class": "LogControlSvc",
+  "guid": "svc.LogControl",
+  "methods": []
+ },
+ "Login Campaign Service": {
+  "module": "loginrewards.client.loginCampaignService",
+  "class": "LoginCampaignService",
+  "guid": "svc.loginCampaignService",
+  "methods": []
+ },
+ "Seasonal Login Campaign Service": {
+  "module": "loginrewards.client.seasonalLoginCampaignService",
+  "class": "SeasonalLoginCampaignService",
+  "guid": "svc.seasonalLoginCampaignService",
+  "methods": []
+ },
+ "MilestoneService": {
+  "module": "milestones.client.milestoneSvc",
+  "class": "MilestoneService",
+  "guid": "svc.milestoneSvc",
+  "methods": []
+ },
+ "MissionObjectivesTracker": {
+  "module": "missions.client.missionObjectivesTracker",
+  "class": "MissionObjectivesTracker",
+  "guid": "svc.missionObjectivesTracker",
+  "methods": []
+ },
+ "MonolithTaskTrackerClientService": {
+  "module": "monolith_task_tracker.client.monolithTaskTrackerSvc",
+  "class": "MonolithTaskTrackerClientService",
+  "guid": "svc.monolithTaskTrackerSvc",
+  "methods": []
+ },
+ "AutoMoonMinerService": {
+  "module": "moonmining.autoMoonMining.client.auto_moon_miner_service",
+  "class": "AutoMoonMinerService",
+  "guid": "svc.autoMoonMiner",
+  "methods": []
+ },
+ "NodeGraphService": {
+  "module": "nodegraph.client.service",
+  "class": "NodeGraphService",
+  "guid": "svc.node_graph",
+  "methods": []
+ },
+ "NotificationUIService": {
+  "module": "notifications.client.notificationUI",
+  "class": "NotificationUIService",
+  "guid": "svc.notificationUIService",
+  "methods": []
+ },
+ "OperationsEventDirector": {
+  "module": "operations.client.eventdirector.eventdirector",
+  "class": "OperationsEventDirector",
+  "guid": "svc.OperationsEventDirector",
+  "methods": []
+ },
+ "paperdoll service": {
+  "module": "paperdoll.client.service",
+  "class": "PaperdollSvc",
+  "guid": "svc.paperdoll",
+  "methods": []
+ },
+ "ProgressionService": {
+  "module": "progression.client.progressionSvc",
+  "class": "ProgressionService",
+  "guid": "svc.progressionSvc",
+  "methods": []
+ },
+ "ProjectDiscoveryClient": {
+  "module": "projectdiscovery.client.baseservice",
+  "class": "CommonProjectDiscoveryClientService",
+  "guid": "svc.ProjectDiscoveryClient",
+  "methods": []
+ },
+ "PublicGatewaySvc": {
+  "module": "publicGateway.publicGatewaySvc",
+  "class": "PublicGatewaySvc",
+  "guid": "svc.publicGatewaySvc",
+  "methods": []
+ },
+ "PVPFilamentService": {
+  "module": "pvpFilaments.client.pvpFilamentSvc",
+  "class": "PVPFilamentService",
+  "guid": "svc.pvpFilamentSvc",
+  "methods": []
+ },
+ "RaffleService": {
+  "module": "raffles.client.raffle_service",
+  "class": "RaffleService",
+  "guid": "svc.raffleSvc",
+  "methods": []
+ },
+ "RandomJumpService": {
+  "module": "randomJump.client.randomJumpSvc",
+  "class": "RandomJumpService",
+  "guid": "svc.randomJumpSvc",
+  "methods": []
+ },
+ "RWService": {
+  "module": "resourcewars.client.rwservice",
+  "class": "RWService",
+  "guid": "svc.RWService",
+  "methods": []
+ },
+ "SeasonService": {
+  "module": "seasons.client.seasonservice",
+  "class": "SeasonService",
+  "guid": "svc.SeasonService",
+  "methods": []
+ },
+ "SecurityService": {
+  "module": "security.client.securitySvc",
+  "class": "SecurityService",
+  "guid": "svc.SecuritySvc",
+  "methods": []
+ },
+ "Eve Guard Service": {
+  "module": "serenity.eveguard.client.eveguard_service",
+  "class": "EveGuardService",
+  "guid": "svc.eveGuardSvc",
+  "methods": []
+ },
+ "BoardingMomentService": {
+  "module": "shipprogression.boarding_moment.boardingMomentSvc",
+  "class": "BoardingMomentService",
+  "guid": "svc.boardingMomentSvc",
+  "methods": []
+ },
+ "ShipUnlockService": {
+  "module": "shipprogression.shipUnlockSvc",
+  "class": "ShipUnlockService",
+  "guid": "svc.shipUnlockSvc",
+  "methods": []
+ },
+ "gatejump": {
+  "module": "stargate.client.gateJumpSvc",
+  "class": "GateJumpSvc",
+  "guid": "svc.gatejump",
+  "methods": []
+ },
+ "tacticalNavigationService": {
+  "module": "tacticalNavigation.tacticalNavigationService",
+  "class": "TacticalNavigationService",
+  "guid": "svc.tacticalNavigation",
+  "methods": []
+ },
+ "TaleService": {
+  "module": "taleclient.tale_service",
+  "class": "TaleService",
+  "guid": "svc.tale",
+  "methods": []
+ },
+ "UiBlinkerService": {
+  "module": "uiblinker.service",
+  "class": "UiBlinkerService",
+  "guid": "svc.ui_blinker",
+  "methods": []
+ },
+ "command_blocker": {
+  "module": "uihider.command.blocker",
+  "class": "CommandBlockerService",
+  "guid": "svc.command_blocker",
+  "methods": []
+ },
+ "uihider": {
+  "module": "uihider.ui_hider_service",
+  "class": "UiHiderService",
+  "guid": "svc.uihider",
+  "methods": []
+ },
+ "UiHighlightingService": {
+  "module": "uihighlighting.uihighlightingservice",
+  "class": "UiHighlightingService",
+  "guid": "svc.UiHighlightingService",
+  "methods": []
+ },
+ "VoidSpaceService": {
+  "module": "voidspace.client.void_space_service",
+  "class": "VoidSpaceService",
+  "guid": "svc.voidSpaceSvc",
+  "methods": []
+ },
+ "XmppChatService": {
+  "module": "xmppchatclient.xmppchatsvc",
+  "class": "XmppChatService",
+  "guid": "svc.XmppChat",
+  "methods": []
+ }
+}

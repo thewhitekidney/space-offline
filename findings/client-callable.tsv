@@ -1,0 +1,617 @@
+# Every __exportedcalls__ method in the V24.01/3662168 client: what a server may call ON the client.
+# Built by walking class-body bytecode (BUILD_MAP/STORE_MAP) in out/pyc; line numbers are co_lnotab,
+# i.e. the client's own, not a decompiler's. `service` is the name the server puts in
+# destination.service -- the attribute name in the client's svc.py registry, NOT __guid__.split(".")[1].
+# `metadata` is the declared value: [] or [role, *preargs] or a dict. On the CLIENT the role is NOT
+# enforced -- ServiceCallWrapper.__precall__ omits PreCall_RoleCheck (service.py:576-577).
+# `returns` is derived from what precedes each RETURN_VALUE: None / value / None-or-value / generator.
+# It says whether a reply can carry anything, not what shape it is; see docs/re/client-callable.md §3.
+service	class	guid	module	decl_line	method	method_line	args	metadata	returns
+(not-in-svc)	LoggingRoutines		eve/client/script/util/webtools.py	179	CreateLogFile	187	ex	[]	None
+(not-in-svc)	LoggingRoutines		eve/client/script/util/webtools.py	179	WriteToLogfile	inherited	?	[]	unknown
+(not-in-svc)	WebTools	svc.webtools	eve/client/script/util/webtools.py	36	GetVars	83		[]	value
+(not-in-svc)	WebTools	svc.webtools	eve/client/script/util/webtools.py	36	GoSlimLogin	87		[]	None
+(not-in-svc)	WebTools	svc.webtools	eve/client/script/util/webtools.py	36	SetVars	75	renderVars	[]	None
+FxSequencer	FxSequencer	svc.FxSequencer	eve/client/script/parklife/fxSequencer.py	340	ClearAll	879		[]	None
+FxSequencer	FxSequencer	svc.FxSequencer	eve/client/script/parklife/fxSequencer.py	340	DisableGuids	583	guids	[]	None
+FxSequencer	FxSequencer	svc.FxSequencer	eve/client/script/parklife/fxSequencer.py	340	EnableGuids	573	guids	[]	None
+FxSequencer	FxSequencer	svc.FxSequencer	eve/client/script/parklife/fxSequencer.py	340	GetDisabledGuids	594		[]	value
+FxSequencer	FxSequencer	svc.FxSequencer	eve/client/script/parklife/fxSequencer.py	340	NotifyModelLoaded	906	ballID	[]	None
+WSGIService	WSGIService	svc.WSGIService	carbon/common/script/net/WSGIService.py	151	StartServer	202	middleware, port, protocol, enableIPv6, serverName, ssl	[ROLE_SERVICE]	value
+WSGIService	WSGIService	svc.WSGIService	carbon/common/script/net/WSGIService.py	151	StopServer	217	idx	[ROLE_SERVICE]	None
+XmppChat	XmppChatService	svc.XmppChat	xmppchatclient/xmppchatsvc.py	74	AskYesNoQuestion	2107	question, props, defaultChoice	[service.ROLE_SERVICE]	value
+account	Account	svc.account	eve/client/script/ui/services/accountsvc.py	24	AskYesNoQuestion	150	question, props, defaultChoice	[ROLE_SERVICE]	value
+account	Account	svc.account	eve/client/script/ui/services/accountsvc.py	24	GetDefaultContactCost	169		[]	value
+account	Account	svc.account	eve/client/script/ui/services/accountsvc.py	24	GetEntryTypes	109		[]	value
+account	Account	svc.account	eve/client/script/ui/services/accountsvc.py	24	GetWalletDivisionsInfo	142	force	[]	value
+account	Account	svc.account	eve/client/script/ui/services/accountsvc.py	24	SetDefaultContactCost	158	cost	[]	None
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	AddToPersonal	757	charID, contactType, refresh, edit	[]	None
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	AddToPersonalMulti	750	charIDs, contactType, edit	[]	None
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	AssignLabelFromWnd	1288	selIDs, labelID, labelName, displayNotify	[]	None
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	BookmarkCurrentLocation	458	*args	[]	None
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	BookmarkLocationPopup	485	locationid, typeID, parentID, note, scannerInfo, locationName	[]	None
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	DeleteBookmarks	563	ids, refreshWindow, alreadyDeleted	[]	None
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	DeleteEntryMulti	1031	charIDs, contactType	[]	None
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	GetAddressBook	1087		[]	value
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	GetContactsByMinRelationship	368	relationshipID	[]	value
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	GetRelationship	321	charID, corporationID, allianceID	[]	value
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	GetSolConReg	434	bookmark	[]	value
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	IsBlocked	815	ownerID	[]	value
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	IsInAddressBook	1069	contactID, contactType	[]	None-or-value
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	RefreshWindow	616		[]	None
+addressbook	AddressBookSvc	svc.addressbook	eve/client/script/ui/shared/neocom/addressBook/addressbookService.py	72	RemoveLabelFromWnd	1327	selIDs, labelID	[]	None
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	CheckCargoCapacity	387	mandatoryCargoUnits, extraFlagsToCheck	[ROLE_SERVICE]	None-or-value
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	GetAgentByID	120	agentID	[]	None-or-value
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	GetAgentsByCorpID	145	corpID	[]	value
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	GetAgentsByFactionID	149	factionID	[]	value
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	GetAgentsByID	133		[]	value
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	GetAgentsByStationID	137		[]	value
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	GetQuantity	496	**kw	[ROLE_SERVICE]	None-or-value
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	IsAgent	210	agentID	[]	value
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	IsCareerAgentStation	190	stationID	[]	value
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	IsCareerAgentSystem	200	solarSystemID	[]	value
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	MessageBox	429	title, body, agentID, contentID, suppressID	[ROLE_SERVICE]	None
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	OpenDialogueWindow	597	agentID, maximize	[]	None
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	PopupDungeonShipRestrictionList	838	agentID, charID, dungeonID	[ROLE_SERVICE]	None
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	PopupMission	799	agentID, charID, contentID	[ROLE_SERVICE]	None
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	PopupSelect	525	title, explanation, agentID, **kw	[ROLE_SERVICE]	None-or-value
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	RemoteNamePopup	507	caption, label, agentID	[ROLE_SERVICE]	value
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	RemoveOfferFromJournal	854	agentID	[]	None
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	ShowMissionObjectives	857	agentID, contentID	[ROLE_SERVICE]	None
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	SingleChoiceBox	458	title, body, choices, agentID, contentID, suppressID	[ROLE_SERVICE]	value
+agents	Agents	svc.agents	eve/client/script/ui/station/agents/agents.py	86	YesNo	415	title, body, agentID, contentID, suppressID	[ROLE_SERVICE]	value
+alert	Alert	svc.alert	carbon/common/script/sys/alert.py	102	Alert	259	sender, subject, message, throttle, recipients, html, sysinfo, attachments	[ROLE_SERVICE]	value
+alert	Alert	svc.alert	carbon/common/script/sys/alert.py	102	BeanCount	322	stackIDHash	[ROLE_ANY]	value
+alert	Alert	svc.alert	carbon/common/script/sys/alert.py	102	BeanDelivery	551	beans	[ROLE_ANY]	None
+alert	Alert	svc.alert	carbon/common/script/sys/alert.py	102	GetCPULoad	1006	seconds	[ROLE_SERVICE]	value
+alert	Alert	svc.alert	carbon/common/script/sys/alert.py	102	GetLogModeForError	1060	errorIDs	[ROLE_ANY]	value
+alert	Alert	svc.alert	carbon/common/script/sys/alert.py	102	GroupBeanDelivery	561	compressedGroupBeans, nodeID	[ROLE_ANY]	None
+alert	Alert	svc.alert	carbon/common/script/sys/alert.py	102	LogModeChanged	1034	errorID, logMode	[ROLE_SERVICE]	None
+alert	Alert	svc.alert	carbon/common/script/sys/alert.py	102	SendClientStackTraceAlert	641	stackID, stackTrace, mode, nextErrorKeyHash	[ROLE_PLAYER]	value
+alert	Alert	svc.alert	carbon/common/script/sys/alert.py	102	SendMail	940	*args, **kw	[ROLE_SERVICE]	None-or-value
+alert	Alert	svc.alert	carbon/common/script/sys/alert.py	102	SendProxyStackTraceAlert	633	stackID, stackTrace, mode, **kw	[ROLE_SERVICE]	value
+alert	Alert	svc.alert	carbon/common/script/sys/alert.py	102	SendSimpleEmailAlert	856	message, recipients, subject, sysinfo, html, attachments, subjectonly	[ROLE_SERVICE]	None
+assets	AssetsSvc	svc.assets	eve/client/script/ui/shared/neocom/assetsinfo.py	18	SetHint	176	hintstr	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	Activate	249		[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	AudioMessage	613	msg, msgKey	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	BallSupportsAudio	1328	ball	[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	Deactivate	264		[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	DisableDebugShowAllEmitters	1388		[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	DisableSpatialAudio	1566		[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	EnableDebugShowAllEmitters	1385		[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	EnableSpatialAudio	1569		[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	GetAudioEmittersOnItem	1342	itemID	[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	GetCombatMusicUsage	779		[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	GetDebugDisplayAllEmitters	1391		[]	None-or-value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	GetDialoguePlayPosition	1528	playingID	[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	GetMasterVolume	309		[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	GetOrCreateAudioEmitterForItem	1484	itemID, emitterName, ball	[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	GetTurretSuppression	730		[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	GetUIVolume	342		[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	GetVoiceVolume	471		[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	GetWorldVolume	432		[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	IsActivated	515		[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	ItemSupportsAudio	1310	itemID, ball	[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	LoadBanksForView	933	newView	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	MuteSounds	785		[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	PlayEventOnItem	1200	event, itemID, emitterName, maxTries, sleepTime	[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	PlaySoundOnItem	1248	soundID, itemID, emitterName, maxTries, sleepTime	[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	PostDialogueEvent	570	event	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SeekOnEventMs	1518	playingID, msToSeek	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SeekOnEventPercent	1507	playingID, percentToSeek	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SendUIEvent	546	event	[]	None-or-value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SendUIEventWithCallback	1143	event	[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SetGameParameterOnAudioEmitter	1359	emitterID, parameterName, parameterValue	[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SetMasterVolume	285	vol, persist	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SetShipState	1131	value	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SetTurretSuppression	740	suppress, persist	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SetUIRTPC	1095	rtpcName, value	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SetUIVolume	318	vol, persist	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SetVoiceVolume	441	vol, persist	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SetWorldVolume	352	vol, persist	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SetupPlanet3DAudio	708	planet, typeID	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SpatialAudioEnabled	1572		[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SpatialAudioIsSupported	1575		[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	StartSoundLoop	630	rootLoopMsg	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	StopEventOnItem	1229	event, itemID	[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	StopSoundLoop	667	rootLoopMsg, eventMsg	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	StopSoundOnItem	1274	soundID, itemID	[]	value
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	SubscribeToEventCallback	1158	callbackFunc	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	UnmuteSounds	788		[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	UnsubscribeFromEventCallback	1167	callbackFunc	[]	None
+audio	AudioService	svc.audio	carbon/client/script/environment/audioService.py	140	WarpPreparation	1105	action, shipID	[]	None
+autoPilot	AutoPilot	svc.autoPilot	eve/client/script/parklife/autopilot.py	38	GetState	247		[]	value
+autoPilot	AutoPilot	svc.autoPilot	eve/client/script/parklife/autopilot.py	38	SetOff	169	reason	[]	None
+autoPilot	AutoPilot	svc.autoPilot	eve/client/script/parklife/autopilot.py	38	SetOn	105		[]	None
+bracket	BracketMgr	svc.bracket	eve/client/script/parklife/bracketMgr.py	106	CheckOverlaps	1119	sender, hideRest	[]	None
+bracket	BracketMgr	svc.bracket	eve/client/script/parklife/bracketMgr.py	106	CleanUp	249		[]	None
+bracket	BracketMgr	svc.bracket	eve/client/script/parklife/bracketMgr.py	106	ClearBracket	1300	id, *args, **kw	[]	None
+bracket	BracketMgr	svc.bracket	eve/client/script/parklife/bracketMgr.py	106	GetBracketName	400	objectID	[]	value
+bracket	BracketMgr	svc.bracket	eve/client/script/parklife/bracketMgr.py	106	GetBracketName2	410	objectID	[]	value
+bracket	BracketMgr	svc.bracket	eve/client/script/parklife/bracketMgr.py	106	GetBracketProps	587	slimItem, ball	[]	value
+bracket	BracketMgr	svc.bracket	eve/client/script/parklife/bracketMgr.py	106	GetCaptureData	1349	ballID	[]	None-or-value
+bracket	BracketMgr	svc.bracket	eve/client/script/parklife/bracketMgr.py	106	GetScanSpeed	1305	source, target	[]	None-or-value
+bracket	BracketMgr	svc.bracket	eve/client/script/parklife/bracketMgr.py	106	Reload	280	*args, **kw	[]	None
+bracket	BracketMgr	svc.bracket	eve/client/script/parklife/bracketMgr.py	106	ResetOverlaps	1081		[]	None
+cacheDirectoryLimit	CacheDirectoryLimitService	svc.cacheDirectoryLimit	carbon/client/script/util/cacheDirectoryLimitSvc.py	125	PruneCache	138		{role: ROLE_ANY}	None
+cacheDirectoryLimit	CacheDirectoryLimitService	svc.cacheDirectoryLimit	carbon/client/script/util/cacheDirectoryLimitSvc.py	125	RegisterCacheDirectory	155	directory, maxSize, maxLastAccessedAgeInDays	{role: ROLE_ANY}	None
+capsim	SimulatorService	svc.capsim	eve/devtools/script/svc_simulator.py	66	Show	81		[]	None
+charactersheet	CharacterSheet	svc.charactersheet	eve/client/script/ui/shared/neocom/charactersheet.py	10	Show	89		[]	None-or-value
+clonejump	CloneJump	svc.clonejump	eve/client/script/ui/services/clonejumpsvc.py	38	CloneJump	237	destLocationID, cloneID	[]	None
+clonejump	CloneJump	svc.clonejump	eve/client/script/ui/services/clonejumpsvc.py	38	DestroyInstalledClone	143	cloneID	[]	None
+clonejump	CloneJump	svc.clonejump	eve/client/script/ui/services/clonejumpsvc.py	38	GetCloneAtLocation	304	locationID	[]	value
+clonejump	CloneJump	svc.clonejump	eve/client/script/ui/services/clonejumpsvc.py	38	GetCloneImplants	76		[]	value
+clonejump	CloneJump	svc.clonejump	eve/client/script/ui/services/clonejumpsvc.py	38	GetClones	72		[]	value
+clonejump	CloneJump	svc.clonejump	eve/client/script/ui/services/clonejumpsvc.py	38	GetImplantsForClone	313	cloneID	[]	value
+clonejump	CloneJump	svc.clonejump	eve/client/script/ui/services/clonejumpsvc.py	38	GetShipClones	98		[]	value
+clonejump	CloneJump	svc.clonejump	eve/client/script/ui/services/clonejumpsvc.py	38	GetStationClones	108		[]	value
+clonejump	CloneJump	svc.clonejump	eve/client/script/ui/services/clonejumpsvc.py	38	HasCloneReceivingBay	327		[]	value
+clonejump	CloneJump	svc.clonejump	eve/client/script/ui/services/clonejumpsvc.py	38	LastCloneJumpTime	139		[]	value
+clonejump	CloneJump	svc.clonejump	eve/client/script/ui/services/clonejumpsvc.py	38	OfferShipCloneInstallation	119	charID	[]	None
+clonejump	CloneJump	svc.clonejump	eve/client/script/ui/services/clonejumpsvc.py	38	ValidateInstallJumpClone	432		[]	value
+connection	ConnectionService	svc.connection	carbon/client/script/remote/connectionService.py	57	Connect	93	host, port, userid, password, ct	[]	value
+connection	ConnectionService	svc.connection	carbon/client/script/remote/connectionService.py	57	ConnectToService	206	serviceName	[]	value
+connection	ConnectionService	svc.connection	carbon/client/script/remote/connectionService.py	57	Disconnect	191	silently	[]	None
+connection	ConnectionService	svc.connection	carbon/client/script/remote/connectionService.py	57	IsConnected	210		[]	value
+connection	ConnectionService	svc.connection	carbon/client/script/remote/connectionService.py	57	Login	141	loginparam	[]	None-or-value
+consider	ConsiderSvc	svc.consider	eve/client/script/parklife/consider.py	31	ConfirmTakeIllicitGoods	186	items	[]	value
+console	ConsoleService	svc.console	eve/devtools/script/svc_console.py	34	ConstructLayout	179		[]	None
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	AcceptContract	430	contractID, forCorp	{}	None-or-value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	AddIgnore	1021	issuerID	{}	None
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	ClearCache	965		{}	None
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	CollectMyPageInfo	884	force	{}	value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	CompleteContract	588	contractID	{}	value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	CreateContract	664	contractInfo, confirm	{}	value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	DeleteContract	534	contractID	{}	value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	DeleteNotification	875	contractID, forCorp	{}	value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	DeliverCourierContractFromItemID	1044	itemID	{}	None
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	FailContract	603	contractID	{}	value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	FindCourierContractFromItemID	1052	itemID	{}	None
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	FinishAuction	808	contractID, isIssuer	{}	None-or-value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	GetContract	406	contractID, force	{}	value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	GetItemsInContainer	850	stationID, containerID, forCorp, flag	{}	value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	GetItemsInDockableLocation	865	stationID, forCorp	{}	value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	GetMarketTypes	817		{}	value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	GetMessages	1040		{}	value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	GetSolarSystemIDForStationOrStructure	840	stationID	{}	None-or-value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	NumOutstandingContracts	823	forCorp	{}	value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	PlaceBid	674	contractID, force	{}	None-or-value
+contracts	ContractsSvc	svc.contracts	eve/client/script/ui/shared/neocom/contracts/contracts.py	93	RejectContract	638	contractID	{}	None-or-value
+corpui	CorporationUI	svc.corpui	eve/client/script/ui/shared/neocom/corporation/base_corporation_ui.py	51	ApplyToJoinAlliance	178	allianceID	[]	None-or-value
+corpui	CorporationUI	svc.corpui	eve/client/script/ui/shared/neocom/corporation/base_corporation_ui.py	51	GetMemberDetails	166	charid	[]	None
+corpui	CorporationUI	svc.corpui	eve/client/script/ui/shared/neocom/corporation/base_corporation_ui.py	51	HideLoad	160		[]	None-or-value
+corpui	CorporationUI	svc.corpui	eve/client/script/ui/shared/neocom/corporation/base_corporation_ui.py	51	ResetWindow	128	bShowIfVisible	[]	None
+corpui	CorporationUI	svc.corpui	eve/client/script/ui/shared/neocom/corporation/base_corporation_ui.py	51	Show	141	panel_id, sub_panel_id	[]	None
+corpui	CorporationUI	svc.corpui	eve/client/script/ui/shared/neocom/corporation/base_corporation_ui.py	51	ShowLoad	152	lockKey	[]	None-or-value
+counter	CoreCounterService	svc.counter	carbon/common/script/sys/counterService.py	354	CreateCounter	433	name, type	[ROLE_SERVICE|ROLE_ADMIN|ROLE_PROGRAMMER]	value
+counter	CoreCounterService	svc.counter	carbon/common/script/sys/counterService.py	354	DestroyCounter	476	name	[ROLE_SERVICE|ROLE_ADMIN|ROLE_PROGRAMMER]	None
+counter	CoreCounterService	svc.counter	carbon/common/script/sys/counterService.py	354	GetCounter	465	name	[ROLE_SERVICE|ROLE_ADMIN|ROLE_PROGRAMMER]	None-or-value
+counter	CoreCounterService	svc.counter	carbon/common/script/sys/counterService.py	354	GetCountersList	537		[ROLE_SERVICE|ROLE_ADMIN|ROLE_PROGRAMMER]	value
+counter	CoreCounterService	svc.counter	carbon/common/script/sys/counterService.py	354	GetFlushInterval	523		[ROLE_SERVICE|ROLE_ADMIN|ROLE_PROGRAMMER]	value
+counter	CoreCounterService	svc.counter	carbon/common/script/sys/counterService.py	354	IsLogging	516		[ROLE_SERVICE|ROLE_ADMIN|ROLE_PROGRAMMER]	value
+counter	CoreCounterService	svc.counter	carbon/common/script/sys/counterService.py	354	SetFlushInterval	530	interval	[ROLE_SERVICE|ROLE_ADMIN|ROLE_PROGRAMMER]	None
+counter	CoreCounterService	svc.counter	carbon/common/script/sys/counterService.py	354	StartLogging	489		[ROLE_SERVICE|ROLE_ADMIN|ROLE_PROGRAMMER]	None
+counter	CoreCounterService	svc.counter	carbon/common/script/sys/counterService.py	354	StopLogging	509		[ROLE_SERVICE|ROLE_ADMIN|ROLE_PROGRAMMER]	None
+damage	DamageService	svc.damage	eve/client/script/parklife/damageSvc.py	23	GenerateDamageLocators	232	rootTransform, generateNumber	[]	value
+damage	DamageService	svc.damage	eve/client/script/parklife/damageSvc.py	23	GetDamageLocatorGeneratorTransform	193	transform, depth	[]	None-or-value
+damage	DamageService	svc.damage	eve/client/script/parklife/damageSvc.py	23	GetTargetLocators	87	attackerID, targetID, locatorVariance	[]	value
+damage	DamageService	svc.damage	eve/client/script/parklife/damageSvc.py	23	SetLODTargetLevel	77	level	[]	None
+damage	DamageService	svc.damage	eve/client/script/parklife/damageSvc.py	23	SetLocatorCacheTime	81	time	[]	None
+dataconfig	DataConfig	svc.dataconfig	carbon/common/script/sys/cfg.py	59	GetStartupData	140		[service.ROLE_SERVICE]	None
+deathzoneSvc	DeathzoneSvc	svc.deathzoneSvc	eve/client/script/ui/services/deathzoneSvc.py	16	GetHullDamageFraction	42		[]	value
+deathzoneSvc	DeathzoneSvc	svc.deathzoneSvc	eve/client/script/ui/services/deathzoneSvc.py	16	InDeathZone	38		[]	value
+debug	debugSvc	svc.debug	carbon/common/script/sys/debugSvc.py	40	Eval	111	code, signedCode, marshaledCode, **kw	[ROLE_PROGRAMMER]	None-or-value
+debug	debugSvc	svc.debug	carbon/common/script/sys/debugSvc.py	40	Exec	150	code, signedCode, node, console, noprompt, **kw	[ROLE_PROGRAMMER]	None-or-value
+debug	debugSvc	svc.debug	carbon/common/script/sys/debugSvc.py	40	GetLogEvents	266		[ROLE_PROGRAMMER]	value
+debug	debugSvc	svc.debug	carbon/common/script/sys/debugSvc.py	40	Log	245	txt, lvl	[ROLE_PROGRAMMER]	None
+device	DeviceMgr	svc.device	carbonui/services/device.py	153	CreateDevice	338		[]	None
+device	DeviceMgr	svc.device	carbonui/services/device.py	153	GetPresentationIntervalOptions	475	windowMode	[]	value
+device	DeviceMgr	svc.device	carbonui/services/device.py	153	GetResolutionOptions	460	windowState	[]	value
+device	DeviceMgr	svc.device	carbonui/services/device.py	153	GetSettings	448		[]	value
+device	DeviceMgr	svc.device	carbonui/services/device.py	153	ResetMonitor	381		[]	None
+device	DeviceMgr	svc.device	carbonui/services/device.py	153	SetDevice	427	windowState	[]	None-or-value
+device	DeviceMgr	svc.device	carbonui/services/device.py	153	ToggleWindowed	405		[]	None
+dynamicMusic	DynamicMusicService	svc.dynamicMusic	eveaudio/eveMusicService.py	23	GetProcessedMusicEvents	54		[]	value
+dynamicMusic	DynamicMusicService	svc.dynamicMusic	eveaudio/eveMusicService.py	23	SetDebugMusicTriggerCallback	143	pythonFunc	[]	None
+dynamicMusic	DynamicMusicService	svc.dynamicMusic	eveaudio/eveMusicService.py	23	StopMusic	61		[]	None
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	BatchedRemoteCall	inherited	?	[ROLE_SERVICE]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	CloseUserSessions	inherited	?	[ROLE_SERVICE]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	ConnectToClientService	inherited	?	[ROLE_SERVICE]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	EndAllGameSessions	inherited	?	[ROLE_ADMIN|ROLE_SERVICE]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	GetClientIDsFromID	inherited	?	[ROLE_SERVICE]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	GetInitialValuesFromCharID	533	characterID	[ROLE_SERVICE]	value
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	GetLocalClientIDs	inherited	?	[ROLE_SERVICE]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	GetProxyNodeFromID	inherited	?	[ROLE_SERVICE]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	GetSessionDetails	inherited	?	[ROLE_SERVICE]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	GetSessionStatistics	inherited	?	[ROLE_SERVICE]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	PerformHorridSessionAttributeUpdate	inherited	?	[ROLE_SERVICE]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	PerformSessionChange	inherited	?	[ROLE_SERVICE]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	RemoveSessionsFromServer	inherited	?	[ROLE_SERVICE]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	ResetClientConnection	inherited	?	[ROLE_SERVICE]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	TerminateClientConnections	inherited	?	[ROLE_SERVICE|ROLE_ADMIN]	unknown
+eveSessionMgr	SessionMgr	svc.eveSessionMgr	eve/common/script/sys/eveSessions.py	165	UpdateSessionAttributes	inherited	?	[ROLE_SERVICE]	unknown
+faction	Faction	svc.faction	eve/client/script/ui/services/factionsvc.py	15	GetFactionLocations	125	factionID	[]	value
+faction	Faction	svc.faction	eve/client/script/ui/services/factionsvc.py	15	GetFactionOfSolarSystem	48	solarsystemID	[]	value
+faction	Faction	svc.faction	eve/client/script/ui/services/factionsvc.py	15	GetPirateFactionsOfRegion	65	regionID	[]	value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	CheckForSafeSystem	573	dockableItem, factionID, solarSystemID	[]	value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	CheckOwnerInFaction	565	ownerID	[]	value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	GetAllianceWarFactionID	159	allianceID	[]	value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	GetCharacterRankInfo	384	charID	[]	None-or-value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	GetCorpFactionalWarStatus	375		[]	value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	GetCorporationWarFactionID	133	corpID	[]	None-or-value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	GetFactionCorporations	153	factionID	[]	value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	GetFactionMilitiaCorporation	205	factionID	[]	None-or-value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	GetMostDangerousSystems	111		[]	value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	GetStats_Alliance	514	allianceID	[]	value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	GetStats_Corp	491	corpID	[]	value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	GetStats_CorpPilots	561		[]	value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	GetStats_FactionInfo	455		[]	value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	GetStats_Personal	463		[]	value
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	JoinFactionAsAlliance	290	factionID, warfactionid	[]	None
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	JoinFactionAsCharacter	256	factionID, warfactionid	[]	None
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	JoinFactionAsCorporation	308	factionID, warfactionid	[]	None
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	LeaveFactionAsAlliance	327	factionID	[]	None
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	LeaveFactionAsCorporation	335	factionID	[]	None
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	WithdrawJoinFactionAsAlliance	343	factionID	[]	None
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	WithdrawJoinFactionAsCorporation	351	factionID	[]	None
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	WithdrawLeaveFactionAsAlliance	359	factionID	[]	None
+facwar	FactionalWarfare	svc.facwar	eve/client/script/ui/services/facWarSvc.py	50	WithdrawLeaveFactionAsCorporation	367	factionID	[]	None
+fittingSvc	fittingSvc	svc.fittingSvc	eve/client/script/environment/fittingSvc.py	60	GetFittingDictForActiveShip	141	putModuleAmmoInCargo	[]	value
+fittingSvc	fittingSvc	svc.fittingSvc	eve/client/script/environment/fittingSvc.py	60	IsTypeFittedInActiveShip	164	typeID	[]	value
+form	Form	svc.form	eve/client/script/ui/util/form.py	63	GetForm	74	format, parent	[]	value
+form	Form	svc.form	eve/client/script/ui/util/form.py	63	ProcessForm	643	retfields, required, errorcheck	[]	None-or-value
+godma	Godma	svc.godma	eve/client/script/environment/godma.py	107	GetAttributeValueByID	395	itemID, attributeID	[ROLE_ANY]	value
+godma	Godma	svc.godma	eve/client/script/environment/godma.py	107	GetDogmaLM	379		[ROLE_ANY]	value
+godma	Godma	svc.godma	eve/client/script/environment/godma.py	107	GetFlagsWithValidCapacity	398	itemID, typeID, useOnlyCargo	[ROLE_ANY]	value
+godma	Godma	svc.godma	eve/client/script/environment/godma.py	107	GetItem	383	itemID	{fastcall: 1, role: ROLE_ANY}	value
+godma	Godma	svc.godma	eve/client/script/environment/godma.py	107	GetStateManager	364		[ROLE_ANY]	value
+godma	Godma	svc.godma	eve/client/script/environment/godma.py	107	GetType	218	typeID	{fastcall: 1, role: ROLE_ANY}	value
+godma	Godma	svc.godma	eve/client/script/environment/godma.py	107	LogAttributeViaGodma	226	itemID, attributeID, reason	[ROLE_ANY]	None-or-value
+http	ConnectionService	svc.http	carbon/common/script/net/httpService.py	926	AddToCacheSkipList	1073	value	[ROLE_SERVICE]	None
+http	ConnectionService	svc.http	carbon/common/script/net/httpService.py	926	GetCacheSkipList	1065		[ROLE_SERVICE|ROLE_ADMIN]	value
+http	ConnectionService	svc.http	carbon/common/script/net/httpService.py	926	GetCacheStatus	1056		[ROLE_SERVICE|ROLE_ADMIN]	value
+http	ConnectionService	svc.http	carbon/common/script/net/httpService.py	926	GetStaticHeader	1077		[ROLE_SERVICE]	value
+http	ConnectionService	svc.http	carbon/common/script/net/httpService.py	926	SetCacheStatus	1060	status	[ROLE_SERVICE|ROLE_ADMIN]	None
+info	Info	svc.info	eve/client/script/ui/shared/info/infosvc.py	199	GetAllianceMembersSubContent	3633	itemID	[]	value
+info	Info	svc.info	eve/client/script/ui/shared/info/infosvc.py	199	GetAttributeScrollListForItem	3733	itemID, typeID, attrList, banAttrs	[]	value
+info	Info	svc.info	eve/client/script/ui/shared/info/infosvc.py	199	GetAttributeScrollListForType	3854	typeID, attrList, attrValues, banAttrs, itemID	[]	value
+info	Info	svc.info	eve/client/script/ui/shared/info/infosvc.py	199	GetEmploymentHistorySubContent	3565	itemID	[]	value
+info	Info	svc.info	eve/client/script/ui/shared/info/infosvc.py	199	GetKillsRecentKills	3345	num, startIndex	[]	value
+info	Info	svc.info	eve/client/script/ui/shared/info/infosvc.py	199	GetKillsRecentLosses	3349	num, startIndex	[]	value
+info	Info	svc.info	eve/client/script/ui/shared/info/infosvc.py	199	GetSolarSystemReport	496	solarsystemID	[]	None
+info	Info	svc.info	eve/client/script/ui/shared/info/infosvc.py	199	ShowInfo	510	typeID, itemID, new, rec, parentID, abstractinfo, selectTabType, addNewWindow, traversingHistory, params	[]	None-or-value
+infoGatheringSvc	InformationGatheringSvc	svc.infoGatheringSvc	carbon/client/script/sys/infoGatheringSvc.py	28	GetEventIGSHandle	79	eventTypeID, **kw	[]	value
+infoGatheringSvc	InformationGatheringSvc	svc.infoGatheringSvc	carbon/client/script/sys/infoGatheringSvc.py	28	LogInfoEvent	87	eventTypeID, itemID, itemID2, int_1, int_2, int_3, char_1, char_2, char_3, float_1, float_2, float_3	[]	None
+insider	InsiderService	svc.insider	eve/devtools/script/insider.py	168	Show	2071	show, force	[]	None
+insurance	InsuranceSvc	svc.insurance	eve/client/script/ui/station/insurance/base_insurance.py	52	CleanUp	88		[]	None
+insurance	InsuranceSvc	svc.insurance	eve/client/script/ui/station/insurance/base_insurance.py	52	GetContracts	131		[]	value
+insurance	InsuranceSvc	svc.insurance	eve/client/script/ui/station/insurance/base_insurance.py	52	Reset	109		[]	None
+inv	InventorySvc	svc.inv	eve/client/script/ui/services/inventorysvc.py	60	Register	174	callbackObj	[]	None-or-value
+inv	InventorySvc	svc.inv	eve/client/script/ui/services/inventorysvc.py	60	Unregister	223	cookie	[]	None
+invCache	invCache	svc.invCache	eve/client/script/environment/invCache.py	102	AcceptPossibleRemovalTax	819	items	[]	value
+invCache	invCache	svc.invCache	eve/client/script/environment/invCache.py	102	GetInventory	553	containerid, param1	[]	value
+invCache	invCache	svc.invCache	eve/client/script/environment/invCache.py	102	GetInventoryFromId	590	itemid, passive, locationID	[]	value
+invCache	invCache	svc.invCache	eve/client/script/environment/invCache.py	102	GetInventoryMgr	479		[]	value
+invCache	invCache	svc.invCache	eve/client/script/environment/invCache.py	102	GetItemHeader	482	force	[]	value
+invCache	invCache	svc.invCache	eve/client/script/environment/invCache.py	102	GetStationIDOfItem	720	item	[]	None-or-value
+invCache	invCache	svc.invCache	eve/client/script/environment/invCache.py	102	InvalidateLocationCache	660	itemID	[]	None
+invCache	invCache	svc.invCache	eve/client/script/environment/invCache.py	102	IsInventoryPrimedAndListed	626	itemid	[]	value
+invCache	invCache	svc.invCache	eve/client/script/environment/invCache.py	102	IsItemLocked	445	itemID, raiseIfLocked	[]	value
+invCache	invCache	svc.invCache	eve/client/script/environment/invCache.py	102	TryLockItem	350	itemID, userErrorName, userErrorDict, raiseIfLocked	[]	value
+invCache	invCache	svc.invCache	eve/client/script/environment/invCache.py	102	UnlockItem	428	itemID	[]	None
+journal	JournalSvc	svc.journal	eve/client/script/ui/shared/neocom/journal.py	198	GetMyAgentJournalDetails	393		[]	value
+journal	JournalSvc	svc.journal	eve/client/script/ui/shared/neocom/journal.py	198	Refresh	318		[]	None
+jumpQueue	JumpQueue	svc.jumpQueue	eve/client/script/ui/services/jumpQueue.py	20	IsJumpQueued	109		[ROLE_SERVICE]	value
+loadService	LoadService	svc.loadService	carbon/common/script/sys/loadService.py	43	Calibrate	238	duration	[ROLE_SERVICE|ROLE_PROGRAMMER]	value
+loadService	LoadService	svc.loadService	carbon/common/script/sys/loadService.py	43	GatherStats	452		[ROLE_SERVICE|ROLE_PROGRAMMER]	value
+loadService	LoadService	svc.loadService	carbon/common/script/sys/loadService.py	43	GetConfig	72		[ROLE_PROGRAMMER]	value
+loadService	LoadService	svc.loadService	carbon/common/script/sys/loadService.py	43	GetTotalStats	442		[ROLE_SERVICE|ROLE_PROGRAMMER]	value
+loadService	LoadService	svc.loadService	carbon/common/script/sys/loadService.py	43	IsRunning	93		[ROLE_SERVICE|ROLE_PROGRAMMER]	value
+loadService	LoadService	svc.loadService	carbon/common/script/sys/loadService.py	43	Ping	363	packet	[ROLE_SERVICE|ROLE_PROGRAMMER]	value
+loadService	LoadService	svc.loadService	carbon/common/script/sys/loadService.py	43	RemainingTime	100		[ROLE_SERVICE|ROLE_PROGRAMMER]	None-or-value
+loadService	LoadService	svc.loadService	carbon/common/script/sys/loadService.py	43	SetConfig	79	conf, updateOtherNodes	[ROLE_SERVICE|ROLE_PROGRAMMER]	None
+loadService	LoadService	svc.loadService	carbon/common/script/sys/loadService.py	43	StartLoad	135	duration	[ROLE_PROGRAMMER]	None
+loadService	LoadService	svc.loadService	carbon/common/script/sys/loadService.py	43	StartLoadOnAllNodes	109	duration	[ROLE_SERVICE|ROLE_PROGRAMMER]	None
+loadService	LoadService	svc.loadService	carbon/common/script/sys/loadService.py	43	StopLoad	171		[ROLE_SERVICE|ROLE_PROGRAMMER]	None
+loadService	LoadService	svc.loadService	carbon/common/script/sys/loadService.py	43	StopLoadOnAllNodes	116		[ROLE_SERVICE|ROLE_PROGRAMMER]	None
+loading	Loading	svc.loading	eve/client/script/ui/shared/loading.py	24	CleanUp	63		[]	None
+loading	Loading	svc.loading	eve/client/script/ui/shared/loading.py	24	Cycle	167	title, strng	[]	None
+loading	Loading	svc.loading	eve/client/script/ui/shared/loading.py	24	FadeIn	230	time, color, sleep, owner, *args	[]	None
+loading	Loading	svc.loading	eve/client/script/ui/shared/loading.py	24	FadeOut	243	time, opacityStart, sleep, color, owner, *args	[]	None
+loading	Loading	svc.loading	eve/client/script/ui/shared/loading.py	24	GoBlack	201		[]	None
+loading	Loading	svc.loading	eve/client/script/ui/shared/loading.py	24	HideAllLoad	197		[]	None
+loading	Loading	svc.loading	eve/client/script/ui/shared/loading.py	24	IsLoading	219		[]	value
+loading	Loading	svc.loading	eve/client/script/ui/shared/loading.py	24	ProgressWnd	98	title, strng, portion, total, explicitSound, abortFunc, useMorph, **kw	[]	None
+loading	Loading	svc.loading	eve/client/script/ui/shared/loading.py	24	StopCycle	190		[]	None
+log	LoggingSvc	svc.log	carbon/client/script/util/logsvc.py	8	Log	22	channelName, flag, *args	[]	None
+logger	Logger	svc.logger	eve/client/script/ui/shared/uilog.py	116	AddBountyMessage	365	bountyPayout, payoutTime, enemyTypeID, isModified	[]	None
+logger	Logger	svc.logger	eve/client/script/ui/shared/uilog.py	116	AddCombatMessage	486	msgKey, msgTextArgs	[]	None
+logger	Logger	svc.logger	eve/client/script/ui/shared/uilog.py	116	AddMessage	277	msg, msgtype	[]	None
+logger	Logger	svc.logger	eve/client/script/ui/shared/uilog.py	116	AddMiningMessage	297	oreTypeID, quantity_mined, has_rewards, quantity_wasted, quantity_crit_bonus	[]	None
+logger	Logger	svc.logger	eve/client/script/ui/shared/uilog.py	116	AddText	600	msgtext, msgtype, msg	[]	None
+logger	Logger	svc.logger	eve/client/script/ui/shared/uilog.py	116	GetLog	175	maxsize, *args	[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	AreTheseServicesRunning	3577	requiredServices	[ROLE_SERVICE]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	CalculatePortNumber	1761	mapname, portTypeName	[ROLE_SERVICE]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	CheckACL	2300	address, espCheck	[ROLE_SERVICE|ROLE_ADMIN]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	CheckAddressCache	3306	service, address, lazyGetIfNotFound	[ROLE_SERVICE|ROLE_ADMIN]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	ClearNodeOfAddresses	3461	addresses	[ROLE_SERVICE|ROLE_ADMIN]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	ConnectToAddress	1770	address, mapname, destMachoRole, destinationNodeID, named, withReader, forcedPortNumber	[ROLE_SERVICE]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	ConnectToServer	1844	address, userName, password, sockettype, ssoToken	[ROLE_ANY]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	ConnectivityTest	1202	offset, proxyNodeCount, serverNodeCount	[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	DisconnectFromServer	1506		[ROLE_ANY]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	DisconnectUsers	2959	userIDs	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	ForwardCharacterNotification	1448	charid, method, *args	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	ForwardNotificationToNode	606	source, destination, userID, payload	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	ForwardProxyBroadcast	5396	*args	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	ForwardSinglecastByCharID	5400	*args	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetAddressAndStaticTagsForPrometheus	2133		[ROLE_SERVICE|ROLE_ADMIN]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetBasePortNumber	2048		[ROLE_ANY]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetBaseTunnelPortOffset	620		[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetBlockingCallStats	2216		[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetCPULoad	2173		[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetClientSessionID	3632		[ROLE_ANY]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetClusterGameStatistics	2055	key, default	[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetClusterGameStatisticsForClient	2060	key, default	[ROLE_PLAYER]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetClusterSessionCounts	2374	attr, default	[ROLE_SERVICE]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetConnectedClusterMode	5424		[ROLE_ANY]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetConnectedClusterName	5417		[ROLE_ANY]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetConnectedNodes	3652		[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetConnectedProxyNodes	3648		[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetConnectedSolNodes	3650		[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetConnectionProperties	2065		[ROLE_ANY]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetFullAddressCache	3484		[ROLE_SERVICE|ROLE_ADMIN]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetFullServiceMaskAddressCache	3490		[ROLE_SERVICE|ROLE_ADMIN]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetGPCS	3769	channel	[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetGlobalConfig	1689		[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetGlobalConfigValue	1754	key	[ROLE_SERVICE|ROLE_ADMIN]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetIDOfAddress	5307	address, clientMode, customIDData	[ROLE_SERVICE]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetLogonQueuePosition	4023	transportID, vipKey	[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetLogonQueueStats	4053		[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetMetrics	2231		[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetNetworkStats	2189	socketServers	[ROLE_SERVICE]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetNodeFromAddress	3344	serviceID, address	[ROLE_SERVICE|ROLE_ADMIN]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetNodeID	3611		[ROLE_SERVICE|ROLE_ADMIN]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetNodeIDsFromServiceMask	3481	serviceMask	[ROLE_SERVICE|ROLE_ADMIN]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetPolarisExternalTunnelingAddress	628		[ROLE_SERVICE]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetPortOffsetStep	1685	portTypeName	[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetRuntimeDetails	5404		[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetServerStatus	1520	address, forceQueueCheck	[ROLE_ANY]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetServiceInfo	3914		[ROLE_ANY]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetServiceMaskByServiceID	3493	serviceID	[ROLE_SERVICE|ROLE_ADMIN]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetSessionCounts	2340	attr, default	[ROLE_SERVICE]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetTime	4093		[ROLE_ANY]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetTransport	3669	transportName	[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetTransportOfNode	3656	nodeID	[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GetValidClientCodeHash	1628		[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GracefulShutdown	2548	userID, when, duration, explanationLabel	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GracefulShutdownComplete	2806	callerNodeID	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	GracefulShutdownStarted	2793		[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	IsClusterShuttingDown	2789		[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	IsConnected	1495		[ROLE_ANY]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	IsResurrectedNode	624		[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	IsThisUserCoolForLogin	4013	userID	[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	LogClientCall	1437	session, objectName, method, args	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	LookupAddressCache	3334	serviceName, address	[ROLE_SERVICE|ROLE_ADMIN]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	PerformanceTest	1441	*args	[ROLE_SERVICE]	value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	PrimeAddressCache	3530	allMappings	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	RefreshConnectivity	2518		[ROLE_ADMIN]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	ReloadClientCodeHash	1634		[ROLE_SERVICE]	None-or-value
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	SendMessageToPlayers	595	message, includeEve, includeDust	[ROLE_SERVICE|ROLE_ADMIN|ROLE_GML]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	SendProvisionalResponse	4097	method, *args, **kw	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	SetClusterSessionCounts	2361	clusterSessionStatistics	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	SetConnectionProperty	2255	k, v, doPersist	[ROLE_ADMIN]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	SetGlobalConfigValue	1731	key, value, isDelete, isUpdate, isUpdateClients	[ROLE_SERVICE|ROLE_ADMIN]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	Shutdown	2824	who	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	StartTransportReader	1839	transport	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	TerminateAllClients	2849	reason	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	TerminateClient	2839	reason, clientID	[ROLE_SERVICE]	None
+machoNet	MachoNetService	svc.machoNet	carbon/common/script/net/machoNet.py	373	TerminateUnconnectedNodes	2831		[ROLE_SERVICE]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	AssignLabels	958	messageIDs, labelID, notifyServer	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	ClearCache	1049		[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	CreateLabel	931	name, color	[]	value
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	DeleteLabel	939	labelID	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	DeleteMails	635	messageIDs	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	EditLabel	907	labelID, name, color	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	EmptyTrash	613		[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	GetBody	649	messageID	[]	None-or-value
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	GetLabels	865		[]	value
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	GetMailsByLabelOrListID	684	labelID, orderBy, ascending, pos, count, listID	[]	value
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	IsFileCacheCorrupted	1168		[]	value
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MarkAllAsRead	562		[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MarkAllAsUnread	523		[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MarkAsReadByLabel	575	labelID	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MarkAsReadByList	588	listID	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MarkAsUnreadByLabel	536	labelID	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MarkAsUnreadByList	549	listID	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MarkMessagesAsRead	472	messageIDs, notifyServer	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MarkMessagesAsUnread	459	messageIDs, notifyServer	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MoveAllFromTrash	601		[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MoveAllToTrash	485		[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MoveMessagesFromTrash	431	messageIDs	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MoveMessagesToTrash	420	messageIDs	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MoveToTrashByLabel	497	labelID	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	MoveToTrashByList	510	listID	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	PrimeOwners	167	owners	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	RemoveLabels	977	messageIDs, labelID, notifyServer	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	ReplaceLabels	998	messageIDs, labelID, notifyServer	[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	SaveChangesToDisk	1017		[]	None
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	SendMail	1172	toCharacterIDs, toListID, toCorpOrAllianceID, title, body, isReplyTo, isForwardedFrom	[]	None-or-value
+mailSvc	mailSvc	svc.mailSvc	eve/client/script/ui/services/mail/mailSvc.py	105	SyncMail	191		[]	None
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	ClearEntityAccess	181	listID, entityID	[]	None
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	ClearWelcomeMail	289	listID	[]	None
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	CreateMailingList	98	name, defaultAccess, defaultMemberAccess, cost	[]	value
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	DeleteMaillist	142	listID	[]	None
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	GetDisplayName	79	listID	[]	value
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	GetMembers	162	listID	[]	value
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	GetMyMailingLists	67		[]	value
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	GetSettings	222	listID	[]	value
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	GetWelcomeMail	280	listID	[]	value
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	JoinMailingList	118	name	[]	value
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	KickMembers	155	listID, memberIDs	[]	None
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	LeaveMaillist	129	listID	[]	None
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	SaveAndSendWelcomeMail	286	listID, title, body	[]	value
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	SaveWelcomeMail	283	listID, title, body	[]	value
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	SetDefaultAccess	213	listID, defaultAccess, defaultMemberAccess, mailCost	[]	None
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	SetEntityAccess	170	listID, entityID, access	[]	None
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	SetMembersClear	205	listID, memberIDs	[]	None
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	SetMembersMuted	189	listID, memberIDs	[]	None
+mailinglists	MailingLists	svc.mailinglists	eve/client/script/ui/services/mail/mailingListsSvc.py	27	SetMembersOperator	197	listID, memberIDs	[]	None
+medals	Medals	svc.medals	eve/client/script/ui/services/medals.py	31	CreateMedal	50	title, description, graphics	[]	None
+medals	Medals	svc.medals	eve/client/script/ui/services/medals.py	31	GetAllCorpMedals	82	corpID	[]	value
+medals	Medals	svc.medals	eve/client/script/ui/services/medals.py	31	GetMedalDetails	115	medalID	[]	value
+medals	Medals	svc.medals	eve/client/script/ui/services/medals.py	31	GetMedalsReceived	111	characterID	[]	value
+medals	Medals	svc.medals	eve/client/script/ui/services/medals.py	31	GetRecipientsOfMedal	87	medalID	[]	value
+medals	Medals	svc.medals	eve/client/script/ui/services/medals.py	31	GiveMedalToCharacters	119	medalID, recipientID, reason	[]	None
+medals	Medals	svc.medals	eve/client/script/ui/services/medals.py	31	SetMedalStatus	75	statusdict	[]	None
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	AddBallpark	442	solarsystemID	[ROLE_ANY]	value
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	AdminGetBubbleID	977	itemID	[ROLEMASK_VIEW]	value
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	AreDronesOut	614		[ROLE_ANY]	None-or-value
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	GetBall	531	id	[ROLE_ANY]	None-or-value
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	GetBallpark	474	doWait	[ROLE_ANY]	None-or-value
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	GetBallparkForScene	519	scene	[ROLE_ANY]	None-or-value
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	GetCharIDFromShipID	683	shipID	[ROLE_ANY]	None-or-value
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	GetDroneState	600	droneID	[ROLE_ANY]	None-or-value
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	GetDrones	610		[ROLE_ANY]	None-or-value
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	GetFleetState	408		[ROLE_ANY]	None-or-value
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	GetItem	570	id	[ROLE_ANY]	None-or-value
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	GetRemotePark	511		[ROLE_ANY]	None-or-value
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	Refresh	422		[ROLE_ANY]	None
+michelle	Michelle	svc.michelle	eve/client/script/remote/michelle.py	147	RemoveBallpark	466		[ROLE_ANY]	None
+monitor	Monitor	svc.monitor	carbon/client/script/util/monitor.py	58	Show	89		[]	None
+monitor	Monitor	svc.monitor	carbon/client/script/util/monitor.py	58	ShowLogTab	119		[]	None
+musicDebugger	MusicDebuggerSvc	svc.musicDebugger	eveaudio/musicDebuggerSvc.py	12	SetDungeonChangeCallback	25	pythonFunc	[]	None
+networkLogging	NetworkLogging	svc.networkLogging	carbon/common/script/sys/networkLogging.py	18	GetLoggingState	34		[ROLE_SERVICE]	value
+networkLogging	NetworkLogging	svc.networkLogging	carbon/common/script/sys/networkLogging.py	18	StartNetworkLogging	21	server, port, threshold	[ROLE_SERVICE]	None-or-value
+networkLogging	NetworkLogging	svc.networkLogging	carbon/common/script/sys/networkLogging.py	18	StopNetworkLogging	28		[ROLE_SERVICE]	value
+node_graph	NodeGraphService	svc.node_graph	nodegraph/client/service.py	29	StartClientNodeGraph	71	node_graph_id, blackboard_parameters	[ROLE_SERVICE]	value
+node_graph	NodeGraphService	svc.node_graph	nodegraph/client/service.py	29	StopClientNodeGraphById	79	node_graph_id	[ROLE_SERVICE]	value
+nonDiminishingInjection	NonDiminishingInjection	svc.nonDiminishingInjection	eve/client/script/ui/services/nonDiminishingInjectionService.py	8	GetRemaining	36		[]	value
+objectCaching	CoreObjectCachingSvc	svc.objectCaching	carbon/common/script/net/objectCaching.py	57	CacheObject	473	object	[ROLE_SERVICE]	None
+objectCaching	CoreObjectCachingSvc	svc.objectCaching	carbon/common/script/net/objectCaching.py	57	GetCachableObject	375	shared, objectID, objectVersion, nodeID	[ROLE_ANY]	None-or-value
+objectCaching	CoreObjectCachingSvc	svc.objectCaching	carbon/common/script/net/objectCaching.py	57	GetCachedMethodCallVersion	527	serviceOrObject, serviceOrObjectName, method, args	[ROLE_SERVICE]	value
+objectCaching	CoreObjectCachingSvc	svc.objectCaching	carbon/common/script/net/objectCaching.py	57	GetCachedObject	357	objectID	[ROLE_ANY]	None-or-value
+objectCaching	CoreObjectCachingSvc	svc.objectCaching	carbon/common/script/net/objectCaching.py	57	GetCachedObjectVersion	364	objectID	[ROLE_ANY]	None-or-value
+objectCaching	CoreObjectCachingSvc	svc.objectCaching	carbon/common/script/net/objectCaching.py	57	InvalidateCachedMethodCall	286	serviceOrObjectName, method, *args	[ROLE_SERVICE]	value
+objectCaching	CoreObjectCachingSvc	svc.objectCaching	carbon/common/script/net/objectCaching.py	57	InvalidateCachedObjects	324	objectIDs, forward	[ROLE_SERVICE]	None
+objectCaching	CoreObjectCachingSvc	svc.objectCaching	carbon/common/script/net/objectCaching.py	57	RefreshCache	206		[ROLE_SERVICE]	None
+onlineStatus	OnlineStatus	svc.onlineStatus	eve/client/script/ui/shared/comtool/onlineStatus.py	16	GetOnlineStatus	54	charID, fetch	[]	None-or-value
+onlineStatus	OnlineStatus	svc.onlineStatus	eve/client/script/ui/shared/comtool/onlineStatus.py	16	Prime	78		[]	None
+photo	EvePhoto	svc.photo	eve/client/script/ui/services/evePhotosvc.py	146	AddPortrait	699	portraitPath, charID	[]	None
+photo	EvePhoto	svc.photo	eve/client/script/ui/services/evePhotosvc.py	146	CheckAvail	223	path	[]	None-or-value
+photo	EvePhoto	svc.photo	eve/client/script/ui/services/evePhotosvc.py	146	CheckDates	433	path	[]	None
+photo	EvePhoto	svc.photo	eve/client/script/ui/services/evePhotosvc.py	146	GetAllianceLogo	599	allianceID, size, sprite, orderIfMissing, callback	[]	value
+photo	EvePhoto	svc.photo	eve/client/script/ui/services/evePhotosvc.py	146	GetCorporationLogo	608	corpID, size, sprite, orderIfMissing, callback	[]	value
+photo	EvePhoto	svc.photo	eve/client/script/ui/services/evePhotosvc.py	146	GetIconByType	753	sprite, typeID, itemID, size, ignoreSize, isCopy	[]	None-or-value
+photo	EvePhoto	svc.photo	eve/client/script/ui/services/evePhotosvc.py	146	GetPortrait	492	charID, size, sprite, orderIfMissing, callback, allowServerTrip, blocking, fullPoseSetup	[]	None-or-value
+photo	EvePhoto	svc.photo	eve/client/script/ui/services/evePhotosvc.py	146	GetTextureFromURL	302	path, currentURL, ignoreCache, dontcache, fromWhere, sizeonly, retry	[]	None-or-value
+photo	EvePhoto	svc.photo	eve/client/script/ui/services/evePhotosvc.py	146	OrderByTypeID	812	orderlist	[]	None
+photo	EvePhoto	svc.photo	eve/client/script/ui/services/evePhotosvc.py	146	SavePortraits	559	charIDs	[]	None
+poser	PoserService	svc.poser	eve/devtools/script/svc_poser.py	823	Show	871		[]	None
+preview	Preview	svc.preview	eve/client/script/ui/shared/preview.py	143	DisplayCharacter	192	charID	[]	None
+preview	Preview	svc.preview	eve/client/script/ui/shared/preview.py	143	PreviewCharacter	179	charID	[]	None-or-value
+preview	Preview	svc.preview	eve/client/script/ui/shared/preview.py	143	PreviewType	151	typeID, subsystems, itemID, animate, otherTypeID, skin_state, **kw	[]	None-or-value
+profiling	ProfilingScheduler	svc.profiling	eve/client/script/util/profiling.py	210	BeginSnapshot	347	name	[ROLE_ANY]	None-or-value
+profiling	ProfilingScheduler	svc.profiling	eve/client/script/util/profiling.py	210	EndSnapshot	355	key	[ROLE_ANY]	None
+profiling	ProfilingScheduler	svc.profiling	eve/client/script/util/profiling.py	210	StartDispatching	240		[ROLE_ANY]	None
+profiling	ProfilingScheduler	svc.profiling	eve/client/script/util/profiling.py	210	StartProfiling	257	start, locationList	[ROLE_ANY]	None
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	Anchor	277	itemID, position	[]	None
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	AssumeStructureControl	552	slimItem, silent, force	[]	None
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	CanAnchorStructure	428	itemID	[]	value
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	CanAssumeControlStructure	542	structureID	[]	value
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	CanOfflineStructure	437	itemID, fullyOnline	[]	value
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	CanOnlineStructure	432	itemID, fullyAnchored	[]	value
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	CanUnanchorStructure	441	itemID	[]	value
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	CheckAnchoringPosition	288	itemID, position	[]	None
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	ClrCurrentTarget	638	structureID	[]	None
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	CompareShipStructureHarmonic	136	shipID, itemID	[]	value
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	EnterShipPassword	261		[]	None
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	EnterTowerPassword	251	towerID	[]	None
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	GetCurrentControl	653	structureID	[]	value
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	GetCurrentTarget	647	structureID	[]	value
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	GetStructureState	168	slimItem	[]	value
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	RelinquishStructureControl	580	slimItem, silent, force	[]	None
+pwn	PlayerOwned	svc.pwn	eve/client/script/parklife/playerOwned.py	64	UnlockStructureTarget	604	structureID	[]	None
+pwntarget	PlayerOwnedTargetMgr	svc.pwntarget	eve/client/script/parklife/playerOwnedTargetMgr.py	18	CancelTargetOrder	71	who	[]	None
+pwntarget	PlayerOwnedTargetMgr	svc.pwntarget	eve/client/script/parklife/playerOwnedTargetMgr.py	18	OrderTarget	65	who	[]	None
+recorder	EventRecorder	svc.recorder	eve/client/script/parklife/recorder.py	13	EndStateCapture	70	filepath	[]	None
+recorder	EventRecorder	svc.recorder	eve/client/script/parklife/recorder.py	13	StartStateCapture	64		[]	None
+reprocessing	ReprocessingSvc	svc.reprocessing	eve/client/script/ui/services/reprocessingsvc.py	13	GetReprocessingSvc	71		[]	value
+reprocessing	ReprocessingSvc	svc.reprocessing	eve/client/script/ui/services/reprocessingsvc.py	13	ReprocessDlg	83	items	[]	None
+scanSvc	ScanSvc	svc.scanSvc	eve/client/script/parklife/scanSvc.py	108	DestroyProbe	318	probeID	[ROLE_ANY]	None
+scanSvc	ScanSvc	svc.scanSvc	eve/client/script/parklife/scanSvc.py	108	GetProbeData	187		[ROLE_ANY]	value
+scanSvc	ScanSvc	svc.scanSvc	eve/client/script/parklife/scanSvc.py	108	GetScanRangeStepsByTypeID	315	typeID	[ROLE_ANY]	value
+scanSvc	ScanSvc	svc.scanSvc	eve/client/script/parklife/scanSvc.py	108	GetScanResults	265		[ROLE_ANY]	value
+scanSvc	ScanSvc	svc.scanSvc	eve/client/script/parklife/scanSvc.py	108	QAScanSites	829	*args	[ROLE_QA]	None
+scanSvc	ScanSvc	svc.scanSvc	eve/client/script/parklife/scanSvc.py	108	ReconnectToLostProbes	321		[ROLE_ANY]	None
+scanSvc	ScanSvc	svc.scanSvc	eve/client/script/parklife/scanSvc.py	108	RecoverProbe	369	probeID	[ROLE_ANY]	None
+scanSvc	ScanSvc	svc.scanSvc	eve/client/script/parklife/scanSvc.py	108	RecoverProbes	372	probeIDs	[ROLE_ANY]	None
+scanSvc	ScanSvc	svc.scanSvc	eve/client/script/parklife/scanSvc.py	108	RequestScans	245		[ROLE_ANY]	None
+scanSvc	ScanSvc	svc.scanSvc	eve/client/script/parklife/scanSvc.py	108	SetProbeDestination	212	probeID, location	[ROLE_ANY]	None
+scanSvc	ScanSvc	svc.scanSvc	eve/client/script/parklife/scanSvc.py	108	SetProbeRangeStep	220	probeID, rangeStep	[ROLE_ANY]	None
+scenario	ScenarioMgr	svc.scenario	eve/client/script/parklife/scenarioMgr.py	43	BindClientToLevelEditor	131		[ROLE_SERVICE]	None
+scenario	ScenarioMgr	svc.scenario	eve/client/script/parklife/scenarioMgr.py	43	ChoosePathStep	173	defaultPathStepID, pathSteps, namesByDungeonID	[ROLE_SERVICE]	value
+sceneManager	SceneManager	svc.sceneManager	eve/client/script/parklife/sceneManager.py	66	GetScene	631	location	[]	value
+sceneManager	SceneManager	svc.sceneManager	eve/client/script/parklife/sceneManager.py	66	LoadScene	894	scenefile, registerKey, applyScene	[]	None-or-value
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	BatchedRemoteCall	841	batchedCalls	[ROLE_SERVICE]	value
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	CloseUserSessions	872	userIDs, reason, clientID	[ROLE_SERVICE]	None
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	ConnectToClientService	770	svc, idtype, theID	[ROLE_SERVICE]	None-or-value
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	EndAllGameSessions	969	remote	[ROLE_ADMIN|ROLE_SERVICE]	None
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	GetClientIDsFromID	576	idtype, theID, refresh	[ROLE_SERVICE]	None-or-value
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	GetLocalClientIDs	407		[ROLE_SERVICE]	value
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	GetProxyNodeFromID	564	idtype, theID, refresh	[ROLE_SERVICE]	value
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	GetSessionDetails	1008	clientID, sid	[ROLE_SERVICE]	None-or-value
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	GetSessionStatistics	785		[ROLE_SERVICE]	value
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	PerformHorridSessionAttributeUpdate	731	clientID, dict	[ROLE_SERVICE]	None-or-value
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	PerformSessionChange	451	sessionChangeReason, func, *args, **kw	[ROLE_SERVICE]	None-or-value
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	RemoveSessionsFromServer	983	nodeID, sessionIDs	[ROLE_SERVICE]	None
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	ResetClientConnection	885	clientID, sessionID	[ROLE_SERVICE]	value
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	TerminateClientConnections	941	reason, filter	[ROLE_SERVICE|ROLE_ADMIN]	value
+sessionMgr	SessionMgr	svc.sessionMgr	carbon/common/script/sys/sessions.py	359	UpdateSessionAttributes	680	idtype, theID, dict	[ROLE_SERVICE]	None-or-value
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	AddBookmark	149	name, url	[]	None
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	AddIgnoredSite	317	s	[]	None
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	AddTrustedSite	267	s, store	[]	None
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	GetBannedInChatList	479		[]	value
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	GetBookmarks	136		[]	value
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	GetBrowserBlacklist	471		[]	value
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	GetBrowserWhitelist	487		[]	value
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	GetTrustedSites	247		[]	value
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	IsIgnored	107	url	[]	value
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	IsTrusted	71	url	[]	value
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	OnBrowserLockdownChange	465	newValue	[]	None
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	OnFlaggedListsChange	573		[]	None
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	RemoveBookmark	144	urlKV	[]	None
+sites	SitesSvc	svc.sites	carbonui/control/browser/sites.py	34	RemoveTrustedSite	300	s	[]	None
+skillqueue	SkillQueueService	svc.skillqueue	eve/client/script/ui/services/skillQueueSvc.py	40	SkillInTraining	1506	skillTypeID	[]	None-or-value
+stateSvc	StateSvc	svc.stateSvc	eve/client/script/parklife/state.py	120	GetExclState	766	flag	[]	value
+stateSvc	StateSvc	svc.stateSvc	eve/client/script/parklife/state.py	120	GetStates	746	itemID, flags	[]	value
+stateSvc	StateSvc	svc.stateSvc	eve/client/script/parklife/state.py	120	RemoveWarOwners	293	ownerIDs	[]	None
+stateSvc	StateSvc	svc.stateSvc	eve/client/script/parklife/state.py	120	SetState	784	itemID, flag, value, *args	[]	None
+station	StationSvc	svc.station	eve/client/script/ui/station/base.py	58	CleanUp	171	storeCamera, clearGuestList	[]	None
+station	StationSvc	svc.station	eve/client/script/ui/station/base.py	58	ClearHint	523		[]	None
+station	StationSvc	svc.station	eve/client/script/ui/station/base.py	58	GetGuests	133		[]	value
+station	StationSvc	svc.station	eve/client/script/ui/station/base.py	58	GetServiceState	inherited	?	[]	unknown
+station	StationSvc	svc.station	eve/client/script/ui/station/base.py	58	GetStationItem	674		[]	value
+station	StationSvc	svc.station	eve/client/script/ui/station/base.py	58	GetSvc	423	svcname	[]	None-or-value
+station	StationSvc	svc.station	eve/client/script/ui/station/base.py	58	GiveHint	510	hintstr, left, top, width	[]	None
+station	StationSvc	svc.station	eve/client/script/ui/station/base.py	58	IsGuest	144	whoID	[]	value
+station	StationSvc	svc.station	eve/client/script/ui/station/base.py	58	LoadSvc	387	service, close	[]	None
+station	StationSvc	svc.station	eve/client/script/ui/station/base.py	58	SelectShipDlg	620		[]	None
+station	StationSvc	svc.station	eve/client/script/ui/station/base.py	58	Setup	211	reloading	[]	None
+station	StationSvc	svc.station	eve/client/script/ui/station/base.py	58	StopAllStationServices	205		[]	None
+target	TargetMgr	svc.target	eve/client/script/parklife/targetMgr.py	51	CancelAddTarget	1505	tid	[]	None
+target	TargetMgr	svc.target	eve/client/script/parklife/targetMgr.py	51	ClearTargets	1646		[]	None
+target	TargetMgr	svc.target	eve/client/script/parklife/targetMgr.py	51	FailLockTarget	1495	tid	[]	None
+target	TargetMgr	svc.target	eve/client/script/parklife/targetMgr.py	51	GetActiveTargetID	1650		[]	None-or-value
+target	TargetMgr	svc.target	eve/client/script/parklife/targetMgr.py	51	GetTargeting	1418		[]	value
+target	TargetMgr	svc.target	eve/client/script/parklife/targetMgr.py	51	GetTargets	1657		[]	value
+target	TargetMgr	svc.target	eve/client/script/parklife/targetMgr.py	51	LockTarget	1579	tid, autotargeting	[]	None
+target	TargetMgr	svc.target	eve/client/script/parklife/targetMgr.py	51	StartLockTarget	1476	tid, autotargeting	[]	None
+target	TargetMgr	svc.target	eve/client/script/parklife/targetMgr.py	51	UnlockTarget	1611	tid	[]	None
+trainer	TrainerService	svc.trainer	eve/devtools/script/svc_trainer.py	36	Show	106		[]	None
+usure	YouSureBoutThat	svc.usure	eve/client/script/ui/services/usure.py	23	ConfirmGeneric	30	msgKey, msgTimeout, **kw	[ROLE_SERVICE]	value
+war	Wars	svc.war	eve/client/script/ui/services/wars/war_cso.py	32	AreInAnyHostileWarStates	191	ownerID	[]	value
+war	Wars	svc.war	eve/client/script/ui/services/wars/war_cso.py	32	GetRelationship	168	ownerID	[]	value
+war	Wars	svc.war	eve/client/script/ui/services/wars/war_cso.py	32	GetWars	122	ownerID, forceRefresh	[]	value
+xmlrpcClient	XmlrpcClient	svc.xmlrpcClient	carbon/common/script/net/xmlrpcClient.py	122	GetProxy	144	uri, proxyClass, proxyArgs	[ROLE_SERVICE]	None-or-value
+xmlrpcClient	XmlrpcClient	svc.xmlrpcClient	carbon/common/script/net/xmlrpcClient.py	122	Proxy	217	uri, proxyClass, proxyArgs	[ROLE_SERVICE]	generator
+xmlrpcClient	XmlrpcClient	svc.xmlrpcClient	carbon/common/script/net/xmlrpcClient.py	122	ReturnProxy	153	key, proxy, discard	[ROLE_SERVICE]	None

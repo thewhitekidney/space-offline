@@ -1,0 +1,18 @@
+surface	transport	calls_or_pushes	server_today	if_silent	value	packet	doc_section
+sensor overlay / probe scanner sites / warp	macho push+bound	SignalTrackerRegister; GetFullState; OnSignalTrackerFullState; OnSignalTracker{Anomaly,Signature,Structure}Update; OnCosmicAnomalyAdded/Removed; OnCosmicSignatureAdded	GetFullState 4x{}; no push	EMPTY	highest	K2,K3	2
+site entry and objectives	macho push	OnEnteringDungeonRoom; OnDungeonValues; OnDungeonMessage; OnDungeonCompleted; OnExitingDungeon; keeper.GetCurrentDungeonForCharacter; slim dunObjectID	none	EMPTY (DEGRADES without dunObjectID)	high	K5	4
+Agency site lists	macho	dungeonInstanceCacheMgr.Get*Instances / *Count / GetSignatureInstances	Instances {}; Count+Signature None	BREAKS (bounded 5s stall)	high	K1,K4	3
+factional warfare	macho	fwWarzoneSolarsystem.*; fwVictoryPointMgr.*; GetFactionWarfareBattlefieldInstances; facWarMgr.*; OnWarzoneOccupationStateUpdated; OnVictoryPointStateUpdated	local (ssid,None), all {}; GetAllWarzones/GetHQSystemIDs/VP unanswered	BREAKS dashboard; VP in warzones	high	K1,K6	5
+solar-system interference	macho	solarsystemInterferenceMgr.GetLocalInterferenceState / GetAllInterferenceBands; OnSolarsystemInterferenceChanged	unrouted	BREAKS tooltip in low/null	medium	K1,K7	6
+dynamicResourceCacheMgr	macho	GetDynamicResourceSettings; GetDBSMapData; GetESSAgencyData; GetESSReserveBankKeys; GetESSSystemDetails	unrouted	BREAKS map filter/tooltips	low	K1	6
+ESS	macho	essMgr.*; OnSystemESSDataChanged	flag off, None	EMPTY	medium later	-	6
+world-event tales	macho push+gateway	OnTaleData; taleMgr.GetGlobalWorldEventTales; get_active_tales_by_template	[] ; by_template None	EMPTY / BREAKS caller	medium	K1,K8	7
+epic arcs	macho	agentMgr.GetMyEpicArcStatus; GetMessagesForEpicArcMissions; epicArcStatus.AgentHasEpicMissionsForCharacter; OnEpicJournalChange	{} ; messages None	DEGRADES	low-medium	K1	9
+incursions	macho push	OnTaleData; OnTaleRemove; OnInfluenceUpdate; map.GetIncursionGlobalReport; rewardMgr.*	[] ; rewardMgr unrouted	EMPTY / BREAKS LP panel	low	K1	7
+insurgency/corruption	macho+gateway	insurgencySolarsystem.*; OnInsurgencyCampaign*; pirate.corruption/suppression gateway	empties	EMPTY + gateway timeout	low	-	6
+newactivities	macho	activityMgr.GetActivityBadgeStatuses / ActivitySeen / Get/SetActivitiesPopState	unrouted	BREAKS when a row is in window	none	K1	8
+seasons/challenges	macho	seasonManager.*; OnChallenge*; OnSeason*	None (CCP off)	EMPTY	low	-	8
+login rewards/milestones	macho	loginCampaignManager; seasonalLoginCampaignManager; milestoneMgr	CCP off values	EMPTY	none	-	8
+achievements/daily/career/corp goals/campaigns	gateway	eve_public *_pb2 requests	not served	EMPTY after timeout; achievements DEGRADES	low until P6.2	-	8
+agents in space/void space/operations	macho	WarpToAgentInSpace; voidSpaceMgr.*; operationsManager.*	none / False	EMPTY	low	-	9
+pirate strongholds	macho	custom_agency_provider.get_content_data	unrouted	DEGRADES (len(None))	none	K1	9

@@ -1,0 +1,36 @@
+[package]
+name = "eve-bot"
+version.workspace = true
+edition.workspace = true
+license-file.workspace = true
+publish.workspace = true
+
+[dependencies]
+eve-marshal = { path = "../eve-marshal" }
+eve-proto = { path = "../eve-proto" }
+# **The bot depends on the server, which reads backwards and is deliberate.**
+#
+# `crypto_hash` -- and the `blue_marshal` encoder and `crc_hqx` beneath it --
+# live in `eve-server/src/wire.rs`, and the handshake's signature check is a
+# CRC over bytes whose tag choices are load-bearing: a short string written as
+# `0x10` instead of `0x13` hashes differently and the client rejects the login
+# with "Server response signature incorrect". Reimplementing that here would
+# duplicate protocol code whose whole value is being exactly right, and a
+# second copy drifts.
+#
+# The clean home for those three is `eve-proto`, which both sides could then
+# use without this edge. Moving them is a refactor of the crypto path, so it
+# wants a deliberate commit of its own rather than arriving as a side effect of
+# the first bot. `docs/archive/plan-bots.md` section 5 records it.
+eve-server = { path = "../eve-server" }
+# The chat client the server's own chat tests use: std-only, and it sends the
+# EVE client's byte-exact XMPP templates, so a bot's chat is the client's
+# chat (`src/chat.rs`). Zero external crates, as everywhere.
+eve-xmpp = { path = "../eve-xmpp" }
+# The economy module's tables and the one Local line it defines: bots read
+# `motherlode::heard` and `tunables` from the module that writes them, so the
+# machine part of the line has one definition (L7 BOT-ECON, issue #34).
+eve-mod-econ = { path = "../eve-mod-econ" }
+
+[lints]
+workspace = true

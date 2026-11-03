@@ -1,0 +1,8 @@
+# DEV-MODE roster for a fleet-fight bench: tools/dev-world.sh brawl --brawl --home Amamake --client
+# Two small fleets to start; grow both sides from the client console with /bots spawn (GM), e.g.
+#   /bots spawn rfb red hunter 50 role Rifter 30002537
+#   /bots spawn bmb blue hunter 50 role Merlin 30002537
+# Group names are letters only: a bot is <group><n>, so a digit in a group name can collide.
+# Every spawn into one system docks at its first station, so both sides undock onto one grid.
+rfa	red	hunter	10	role	Rifter
+bma	blue	hunter	10	role	Merlin

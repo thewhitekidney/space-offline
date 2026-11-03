@@ -1,0 +1,15 @@
+# Authored LP store offers (C4 §5.2): our numbers, not CCP's. Applied by
+# tools/content_lp.py over the derived offers; the result is the bundle's
+# agents/lp-offers.tsv. The server never reads this file; edit it and
+# tools/up.sh re-extracts (the bundle's manifest records it as an `input`).
+#
+# table_id: an npccorporations.lpOfferTables id. type_id: the product.
+# action: `remove` drops a derived offer; `price` re-prices one (lp_cost and
+# isk_cost, both 0 or more; on a type the table lacks it adds it); `add` adds
+# an offer of qty 1 with no required items. The FW and special tables derive
+# nothing (C4 §5.2, deferred), so `add` rows are how they get offers.
+# why: the falsifier, [A].
+#
+# Ships with no rows. Example (invented, so commented out):
+# 9901	990001	price	3000	3000000	[A] invented example row
+table_id	type_id	action	lp_cost	isk_cost	why

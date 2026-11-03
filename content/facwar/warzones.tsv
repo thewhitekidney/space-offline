@@ -1,0 +1,25 @@
+# The factional-warfare warzones: the two militias of each, and their HQs.
+# Read by the server (`facwar::WARZONES`, CP18); header frozen in
+# docs/content/schema.md §4. Edit and restart; no re-extract needed.
+#
+# What is authored here, and why (docs/content/R-FW.md §2):
+# - The warzone *systems* are NOT here. The client ships them
+#   (warzonespositiondata via fsd.rows); the `facwar` section of
+#   tools/content.py (FW-3) extracts them to facwar/systems.tsv in the bundle.
+#   Without that file the server falls back to a rule (low-sec systems of a
+#   militia faction plus the HQs), which draws far too many systems [A].
+# - warzone_id, faction_a, faction_b: the client's warzone ids (the keys of
+#   warzonespositiondata) and which militias fight in each. [V-data] R-FW §2:
+#   warzone 1's territory systems are all Amarr or Minmatar, warzone 2's all
+#   Caldari or Gallente. The pairing is not in that list (it names only systems),
+#   so it is written down once, here.
+# - hq_a, hq_b: each militia's headquarters system. [A], every row: no client
+#   file names a militia HQ. Each is a territory system of its own warzone
+#   held by that faction (R-FW §2).
+#
+# Every row must keep both factions distinct and both HQs set:
+# GetAllWarzones may never be empty (a client IndexError), and GetHQSystemIDs
+# must name a real system for every warzone faction.
+warzone_id	faction_a	faction_b	hq_a	hq_b	why
+1	500003	500002	30002960	30002537	pairing [V-data] R-FW §2; HQs [A]: falsified by the FW dashboard or the Agency naming another HQ
+2	500001	500004	30045346	30005297	pairing [V-data] R-FW §2; HQs [A]: falsified by the FW dashboard or the Agency naming another HQ

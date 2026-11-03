@@ -1,0 +1,20 @@
+# The price oracle's meta-group multipliers (C5 §3.2 step 4), applied by
+# tools/content_econ.py when it writes out/content/econ/prices.tsv. The server
+# never reads this file; edit it and tools/up.sh re-extracts (the bundle's
+# manifest records it as an `input`).
+#
+# A type that no recipe, schematic or basePrice prices, but that has a
+# variationParentTypeID with a price, is priced P_ref(parent) x mult of its
+# own metaGroupID. A meta group with no row here gives no parent price.
+#
+# Every value is [A] (C5 §3.2): the client's own basePrice ratios are too
+# noisy to fit (meta 4 spans 0.5-3.3 at p10-p90). Tune a row, never the code.
+# meta_group_id is the client's metaGroupID vocabulary (C5 §2.1).
+meta_group_id	mult	why
+1	1.0	[A] T1 variant at its parent's price; falsifier: a T1 variant players find mispriced against its parent
+2	1.0	[A] T2 normally prices by recipe, this is the fallback; falsifier: a T2 type priced here that players find off
+3	2.0	[A] storyline; falsifier: a storyline module players find mispriced
+4	5.0	[A] faction; falsifier: a faction module players find mispriced
+5	20.0	[A] officer; falsifier: an officer module players find mispriced
+6	8.0	[A] deadspace; falsifier: a deadspace module players find mispriced
+14	1.0	[A] C5 §3.2's table; falsifier: a meta-14 type players find mispriced

@@ -1,0 +1,52 @@
+# Character-select services: everything a session with charid == None can ask
+# for. Taken from the order the real V24.01 client issues them in
+# /tmp/evejs-session.pcap, so every line here is a call some server has
+# answered for a real client at this point in the session.
+#
+#   probe run --script crates/eve-probe/scripts/charsel.probe --out <dir>
+
+note stage 4a: what the proxy advertises
+call machoNet.GetServiceInfo
+call machoNet.GetTime
+
+note stage 4b: the config service, which is the static-data cache
+call config.GetBlackListedPlanets
+call config.GetOldStationData
+call config.GetAverageMarketPrices
+call config.GetMultiOwnersEx [1]
+call config.GetMultiLocationsEx [60003760]
+
+note stage 4c: the character list and what hangs off it
+call charUnboundMgr.GetCharacterSelectionData
+call charUnboundMgr.GetCohortsForUser
+call charUnboundMgr.GetNumCharacters
+call charUnboundMgr.GetQAStarterSystemIDs
+call charUnboundMgr.GetValidRandomName 1
+
+note stage 4d: account, store and campaign state
+call account.GetCashBalance 0
+call subscriptionMgr.GetCloneGrade
+call raffleProxy.AmIBanned
+call userSvc.GetRedeemTokens
+call loginCampaignManager.get_client_campaign_state
+call seasonalLoginCampaignManager.get_active_campaign
+call air_npe.is_air_npe_enabled
+
+note stage 4e: the market, which only a server can author
+call marketProxy.StartupCheck
+call marketProxy.GetRegionBest 10000002
+call marketProxy.GetOrders 10000002, 34
+call marketProxy.GetNewPriceHistory 10000002, 34
+call marketProxy.GetOldPriceHistory 10000002, 34
+
+note stage 4f: agents, standings and the map
+call agentMgr.GetAgents
+call standingMgr.GetNPCNPCStandings
+call standingMgr.GetCharStandings
+call map.GetSecurityModifiedSystems
+call securityMgr.get_modified_systems
+call stationSvc.GetAllianceSystems
+call structureDirectory.GetStructureMapData
+
+note stage 4g: drain anything that follows
+drain 4000

@@ -1,0 +1,14 @@
+# Log check for X-PI3-H1 (docs/lanes/x-pi3.md): a pi_farmer makes P3 or P4.
+# No client part: the human step is a farmer's act lines, for which there is no
+# scriptable client route (lane fci-catchup, docs/lanes/fci-catchup.md).  Run a
+# bots session with PI farmers and the skills trained (`/giveskill 2495 3`,
+# `/giveskill 2505 2`), two game hours per real minute, let a farmer make its
+# second colony, then:
+#     python3 -I tools/client-ci/server-expect.py x_pi3
+#
+# BOTS-EXPECT:   present \+[0-9:.]+ pi\s.*it makes P3/P4
+# BOTS-EXPECT:   absent  the P3 routes:
+# BOTS-EXPECT:   absent  CannotRoute
+# BOTS-EXPECT:   absent  CannotImport
+# SERVER-EXPECT: absent  UNANSWERED (planetMgr|planetOrbitalRegistryBroker)
+# SERVER-EXPECT: absent  panicked at

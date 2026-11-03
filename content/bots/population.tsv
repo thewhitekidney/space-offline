@@ -1,0 +1,28 @@
+# PRIME-TIME (lane bot-polish): when bots start their daily session. hour (UTC) TAB weight.
+# The evening peak is a European evening, 17-21 UTC, with a smaller bump 00-03 UTC.
+# Every weight is [A]: falsified by players finding the server empty at their play hours or
+# crowded at 05:00. Weights are relative; the file needs all 24 hours.
+0	3
+1	3
+2	3
+3	2
+4	1
+5	1
+6	1
+7	1
+8	1
+9	1
+10	1
+11	1
+12	2
+13	2
+14	2
+15	3
+16	4
+17	7
+18	8
+19	8
+20	8
+21	6
+22	4
+23	3

@@ -1,0 +1,8960 @@
+{
+ "generated_by": "tools/scan_bound.py",
+ "establishes": "bound-object (util.Moniker) services and the methods the client calls on them, derived from client bytecode",
+ "pyc_root": "out/pyc",
+ "modules_parsed": 12789,
+ "modules_unparseable": [],
+ "fixpoint_passes": 6,
+ "moniker_local_api": {
+  "note": "uppercase attributes handled locally by Moniker / MachoObjectConnection, therefore not remote methods; derived from the client, not hardcoded",
+  "names": {
+   "Bind": [
+    "carbon/common/script/net/moniker.pyc::Moniker"
+   ],
+   "FromURLString": [
+    "carbon/common/script/net/moniker.pyc::Moniker"
+   ],
+   "GetNodeID": [
+    "carbon/common/script/net/moniker.pyc::Moniker"
+   ],
+   "GetSelfLocal": [
+    "carbon/common/script/net/moniker.pyc::Moniker"
+   ],
+   "MonikeredCall": [
+    "carbon/common/script/net/moniker.pyc::Moniker"
+   ],
+   "PerformSessionCheck": [
+    "carbon/common/script/net/ObjectCallGPCS.pyc::MachoObjectConnection"
+   ],
+   "QuickResolve": [
+    "carbon/common/script/net/moniker.pyc::Moniker"
+   ],
+   "RegisterObjectChangeHandler": [
+    "carbon/common/script/net/ObjectCallGPCS.pyc::MachoObjectConnection",
+    "carbon/common/script/net/moniker.pyc::Moniker.__remobsuppmeth__"
+   ],
+   "Resolve": [
+    "carbon/common/script/net/moniker.pyc::Moniker"
+   ],
+   "SetSessionCheck": [
+    "carbon/common/script/net/ObjectCallGPCS.pyc::MachoObjectConnection",
+    "carbon/common/script/net/moniker.pyc::Moniker"
+   ],
+   "ToURLString": [
+    "carbon/common/script/net/moniker.pyc::Moniker"
+   ],
+   "UnRegisterObjectChangeHandler": [
+    "carbon/common/script/net/ObjectCallGPCS.pyc::MachoObjectConnection",
+    "carbon/common/script/net/moniker.pyc::Moniker.__remobsuppmeth__"
+   ],
+   "Unbind": [
+    "carbon/common/script/net/moniker.pyc::Moniker"
+   ],
+   "Unresolve": [
+    "carbon/common/script/net/moniker.pyc::Moniker"
+   ]
+  }
+ },
+ "summary": {
+  "moniker_service_names": 29,
+  "services_with_methods": 24,
+  "service_method_pairs": 378,
+  "distinct_method_names": 365
+ },
+ "moniker_service_names": [
+  "abyssal_content_manager",
+  "agentMgr",
+  "allianceRegistry",
+  "beyonce",
+  "charMgr",
+  "corpRegistry",
+  "corpStationMgr",
+  "crimewatch",
+  "dogmaIM",
+  "entity",
+  "fleetObjectHandler",
+  "i2",
+  "insuranceSvc",
+  "invbroker",
+  "jumpCloneSvc",
+  "keeper",
+  "missionMgr",
+  "planetBaseBroker",
+  "planetMgr",
+  "planetOrbitalRegistryBroker",
+  "populationCap",
+  "posMgr",
+  "repairSvc",
+  "reprocessingSvc",
+  "ship",
+  "structure",
+  "tourneyMgr",
+  "warRegistry",
+  "warStatisticMgr"
+ ],
+ "bind_sites": {
+  "abyssal_content_manager": [
+   {
+    "module": "eve/devtools/script/abyssal_content_tool.pyc",
+    "function": "<module>.AbyssalContentToolWindow.create_abyss_encounter",
+    "offset": 122,
+    "bind_params": "session.solarsystemid2"
+   },
+   {
+    "module": "eve/devtools/script/abyssal_content_tool.pyc",
+    "function": "<module>.AbyssalContentToolWindow.create_content",
+    "offset": 21,
+    "bind_params": "session.solarsystemid2"
+   },
+   {
+    "module": "eve/devtools/script/abyssal_content_tool.pyc",
+    "function": "<module>.AbyssalContentToolWindow.load_plan_from_grid",
+    "offset": 0,
+    "bind_params": "session.solarsystemid2"
+   }
+  ],
+  "agentMgr": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetAgent",
+    "offset": 82,
+    "bind_params": "agentID"
+   }
+  ],
+  "allianceRegistry": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetAllianceEx",
+    "offset": 48,
+    "bind_params": "(allianceID, isMaster)"
+   }
+  ],
+  "beyonce": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetBallPark",
+    "offset": 0,
+    "bind_params": "solarsystemID"
+   }
+  ],
+  "charMgr": [
+   {
+    "module": "eve/client/script/environment/invCache.pyc",
+    "function": "<module>.invCache.GetInventory",
+    "offset": 280,
+    "bind_params": "(session.charid, containerid)"
+   }
+  ],
+  "corpRegistry": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetCorpRegistryEx",
+    "offset": 0,
+    "bind_params": "corpID"
+   }
+  ],
+  "corpStationMgr": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetCorpStationManagerEx",
+    "offset": 0,
+    "bind_params": "stationID"
+   }
+  ],
+  "crimewatch": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.CharGetCrimewatchLocation",
+    "offset": 0,
+    "bind_params": "GetLocationBindParams()"
+   }
+  ],
+  "dogmaIM": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.CharGetDogmaLocation",
+    "offset": 0,
+    "bind_params": "GetLocationBindParams()"
+   },
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetStationDogmaLocation",
+    "offset": 0,
+    "bind_params": "(session.stationid, const.groupStation)"
+   }
+  ],
+  "entity": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetEntityAccess",
+    "offset": 15,
+    "bind_params": "session.solarsystemid2"
+   },
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetEntityLocation",
+    "offset": 15,
+    "bind_params": "session.solarsystemid2"
+   }
+  ],
+  "fleetObjectHandler": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetFleet",
+    "offset": 15,
+    "bind_params": "fleetID"
+   }
+  ],
+  "i2": [
+   {
+    "module": "eve/devtools/script/svc_dgmattr.pyc",
+    "function": "<module>.AttributeInspector.Refresh",
+    "offset": 337,
+    "bind_params": "GetLocationBindParams()"
+   }
+  ],
+  "insuranceSvc": [
+   {
+    "module": "eve/client/script/ui/station/insurance/base_insurance.pyc",
+    "function": "<module>.InsuranceSvc.GetInsuranceMgr",
+    "offset": 122,
+    "bind_params": "(dockableLocation, locationID, locationGroup)"
+   }
+  ],
+  "invbroker": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetSolarSystemInventoryMgr",
+    "offset": 0,
+    "bind_params": "(solarsystemID, const.groupSolarSystem)"
+   },
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetStationInventoryMgr",
+    "offset": 0,
+    "bind_params": "(stationID, const.groupStation)"
+   }
+  ],
+  "jumpCloneSvc": [
+   {
+    "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+    "function": "<module>.CloneJump.GetLM",
+    "offset": 18,
+    "bind_params": "(session.solarsystemid, const.groupSolarSystem)"
+   },
+   {
+    "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+    "function": "<module>.CloneJump.GetLM",
+    "offset": 43,
+    "bind_params": "(session.stationid, const.groupStation)"
+   }
+  ],
+  "keeper": [
+   {
+    "module": "eve/devtools/script/svc_slash.pyc",
+    "function": "<module>.SlashService.cmd_dgoto",
+    "offset": 25,
+    "bind_params": "session.userid"
+   },
+   {
+    "module": "eve/devtools/script/svc_slash.pyc",
+    "function": "<module>.SlashService.cmd_dplay",
+    "offset": 144,
+    "bind_params": "session.userid"
+   }
+  ],
+  "missionMgr": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetCourierMissionCreator",
+    "offset": 0,
+    "bind_params": "('courier', stationID)"
+   }
+  ],
+  "planetBaseBroker": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetPlanetBaseManager",
+    "offset": 0,
+    "bind_params": "planetID"
+   }
+  ],
+  "planetMgr": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetPlanet",
+    "offset": 0,
+    "bind_params": "planetID"
+   }
+  ],
+  "planetOrbitalRegistryBroker": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetPlanetOrbitalRegistry",
+    "offset": 0,
+    "bind_params": "solarSystemID"
+   }
+  ],
+  "populationCap": [
+   {
+    "module": "eve/client/script/ui/login/charSelection/characterSelection.pyc",
+    "function": "<module>.CharacterSelection.TryEnterGame",
+    "offset": 89,
+    "bind_params": "(charID, appConst.groupCharacter)"
+   }
+  ],
+  "posMgr": [
+   {
+    "module": "eve/client/script/environment/invCache.pyc",
+    "function": "<module>.invCacheContainer.GetSiloCapacityByItemID",
+    "offset": 0,
+    "bind_params": "session.solarsystemid"
+   },
+   {
+    "module": "eve/client/script/ui/inflight/moonmining.pyc",
+    "function": "<module>.MoonMining.ApplyAttributes",
+    "offset": 319,
+    "bind_params": "session.solarsystemid"
+   },
+   {
+    "module": "eve/client/script/ui/services/menusvc.pyc",
+    "function": "<module>.MenuSvc.AnchorOrbital",
+    "offset": 0,
+    "bind_params": "session.solarsystemid"
+   },
+   {
+    "module": "eve/client/script/ui/services/menusvc.pyc",
+    "function": "<module>.MenuSvc.UnanchorOrbital",
+    "offset": 0,
+    "bind_params": "session.solarsystemid"
+   },
+   {
+    "module": "eve/client/script/ui/shared/planet/orbitalMaterialUI.pyc",
+    "function": "<module>.OrbitalMaterialUI.InitiateUpgrade",
+    "offset": 0,
+    "bind_params": "session.solarsystemid"
+   },
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetPOSMgr",
+    "offset": 15,
+    "bind_params": "session.solarsystemid"
+   }
+  ],
+  "repairSvc": [
+   {
+    "module": "eve/client/script/ui/station/repairshop/base_repairshop.pyc",
+    "function": "<module>.RepairSvc.GetRemoteRepairMgr",
+    "offset": 122,
+    "bind_params": "(dockableLocation, locationID, locationGroup)"
+   },
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetRepairManager",
+    "offset": 54,
+    "bind_params": "(locationID, parentLocationID, locationGroup)"
+   }
+  ],
+  "reprocessingSvc": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetReprocessingManagerEx",
+    "offset": 0,
+    "bind_params": "stationID"
+   }
+  ],
+  "ship": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetShipAccess",
+    "offset": 9,
+    "bind_params": "(session.solarsystemid, const.groupSolarSystem)"
+   },
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetShipAccess",
+    "offset": 71,
+    "bind_params": "(session.stationid, const.groupStation)"
+   },
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetStationShipAccess",
+    "offset": 0,
+    "bind_params": "(session.stationid, const.groupStation)"
+   }
+  ],
+  "structure": [
+   {
+    "module": "eve/client/script/ui/services/menuSvcExtras/invItemFunctions.pyc",
+    "function": "<module>.JettisonStructureFuel",
+    "offset": 43,
+    "bind_params": "session.structureid"
+   }
+  ],
+  "tourneyMgr": [
+   {
+    "module": "eve/devtools/script/form_tournament.pyc",
+    "function": "<module>.TournamentWindow.ApplyAttributes",
+    "offset": 42,
+    "bind_params": "session.solarsystemid"
+   },
+   {
+    "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+    "function": "<module>.TournamentRefereeTool.StartMatch",
+    "offset": 1303,
+    "bind_params": "self.solSystemSelect.GetValue()"
+   },
+   {
+    "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+    "function": "<module>.TournamentRefereeTool.TeleportRef",
+    "offset": 0,
+    "bind_params": "self.solSystemSelect.GetValue()"
+   },
+   {
+    "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+    "function": "<module>.TournamentRefereeTool.TeleportRefHome",
+    "offset": 0,
+    "bind_params": "self.solSystemSelect.GetValue()"
+   }
+  ],
+  "warRegistry": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetWarEx",
+    "offset": 48,
+    "bind_params": "(allianceOrCorpID, isMaster)"
+   }
+  ],
+  "warStatisticMgr": [
+   {
+    "module": "eve/common/script/net/eveMoniker.pyc",
+    "function": "<module>.GetWarStatistic",
+    "offset": 0,
+    "bind_params": "warID"
+   }
+  ]
+ },
+ "services": {
+  "abyssal_content_manager": {
+   "GenerateAbyssEncounterContent": {
+    "arities": [
+     "6"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/abyssal_content_tool.pyc",
+      "function": "<module>.AbyssalContentToolWindow.create_abyss_encounter",
+      "offset": 146,
+      "how": "local",
+      "args": "6"
+     }
+    ]
+   },
+   "GenerateContentFromExistingPlan": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/abyssal_content_tool.pyc",
+      "function": "<module>.AbyssalContentToolWindow.create_content",
+      "offset": 45,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "GetContentDetailsForShipLocation": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/abyssal_content_tool.pyc",
+      "function": "<module>.AbyssalContentToolWindow.load_plan_from_grid",
+      "offset": 21,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   }
+  },
+  "allianceRegistry": {
+   "AddAllianceContact": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.AddAllianceContact",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "AddBulletin": {
+    "arities": [
+     "2",
+     "2+2kw"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.AddBulletin",
+      "offset": 65,
+      "how": "accessor-module",
+      "args": "2"
+     },
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.UpdateBulletin",
+      "offset": 27,
+      "how": "accessor-module",
+      "args": "2+2kw"
+     }
+    ]
+   },
+   "AssignLabels": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.AssignLabels",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "CancelCapitalSystemTransition": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.CancelCapitalSystemTransition",
+      "offset": 9,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "CreateLabel": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.CreateLabel",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "DeclareWarAgainst": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.DeclareWarAgainst",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "DeleteBulletin": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.DeleteBulletin",
+      "offset": 168,
+      "how": "accessor-module",
+      "args": "1"
+     }
+    ]
+   },
+   "DeleteLabel": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.DeleteLabel",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "EditAllianceContact": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.EditAllianceContact",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "EditContactsRelationshipID": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.EditContactsRelationshipID",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "EditLabel": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.EditLabel",
+      "offset": 9,
+      "how": "accessor",
+      "args": "3"
+     }
+    ]
+   },
+   "GMForceAcceptApplication": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.GMAcceptApplication",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "GetAllianceContacts": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.GetContactList",
+      "offset": 22,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetAllianceSovereigntyStructuresInfo": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/sovSvc.pyc",
+      "function": "<module>.SovService.GetSovereigntyStructuresInfoForAlliance",
+      "offset": 49,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "GetBillBalance": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.GetBillBalance",
+      "offset": 102,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "GetBills": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.GetBills",
+      "offset": 102,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetBillsReceivable": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.GetBillsReceivable",
+      "offset": 102,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetBulletins": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.GetAllianceBulletins",
+      "offset": 48,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetCapitalSystemInfo": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.GetCapitalSystemInfo",
+      "offset": 9,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetLabels": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.GetLabels",
+      "offset": 9,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetPrimeTimeInfo": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.GetPrimeTimeInfo",
+      "offset": 9,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "PayBill": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.PayBill",
+      "offset": 74,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "RemoveAllianceContacts": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.RemoveAllianceContacts",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "RemoveLabels": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.RemoveLabels",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "SetCapitalSystem": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.SetCapitalSystem",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "SetPrimeHour": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.SetPrimeHour",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "UpdateBulletinOrder": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/alliances/all_cso.pyc",
+      "function": "<module>.Alliances.UpdateBulletinOrder",
+      "offset": 18,
+      "how": "accessor-module",
+      "args": "1"
+     }
+    ]
+   }
+  },
+  "beyonce": {
+   "BookmarkLocation": {
+    "arities": [
+     "5+1kw"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/bookmarks/bookmarkSvc.pyc",
+      "function": "<module>.BookmarkSvc.ACLBookmarkLocation",
+      "offset": 195,
+      "how": "local",
+      "args": "5+1kw"
+     }
+    ]
+   },
+   "BookmarkScanResult": {
+    "arities": [
+     "6+1kw"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/bookmarks/bookmarkSvc.pyc",
+      "function": "<module>.BookmarkSvc.ACLBookmarkScanResult",
+      "offset": 98,
+      "how": "accessor-module",
+      "args": "6+1kw"
+     }
+    ]
+   },
+   "CallComponentFromClient": {
+    "arities": [
+     "3",
+     "3+*a+**kw",
+     "3+1kw",
+     "5"
+    ],
+    "call_sites": 14,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/movementFunctions.pyc",
+      "function": "<module>.RealActivateRandomFilamentGate",
+      "offset": 27,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "jumpbridge/client/jumpBridge.pyc",
+      "function": "<module>.GetJumpBridgeInfo",
+      "offset": 31,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "spacecomponents/client/components/itemTraderNew.pyc",
+      "function": "<module>.ItemTrader.CallServerComponent",
+      "offset": 24,
+      "how": "local",
+      "args": "3+*a+**kw"
+     },
+     {
+      "module": "spacecomponents/client/components/itemtrader_legacy.pyc",
+      "function": "<module>.ItemTrader.CallServerComponent",
+      "offset": 24,
+      "how": "local",
+      "args": "3+*a+**kw"
+     },
+     {
+      "module": "spacecomponents/client/components/linkWithShip.pyc",
+      "function": "<module>.InitiateLink",
+      "offset": 15,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "spacecomponents/client/components/linkWithShip.pyc",
+      "function": "<module>.InitiateLinkQuick",
+      "offset": 15,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "spacecomponents/client/components/mercenaryDen.pyc",
+      "function": "<module>.extract_infomorphs_to_ship",
+      "offset": 36,
+      "how": "local",
+      "args": "5"
+     },
+     {
+      "module": "spacecomponents/client/components/microJumpDriver.pyc",
+      "function": "<module>.ActivateMicroJumpDrive",
+      "offset": 15,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "spacecomponents/client/components/orbitalSkyhook.pyc",
+      "function": "<module>.ExtractReagentsToShip",
+      "offset": 24,
+      "how": "local",
+      "args": "5"
+     },
+     {
+      "module": "spacecomponents/client/components/orbitalSkyhook.pyc",
+      "function": "<module>.OrbitalSkyhook.is_character_authorised",
+      "offset": 24,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "spacecomponents/client/components/phaseStabilizer.pyc",
+      "function": "<module>.ConnectShip",
+      "offset": 15,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "spacecomponents/client/components/towGameObjective.pyc",
+      "function": "<module>._StartTowing",
+      "offset": 24,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "spacecomponents/client/components/towGameObjective.pyc",
+      "function": "<module>._StopTowing",
+      "offset": 24,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "spacecomponents/client/components/underConstruction.pyc",
+      "function": "<module>.UnderConstruction.DepositItemsFromShip",
+      "offset": 24,
+      "how": "local",
+      "args": "3+1kw"
+     }
+    ]
+   },
+   "CmdAbandonLoot": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 2,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/menuFunctions.pyc",
+      "function": "<module>.AbandonAllLoot",
+      "offset": 293,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/menuFunctions.pyc",
+      "function": "<module>.AbandonLoot",
+      "offset": 162,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "CmdAbortSelfDestructStructure": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/menuFunctions.pyc",
+      "function": "<module>.AbortSelfDestructStructure",
+      "offset": 103,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "CmdAlignTo": {
+    "arities": [
+     "0+2kw"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc._AlignTo",
+      "offset": 159,
+      "how": "local",
+      "args": "0+2kw"
+     }
+    ]
+   },
+   "CmdBridgeToFleetDeployableBeacon": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/cynoTravelSvc.pyc",
+      "function": "<module>.CynoTravelSvc.BridgeToFleetDeployableBeacon",
+      "offset": 68,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "CmdBridgeToFleetModuleBeacon": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/cynoTravelSvc.pyc",
+      "function": "<module>.CynoTravelSvc.BridgeToFleetModuleBeacon",
+      "offset": 34,
+      "how": "local",
+      "args": "3"
+     }
+    ]
+   },
+   "CmdDock": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/movementFunctions.pyc",
+      "function": "<module>.RealDock",
+      "offset": 246,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "CmdFleetRegroup": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.Regroup",
+      "offset": 36,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "CmdFleetTagTarget": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.TagItem",
+      "offset": 30,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "CmdFollowBall": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 5,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/autopilot.pyc",
+      "function": "<module>.AutoPilot.AP_ApproachDestID",
+      "offset": 84,
+      "how": "local",
+      "args": "2"
+     },
+     {
+      "module": "eve/client/script/parklife/autopilot.pyc",
+      "function": "<module>.AutoPilot._HandleJumpUserErrors",
+      "offset": 191,
+      "how": "local",
+      "args": "2"
+     },
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/movementFunctions.pyc",
+      "function": "<module>.ShipApproach",
+      "offset": 176,
+      "how": "local",
+      "args": "2"
+     },
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/movementFunctions.pyc",
+      "function": "<module>._Ship_KeepAtRange",
+      "offset": 108,
+      "how": "local",
+      "args": "2"
+     },
+     {
+      "module": "eve/client/script/ui/shared/neocom/journal.pyc",
+      "function": "<module>.PlanetaryInteractionLaunchEntry.Approach",
+      "offset": 36,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "CmdGotoBookmark": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 2,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/movementFunctions.pyc",
+      "function": "<module>.ApproachLocation",
+      "offset": 161,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/shared/addressBookEntries.pyc",
+      "function": "<module>.PlaceEntry.Approach",
+      "offset": 30,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "CmdGotoDirection": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 6,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/scanSvc.pyc",
+      "function": "<module>.ScanSvc.AlignToPosition",
+      "offset": 96,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/ui/camera/cameraUtil.pyc",
+      "function": "<module>.SetShipDirection",
+      "offset": 179,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/ui/eveCommands.pyc",
+      "function": "<module>.EveCommandService.CmdAccelerate",
+      "offset": 197,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/ui/eveCommands.pyc",
+      "function": "<module>.EveCommandService.CmdSetShipFullSpeed",
+      "offset": 222,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/ui/inflight/shipHud/activeShipController.pyc",
+      "function": "<module>.ActiveShipController.SetMaxSpeed",
+      "offset": 190,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/ui/inflight/shipHud/activeShipController.pyc",
+      "function": "<module>.ActiveShipController.SetSpeed",
+      "offset": 426,
+      "how": "local",
+      "args": "3"
+     }
+    ]
+   },
+   "CmdGroupJumpToFleetDeployableBeacon": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/cynoTravelSvc.pyc",
+      "function": "<module>.CynoTravelSvc.GroupJumpToFleetDeployableBeacon",
+      "offset": 68,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "CmdGroupJumpToFleetModuleBeacon": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/cynoTravelSvc.pyc",
+      "function": "<module>.CynoTravelSvc.GroupJumpToFleetModuleBeacon",
+      "offset": 68,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "CmdJumpThroughFleet": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/cynoTravelSvc.pyc",
+      "function": "<module>.CynoTravelSvc.JumpThroughFleet",
+      "offset": 117,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "CmdJumpToFleetDeployableBeacon": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/cynoTravelSvc.pyc",
+      "function": "<module>.CynoTravelSvc.JumpToFleetDeployableBeacon",
+      "offset": 68,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "CmdJumpToFleetModuleBeacon": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/cynoTravelSvc.pyc",
+      "function": "<module>.CynoTravelSvc.JumpToFleetModuleBeacon",
+      "offset": 68,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "CmdOrbit": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/movementFunctions.pyc",
+      "function": "<module>._Ship_Orbit",
+      "offset": 124,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "CmdSelfDestructStructure": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/menuFunctions.pyc",
+      "function": "<module>.SelfDestructStructure",
+      "offset": 163,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "CmdSetSpeedFraction": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 6,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/autopilot.pyc",
+      "function": "<module>.AutoPilot.AP_ApproachDestID",
+      "offset": 34,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/parklife/autopilot.pyc",
+      "function": "<module>.AutoPilot._HandleJumpUserErrors",
+      "offset": 141,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/eveCommands.pyc",
+      "function": "<module>.EveCommandService.CmdSetShipFullSpeed",
+      "offset": 281,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/eveCommands.pyc",
+      "function": "<module>.EveCommandService.SetSpeedFraction",
+      "offset": 30,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/inflight/shipHud/activeShipController.pyc",
+      "function": "<module>.ActiveShipController.SetMaxSpeed",
+      "offset": 239,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/inflight/shipHud/activeShipController.pyc",
+      "function": "<module>.ActiveShipController.SetSpeed",
+      "offset": 475,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "CmdStargateJump": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 3,
+    "how": [
+     "accessor-module",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/autopilot.pyc",
+      "function": "<module>.AutoPilot.Update",
+      "offset": 1088,
+      "how": "accessor-module",
+      "args": "?"
+     },
+     {
+      "module": "eve/devtools/script/insider.pyc",
+      "function": "<module>.InsiderService.RegionGateTest",
+      "offset": 799,
+      "how": "accessor-module",
+      "args": "?"
+     },
+     {
+      "module": "stargate/client/gateJumpSvc.pyc",
+      "function": "<module>.GateJumpSvc.JumpThroughGate",
+      "offset": 404,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "CmdSteerDirection": {
+    "arities": [
+     "0+*a"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/flightControls.pyc",
+      "function": "<module>.FlightControls.OnGotoDirection",
+      "offset": 24,
+      "how": "local",
+      "args": "0+*a"
+     }
+    ]
+   },
+   "CmdStop": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 2,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/eveCommands.pyc",
+      "function": "<module>.EveCommandService.CmdStopShip",
+      "offset": 91,
+      "how": "local",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.Activate",
+      "offset": 138,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "CmdTransferCorpAssetOwnership": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 2,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/menuFunctions.pyc",
+      "function": "<module>.TransferCorporationOwnership",
+      "offset": 217,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/menuFunctions.pyc",
+      "function": "<module>.TransferOwnership",
+      "offset": 335,
+      "how": "local",
+      "args": "3"
+     }
+    ]
+   },
+   "CmdTurboDock": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/movementFunctions.pyc",
+      "function": "<module>.RealDock",
+      "offset": 212,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "CmdWarpToStuff": {
+    "arities": [
+     "2",
+     "2+**kw"
+    ],
+    "call_sites": 2,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/remote/michelle.pyc",
+      "function": "<module>.Michelle.CmdWarpToStuff",
+      "offset": 34,
+      "how": "local",
+      "args": "2+**kw"
+     },
+     {
+      "module": "eve/client/script/util/profiling.pyc",
+      "function": "<module>.ProfilingScheduler.WarpTo_thread",
+      "offset": 67,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "CmdWarpToStuffAutopilot": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/autopilot.pyc",
+      "function": "<module>.AutoPilot.AP_WarpToDestID",
+      "offset": 46,
+      "how": "accessor-module",
+      "args": "1"
+     }
+    ]
+   },
+   "GetBall": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 2,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.Activate",
+      "offset": 201,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.Activate",
+      "offset": 219,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "GetCapacityOfSiphon": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/bracketsAndTargets/siphonBracket.pyc",
+      "function": "<module>.SiphonSiloBracket.GetSiphonCapacityUsage",
+      "offset": 24,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "GetContainerExpiryDate": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/info/infosvc.pyc",
+      "function": "<module>.Info.UpdateDataSecureContainer",
+      "offset": 118,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "GetFleetLocationAndInfo": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.GetFleetLocationAndInfo",
+      "offset": 18,
+      "how": "accessor-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetFleetState": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/remote/michelle.pyc",
+      "function": "<module>.Michelle.GetFleetState",
+      "offset": 65,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetOperationSpawnpointPosition": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/remote/michelle.pyc",
+      "function": "<module>.Michelle.CanWarpToOperationSite",
+      "offset": 24,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "GetRelativity": {
+    "arities": [
+     "6"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/remote/michelle.pyc",
+      "function": "<module>.Michelle.GetRelativity",
+      "offset": 105,
+      "how": "accessor",
+      "args": "6"
+     }
+    ]
+   },
+   "GetSurfaceDist": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.Activate",
+      "offset": 252,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "UpdateStateRequest": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/remote/michelle.pyc",
+      "function": "<module>.Park._UpdateStateRequestThread",
+      "offset": 21,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   }
+  },
+  "corpRegistry": {
+   "AddBulletin": {
+    "arities": [
+     "2",
+     "2+2kw"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.AddBulletin",
+      "offset": 90,
+      "how": "accessor",
+      "args": "2"
+     },
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.UpdateBulletin",
+      "offset": 64,
+      "how": "accessor",
+      "args": "2+2kw"
+     }
+    ]
+   },
+   "AddCorporateContact": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.AddCorporateContact",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "ApplyToJoinAlliance": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.ApplyToJoinAlliance",
+      "offset": 37,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "AssignLabels": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.AssignLabels",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "CanBeKickedOut": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.CanKickOut",
+      "offset": 44,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "CanLeaveCurrentCorporation": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.CanLeaveCurrentCorporation",
+      "offset": 9,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "CharGetAllyBaseCost": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.RefreshAllyBaseCost",
+      "offset": 9,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "CreateLabel": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.CreateLabel",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "DeclareWarAgainst": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.DeclareWarAgainst",
+      "offset": 9,
+      "how": "accessor-module",
+      "args": "2"
+     }
+    ]
+   },
+   "DeleteBulletin": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.DeleteBulletin",
+      "offset": 190,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "DeleteLabel": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.DeleteLabel",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "DoesCorpRestrictCorpMails": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor-module",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/neocom/corporation/corp_ui_home.pyc",
+      "function": "<module>.CorpUIHome.GetSubContentDetails",
+      "offset": 1527,
+      "how": "accessor-module",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/shared/neocom/corporation/corp_ui_home.pyc",
+      "function": "<module>.RestrictCorpMailsEntry.OnButtonClick",
+      "offset": 94,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "DoesMyCorpAcceptStructures": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor-module",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/neocom/corporation/corp_ui_home.pyc",
+      "function": "<module>.AcceptStructureEntry.OnButtonClick",
+      "offset": 149,
+      "how": "local",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/shared/neocom/corporation/corp_ui_home.pyc",
+      "function": "<module>.CorpUIHome.GetSubContentDetails",
+      "offset": 1331,
+      "how": "accessor-module",
+      "args": "0"
+     }
+    ]
+   },
+   "EditContactsRelationshipID": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.EditContactsRelationshipID",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "EditCorporateContact": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.EditCorporateContact",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "EditLabel": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.EditLabel",
+      "offset": 9,
+      "how": "accessor",
+      "args": "3"
+     }
+    ]
+   },
+   "GetAggressionSettings": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/crimewatchSvc.pyc",
+      "function": "<module>.CrimewatchService.RefreshCorpAggressionSettings",
+      "offset": 12,
+      "how": "accessor-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetBulletins": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.GetCorpBulletins",
+      "offset": 48,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetCorporateContacts": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.GetContactList",
+      "offset": 31,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetCorporation": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "fwwarzone/client/dashboard/statisticsController.pyc",
+      "function": "<module>.StatisticsController.GetCorpPilots",
+      "offset": 85,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "GetInfoWindowDataForChar": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.GetInfoWindowDataForChar",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "GetLabels": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.GetLabels",
+      "offset": 9,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetMemberIDsByQuery": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.GetMemberIDsByQuery",
+      "offset": 9,
+      "how": "accessor",
+      "args": "3"
+     }
+    ]
+   },
+   "GetMemberIDsWithMoreThanAvgShares": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.GetMemberIDsWithMoreThanAvgShares",
+      "offset": 9,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetMemberTrackingInfo": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.GetMemberTrackingInfo",
+      "offset": 25,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetMemberTrackingInfoSimple": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.GetMemberTrackingInfo",
+      "offset": 41,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetPendingAutoKicks": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.GetPendingAutoKicks",
+      "offset": 9,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetRecentKills": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.GetRecentKills",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "GetRecentLosses": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.GetRecentLosses",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "GetStructureReinforceDefault": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.GetStructureReinforceDefault",
+      "offset": 9,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "InsertInvitation": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.InviteToJoinCorp",
+      "offset": 50,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "KickOutMember": {
+    "arities": [
+     "1",
+     "?"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.KickOut",
+      "offset": 126,
+      "how": "accessor",
+      "args": "?"
+     },
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.KickOut",
+      "offset": 148,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "KickOutMembers": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.KickOutMultipleMembers",
+      "offset": 90,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "PayoutDividend": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.PayoutDividend",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "RegisterNewAcceptStructureSettings": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/neocom/corporation/corp_ui_home.pyc",
+      "function": "<module>.AcceptStructureEntry.OnButtonClick",
+      "offset": 104,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "RegisterNewAggressionSettings": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/neocom/corporation/corp_ui_home.pyc",
+      "function": "<module>.FriendlyFireEntry.OnButtonClick",
+      "offset": 76,
+      "how": "accessor-module",
+      "args": "1"
+     }
+    ]
+   },
+   "RegisterNewCorpMailRestrictionSettings": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/neocom/corporation/corp_ui_home.pyc",
+      "function": "<module>.RestrictCorpMailsEntry.OnButtonClick",
+      "offset": 49,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "RemoveCorporateContacts": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.RemoveCorporateContacts",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "RemoveLabels": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.RemoveLabels",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "ResignFromCEO": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.__ResignFromCEO",
+      "offset": 78,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "SetCorpWelcomeMail": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.SetCorpWelcomeMail",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "SetStructureReinforceDefault": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.SetStructureReinforceDefault",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "UnBind": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.RefreshMoniker",
+      "offset": 21,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "UpdateBulletinOrder": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.UpdateBulletinOrder",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "UpdateDivisionNames": {
+    "arities": [
+     "14"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/corporation/base_corporation.pyc",
+      "function": "<module>.Corporation.UpdateDivisionNames",
+      "offset": 9,
+      "how": "accessor",
+      "args": "14"
+     }
+    ]
+   }
+  },
+  "corpStationMgr": {
+   "DoStandingCheckForStationService": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/dockedUI/controllers/stationController.pyc",
+      "function": "<module>.StationController._DoStandingCheckForServices",
+      "offset": 94,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "MoveCorpHQHere": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/dockedUI/controllers/stationController.pyc",
+      "function": "<module>.StationController.SetHQ",
+      "offset": 48,
+      "how": "accessor-module",
+      "args": "0"
+     }
+    ]
+   }
+  },
+  "crimewatch": {
+   "ApplyTagsForSecStatus": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/station/securityOfficeWindow.pyc",
+      "function": "<module>.SecurityOfficeWindow.Submit",
+      "offset": 12,
+      "how": "accessor-module",
+      "args": "2"
+     }
+    ]
+   },
+   "GetCharacterSecurityStatus": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/crimewatchSvc.pyc",
+      "function": "<module>.CrimewatchService.GetCharacterSecurityStatus",
+      "offset": 9,
+      "how": "accessor-module",
+      "args": "1"
+     }
+    ]
+   },
+   "GetClientStates": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 3,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/crimewatchSvc.pyc",
+      "function": "<module>.CrimewatchService.OnSessionChanged",
+      "offset": 46,
+      "how": "accessor-module",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/services/crimewatchSvc.pyc",
+      "function": "<module>.CrimewatchService.OnSubscriptionChanged",
+      "offset": 27,
+      "how": "accessor-module",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/services/crimewatchSvc.pyc",
+      "function": "<module>.CrimewatchService.ProcessSessionChange",
+      "offset": 33,
+      "how": "accessor-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetMySecurityStatus": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/crimewatchSvc.pyc",
+      "function": "<module>.CrimewatchService.GetMySecurityStatus",
+      "offset": 24,
+      "how": "accessor-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetSecurityStatusTransactions": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/crimewatchSvc.pyc",
+      "function": "<module>.CrimewatchService.GetSecurityStatusTransactions",
+      "offset": 9,
+      "how": "accessor-module",
+      "args": "0"
+     }
+    ]
+   },
+   "RespondToDuelChallenge": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/crimewatchSvc.pyc",
+      "function": "<module>.CrimewatchService.OnDuelChallenge",
+      "offset": 216,
+      "how": "accessor-module",
+      "args": "3"
+     }
+    ]
+   },
+   "SetSafetyLevel": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/crimewatchSvc.pyc",
+      "function": "<module>.CrimewatchService.SetSafetyLevel",
+      "offset": 9,
+      "how": "accessor-module",
+      "args": "1"
+     }
+    ]
+   },
+   "StartDuelChallenge": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/crimewatchSvc.pyc",
+      "function": "<module>.CrimewatchService.StartDuel",
+      "offset": 46,
+      "how": "accessor-module",
+      "args": "1"
+     }
+    ]
+   }
+  },
+  "dogmaIM": {
+   "Activate": {
+    "arities": [
+     "2",
+     "4"
+    ],
+    "call_sites": 5,
+    "how": [
+     "accessor",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.Activate",
+      "offset": 176,
+      "how": "accessor",
+      "args": "4"
+     },
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.AnchorObject",
+      "offset": 78,
+      "how": "local",
+      "args": "2"
+     },
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.AnchorObject",
+      "offset": 124,
+      "how": "local",
+      "args": "2"
+     },
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.ToggleObjectOnline",
+      "offset": 121,
+      "how": "local",
+      "args": "2"
+     },
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.UnanchorStructure",
+      "offset": 245,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "AddTarget": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/targetMgr.pyc",
+      "function": "<module>.TargetMgr._LockTarget",
+      "offset": 28,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "AddTargetOBO": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/playerOwnedTargetMgr.pyc",
+      "function": "<module>.PlayerOwnedTargetMgr.LockTargetOBO",
+      "offset": 34,
+      "how": "accessor-module",
+      "args": "2"
+     }
+    ]
+   },
+   "CancelAddTarget": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/targetMgr.pyc",
+      "function": "<module>.TargetMgr.CancelAddTarget",
+      "offset": 97,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "ChangeDroneSettings": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.ChangeDroneSettings",
+      "offset": 83,
+      "how": "accessor",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.SendDroneSettings",
+      "offset": 47,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "ClearTargets": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/targetMgr.pyc",
+      "function": "<module>.TargetMgr.ClearTargets",
+      "offset": 9,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "Deactivate": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.Deactivate",
+      "offset": 156,
+      "how": "accessor",
+      "args": "2"
+     },
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.ToggleObjectOnline",
+      "offset": 265,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "DestroyImplant": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 3,
+    "how": [
+     "accessor-module",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/control/entries/implant.pyc",
+      "function": "<module>.ImplantEntry.RemoveImplant",
+      "offset": 95,
+      "how": "accessor-module",
+      "args": "1"
+     },
+     {
+      "module": "eve/devtools/script/menu_implant.pyc",
+      "function": "<module>.ImplantService.FullFrontalLobotomy",
+      "offset": 74,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/devtools/script/menu_implant.pyc",
+      "function": "<module>.ImplantService.PlugEmIn",
+      "offset": 227,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "DestroyWeaponBank": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.DestroyWeaponBank",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "FullyDescribeAttribute": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.LogAttributeViaStateManager",
+      "offset": 151,
+      "how": "local",
+      "args": "3"
+     }
+    ]
+   },
+   "GetAllInfo": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 3,
+    "how": [
+     "accessor",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/dogma/clientDogmaIM.pyc",
+      "function": "<module>.ClientDogmaInstanceManager._GetBrainForGhostFitting",
+      "offset": 52,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.ForcePrimeLocation",
+      "offset": 124,
+      "how": "accessor",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.Prime",
+      "offset": 179,
+      "how": "accessor",
+      "args": "3"
+     }
+    ]
+   },
+   "GetTargeters": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.RefreshTargets",
+      "offset": 60,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetTargets": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.RefreshTargets",
+      "offset": 12,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "InitiateModuleRepair": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.RepairModule",
+      "offset": 24,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "InitiateModuleRepairMany": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.RepairManyModules",
+      "offset": 24,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "InjectImplant": {
+    "arities": [
+     "1",
+     "?"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor-module",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/invItemFunctions.pyc",
+      "function": "<module>.PlugInImplant",
+      "offset": 78,
+      "how": "accessor-module",
+      "args": "1"
+     },
+     {
+      "module": "eve/devtools/script/menu_implant.pyc",
+      "function": "<module>.ImplantService.PlugEmIn",
+      "offset": 431,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "InjectSkillIntoBrain": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/skillsvc.pyc",
+      "function": "<module>.SkillsSvc.InjectSkillIntoBrain",
+      "offset": 116,
+      "how": "accessor-module",
+      "args": "1"
+     }
+    ]
+   },
+   "ItemGetInfo": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 3,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.RefreshItemAttributes",
+      "offset": 21,
+      "how": "accessor",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.RefreshItemEffects",
+      "offset": 21,
+      "how": "accessor",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.UpdateItem",
+      "offset": 1258,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "LinkAllWeapons": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.LinkAllWeapons",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "LinkWeapons": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.LinkWeapons",
+      "offset": 340,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "LoadAmmo": {
+    "arities": [
+     "4",
+     "?"
+    ],
+    "call_sites": 2,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.LoadAmmoToModules",
+      "offset": 19,
+      "how": "attr-module",
+      "args": "4"
+     },
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.LoadChargesToModule",
+      "offset": 154,
+      "how": "attr-module",
+      "args": "?"
+     }
+    ]
+   },
+   "MergeModuleGroups": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.LinkWeapons",
+      "offset": 286,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "Overload": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.Overload",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "OverloadRack": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.OverloadRack",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "PeelAndLink": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.LinkWeapons",
+      "offset": 313,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "RemoveTarget": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/targetMgr.pyc",
+      "function": "<module>.TargetMgr.UnlockTarget",
+      "offset": 24,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "RemoveTargetOBO": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/playerOwnedTargetMgr.pyc",
+      "function": "<module>.PlayerOwnedTargetMgr.UnLockTargetOBO",
+      "offset": 12,
+      "how": "accessor-module",
+      "args": "2"
+     }
+    ]
+   },
+   "RemoveTargets": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/targetMgr.pyc",
+      "function": "<module>.TargetMgr.UnlockTargets",
+      "offset": 30,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "SetModuleOnline": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.OnlineModule",
+      "offset": 41,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "ShipOnlineModules": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.Godma.ShipOnlineModules",
+      "offset": 9,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "StopModuleRepair": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.StopRepairModule",
+      "offset": 27,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "StopOverload": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.StopOverload",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "StopOverloadRack": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/godma.pyc",
+      "function": "<module>.StateManager.StopOverloadRack",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "TakeModuleOffline": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.OfflineModule",
+      "offset": 68,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "UnlinkAllModules": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.UnlinkAllWeapons",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "UnlinkModule": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.UngroupModule",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "UnloadAmmo": {
+    "arities": [
+     "3",
+     "4"
+    ],
+    "call_sites": 4,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.UnloadAmmoFromModules",
+      "offset": 42,
+      "how": "attr-module",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.UnloadAmmoToContainer",
+      "offset": 305,
+      "how": "attr-module",
+      "args": "4"
+     },
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.UnloadModuleToContainer",
+      "offset": 276,
+      "how": "attr-module",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation.UnloadModuleToContainer",
+      "offset": 319,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "UseBooster": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/invItemFunctions.pyc",
+      "function": "<module>.ConsumeBooster",
+      "offset": 61,
+      "how": "accessor-module",
+      "args": "2"
+     }
+    ]
+   }
+  },
+  "entity": {
+   "CmdAbandonDrone": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/droneFunctions.pyc",
+      "function": "<module>.AbandonDrone",
+      "offset": 64,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "CmdAssist": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/droneFunctions.pyc",
+      "function": "<module>.Assist",
+      "offset": 248,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "CmdEngage": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/droneFunctions.pyc",
+      "function": "<module>.EngageTarget",
+      "offset": 429,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "CmdGuard": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/droneFunctions.pyc",
+      "function": "<module>.Guard",
+      "offset": 248,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "CmdMineRepeatedly": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/droneFunctions.pyc",
+      "function": "<module>.MineRepeatedly",
+      "offset": 69,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "CmdReconnectToDrones": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/droneFunctions.pyc",
+      "function": "<module>._ReconnectToDroneCandidates",
+      "offset": 40,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "CmdReturnBay": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 2,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/eveCommands.pyc",
+      "function": "<module>.EveCommandService.CmdDronesReturnToBay",
+      "offset": 81,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/droneFunctions.pyc",
+      "function": "<module>.ReturnToDroneBay",
+      "offset": 21,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "CmdReturnHome": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 2,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/eveCommands.pyc",
+      "function": "<module>.EveCommandService.CmdDronesReturnAndOrbit",
+      "offset": 81,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/droneFunctions.pyc",
+      "function": "<module>.ReturnAndOrbit",
+      "offset": 21,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "CmdSalvage": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/droneFunctions.pyc",
+      "function": "<module>.Salvage",
+      "offset": 42,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "CmdUnanchor": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/droneFunctions.pyc",
+      "function": "<module>.DroneUnanchor",
+      "offset": 69,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "DisableBehaviorDebugging": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/behaviortools/clientdebugadaptors.pyc",
+      "function": "<module>.ClientBehaviorDebugger.Disconnect",
+      "offset": 59,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "EnableBehaviorDebugging": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/behaviortools/clientdebugadaptors.pyc",
+      "function": "<module>.ClientBehaviorDebugger.Connect",
+      "offset": 56,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "GetBehaviorTreeManager": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "behaviors/actions/entities.pyc",
+      "function": "<module>.CountBehaviorEntitiesOfTypeInSystem.OnEnter",
+      "offset": 57,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "GetDebugSpawnPoolFleetEnemyClusters": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/behaviortools/cluster_debugger.pyc",
+      "function": "<module>.ClusterDebugger.get_fleet_spawn_pool_enemy_clusters",
+      "offset": 27,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "GetExtraFleetMembers": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "nodegraph/client/getters/blackboard.pyc",
+      "function": "<module>.GetShipsWarping.get_values",
+      "offset": 12,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "OpenShippingUnitStorage": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.ReallyOpenShippingUnitStorage",
+      "offset": 21,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   }
+  },
+  "fleetObjectHandler": {
+   "AcceptInvite": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.OnFleetInvite",
+      "offset": 275,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "ChangeSquadName": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.ChangeSquadName",
+      "offset": 91,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "ChangeWingName": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.ChangeWingName",
+      "offset": 91,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "CreateSquad": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.CreateSquad",
+      "offset": 16,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "CreateWing": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.CreateWing",
+      "offset": 16,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "DeleteSquad": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.DeleteSquad",
+      "offset": 16,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "DeleteWing": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.DeleteWing",
+      "offset": 16,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "DisbandFleet": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.DisbandFleet",
+      "offset": 33,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "FinishMove": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.OnFleetMove",
+      "offset": 42,
+      "how": "attr-module",
+      "args": "?"
+     }
+    ]
+   },
+   "GetFleetComposition": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.GetFleetComposition",
+      "offset": 68,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetFleetID": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.CreateFleet",
+      "offset": 117,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetFleetMaxSize": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 3,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.SetFleetMaxSize",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.StoreFleetSetup",
+      "offset": 548,
+      "how": "attr-module",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.StoreSetup",
+      "offset": 62,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetInitState": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.InitFleet",
+      "offset": 34,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetJoinRequests": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.GetJoinRequests",
+      "offset": 15,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetMotd": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.GetMotd",
+      "offset": 31,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetWings": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 6,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.OnFleetSquadAdded",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.OnFleetSquadDeleted",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.OnFleetSquadNameChanged",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.OnFleetWingAdded",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.OnFleetWingDeleted",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.OnFleetWingNameChanged",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "Init": {
+    "arities": [
+     "2+1kw"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.CreateFleet",
+      "offset": 74,
+      "how": "attr-module",
+      "args": "2+1kw"
+     }
+    ]
+   },
+   "KickMember": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.KickMember",
+      "offset": 34,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "LeaveFleet": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.LeaveFleet",
+      "offset": 52,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "LoadFleetSetup": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.LoadSetup",
+      "offset": 25,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "MakeLeader": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.MakeLeader",
+      "offset": 76,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "MassMoveMembers": {
+    "arities": [
+     "4"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.MassMove",
+      "offset": 132,
+      "how": "attr-module",
+      "args": "4"
+     }
+    ]
+   },
+   "MoveMember": {
+    "arities": [
+     "4"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.MoveMember",
+      "offset": 53,
+      "how": "attr-module",
+      "args": "4"
+     }
+    ]
+   },
+   "Reconnect": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.AttemptReconnectLazy",
+      "offset": 168,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "RejectInvite": {
+    "arities": [
+     "0",
+     "1"
+    ],
+    "call_sites": 4,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.OnFleetInvite",
+      "offset": 48,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.OnFleetInvite",
+      "offset": 111,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.OnFleetInvite",
+      "offset": 152,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.OnFleetInvite",
+      "offset": 316,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "RejectJoinRequest": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.RejectJoinRequest",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "SendBroadcast": {
+    "arities": [
+     "4"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.SendGlobalBroadcast",
+      "offset": 71,
+      "how": "attr-module",
+      "args": "4"
+     }
+    ]
+   },
+   "SetAcceptsConduitJumpsValue": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.SetAcceptConduitJumpsValue",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "SetAcceptsRegroupValue": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.SetAcceptRegroupValue",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "SetAutoJoinSquadID": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.SetAutoJoinSquadID",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "SetFleetMaxSize": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.SetFleetMaxSize",
+      "offset": 139,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "SetMotdEx": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.SetRemoteMotd",
+      "offset": 16,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "SetOptions": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.SetOptions",
+      "offset": 48,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "SetTakesFleetWarp": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.SetAcceptsFleetWarpValue",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "UpdateMemberInfo": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/fleetSvc.pyc",
+      "function": "<module>.FleetSvc.UpdateFleetInfoThread",
+      "offset": 86,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   }
+  },
+  "i2": {
+   "GetItem": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/svc_dgmattr.pyc",
+      "function": "<module>.AttributeInspector.Refresh",
+      "offset": 379,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "IsPrimed": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/svc_dgmattr.pyc",
+      "function": "<module>.AttributeInspector.Refresh",
+      "offset": 361,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   }
+  },
+  "insuranceSvc": {
+   "GetContracts": {
+    "arities": [
+     "0",
+     "1"
+    ],
+    "call_sites": 2,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/station/insurance/base_insurance.pyc",
+      "function": "<module>.InsuranceSvc.GetContracts",
+      "offset": 48,
+      "how": "local",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/station/insurance/base_insurance.pyc",
+      "function": "<module>.InsuranceSvc.GetContracts",
+      "offset": 111,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "GetInsurancePrice": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/station/insurance/base_insurance.pyc",
+      "function": "<module>.InsuranceSvc.GetInsurancePrice",
+      "offset": 44,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "GetInsurancePrices": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/station/insurance/base_insurance.pyc",
+      "function": "<module>.InsuranceSvc.PrimeInsurancePrices",
+      "offset": 58,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "InsureShip": {
+    "arities": [
+     "3",
+     "3+1kw"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/station/insurance/base_insurance.pyc",
+      "function": "<module>.InsuranceTermsWindow.Accept",
+      "offset": 154,
+      "how": "accessor-module",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/ui/station/insurance/base_insurance.pyc",
+      "function": "<module>.InsuranceTermsWindow.Accept",
+      "offset": 352,
+      "how": "accessor-module",
+      "args": "3+1kw"
+     }
+    ]
+   },
+   "UnInsureShip": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/station/insurance/base_insurance.pyc",
+      "function": "<module>.InsuranceWindow.UnInsure",
+      "offset": 75,
+      "how": "accessor-module",
+      "args": "1"
+     }
+    ]
+   }
+  },
+  "invbroker": {
+   "AssembleCargoContainer": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.AssembleContainer",
+      "offset": 31,
+      "how": "local",
+      "args": "3"
+     }
+    ]
+   },
+   "DepositPlexToVault": {
+    "arities": [
+     "4"
+    ],
+    "call_sites": 4,
+    "how": [
+     "accessor-module",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/invControllers.pyc",
+      "function": "<module>.PlexVault.AddItems",
+      "offset": 160,
+      "how": "local",
+      "args": "4"
+     },
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/menuFunctions.pyc",
+      "function": "<module>.RedeemCurrency",
+      "offset": 18,
+      "how": "accessor-module",
+      "args": "4"
+     },
+     {
+      "module": "eve/client/script/ui/shared/inventory/plexVault.pyc",
+      "function": "<module>.PlexVaultController.DepositPlex",
+      "offset": 36,
+      "how": "accessor-module",
+      "args": "4"
+     },
+     {
+      "module": "nodegraph/client/actions/inventory.pyc",
+      "function": "<module>.DepositPlexToVault.start",
+      "offset": 251,
+      "how": "local",
+      "args": "4"
+     }
+    ]
+   },
+   "GetContainerContents": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 3,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/fittingSvc.pyc",
+      "function": "<module>.fittingSvc.FittingDictForRemoteShip",
+      "offset": 24,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/ui/shared/info/panels/panelFitting.pyc",
+      "function": "<module>.PanelFitting.GetShipContents",
+      "offset": 335,
+      "how": "local",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/ui/shared/info/shipInfoWindow.pyc",
+      "function": "<module>.ShipInfoWindowController._get_ship_contents",
+      "offset": 329,
+      "how": "local",
+      "args": "3"
+     }
+    ]
+   },
+   "GetDamageForCrystals": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/inventorysvc.pyc",
+      "function": "<module>.CrystalDamageTracker.PrimeCrystals",
+      "offset": 60,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "GetInventory": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 2,
+    "how": [
+     "attr-module",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/invCache.pyc",
+      "function": "<module>.invCache.GetInventory",
+      "offset": 335,
+      "how": "attr-module",
+      "args": "2"
+     },
+     {
+      "module": "eve/client/script/environment/invCache.pyc",
+      "function": "<module>.invCache.GetInventory",
+      "offset": 395,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "GetInventoryFromId": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/invCache.pyc",
+      "function": "<module>.invCache.GetInventoryFromId",
+      "offset": 325,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "IsMyItemAtDockableLocation": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/invCache.pyc",
+      "function": "<module>.invCache.IsMyItemAtCurrentDockable",
+      "offset": 116,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "SetLabel": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 4,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/fittingSvc.pyc",
+      "function": "<module>.fittingSvc.LoadFitting",
+      "offset": 1042,
+      "how": "accessor-module",
+      "args": "2"
+     },
+     {
+      "module": "eve/client/script/environment/fittingSvc.pyc",
+      "function": "<module>.fittingSvc._RenameShip",
+      "offset": 27,
+      "how": "accessor-module",
+      "args": "2"
+     },
+     {
+      "module": "eve/devtools/script/dna.pyc",
+      "function": "<module>.WaitAndSetLabel",
+      "offset": 73,
+      "how": "accessor-module",
+      "args": "2"
+     },
+     {
+      "module": "eve/devtools/script/svc_poser.pyc",
+      "function": "<module>.Structure.Anchor",
+      "offset": 98,
+      "how": "accessor-module",
+      "args": "2"
+     }
+    ]
+   },
+   "TrashItems": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/dna.pyc",
+      "function": "<module>.CreateShip_GML",
+      "offset": 429,
+      "how": "accessor-module",
+      "args": "2"
+     }
+    ]
+   },
+   "ValidateItemCanBeOpened": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/invCache.pyc",
+      "function": "<module>.invCache.ValidateItemCanBeOpened",
+      "offset": 34,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "ValidateItemListCanBeOpened": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/invCache.pyc",
+      "function": "<module>.invCache.ValidateItemListCanBeOpened",
+      "offset": 75,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "WithdrawPlexFromVault": {
+    "arities": [
+     "4",
+     "5"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/inventory/plexVault.pyc",
+      "function": "<module>.PlexVaultController.WithdrawPlex",
+      "offset": 295,
+      "how": "accessor-module",
+      "args": "5"
+     },
+     {
+      "module": "eve/client/script/ui/shared/market/sellMulti.pyc",
+      "function": "<module>.SellItems.CheckAndHandlePlexVaultItem",
+      "offset": 88,
+      "how": "accessor-module",
+      "args": "4"
+     }
+    ]
+   }
+  },
+  "jumpCloneSvc": {
+   "AcceptShipCloneInstallation": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.OnShipJumpCloneInstallationOffered",
+      "offset": 231,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "CancelShipCloneInstallation": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 3,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.CancelShipCloneInstallation",
+      "offset": 55,
+      "how": "local",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.OnShipJumpCloneInstallationCanceled",
+      "offset": 58,
+      "how": "local",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.OnShipJumpCloneInstallationOffered",
+      "offset": 259,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "CloneJump": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 2,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump._CloneJump",
+      "offset": 45,
+      "how": "local",
+      "args": "?"
+     },
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump._CloneJump",
+      "offset": 209,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "DestroyInstalledClone": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.DestroyInstalledClone",
+      "offset": 494,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "GetCloneState": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.GetCloneState",
+      "offset": 30,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "GetNumClonesInPilotsStructure": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.GetNumClonesInPilotsStructure",
+      "offset": 31,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   },
+   "GetPriceForClone": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 3,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.CloneJump",
+      "offset": 57,
+      "how": "local",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.InstallCloneInStation",
+      "offset": 31,
+      "how": "local",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.OnShipJumpCloneInstallationOffered",
+      "offset": 147,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "GetShipCloneState": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.GetShipClones",
+      "offset": 61,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "GetStationCloneState": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.GetStationClones",
+      "offset": 24,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "InstallCloneInStation": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.InstallCloneInStation",
+      "offset": 114,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "InstallCloneInStructure": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.InstallCloneInStation",
+      "offset": 127,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "OfferShipCloneInstallation": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.OfferShipCloneInstallation",
+      "offset": 82,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "ResetLastCloneJumpTime": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/insider.pyc",
+      "function": "<module>.ResetLastCloneJumpTime",
+      "offset": 18,
+      "how": "accessor-module",
+      "args": "0"
+     }
+    ]
+   },
+   "SetJumpCloneName": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.SetJumpCloneName",
+      "offset": 15,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "ValidateInstallJumpClone": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/clonejumpsvc.pyc",
+      "function": "<module>.CloneJump.ValidateInstallJumpClone",
+      "offset": 12,
+      "how": "accessor",
+      "args": "0"
+     }
+    ]
+   }
+  },
+  "planetMgr": {
+   "GMAddCommodity": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet.GMAddCommodity",
+      "offset": 49,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "GMConvertCommandCenter": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet.GMConvertCommandCenter",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "GMCreateNuggetLayer": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-global"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/planet/planetUISvc.pyc",
+      "function": "<module>.PlanetUISvc.GMCreateNuggetLayer",
+      "offset": 9,
+      "how": "attr-global",
+      "args": "2"
+     }
+    ]
+   },
+   "GMForceInstallProgram": {
+    "arities": [
+     "6"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet.GMInstallProgram",
+      "offset": 626,
+      "how": "attr-module",
+      "args": "6"
+     }
+    ]
+   },
+   "GMGetCompleteResource": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-global"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/planet/planetUISvc.pyc",
+      "function": "<module>.PlanetUISvc.GMShowResource",
+      "offset": 52,
+      "how": "attr-global",
+      "args": "2"
+     }
+    ]
+   },
+   "GMGetLocalDistributionReport": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet.GetLocalDistributionReport",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "GMGetSynchedServerState": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet.GMVerifySimulation",
+      "offset": 19,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "GMRunDepletionSim": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet.GMRunDepletionSim",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "GetCommandPinsForPlanet": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planetSvc.pyc",
+      "function": "<module>.PlanetService.GetPlanetCommandPins",
+      "offset": 125,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "GetExtractorsForPlanet": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planetSvc.pyc",
+      "function": "<module>.PlanetService.GetExtractorsForPlanet",
+      "offset": 125,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "GetFullNetworkForOwner": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planetSvc.pyc",
+      "function": "<module>.PlanetService.GetColonyForCharacter",
+      "offset": 166,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "GetPlanetInfo": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet.PreparePlanet",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetPlanetResourceInfo": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 4,
+    "how": [
+     "attr-global",
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet.GMInstallProgram",
+      "offset": 63,
+      "how": "attr-module",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/shared/agencyNew/contentPieces/planetaryProductionPlanetContentPiece.pyc",
+      "function": "<module>.PlanetaryProductionPlanetContentPiece.GetPlanetResourceInfo",
+      "offset": 49,
+      "how": "attr-global",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/shared/planet/resourceController.pyc",
+      "function": "<module>.ResourceController.CreateLayout",
+      "offset": 81,
+      "how": "attr-global",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/shared/planet/surveyUI.pyc",
+      "function": "<module>.SurveyWindow.ApplyAttributes",
+      "offset": 142,
+      "how": "attr-global",
+      "args": "0"
+     }
+    ]
+   },
+   "GetProgramResultInfo": {
+    "arities": [
+     "4"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet.InstallProgram",
+      "offset": 143,
+      "how": "attr-module",
+      "args": "4"
+     }
+    ]
+   },
+   "GetResourceData": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet.GetResourceData",
+      "offset": 421,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "UserAbandonPlanet": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet._SubmitChanges",
+      "offset": 27,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "UserLaunchCommodities": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet.LaunchCommodities",
+      "offset": 269,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "UserTransferCommodities": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet.TransferCommodities",
+      "offset": 204,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "UserUpdateNetwork": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/planet/clientPlanet.pyc",
+      "function": "<module>.ClientPlanet._SubmitChanges",
+      "offset": 102,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   }
+  },
+  "planetOrbitalRegistryBroker": {
+   "GetSettingsInfo": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/orbitalConfiguration.pyc",
+      "function": "<module>.OrbitalConfigurationWindow.ApplyAttributes",
+      "offset": 163,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "GetTaxRate": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/info/infosvc.pyc",
+      "function": "<module>.Info.FetchDynamicOrbitalAttributes",
+      "offset": 67,
+      "how": "accessor-module",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/shared/planet/importExportUI.pyc",
+      "function": "<module>.PlanetaryImportExportUI.UpdateTaxRate",
+      "offset": 15,
+      "how": "accessor-module",
+      "args": "1"
+     }
+    ]
+   },
+   "UpdateSettings": {
+    "arities": [
+     "7"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/orbitalConfiguration.pyc",
+      "function": "<module>.OrbitalConfigurationWindow.Submit",
+      "offset": 230,
+      "how": "local",
+      "args": "7"
+     }
+    ]
+   }
+  },
+  "populationCap": {
+   "GetCharacterLoadSlot": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/login/charSelection/characterSelection.pyc",
+      "function": "<module>.CharacterSelection.TryEnterGame",
+      "offset": 119,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "MoveCharacterToNewSystem": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/login/charSelection/characterSelection.pyc",
+      "function": "<module>.CharacterSelection.TryEnterGame",
+      "offset": 230,
+      "how": "local",
+      "args": "3"
+     }
+    ]
+   }
+  },
+  "posMgr": {
+   "AnchorOrbital": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.AnchorOrbital",
+      "offset": 21,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "AnchorStructure": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/playerOwned.pyc",
+      "function": "<module>.PlayerOwned.Anchor",
+      "offset": 101,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "AssumeStructureControl": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/playerOwned.pyc",
+      "function": "<module>.PlayerOwned.AssumeStructureControl",
+      "offset": 309,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "ChangeStructureProvisionType": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.SetStructureType",
+      "offset": 730,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "GetConsumptionFactor": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.ShowFuel",
+      "offset": 108,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "GetMoonForTower": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.GetMoon",
+      "offset": 33,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "GetMoonProcessInfoForTower": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.RunProcessCycle",
+      "offset": 49,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "GetSiloCapacityByItemID": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "moniker"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/invCache.pyc",
+      "function": "<module>.invCacheContainer.GetSiloCapacityByItemID",
+      "offset": 15,
+      "how": "moniker",
+      "args": "1"
+     }
+    ]
+   },
+   "GetStarbasePermissions": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.ShowAccess",
+      "offset": 317,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "GetTowerNotificationSettings": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.ShowForce",
+      "offset": 288,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "GetTowerSentrySettings": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.ShowStandings",
+      "offset": 40,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "LinkResourceForTower": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.ProdApply",
+      "offset": 60,
+      "how": "attr-module",
+      "args": "?"
+     }
+    ]
+   },
+   "OnlineOrbital": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/planet/orbitalMaterialUI.pyc",
+      "function": "<module>.OrbitalMaterialUI.InitiateUpgrade",
+      "offset": 21,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "RelinquishStructureControl": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/playerOwned.pyc",
+      "function": "<module>.PlayerOwned.RelinquishStructureControl",
+      "offset": 192,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "RunMoonProcessCycleforTower": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.RunProcessCycle",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "SetStarbasePermissions": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.SaveAccess",
+      "offset": 73,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "SetTowerNotifications": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 2,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.SaveForcefield",
+      "offset": 231,
+      "how": "attr-module",
+      "args": "3"
+     },
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.SaveForcefield",
+      "offset": 289,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "SetTowerPassword": {
+    "arities": [
+     "2",
+     "4"
+    ],
+    "call_sites": 2,
+    "how": [
+     "attr-module",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/playerOwned.pyc",
+      "function": "<module>.PlayerOwned.EnterTowerPassword",
+      "offset": 91,
+      "how": "local",
+      "args": "2"
+     },
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.SaveForcefield",
+      "offset": 414,
+      "how": "attr-module",
+      "args": "4"
+     }
+    ]
+   },
+   "SetTowerSentrySettings": {
+    "arities": [
+     "6"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/moonmining.pyc",
+      "function": "<module>.MoonMining.SaveStandings",
+      "offset": 202,
+      "how": "attr-module",
+      "args": "6"
+     }
+    ]
+   },
+   "UnanchorOrbital": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.UnanchorOrbital",
+      "offset": 21,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   }
+  },
+  "repairSvc": {
+   "GetRepairQuotes": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/station/repairshop/base_repairshop.pyc",
+      "function": "<module>.RepairSvc.GetRepairQuotes",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "RepairItemsInStation": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/station/repairshop/base_repairshop.pyc",
+      "function": "<module>.RepairSvc.RepairItems",
+      "offset": 18,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "RepairItemsInStructure": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/station/repairshop/base_repairshop.pyc",
+      "function": "<module>.RepairSvc.RepairItems",
+      "offset": 52,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   }
+  },
+  "reprocessingSvc": {
+   "GetQuotes": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-unique-name"
+    ],
+    "sites": [
+     {
+      "module": "reprocessing/ui/quotes.pyc",
+      "function": "<module>.Quotes.GetQuotes",
+      "offset": 12,
+      "how": "accessor-unique-name",
+      "args": "2"
+     }
+    ]
+   },
+   "Reprocess": {
+    "arities": [
+     "5"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-unique-name"
+    ],
+    "sites": [
+     {
+      "module": "reprocessing/ui/itemReprocessor.pyc",
+      "function": "<module>.ItemReprocessor._DoReprocess",
+      "offset": 12,
+      "how": "accessor-unique-name",
+      "args": "5"
+     }
+    ]
+   }
+  },
+  "ship": {
+   "AbortSafeLogoff": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 2,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/inflight/shipHud/safeLogoffTimer.pyc",
+      "function": "<module>.SafeLogoffTimer.AbortSafeLogoff",
+      "offset": 24,
+      "how": "local",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/inflight/shipHud/safeLogoffTimer.pyc",
+      "function": "<module>.SafeLogoffTimer2.AbortSafeLogoff",
+      "offset": 24,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "AbortSelfDestruct": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/menuFunctions.pyc",
+      "function": "<module>.AbortSelfDestructShip",
+      "offset": 107,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "AssembleShip": {
+    "arities": [
+     "1",
+     "1+2kw",
+     "2",
+     "2+1kw"
+    ],
+    "call_sites": 6,
+    "how": [
+     "accessor-module",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/invItemFunctions.pyc",
+      "function": "<module>.AssembleShip",
+      "offset": 428,
+      "how": "accessor-module",
+      "args": "1+2kw"
+     },
+     {
+      "module": "eve/devtools/script/dna.pyc",
+      "function": "<module>.CreateShip_GML",
+      "offset": 188,
+      "how": "accessor-module",
+      "args": "2"
+     },
+     {
+      "module": "eve/devtools/script/dna.pyc",
+      "function": "<module>.CreateShip_GML",
+      "offset": 330,
+      "how": "accessor-module",
+      "args": "2"
+     },
+     {
+      "module": "eve/devtools/script/dna.pyc",
+      "function": "<module>.CreateShip_WORLDMOD",
+      "offset": 140,
+      "how": "accessor-module",
+      "args": "2+1kw"
+     },
+     {
+      "module": "eve/devtools/script/svc_fittingspawner.pyc",
+      "function": "<module>.FittingSpawner.SpawnFitting",
+      "offset": 552,
+      "how": "accessor-module",
+      "args": "2+1kw"
+     },
+     {
+      "module": "nodegraph/client/actions/navigation.pyc",
+      "function": "<module>.BoardShip.start",
+      "offset": 182,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "Board": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 4,
+    "how": [
+     "attr-module",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/dogma/clientDogmaLocation.pyc",
+      "function": "<module>.DogmaLocation._MakeShipActive",
+      "offset": 263,
+      "how": "attr-module",
+      "args": "?"
+     },
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/menuFunctions.pyc",
+      "function": "<module>.Board",
+      "offset": 253,
+      "how": "local",
+      "args": "?"
+     },
+     {
+      "module": "eve/devtools/script/svc_slash.pyc",
+      "function": "<module>.SlashService.cmd_pos",
+      "offset": 1280,
+      "how": "local",
+      "args": "?"
+     },
+     {
+      "module": "eve/devtools/script/svc_slash.pyc",
+      "function": "<module>.SlashService.cmd_pos",
+      "offset": 1818,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "BoardStoredShip": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/menuFunctions.pyc",
+      "function": "<module>.BoardSMAShip",
+      "offset": 92,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "Drop": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/util/eveMisc.pyc",
+      "function": "<module>.LaunchFromShip",
+      "offset": 256,
+      "how": "accessor-module",
+      "args": "3"
+     }
+    ]
+   },
+   "Eject": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/menuFunctions.pyc",
+      "function": "<module>.Eject",
+      "offset": 150,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "FitShips": {
+    "arities": [
+     "0+8kw"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/environment/fittingSvc.pyc",
+      "function": "<module>.fittingSvc.DoFitManyShips",
+      "offset": 67,
+      "how": "local",
+      "args": "0+8kw"
+     }
+    ]
+   },
+   "GetDirtTimestamp": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.GetGMTypeMenu",
+      "offset": 1314,
+      "how": "accessor-module",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/view/hangarBehaviours/baseHangarBehaviours.pyc",
+      "function": "<module>.BaseHangarShipBehaviour.SetShipDirtLevel",
+      "offset": 9,
+      "how": "accessor-module",
+      "args": "1"
+     }
+    ]
+   },
+   "GetShipConfiguration": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor-module",
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/shipConfigSvc.pyc",
+      "function": "<module>.ShipConfigSvc.GetShipConfig",
+      "offset": 21,
+      "how": "accessor-module",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/shared/shipconfig.pyc",
+      "function": "<module>.ShipConfig.ApplyAttributes",
+      "offset": 451,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "Jettison": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 3,
+    "how": [
+     "accessor-module",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/invItemFunctions.pyc",
+      "function": "<module>.Jettison",
+      "offset": 107,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/devtools/script/dna.pyc",
+      "function": "<module>.CreateShip_GML",
+      "offset": 364,
+      "how": "accessor-module",
+      "args": "1"
+     },
+     {
+      "module": "eve/devtools/script/dna.pyc",
+      "function": "<module>.CreateShip_WORLDMOD",
+      "offset": 227,
+      "how": "accessor-module",
+      "args": "1"
+     }
+    ]
+   },
+   "LaunchDrones": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/util/eveMisc.pyc",
+      "function": "<module>.LaunchFromShip",
+      "offset": 217,
+      "how": "accessor-module",
+      "args": "3"
+     }
+    ]
+   },
+   "LaunchFromContainer": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/invItemFunctions.pyc",
+      "function": "<module>.LaunchSMAContents",
+      "offset": 25,
+      "how": "accessor-module",
+      "args": "2"
+     }
+    ]
+   },
+   "LeaveShip": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 2,
+    "how": [
+     "accessor-module",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/structure/structureDocking.pyc",
+      "function": "<module>.StructureDocking.LeaveShip",
+      "offset": 21,
+      "how": "accessor-module",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/station/base.pyc",
+      "function": "<module>.StationSvc.TryLeaveShip",
+      "offset": 142,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "ResetDirtTimestamp": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/fitting/cleanShipButton.pyc",
+      "function": "<module>.CleanShipButton.CleanShip",
+      "offset": 24,
+      "how": "accessor-module",
+      "args": "1"
+     }
+    ]
+   },
+   "SafeLogoff": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/menuFunctions.pyc",
+      "function": "<module>.SafeLogoff",
+      "offset": 24,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "Scoop": {
+    "arities": [
+     "1",
+     "2"
+    ],
+    "call_sites": 2,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.RealScoop",
+      "offset": 154,
+      "how": "local",
+      "args": "1"
+     },
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.RealScoop",
+      "offset": 170,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "ScoopDrone": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/droneFunctions.pyc",
+      "function": "<module>.RealScoopToDroneBay",
+      "offset": 30,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "ScoopToFleetHangar": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.RealScoopToFleetHangar",
+      "offset": 139,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "ScoopToInfrastructureHold": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.ScoopToInfrastructureHold",
+      "offset": 30,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "ScoopToMobileDepotHold": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.ScoopToMobileDepotHold",
+      "offset": 30,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "ScoopToSMA": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.RealScoopSMA",
+      "offset": 30,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "SelfDestruct": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/menuFunctions.pyc",
+      "function": "<module>.SelfDestructShip",
+      "offset": 243,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "SetShipPassword": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/parklife/playerOwned.pyc",
+      "function": "<module>.PlayerOwned.EnterShipPassword",
+      "offset": 232,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "StoreVessel": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menusvc.pyc",
+      "function": "<module>.MenuSvc.StoreVessel",
+      "offset": 304,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   },
+   "Undock": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/station/base.pyc",
+      "function": "<module>.StationSvc._DoUndockAttempt",
+      "offset": 203,
+      "how": "local",
+      "args": "?"
+     }
+    ]
+   }
+  },
+  "structure": {
+   "JettisonStructureFuel": {
+    "arities": [
+     "?"
+    ],
+    "call_sites": 1,
+    "how": [
+     "moniker"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/menuSvcExtras/invItemFunctions.pyc",
+      "function": "<module>.JettisonStructureFuel",
+      "offset": 58,
+      "how": "moniker",
+      "args": "?"
+     }
+    ]
+   }
+  },
+  "tourneyMgr": {
+   "AbortCountdown": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.AbortCountdown",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "AddPlayer": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.AddPlayer",
+      "offset": 110,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "BanShipType": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.SendBan",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "CleanupGrid": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.PostGameStepTwo",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "CompletePregameChecks": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.CompleteShipPilotCheck",
+      "offset": 382,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "CreateMatch": {
+    "arities": [
+     "6"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.StartMatch",
+      "offset": 1360,
+      "how": "attr-module",
+      "args": "6"
+     }
+    ]
+   },
+   "FinalizeBans": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.FinalizeBans",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "GetActiveMatchForCamera": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/form_tournament.pyc",
+      "function": "<module>.TournamentWindow.ApplyAttributes",
+      "offset": 72,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetFancyDetails": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 2,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/form_tournament.pyc",
+      "function": "<module>.TournamentWindow.StartFancyUIClient",
+      "offset": 66,
+      "how": "attr-module",
+      "args": "1"
+     },
+     {
+      "module": "eve/devtools/script/form_tournament.pyc",
+      "function": "<module>.TournamentWindow.UpdateFancyBars",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "GetMatchSystem": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/form_tournament.pyc",
+      "function": "<module>.TournamentWindow.FetchTeams",
+      "offset": 12,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetTeamMembers": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/form_tournament.pyc",
+      "function": "<module>.TournamentWindow.FetchTeams",
+      "offset": 45,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "IsOtherMatchInProgress": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.CompleteShipPilotCheck",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "LockMemberList": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.LockMemberList",
+      "offset": 46,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "MatchCompleted": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.MatchCompleted",
+      "offset": 60,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "OverrideDroneRestrict": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.ToggleDrones",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "OverrideError": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 2,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.OverrideAllErrors",
+      "offset": 135,
+      "how": "attr-module",
+      "args": "3"
+     },
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.OverrideError",
+      "offset": 85,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "OverrideFleetBossID": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.OverrideFleetBossID",
+      "offset": 110,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "OverrideLockRestrict": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 2,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.PreGameStepOne",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "2"
+     },
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.ToggleLocks",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "OverrideMoveRestrict": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.ToggleMovement",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "OverrideWarpRestrict": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 3,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.PreGameStepOne",
+      "offset": 32,
+      "how": "attr-module",
+      "args": "2"
+     },
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.PreGameStepThree",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "2"
+     },
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.ToggleWarping",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "RemovePlayer": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.RemovePlayer",
+      "offset": 79,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "RemoveSelfFromReferees": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.Close",
+      "offset": 31,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "ResetMatch": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.ResetMatch",
+      "offset": 60,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "ReturnAllPlayers": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.PostGameStepOne",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "ReturnTeamPlayers": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.ReturnTeamPlayers",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "StartAutobanning": {
+    "arities": [
+     "2+3kw"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.Autobans",
+      "offset": 21,
+      "how": "attr-module",
+      "args": "2+3kw"
+     }
+    ]
+   },
+   "StartCountdown": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.PreGameStepFour",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "TeleportPlayers": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.TeleportPlayers",
+      "offset": 81,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "TeleportRefHome": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.PostGameStepThree",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "1"
+     }
+    ]
+   },
+   "TeleportToArena": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.TeleportRef",
+      "offset": 30,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "TeleportToStation": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.TeleportRefHome",
+      "offset": 30,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "UnBanShipType": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.ProcessTournamentMatchUpdate.CreateBanElement.RemoveBan",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "3"
+     }
+    ]
+   },
+   "UnlockMemberList": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.UnlockMemberList",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "UpdateFleetDetails": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/devtools/script/tournamentRefereeTools.pyc",
+      "function": "<module>.TournamentRefereeTool.RefreshShipPilotCheck",
+      "offset": 6,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   }
+  },
+  "warRegistry": {
+   "AcceptAllyNegotiation": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.AcceptAllyNegotiation",
+      "offset": 15,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "AcceptSurrender": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.AcceptSurrender",
+      "offset": 15,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "CreateSurrenderNegotiation": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.CreateSurrenderNegotiation",
+      "offset": 15,
+      "how": "local",
+      "args": "3"
+     }
+    ]
+   },
+   "CreateWarAllyOffer": {
+    "arities": [
+     "4"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.CreateWarAllyOffer",
+      "offset": 15,
+      "how": "local",
+      "args": "4"
+     }
+    ]
+   },
+   "DeclineAllyOffer": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.DeclineAllyOffer",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "DeclineSurrender": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.DeclineSurrender",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "GMActivateDefender": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.GMActivateDefender",
+      "offset": 15,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "GMDeactivateDefender": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.GMDeactivateDefender",
+      "offset": 15,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "GMExtendAllyContract": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.GMExtendAllyContract",
+      "offset": 15,
+      "how": "local",
+      "args": "3"
+     }
+    ]
+   },
+   "GMJoinDefender": {
+    "arities": [
+     "3"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.GMJoinDefender",
+      "offset": 48,
+      "how": "local",
+      "args": "3"
+     }
+    ]
+   },
+   "GMSetDeclareTime": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.GMSetDeclareTime",
+      "offset": 15,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "GMSetWarFinishTime": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.GMSetWarFinishTime",
+      "offset": 15,
+      "how": "local",
+      "args": "2"
+     }
+    ]
+   },
+   "GetNegotiations": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 2,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.GetAllyNegotiations",
+      "offset": 24,
+      "how": "local",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.GetSurrenderNegotiations",
+      "offset": 30,
+      "how": "local",
+      "args": "0"
+     }
+    ]
+   },
+   "GetWarNegotiation": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.GetWarNegotiation",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "GetWars": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.GetWars",
+      "offset": 122,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "RetractMutualWar": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.RetractMutualWar",
+      "offset": 15,
+      "how": "local",
+      "args": "1"
+     }
+    ]
+   },
+   "RetractWarAllyOffer": {
+    "arities": [
+     "1"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.RetractWarAllyOffer",
+      "offset": 9,
+      "how": "accessor",
+      "args": "1"
+     }
+    ]
+   },
+   "SetOpenForAllies": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "accessor"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.SetOpenForAllies",
+      "offset": 9,
+      "how": "accessor",
+      "args": "2"
+     }
+    ]
+   },
+   "UnBind": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/services/wars/war_cso.pyc",
+      "function": "<module>.Wars.RefreshMoniker",
+      "offset": 21,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   }
+  },
+  "warStatisticMgr": {
+   "GetBaseInfo": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 2,
+    "how": [
+     "attr-module",
+     "local"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/neocom/corporation/war/allyWnd.pyc",
+      "function": "<module>.AllyWnd.GetAllies",
+      "offset": 49,
+      "how": "local",
+      "args": "0"
+     },
+     {
+      "module": "eve/client/script/ui/shared/neocom/corporation/war/warReport.pyc",
+      "function": "<module>.WarReportWnd.LoadInfo_thread",
+      "offset": 71,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   },
+   "GetKills": {
+    "arities": [
+     "2"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/neocom/corporation/war/warReport.pyc",
+      "function": "<module>.WarReportWnd.GetKillsScrollList",
+      "offset": 71,
+      "how": "attr-module",
+      "args": "2"
+     }
+    ]
+   },
+   "GetKillsByGroup": {
+    "arities": [
+     "0"
+    ],
+    "call_sites": 1,
+    "how": [
+     "attr-module"
+    ],
+    "sites": [
+     {
+      "module": "eve/client/script/ui/shared/neocom/corporation/war/warReport.pyc",
+      "function": "<module>.WarReportWnd.PrimeKillsByGroup",
+      "offset": 21,
+      "how": "attr-module",
+      "args": "0"
+     }
+    ]
+   }
+  }
+ },
+ "derived_second_level": {
+  "note": "uppercase attribute taken on the RESULT of a bound call. Suggestive, not evidence: the result may be plain data. Not included in the headline totals.",
+  "objects": {}
+ },
+ "promoted_names": {
+  "note": "the load-bearing heuristic: names allowed to carry taint across module boundaries because the name occurs in exactly one module of the whole tree. Audit this list.",
+  "rules": {
+   "accessor_unique_name": "function name defined in exactly one module of the tree",
+   "accessor_by_module": "receiver identified exactly, by import alias or sm.GetService(name)",
+   "attribute": "STORE_ATTR target in exactly one module",
+   "container": "moniker stored at a fixed index of a list/tuple attribute, read back by that same index"
+  },
+  "promoted": {
+   "accessor_unique_name": {
+    "GetRemotePark": {
+     "service": "beyonce",
+     "defined_in": "eve/client/script/remote/michelle.pyc"
+    },
+    "GetLM": {
+     "service": "jumpCloneSvc",
+     "defined_in": "eve/client/script/ui/services/clonejumpsvc.pyc"
+    },
+    "GetReprocessingSvc": {
+     "service": "reprocessingSvc",
+     "defined_in": "eve/client/script/ui/services/reprocessingsvc.pyc"
+    },
+    "GetWarStatisticMoniker": {
+     "service": "warStatisticMgr",
+     "defined_in": "eve/client/script/ui/shared/neocom/corporation/war/warReport.pyc"
+    },
+    "GetInsuranceMgr": {
+     "service": "insuranceSvc",
+     "defined_in": "eve/client/script/ui/station/insurance/base_insurance.pyc"
+    },
+    "GetRemoteRepairMgr": {
+     "service": "repairSvc",
+     "defined_in": "eve/client/script/ui/station/repairshop/base_repairshop.pyc"
+    },
+    "CharGetCrimewatchLocation": {
+     "service": "crimewatch",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "CharGetDogmaLocation": {
+     "service": "dogmaIM",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetAllianceEx": {
+     "service": "allianceRegistry",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetBallPark": {
+     "service": "beyonce",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetCorpRegistryEx": {
+     "service": "corpRegistry",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetCorpStationManagerEx": {
+     "service": "corpStationMgr",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetCourierMissionCreator": {
+     "service": "missionMgr",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetEntityAccess": {
+     "service": "entity",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetEntityLocation": {
+     "service": "entity",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetFleet": {
+     "service": "fleetObjectHandler",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetPOSMgr": {
+     "service": "posMgr",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetPlanetBaseManager": {
+     "service": "planetBaseBroker",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetPlanetOrbitalRegistry": {
+     "service": "planetOrbitalRegistryBroker",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetRepairManager": {
+     "service": "repairSvc",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetReprocessingManager": {
+     "service": "reprocessingSvc",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetReprocessingManagerEx": {
+     "service": "reprocessingSvc",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetSolarSystemInventoryMgr": {
+     "service": "invbroker",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetStationDogmaLocation": {
+     "service": "dogmaIM",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetStationInventoryMgr": {
+     "service": "invbroker",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetStationShipAccess": {
+     "service": "ship",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetWarEx": {
+     "service": "warRegistry",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    },
+    "GetWarStatistic": {
+     "service": "warStatisticMgr",
+     "defined_in": "eve/common/script/net/eveMoniker.pyc"
+    }
+   },
+   "accessor_by_module": {
+    "eve/client/script/environment/godma.pyc": {
+     "GetDogmaLM": "dogmaIM"
+    },
+    "eve/client/script/environment/invCache.pyc": {
+     "GetInventoryMgr": "invbroker"
+    },
+    "eve/client/script/parklife/gameui.pyc": {
+     "GetShipAccess": "ship"
+    },
+    "eve/client/script/parklife/targetMgr.pyc": {
+     "GetDogmaLM": "dogmaIM"
+    },
+    "eve/client/script/ui/services/alliances/all_cso.pyc": {
+     "GetMoniker": "allianceRegistry"
+    },
+    "eve/client/script/ui/services/corporation/base_corporation.pyc": {
+     "GetCorpRegistry": "corpRegistry",
+     "GetCorpStationManager": "corpStationMgr"
+    },
+    "eve/client/script/ui/services/shipConfigSvc.pyc": {
+     "ship": "ship"
+    },
+    "eve/client/script/ui/services/wars/war_cso.pyc": {
+     "GetMoniker": "warRegistry"
+    },
+    "eve/common/script/net/eveMoniker.pyc": {
+     "GetAgent": "agentMgr",
+     "GetAlliance": "allianceRegistry",
+     "GetCorpRegistry": "corpRegistry",
+     "GetCorpStationManager": "corpStationMgr",
+     "GetInventoryMgr": "invbroker",
+     "GetPlanet": "planetMgr",
+     "GetShipAccess": "ship",
+     "GetWar": "warRegistry"
+    }
+   },
+   "attribute": {
+    "remoteDogmaLM": {
+     "service": "dogmaIM",
+     "stored_in": "eve/client/script/dogma/clientDogmaLocation.pyc"
+    },
+    "remoteShipMgr": {
+     "service": "ship",
+     "stored_in": "eve/client/script/dogma/clientDogmaLocation.pyc"
+    },
+    "_invCache__invmgr": {
+     "service": "invbroker",
+     "stored_in": "eve/client/script/environment/invCache.pyc"
+    },
+    "_invCache__stationinvmgr": {
+     "service": "invbroker",
+     "stored_in": "eve/client/script/environment/invCache.pyc"
+    },
+    "inventorymgr": {
+     "service": "invbroker",
+     "stored_in": "eve/client/script/environment/invCache.pyc"
+    },
+    "stationInventoryMgr": {
+     "service": "invbroker",
+     "stored_in": "eve/client/script/environment/invCache.pyc"
+    },
+    "remoteHandler": {
+     "service": "planetMgr",
+     "stored_in": "eve/client/script/environment/planet/clientPlanet.pyc"
+    },
+    "remoteBallpark": {
+     "service": "beyonce",
+     "stored_in": "eve/client/script/remote/michelle.pyc"
+    },
+    "posMgr": {
+     "service": "posMgr",
+     "stored_in": "eve/client/script/ui/inflight/moonmining.pyc"
+    },
+    "remoteOrbitalRegistry": {
+     "service": "planetOrbitalRegistryBroker",
+     "stored_in": "eve/client/script/ui/inflight/orbitalConfiguration.pyc"
+    },
+    "_Alliances__allianceMoniker": {
+     "service": "allianceRegistry",
+     "stored_in": "eve/client/script/ui/services/alliances/all_cso.pyc"
+    },
+    "_Corporation__corpRegistry": {
+     "service": "corpRegistry",
+     "stored_in": "eve/client/script/ui/services/corporation/base_corporation.pyc"
+    },
+    "_Corporation__corpStationManager": {
+     "service": "corpStationMgr",
+     "stored_in": "eve/client/script/ui/services/corporation/base_corporation.pyc"
+    },
+    "_ship": {
+     "service": "ship",
+     "stored_in": "eve/client/script/ui/services/shipConfigSvc.pyc"
+    },
+    "_Wars__warMoniker": {
+     "service": "warRegistry",
+     "stored_in": "eve/client/script/ui/services/wars/war_cso.pyc"
+    },
+    "corpStationMgr": {
+     "service": "corpStationMgr",
+     "stored_in": "eve/client/script/ui/shared/dockedUI/controllers/stationController.pyc"
+    },
+    "warStatisticMoniker": {
+     "service": "warStatisticMgr",
+     "stored_in": "eve/client/script/ui/shared/neocom/corporation/war/warReport.pyc"
+    },
+    "insurance": {
+     "service": "insuranceSvc",
+     "stored_in": "eve/client/script/ui/station/insurance/base_insurance.pyc"
+    },
+    "repairMgr": {
+     "service": "repairSvc",
+     "stored_in": "eve/client/script/ui/station/repairshop/base_repairshop.pyc"
+    },
+    "tourneyMoniker": {
+     "service": "tourneyMgr",
+     "stored_in": "eve/devtools/script/form_tournament.pyc"
+    },
+    "matchMoniker": {
+     "service": "tourneyMgr",
+     "stored_in": "eve/devtools/script/tournamentRefereeTools.pyc"
+    }
+   },
+   "container": {
+    "eve/client/script/parklife/gameui.pyc::shipAccess[0]": "ship"
+   }
+  }
+ },
+ "ambiguities_dropped": [
+  {
+   "kind": "accessor",
+   "name": "GetAgent",
+   "services": [
+    "agentMgr"
+   ],
+   "reason": "name defined in 3 modules, not promoted tree-wide",
+   "defined_in": [
+    "eve/common/script/net/eveMoniker.pyc::<module>.GetAgent"
+   ]
+  },
+  {
+   "kind": "accessor",
+   "name": "GetAlliance",
+   "services": [
+    "allianceRegistry"
+   ],
+   "reason": "name defined in 3 modules, not promoted tree-wide",
+   "defined_in": [
+    "eve/common/script/net/eveMoniker.pyc::<module>.GetAlliance"
+   ]
+  },
+  {
+   "kind": "accessor",
+   "name": "GetCorpRegistry",
+   "services": [
+    "corpRegistry"
+   ],
+   "reason": "name defined in 3 modules, not promoted tree-wide",
+   "defined_in": [
+    "eve/client/script/ui/services/corporation/base_corporation.pyc::<module>.Corporation.GetCorpRegistry",
+    "eve/common/script/net/eveMoniker.pyc::<module>.GetCorpRegistry"
+   ]
+  },
+  {
+   "kind": "accessor",
+   "name": "GetCorpStationManager",
+   "services": [
+    "corpStationMgr"
+   ],
+   "reason": "name defined in 3 modules, not promoted tree-wide",
+   "defined_in": [
+    "eve/client/script/ui/services/corporation/base_corporation.pyc::<module>.Corporation.GetCorpStationManager",
+    "eve/common/script/net/eveMoniker.pyc::<module>.GetCorpStationManager"
+   ]
+  },
+  {
+   "kind": "accessor",
+   "name": "GetDogmaLM",
+   "services": [
+    "dogmaIM"
+   ],
+   "reason": "name defined in 3 modules, not promoted tree-wide",
+   "defined_in": [
+    "eve/client/script/environment/godma.pyc::<module>.Godma.GetDogmaLM",
+    "eve/client/script/environment/godma.pyc::<module>.StateManager.GetDogmaLM",
+    "eve/client/script/parklife/targetMgr.pyc::<module>.TargetMgr.GetDogmaLM"
+   ]
+  },
+  {
+   "kind": "accessor",
+   "name": "GetInventoryMgr",
+   "services": [
+    "invbroker"
+   ],
+   "reason": "name defined in 2 modules, not promoted tree-wide",
+   "defined_in": [
+    "eve/client/script/environment/invCache.pyc::<module>.invCache.GetInventoryMgr",
+    "eve/common/script/net/eveMoniker.pyc::<module>.GetInventoryMgr"
+   ]
+  },
+  {
+   "kind": "accessor",
+   "name": "GetMoniker",
+   "services": [
+    "allianceRegistry"
+   ],
+   "reason": "name defined in 3 modules, not promoted tree-wide",
+   "defined_in": [
+    "eve/client/script/ui/services/alliances/all_cso.pyc::<module>.Alliances.GetMoniker",
+    "eve/client/script/ui/services/wars/war_cso.pyc::<module>.Wars.GetMoniker"
+   ]
+  },
+  {
+   "kind": "accessor",
+   "name": "GetPlanet",
+   "services": [
+    "planetMgr"
+   ],
+   "reason": "name defined in 3 modules, not promoted tree-wide",
+   "defined_in": [
+    "eve/common/script/net/eveMoniker.pyc::<module>.GetPlanet"
+   ]
+  },
+  {
+   "kind": "accessor",
+   "name": "GetShipAccess",
+   "services": [
+    "ship"
+   ],
+   "reason": "name defined in 2 modules, not promoted tree-wide",
+   "defined_in": [
+    "eve/client/script/parklife/gameui.pyc::<module>.GameUI.GetShipAccess",
+    "eve/common/script/net/eveMoniker.pyc::<module>.GetShipAccess"
+   ]
+  },
+  {
+   "kind": "accessor",
+   "name": "GetWar",
+   "services": [
+    "warRegistry"
+   ],
+   "reason": "name defined in 2 modules, not promoted tree-wide",
+   "defined_in": [
+    "eve/common/script/net/eveMoniker.pyc::<module>.GetWar"
+   ]
+  },
+  {
+   "kind": "accessor",
+   "name": "ship",
+   "services": [
+    "ship"
+   ],
+   "reason": "name defined in 2 modules, not promoted tree-wide",
+   "defined_in": [
+    "eve/client/script/ui/services/shipConfigSvc.pyc::<module>.ShipConfigSvc.ship"
+   ]
+  },
+  {
+   "kind": "attribute",
+   "name": "dogmaLM",
+   "services": [
+    "dogmaIM"
+   ],
+   "reason": "stored in 13 modules, not promoted tree-wide",
+   "stored_in": [
+    "eve/client/script/environment/godma.pyc",
+    "eve/client/script/parklife/targetMgr.pyc"
+   ]
+  },
+  {
+   "kind": "attribute",
+   "name": "fleet",
+   "services": [
+    "fleetObjectHandler"
+   ],
+   "reason": "stored in 3 modules, not promoted tree-wide",
+   "stored_in": [
+    "eve/client/script/parklife/fleetSvc.pyc"
+   ]
+  },
+  {
+   "kind": "attribute",
+   "name": "moniker",
+   "services": [
+    "reprocessingSvc"
+   ],
+   "reason": "stored in 4 modules, not promoted tree-wide",
+   "stored_in": [
+    "eve/client/script/ui/services/reprocessingsvc.pyc"
+   ]
+  },
+  {
+   "kind": "attribute",
+   "name": "ship",
+   "services": [
+    "ship"
+   ],
+   "reason": "stored in 7 modules, not promoted tree-wide",
+   "stored_in": [
+    "eve/client/script/ui/shared/shipconfig.pyc"
+   ]
+  }
+ ],
+ "services_with_bind_site_but_no_methods": [
+  "agentMgr",
+  "charMgr",
+  "keeper",
+  "missionMgr",
+  "planetBaseBroker"
+ ],
+ "comparison": {
+  "source": "docs/reference/bound-objects.md",
+  "documented_totals": {
+   "methods": 387,
+   "services": 22
+  },
+  "documented_service_names": [
+   "abyssal_content_manager",
+   "agentMgr",
+   "allianceRegistry",
+   "beyonce",
+   "charMgr",
+   "corpRegistry",
+   "corpStationMgr",
+   "crimewatch",
+   "dogmaIM",
+   "entity",
+   "fleetObjectHandler",
+   "i2",
+   "insuranceSvc",
+   "invbroker",
+   "jumpCloneSvc",
+   "keeper",
+   "missionMgr",
+   "planetBaseBroker",
+   "planetMgr",
+   "planetOrbitalRegistryBroker",
+   "populationCap",
+   "posMgr",
+   "repairSvc",
+   "reprocessingSvc",
+   "ship",
+   "structure",
+   "tourneyMgr",
+   "warRegistry",
+   "warStatisticMgr"
+  ],
+  "bind_site_services": {
+   "documented_only": [],
+   "scanned_only": []
+  },
+  "per_service": [
+   {
+    "service": "abyssal_content_manager",
+    "second_level": false,
+    "documented_count": 3,
+    "scanned_count": 3,
+    "scanned_count_direct_service": 3,
+    "delta": 0,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "beyonce",
+    "second_level": false,
+    "documented_count": 38,
+    "scanned_count": 38,
+    "scanned_count_direct_service": 38,
+    "delta": 0,
+    "documented_named_not_scanned": [
+     "AdminGetBubbleID"
+    ],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "charMgr->global asset container",
+    "second_level": true,
+    "documented_count": 5,
+    "scanned_count": 0,
+    "scanned_count_direct_service": 0,
+    "delta": -5,
+    "documented_named_not_scanned": [
+     "Bind",
+     "GetAssetWorth",
+     "List",
+     "ListIncludingContainers",
+     "ListStationItems",
+     "ListStations",
+     "Moniker"
+    ],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "corpRegistry",
+    "second_level": false,
+    "documented_count": 78,
+    "scanned_count": 45,
+    "scanned_count_direct_service": 45,
+    "delta": -33,
+    "documented_named_not_scanned": [
+     "AddCorporation",
+     "CreateAlliance",
+     "GetApplications",
+     "GetMember",
+     "GetMembersByIds",
+     "GetMembersPaged",
+     "GetShareholders",
+     "GetTitles",
+     "InsertApplication",
+     "MoveCompanyShares",
+     "UpdateMember",
+     "UpdateTitle"
+    ],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": false
+   },
+   {
+    "service": "corpStationMgr",
+    "second_level": false,
+    "documented_count": 2,
+    "scanned_count": 2,
+    "scanned_count_direct_service": 2,
+    "delta": 0,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "crimewatch",
+    "second_level": false,
+    "documented_count": 8,
+    "scanned_count": 8,
+    "scanned_count_direct_service": 8,
+    "delta": 0,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "dogmaIM",
+    "second_level": false,
+    "documented_count": 41,
+    "scanned_count": 38,
+    "scanned_count_direct_service": 38,
+    "delta": -3,
+    "documented_named_not_scanned": [
+     "GetDogmaLM",
+     "LaunchProbes",
+     "QueryAllAttributesForItem",
+     "QueryAttributeValue"
+    ],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "entity",
+    "second_level": false,
+    "documented_count": 16,
+    "scanned_count": 16,
+    "scanned_count_direct_service": 16,
+    "delta": 0,
+    "documented_named_not_scanned": [
+     "GetEntityLocation"
+    ],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "fleetObjectHandler",
+    "second_level": false,
+    "documented_count": 35,
+    "scanned_count": 35,
+    "scanned_count_direct_service": 35,
+    "delta": 0,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "insuranceSvc",
+    "second_level": false,
+    "documented_count": 5,
+    "scanned_count": 5,
+    "scanned_count_direct_service": 5,
+    "delta": 0,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "invbroker",
+    "second_level": false,
+    "documented_count": 15,
+    "scanned_count": 12,
+    "scanned_count_direct_service": 12,
+    "delta": -3,
+    "documented_named_not_scanned": [
+     "DeliverToCorpHangar",
+     "DeliverToCorpMember",
+     "SplitStack"
+    ],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "jumpCloneSvc",
+    "second_level": false,
+    "documented_count": 15,
+    "scanned_count": 15,
+    "scanned_count_direct_service": 15,
+    "delta": 0,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "planetMgr",
+    "second_level": false,
+    "documented_count": 35,
+    "scanned_count": 19,
+    "scanned_count_direct_service": 19,
+    "delta": -16,
+    "documented_named_not_scanned": [
+     "CancelInstallProgram",
+     "GetColony",
+     "GetColonyByPinID",
+     "GetCommandCenterForCharacter",
+     "GetCommandCenterLevel",
+     "GetCostOfCurrentEdits",
+     "GetEditModeData",
+     "GetLocalDistributionReport",
+     "GetNewColony",
+     "GetPin",
+     "GetPlanetRadius",
+     "InstallProgram",
+     "IsInEditMode",
+     "MoveExtractorHead",
+     "RemovePin",
+     "RevertChanges",
+     "StartTicking"
+    ],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": false
+   },
+   {
+    "service": "planetOrbitalRegistryBroker",
+    "second_level": false,
+    "documented_count": 3,
+    "scanned_count": 3,
+    "scanned_count_direct_service": 3,
+    "delta": 0,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "populationCap",
+    "second_level": false,
+    "documented_count": 2,
+    "scanned_count": 2,
+    "scanned_count_direct_service": 2,
+    "delta": 0,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "posMgr",
+    "second_level": false,
+    "documented_count": 20,
+    "scanned_count": 20,
+    "scanned_count_direct_service": 20,
+    "delta": 0,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "repairSvc",
+    "second_level": false,
+    "documented_count": 3,
+    "scanned_count": 3,
+    "scanned_count_direct_service": 3,
+    "delta": 0,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "reprocessingSvc",
+    "second_level": false,
+    "documented_count": 2,
+    "scanned_count": 2,
+    "scanned_count_direct_service": 2,
+    "delta": 0,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "ship",
+    "second_level": false,
+    "documented_count": 26,
+    "scanned_count": 26,
+    "scanned_count_direct_service": 26,
+    "delta": 0,
+    "documented_named_not_scanned": [
+     "GetShipAccess",
+     "PerformSelectiveSessionChange"
+    ],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "structure",
+    "second_level": false,
+    "documented_count": 1,
+    "scanned_count": 1,
+    "scanned_count_direct_service": 1,
+    "delta": 0,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "tourneyMgr",
+    "second_level": false,
+    "documented_count": 4,
+    "scanned_count": 34,
+    "scanned_count_direct_service": 34,
+    "delta": 30,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [
+     "AbortCountdown",
+     "AddPlayer",
+     "BanShipType",
+     "CleanupGrid",
+     "CompletePregameChecks",
+     "CreateMatch",
+     "FinalizeBans",
+     "IsOtherMatchInProgress",
+     "LockMemberList",
+     "MatchCompleted",
+     "OverrideDroneRestrict",
+     "OverrideError",
+     "OverrideFleetBossID",
+     "OverrideLockRestrict",
+     "OverrideMoveRestrict",
+     "OverrideWarpRestrict",
+     "RemovePlayer",
+     "RemoveSelfFromReferees",
+     "ResetMatch",
+     "ReturnAllPlayers",
+     "ReturnTeamPlayers",
+     "StartAutobanning",
+     "StartCountdown",
+     "TeleportPlayers",
+     "TeleportRefHome",
+     "TeleportToArena",
+     "TeleportToStation",
+     "UnBanShipType",
+     "UnlockMemberList",
+     "UpdateFleetDetails"
+    ],
+    "doc_enumerates_all": true
+   },
+   {
+    "service": "warStatisticMgr",
+    "second_level": false,
+    "documented_count": 3,
+    "scanned_count": 3,
+    "scanned_count_direct_service": 3,
+    "delta": 0,
+    "documented_named_not_scanned": [],
+    "scanned_not_documented_by_name": [],
+    "doc_enumerates_all": true
+   }
+  ],
+  "scanned_services_not_in_doc": [
+   "allianceRegistry",
+   "i2",
+   "warRegistry"
+  ],
+  "scanned_totals": {
+   "services": 24,
+   "methods": 378,
+   "distinct_method_names": 365
+  }
+ }
+}

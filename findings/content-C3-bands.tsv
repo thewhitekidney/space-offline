@@ -1,0 +1,46 @@
+# docs/content/C3-population.md -- security-band distributions of the static belt data. COUNTS ONLY, no client rows.
+# Source: systems.static securityStatus (band: high >= 0.45, low > 0.0, else null; 31xxxxxx wh, 32xxxxxx void),
+# asteroidcountbytypeidbeltid.static (40,928 belts), out/celestials-all.tsv belt->system. Build 3619879.
+section	key	systems	systems_with_belts	belts	belts_per_system_mean	belts_per_system_max	rocks_per_belt_p10	rocks_per_belt_p50	rocks_per_belt_p90	rocks_per_belt_max	ore_types_present
+band	high	1246	1179	11960	10.14	50	78	104	136	186	21
+band	low	687	682	7137	10.46	40	37	56	80	120	18
+band	null	3552	2113	21831	10.33	42	4	21	34	64	15
+band	wh	2604	0	0	-	0	-	-	-	-	0
+band	void	401	0	0	-	0	-	-	-	-	0
+section	ore_typeID	name	rocks_high	rocks_low	rocks_null
+ore	18	Plagioclase	78628	0	0
+ore	20	Kernite	0	50870	47047
+ore	21	Hedbergite	0	3522	0
+ore	22	Arkonor	0	0	8061
+ore	1223	Bistot	0	0	14822
+ore	1224	Pyroxeres	113874	45200	102798
+ore	1226	Jaspet	70	39661	0
+ore	1227	Omber	83	24258	0
+ore	1228	Scordite	191602	0	0
+ore	1230	Veldspar	210251	0	0
+ore	1231	Hemorphite	76	10304	0
+ore	11396	Mercoxit	0	0	6004
+ore	17425	Arkonor II-Grade	0	0	9343
+ore	17426	Arkonor III-Grade	0	0	4466
+ore	17428	Bistot II-Grade	0	0	17347
+ore	17429	Bistot III-Grade	0	0	8479
+ore	17440	Hedbergite II-Grade	0	2563	0
+ore	17441	Hedbergite III-Grade	0	1198	0
+ore	17444	Hemorphite II-Grade	20	12315	0
+ore	17445	Hemorphite III-Grade	11	5379	0
+ore	17448	Jaspet II-Grade	39	40416	0
+ore	17449	Jaspet III-Grade	9	17003	0
+ore	17452	Kernite II-Grade	0	45912	47462
+ore	17453	Kernite III-Grade	0	19041	22384
+ore	17455	Plagioclase II-Grade	61526	0	0
+ore	17456	Plagioclase III-Grade	25489	0	0
+ore	17459	Pyroxeres II-Grade	91456	43707	101454
+ore	17460	Pyroxeres III-Grade	39056	18339	46531
+ore	17463	Scordite II-Grade	151860	0	0
+ore	17464	Scordite III-Grade	64792	0	0
+ore	17470	Veldspar II-Grade	166429	0	0
+ore	17471	Veldspar III-Grade	70633	0	0
+ore	17867	Omber II-Grade	35	21383	0
+ore	17868	Omber III-Grade	13	8633	0
+ore	17869	Mercoxit II-Grade	0	0	7676
+ore	17870	Mercoxit III-Grade	0	0	4324

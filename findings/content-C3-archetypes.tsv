@@ -1,0 +1,64 @@
+# docs/content/C3-population.md -- one row per dungeon archetype: COUNTS AND DISTRIBUTIONS ONLY, no client rows.
+# Source: dungeons.fsdbinary (archetypeID@64, difficulty@72, entryTypeID@88, rooms dict@40), archetypes.fsdbinary titleID@28,
+# appConst.pyc dunArchetype* (line 550 on), ore/ice/gastypesbydungeonid.static, missions.fsdbinary dungeonID@144. Build 3619879.
+# entry_*: dungeon.entryTypeID is Cosmic Anomaly 28356 / Deadspace Signature 19728 / anything else. difficulty: histogram, '-' = absent.
+archetypeID	appConst_name	title_en	dungeons	entry_anomaly	entry_signature	entry_other	used_by_missions	with_ore	with_ice	with_gas	median_rooms	median_entities	difficulty	scan_site_type(attr)	C3_role
+0	-	-	20	1	0	19	0	7	1	0	1	0	-:20	-	skip
+1	dunArchetypeCOSMOSFlags	-	25	0	0	25	0	0	0	0	1	0	1:1 5:1 -:23	-	skip: constellation markers
+2	dunArchetypeLandmarks	Landmarks	1200	0	15	1185	0	91	0	0	1	2	0:9 1:99 -:1092	-	G7 static landmark (placement unknown)
+3	dunArchetypeMilitaryDepot	-	3	0	0	3	0	2	0	0	6	51	3:1 5:2	-	-
+4	dunArchetypeMilitaryInstallation	-	2	0	0	2	0	2	0	0	9	159	5:2	-	-
+6	dunArchetypeMilitaryOutPost	-	7	0	0	7	0	6	0	0	3	22	1:1 3:2 4:4	-	-
+8	dunArchetypeNavalShipyard	-	4	0	0	4	0	1	0	0	6	88	5:4	-	-
+12	-	-	1	0	1	0	0	0	0	0	3	2	5:1	-	-
+14	dunArchetypePrisonFacility	-	2	0	0	2	0	0	0	0	5	59	5:2	-	-
+16	dunArchetypeSinCity	-	3	0	0	3	0	1	0	0	5	41	0:1 5:2	-	-
+19	dunArchetypeZTest	-	2	0	0	2	0	0	0	0	4	0	-:2	-	skip: test
+20	dunArchetypeAgentMissionDungeon	-	1483	0	5	1478	1456	464	3	5	2	5	0:3 1:389 2:220 3:328 4:403 5:133 -:7	-	C4 mission pocket
+21	dunArchetypeAgentOfferDungeon	-	44	0	0	44	1	11	0	0	1	5	2:17 3:11 4:13 5:3	-	C4 agent offer
+22	dunArchetypeAgentsInSpace	-	188	0	1	187	0	22	0	0	1	0	1:14 2:2 3:2 4:2 5:1 -:167	-	C4 agents in space
+24	dunArchetypeCombatSites	Combat Sites	507	325	156	26	1	137	0	0	1	7	0:7 1:69 2:77 3:95 4:106 5:104 -:49	combat(1136)	G1 combat anomaly / combat signature
+25	-	-	103	0	0	103	0	0	0	0	1	0	-:103	-	out: event spawner
+26	dunArchetypeAgentStaticDungeons	-	38	0	0	38	0	13	0	0	1	8	0:1 1:4 2:1 3:10 4:12 5:9 -:1	-	C4 static agent site
+27	dunArchetypeOreAnomaly	Ore Anomalies	124	114	4	6	2	122	0	0	1	0	0:1 1:16 2:52 3:28 4:6 5:12 -:9	ore(211)	G2 ore anomaly
+28	dunArchetypeIceBelt	Ice Belts	20	20	0	0	0	3	17	0	1	0	1:1 2:18 3:1	ice(-)	G3 ice belt
+29	dunArchetypeCombatHacking	Combat Hacking	17	0	17	0	0	2	0	0	1	12	0:1 4:16	combat(1136)	G1b combat-hacking signature
+30	dunArchetypeGasClouds	-	75	0	75	0	0	0	0	75	1	0	1:1 2:42 3:5 4:10 5:17	gas(209)	G4 gas signature
+31	dunArchetypeEscalatingPathDungeons	Escalation	384	24	5	355	0	121	0	2	1	6	0:2 2:2 3:110 4:121 5:145 -:4	combat(1136)	G6 escalation (spawned by a G1 completion)
+33	dunArchetypeFactionalWarfareComplexNovice	Scout Complex	40	36	4	0	0	0	0	0	2	5	4:38 -:2	-	out: FW
+34	dunArchetypeFactionalWarfareComplexSmall	Small Complex	60	56	4	0	0	0	0	0	2	7	4:60	-	out: FW
+35	dunArchetypeFactionalWarfareComplexMedium	Medium Complex	32	32	0	0	0	0	0	0	2	7	4:32	-	out: FW
+36	dunArchetypeFactionalWarfareComplexLarge	Large Complex	36	34	0	2	0	2	0	0	1	7	2:2 4:34	-	out: FW
+37	dunArchetypeCombatSimulator	-	8	0	0	8	0	0	0	0	1	0	-:8	-	out: arena
+38	dunArchetypeWormhole	-	170	0	170	0	0	2	0	0	1	0	0:1 1:5 -:164	wormhole(1908)	out: wormholes (statics absent)
+39	dunArchetypeGhostSites	-	22	1	21	0	0	2	0	0	1	1	0:2 3:20	-	G5b ghost site
+43	dunArchetypeEventSites	-	45	2	1	42	0	7	0	1	1	3	1:16 2:17 3:4 -:8	-	out: seasonal event
+44	dunArchetypeRelicSites	-	285	0	285	0	0	59	0	0	1	0	1:3 2:84 3:84 4:106 5:4 -:4	relic(210)	G5 relic signature
+45	dunArchetypeDataSites	-	233	1	232	0	0	18	0	0	1	0	1:2 2:46 3:54 4:101 5:4 -:26	data(208)	G5 data signature
+46	dunArchetypeIncursionSites	Incursion Sites	9	0	0	9	0	0	0	0	2	1	0:2 5:6 -:1	-	out: incursion
+47	dunArchetypeResourceWars	-	49	0	0	49	0	4	0	0	2	0	1:13 2:9 3:9 4:9 5:9	-	out: resource wars
+48	dunArchetypeInceptionSites	-	55	0	0	55	0	3	0	0	1	3	0:14 1:21 -:20	-	out: NPE
+49	dunArchetypeDrifterSites	-	25	25	0	0	0	0	0	0	1	0	0:25	-	out: drifter
+50	dunArchetypeSitesOfInterest	Sites Of Interest	13	0	2	11	0	0	0	0	1	0	0:1 -:12	-	G7 site of interest
+51	dunArchetypeAbyssalSites	-	53	0	0	53	0	0	0	0	1	0	-:53	-	out: abyssal
+60	dunArchetypeIncursionSitesScout	Scout Incursion Sites	4	0	0	4	0	1	0	0	1	7	5:4	-	out: incursion
+61	dunArchetypeIncursionSitesVanguard	Vanguard Incursion Sites	3	0	0	3	0	1	0	0	2	4	5:3	-	out: incursion
+62	dunArchetypeIncursionSitesAssult	Assault Incursion Sites	3	0	0	3	0	0	0	0	2	10	5:3	-	out: incursion
+63	dunArchetypeIncursionSitesHeadquarter	Headquarter Incursion Sites	3	0	0	3	0	0	0	0	2	22	5:3	-	out: incursion
+64	dunArchetypeIncursionSitesBoss	Mothership Incursion Sites	3	0	0	3	0	0	0	0	2	31	4:1 5:2	-	out: incursion
+65	dunArchetypeInvasionSites	Invasion Sites	28	28	0	0	0	4	0	0	1	0	9:9 -:19	-	out: invasion
+66	-	ESS	1	0	0	1	0	0	0	0	2	0	-:1	-	out: ESS
+67	-	Factional Warfare Objectives	6	0	5	1	0	0	0	0	1	0	2:5 -:1	-	out: FW
+68	dunArchetypeFactionaWarfareBattlefieldSites	Factional Warfare Battlefield	9	4	0	5	0	0	0	0	2	0	4:9	-	out: FW
+70	dunArchetypeHomefrontSites	Homefront Operations	24	24	0	0	0	5	0	0	2	0	-:24	-	out: homefront
+71	-	Training Anomaly	1	1	0	0	0	0	0	0	1	0	1:1	-	-
+72	dunArchetypeInsurgencyItemTraderPirate	Pirate Laundering Center	2	2	0	0	0	0	0	0	1	0	-:2	-	out: insurgency
+73	dunArchetypeInsurgencyItemTraderAntiPirate	Anti-Pirate Security Post	4	0	0	4	0	0	0	0	1	0	-:4	-	out: insurgency
+74	dunArchetypeInsurgencyWarehouseRaid	Warehouse Raid	4	4	0	0	0	0	0	0	2	0	4:4	-	out: insurgency
+75	dunArchetypeInsurgencyWarehouseCorpOutpostRaidSmall	Corporate Outpost Raid (small)	4	4	0	0	0	0	0	0	2	0	4:4	-	out: insurgency
+76	dunArchetypeInsurgencyWarehouseCorpOutpostRaidMedium	Corporate Outpost Raid (medium)	6	6	0	0	0	0	0	0	2	0	4:6	-	out: insurgency
+77	dunArchetypeInsurgencyWarehouseCorpOutpostRaidLarge	Pirate Insurgency - Corporate Outpost Raid (large)	4	4	0	0	0	0	0	0	2	0	4:4	-	out: insurgency
+78	dunArchetypeInsurgencyWarehouseCorpOutpostRaidXLarge	Corporate Outpost Raid (X-large)	4	4	0	0	0	0	0	0	1	0	4:4	-	out: insurgency
+79	dunArchetypeInsurgencyMiningFleetAmubsh	Mining Fleet Ambush	4	4	0	0	0	0	0	0	1	1	2:2 4:2	-	out: insurgency
+80	-	Mercenary Den Operation	4	0	0	4	0	0	0	0	2	0	-:4	-	-
+81	-	Hidden Belts	8	0	8	0	0	7	0	0	1	0	2:5 3:3	-	out: hidden belts

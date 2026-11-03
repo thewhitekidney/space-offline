@@ -1,0 +1,4 @@
+# External crates the server is allowed to depend on, one per line.
+# Every name here must appear in [workspace.dependencies] and vice versa;
+# tools/check_deps.py enforces both directions. Empty for now: the codecs
+# are dependency-free.

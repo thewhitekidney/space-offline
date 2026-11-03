@@ -1,0 +1,55 @@
+# Outbound network surface of the V24.01 client (reference build 3662168 since 2026-10-31; the 3619879 names are noted where they differ)
+# For the local jail: everything here gets blackholed except our own server.
+# Source: strings over bin64/* and the extracted script tree.
+
+## Gameplay / required
+servers.eveonline.com            machoNet server IP lookup (serverInfo._GetServerIP, "{}.servers.eveonline.com")
+                                 -> replaced by our server address
+clientresources.eveonline.com    resource CDN (on-demand res file download)
+
+## Added for build 3662168 (lane phone-home, issue #40; tracker §88)
+# Marks: [V] read in this build's code or bytes, [I] inferred.
+ebr-service.ccpeveweb.com        bug-report service (eve/client/script/ui/services/bugReporting, constant BUGREPORT_SERVER;
+                                 `bugReporting_BugReportServer` in globalConfig overrides). Replaces bugsservice.eveonline.com (3619879,
+                                 `/api`); its paths moved (eve/issue/categories, eve/issue/new, status/health,
+                                 eve/issue/{}/attachments/add). Help window only; sends a bearer token,
+                                 session, computer info and attachments (logs, settings, prefs.ini). [V] code, on user action
+res.eveprobe.ccpgames.com        remotefilecache.prepare() default server, a third CDN constant beside clientresources [V]
+                                 (the "backup" server in prepare() is clientresources again)
+vm-single.dev.evetech.net        VictoriaMetrics (victoriametrics/metrics_reporter; new node-graph atom 728) [V] sink, [I] reach
+api.ipify.org                    also store_payment_svc, on a purchase [V]
+www.google-analytics.com         characterCreationMetrics, character creation [V]
+NVIDIA Streamline OTA            _trinity_dx12.dll slInit: Preferences.flags default 0x49 | 0x84, over-the-air plugin updater on [V] site,
+                                 [I] flag names. Runs nvngx_update.exe (absent in this prefix); closed by B3
+Authenticode CRL/OCSP            crl3/crl4/ocsp.digicert.com, crl.comodoca.com, ocsp.usertrust.com, entrust AIA, from signature blobs [I]; Wine
+                                 cryptnet may fetch; only the census can say
+wpad.*                           blue's BlueRemoteStream (libcurl), IE config autodetect, on the first CDN transfer [V] site, [I] Wine default
+ftp://                           the minibrowser's urllib2 opener reads ftp_proxy, not HTTP(S)_PROXY [I]
+Tier C of tools/eve_patch.py closes the code.ccp constants for: the Sentry DSN, clientresources (x3), res.eveprobe, ipify, GA,
+ebr-service, vm-single and the gateway discovery suffix (docs/guides/patcher.md). The list of every host-like string in a
+build is `tools/eve_patch_author.py hosts`, diffed against out/census/known-hosts.txt.
+
+## Telemetry — opt-in, off by default
+# autoexec gates the telemetry block on the "/enableTelemetry" argument.
+api.honeycomb.io                 tracing (monolithhoneycomb_events, 6 modules)
+app.datadoghq.com                metrics (datadog, 52 modules; monolithmetrics/_datadog)
+
+## Crash reporting — always on, native
+sentry.io                        exefile.exe: "https://sentry.io/api/1434648/minidump/"
+                                 eve_crashmon.exe is Crashpad (crashpad.chromium.org)
+
+## Feature flags — native, fails soft
+*.launchdarkly.com               launchdarkly_stackless_client_sdk.pyd declares 6 hosts:
+                                 clientsdk / clientstream / events / mobile / sdk / stream
+                                 launchdarkly/loader.pyc wraps client creation in
+                                 try/except ("Error when getting LaunchDarkly client")
+
+## NetEase / Serenity only — inert on region = ccp
+ac.evepc.163.com                 EVE Guard anti-cheat (serenity/eveguard/client/eveguard_service)
+*.evepc.163.com                  Serenity server lookup ("servers-{}.evepc.163.com")
+                                 kiring/* is the NetEase SDK: anti-addiction playtime limits,
+                                 CNY purchase caps. Chinese-regulation code, not anti-tamper.
+
+## Unrelated / library noise (no runtime calls)
+curl.se, cherrypy.org, w3.org, pypi.python.org, urllib3.readthedocs.org,
+jabber.org/protocol/* (XMPP namespace URIs, not endpoints)

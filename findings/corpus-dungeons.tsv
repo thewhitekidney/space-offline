@@ -1,0 +1,159 @@
+# res:/staticdata/dungeons.fsdbinary -- SHAPE ONLY, plus a worked sample.
+#
+# 5,516 dungeons / 8,483 rooms / 260,242 objects / 30,610 NPC spawn entities,
+# 120-byte records, uint32 key (= dungeonID), hash on key % 4137 buckets.
+# Decoded in `docs/re/dungeon-model.md`.
+#
+# Field names, offsets, types and presence bits are `findings/pyd-schemas.tsv`
+# (read out of bin64/dungeonsLoader.pyd), with one offset corrected and the
+# unnamed fields added by this lane; see the `validation` column and
+# `docs/re/dungeon-model.md` sections 4 and 7.
+#
+# THE ROOM AND OBJECT CONTAINERS ARE HASH MAPS, NOT LISTS. A dict field is
+# `ptr -> [uint64 bucketCount][bucketPtr x bucketCount]`, each bucket
+# `[uint64 entryCount][entry x entryCount]`, each entry
+# `uint32 key, uint32 pad, <value struct>`. The slot 8 bytes after a dict
+# pointer holds the dict's total entry count. Validated: that count equals
+# the number of entries decoded for all 5,516 dungeons and all 8,483 rooms, and
+# the decoded per-room object counts reproduce
+# asteroidcountbytypeidroomiddungeonid.static exactly (3,054/3,054 cells).
+#
+# Offsets below are RECORD-relative for the dungeon row (delta 8 already
+# included) and STRUCT-relative for the nested room / object / entity /
+# guardCommand / connection structs, which are reached as dict or list
+# values. Do not add delta to anything here.
+#
+# NOT the table. The contents of the client are not committed here: the
+# sample rows exist only to show the reader produces the right thing, and
+# anyone who wants the data obtains the client themselves.
+
+field	offset	kind	optional_bit	validation
+# dungeon row (record, stride 120, struct at +8)
+(key)	0	u32	-	= dungeonID [V]
+assetManipulations	8	dict	0x1	always empty in this build [V]
+connections	24	list<connection>	0x2	elements 24 bytes; 1,715 dungeons [V]
+contentTags	32	list<str>	0x4	87 dungeons [V]
+rooms	40	dict<u32,room>	0x800	key = roomID; 5,511 dungeons [V]
+(rooms entry count)	48	u32	-	== decoded entry count, 5,516/5,516 [V]
+standingRestrictions	56	list<standingRestriction>	0x1000	elements 8 bytes
+archetypeID	64	u32	-	58 distinct; FK -> archetypes 58/58 [V]
+descriptionID	68	msgid	0x8	493/493 resolve [V]
+difficulty	72	u32	0x10	
+dungeonID	76	u32	-	repeated key [V]
+dungeonNameID	80	msgid	-	5,511/5,516 resolve [V]
+entryObjectID	84	u32	0x20	5,499/5,504 are an objectID of this dungeon [V]
+entryTypeID	88	u32	0x40	FK -> types [V]
+factionID	92	u32	0x80	FK -> factions [V]
+gameplayDescriptionID	96	msgid	0x100	64/64 resolve [V]
+missionBriefingID	100	msgid	0x200	1,460/1,460 resolve [V]
+objectivesID	104	u32	0x400	82 distinct, FK -> dungeonobjectives 82/82 [V]
+useDefaultSpaceMusic	108	bool	0x2000	
+(presence bitfield)	112	u32	-	
+
+# room struct (96 bytes, dict value; entry = key+pad+struct = 104)
+(dict entry key)	entry+0	u32	-	= roomID; agrees with asteroid table [V]
+assetManipulations	0	dict	0x1	always empty [V]
+(assetManipulations entry count)	8	u32	-	0 everywhere [V]
+messageIcon	16	str	0x8	
+notes	24	str	0x20	designer notes
+objects	32	dict<u32,object>	0x40	key = objectID [V]
+(objects entry count)	40	u32	-	== decoded count for all 8483 rooms [V]
+roomName	48	wstr	-	UTF-16, BOM-prefixed, length excludes the BOM [V]
+shortName	56	str	-	'R1', 'R2'
+emptyResetDelay	64	u32	0x2	
+messageHeaderID	68	msgid	0x4	2,485/2,485 resolve [V]
+messageTextID	72	msgid	0x10	CORRECTION: pyd-schemas says +84. 2369/2369 resolve at +72 [V]
+(unnamed)	76	u32	-	small enum 0..4, unknown
+(unnamed)	80	u32	-	mostly 0, unknown
+(unnamed)	84	i32	-	small negatives (-2..-6), unknown
+(presence bitfield)	88	u32	-	
+
+# object struct (152 bytes, dict value; entry = key+pad+struct = 160)
+(dict entry key)	entry+0	u32	-	= objectID [V]
+assetManipulations	0	dict	0x1	
+entities	16	dict<u32,entity>	0x2	key = entityID; NPC spawns [V]
+(entities entry count)	24	u32	-	
+groupTag	32	str	0x4	'default', 'Environment', 'Asteroids', 'Logic'
+localName	40	str	0x10	designer label, e.g. 'Invisible Beacon - Spawn 4'
+notes	48	str	0x20	
+objectiveTargetGroup	56	str	0x80	never present on any object [V]
+guardCommand	64	struct guardCommand	0x8	36 bytes inline; 39,956 objects [V]
+objectID	100	u32	-	== the dict key [V]
+objectNameID	104	msgid	0x40	77,401/77,401 resolve [V]
+order	108	u32	0x100	authoring order
+pitch	112	f32	0x200	degrees [I]
+position	116	vec3<f32>	-	x,y,z metres, room-local [V]
+radius	128	f32	0x400	metres; asteroid size [I]
+roll	132	f32	0x800	degrees [I]
+roomID	136	u32	-	== the containing room's key, 260,242/260,242 [V]
+typeID	140	u32	-	FK -> types 6,249/6,249 distinct [V]
+yaw	144	f32	0x1000	degrees [I]
+(presence bitfield)	148	u32	-	record +148 for fsd.CFSD_OBJECT_COLUMNS' frame
+
+# entity struct (64 bytes, dict value; entry = key+pad+struct = 72)
+(dict entry key)	entry+0	u32	-	= entityID [V]
+behaviorName	0	str	0x2	111 distinct, mostly decimal-digit strings
+groupBehaviorName	8	str	0x8	23 distinct, e.g. 'Incursion Drifter Group'
+notes	16	str	0x10	
+objectiveTargetGroup	24	str	0x40	
+additionalLootId	32	u32	0x1	5 occurrences in the whole table; target unknown
+entityID	36	u32	-	== the dict key [V]
+entityNameID	40	msgid	0x4	4,578/4,578 resolve [V]
+npcGroupingID	44	u32	0x20	6,374 distinct; NOT a typeID (see doc); target unknown
+objectID	48	u32	-	the object it hangs off [V]
+triggerSpawn	52	bool	0x80	true on 9,355 of 30,610 entities [V]
+(presence bitfield)	56	u32	-	
+
+# guardCommand struct (36 bytes, inline in an object)
+aggressionRange	0	f32	-	metres; 250000 on 14,522 objects
+entityMaxRespawnDelay	4	u32	-	seconds; 3600 / 86400 dominate
+entityMinRespawnDelay	8	u32	-	seconds
+jitterRadius	12	u32	0x1	metres; 500/1500/2500 only
+objectMaxRespawnDelay	16	u32	-	seconds
+objectMinRespawnDelay	20	u32	-	seconds
+orbitRange	24	f32	-	metres; 1500 on 24,195 objects
+entityDelaySpawn	28	bool	-	true x873
+entitySpawnOnce	29	bool	-	true x990
+objectDelaySpawn	30	bool	-	true x9
+objectTriggerSpawn	31	bool	-	true x8,069
+(presence bitfield)	32	u32	-	
+
+# connection struct (24 bytes, list element)
+allowedShipRaces	0	list<u32>	0x1	
+allowedShipsList	8	u32	0x2	FK -> typelist 162/162 distinct [V]
+disallowedFittedTypesList	12	u32	0x4	one value, 984; FK -> typelist [V]
+fromObjectID	16	u32	-	3,340/3,396 are an objectID of the same dungeon [V]
+(presence bitfield)	20	u32	-	
+
+# standingRestriction struct (8 bytes, list element)
+corpID	0	u32	-	
+minStandings	4	f32	-	
+
+# Worked sample: dungeon 47, one row, its six rooms, ten of its 295
+# objects. Here to show the reader works; the table is not committed.
+
+dungeonID	name	factionID	archetypeID	difficulty	entryTypeID	entryObjectID	rooms	connections	description(en-us, 60)
+47	Crimson Hand Supply Depot	500012	3	5	10645	531631	6	6	<P>According to reliable sources within the Imperial navy th
+
+roomID	shortName	roomName	objects	messageHeaderID	header(en-us,28)	messageTextID	text(en-us,48)
+12778	R1	Trade Sector	35	125229	Database Information	95425	This is a waiting area for trusted black market 
+12779	R2	Industrial Sector	68	125230	CRIMSON HAND INTRANET	95426	Industrial sector:  <P>  Registered visitors ent
+12780	R3	Central Processing	26	126340	CRIMSON HAND INTRANET	96450	Central Processing:  <P>  The center point of th
+12781	R4	Supply Sector	84	126341	CRIMSON HAND INTRANET	96451	Supply Sector:  <P>  This area is the primary su
+12782	R5	Command Sector	80	125231	CRIMSON HAND INTRANET	95427	Command Sector:  <BR>  Logging on to network ...
+12783	R0	Deadspace Warp Point	2	126339	Database Information	96449	According to reliable sources within the <a href
+
+# ten objects of room 12779 'Industrial Sector'. x/y/z are metres in the
+# room's own frame; the asteroid table independently says this room holds
+# 51 of typeID 1230, and 51 is what the decoder counts.
+objectID	typeID	typeName	x	y	z	yaw	radius	objectNameID	name(en-us)	entities
+531372	10124	Beacon	-36121.0	0.0	-0.0	360.0	0.0	145404	Industrial Sector	0
+531373	12273	Ancient Acceleration Gate	15881.0	-3415.0	-1317.0	360.0	0.0	-	-	0
+531374	17595	Blood Cruise Missile Battery	1075.0	629.0	3004.0	-	-	-	-	0
+531375	16741	Tower Sentry Bloodraider III	-2169.0	-1581.0	2493.0	-	-	145405	Sentry Gun	0
+531376	11209	Barren Asteroid	16084.0	-3951.0	-5929.0	-	-	145406	Barren Asteroid	0
+531377	1230	Veldspar	-3087.3	6070.3	9159.3	-	39024.3	-	-	0
+531378	1230	Veldspar	-2053.4	4991.8	28795.6	-	49091.8	-	-	0
+531379	1230	Veldspar	-22077.7	-6486.5	-3024.0	-	13326.1	-	-	0
+531380	1230	Veldspar	-17937.5	-598.7	-5061.5	-	10297.3	-	-	0
+531381	1230	Veldspar	-19271.7	-160.3	12677.6	-	17464.0	-	-	0

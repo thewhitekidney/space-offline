@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Pre-push: run the gate, unless `tools/land.sh` has already gated every sha
+# being pushed (review V4 G1, RR1 L2; the stamp is described in land.sh).
+#
+# `land.sh --head` gates a clean worktree of HEAD while the main tree is dirty
+# with lanes' files, then pushes that sha. A hook that always ran the gate
+# would run it again here, in the dirty main tree, and refuse the push. So a
+# sha with a valid stamp is accepted. Valid means all of:
+#   - `out/landed/<sha>` names `git rev-parse <sha>^{tree}`;
+#   - `out/landed/<sha>.log` hashes to the stamp's `log-sha256`;
+#   - that log holds the full gate's pass line, `== gate passed`.
+# Anything else -- no stamp, a stamp for another tree, an edited log -- and
+# the hook runs the bare gate, exactly as it did before stamps existed.
+set -euo pipefail
+top=$(git rev-parse --show-toplevel)
+
+stamp_ok() {
+    local sha=$1 f="$top/out/landed/$1" tree digest
+    [[ -f $f && -f $f.log ]] || return 1
+    tree=$(git rev-parse --verify --quiet "$sha^{tree}") || return 1
+    read -r digest _ < <(sha256sum "$f.log")
+    grep -qx "tree $tree" "$f" || return 1
+    grep -qx "log-sha256 $digest" "$f" || return 1
+    grep -qx '== gate passed' "$f.log" || return 1
+}
+
+gate=0
+# stdin: one line per ref, `<local ref> <local sha> <remote ref> <remote sha>`.
+while read -r _ lsha _ _; do
+    [[ $lsha =~ ^0+$ ]] && continue   # a deletion pushes no content
+    if stamp_ok "$lsha"; then
+        echo "pre-push: $lsha was gated by land.sh (stamp matches its tree)" >&2
+    else
+        echo "pre-push: $lsha has no valid land.sh stamp; running the gate" >&2
+        gate=1
+    fi
+done
+((gate)) || exit 0
+exec "$top/tools/gate.sh"

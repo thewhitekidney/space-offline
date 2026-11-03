@@ -1,0 +1,12 @@
+# Log check for FU-PI2-1 (docs/lanes/fu-pi2.md): a pi_farmer makes P2.
+# No client part (the human step 2 is "look at the planet as the farmer", for which
+# there is no scriptable client route).  Run a bots session with a pi_farmer (the
+# lane note's setup), let it make a few visits, then:
+#     python3 -I tools/client-ci/server-expect.py fu_pi2
+#
+# BOTS-EXPECT:   present \+[0-9:.]+ pi\s.*it makes P2
+# BOTS-EXPECT:   absent  the P2 routes:
+# BOTS-EXPECT:   absent  CannotRoute
+# BOTS-EXPECT:   absent  CannotImport
+# SERVER-EXPECT: absent  UNANSWERED (planetMgr|planetOrbitalRegistryBroker)
+# SERVER-EXPECT: absent  panicked at

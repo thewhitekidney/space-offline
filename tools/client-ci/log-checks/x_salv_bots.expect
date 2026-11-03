@@ -1,0 +1,14 @@
+# Log check for X-SALV's bot half (docs/lanes/x-salv.md, "Bots, 20 minutes"):
+# three ratters, closed economy.  Run
+#     tools/soak.sh --closed --ratters 3     (or eve-bots --loop escort with the economy on)
+# then:
+#     python3 -I tools/client-ci/server-expect.py x_salv_bots
+# The lane's "wrong" list: ratters docking for "recovery" (the salvage act must
+# be incidental); a hold that fills is not visible in a log and stays a human read.
+#
+# BOTS-EXPECT:   present \+[0-9:.]+ fit\s
+# BOTS-EXPECT:   present \+[0-9:.]+ loot\s
+# BOTS-EXPECT:   present \+[0-9:.]+ salvage\s
+# BOTS-EXPECT:   absent  recover(y)?\b.*salvage
+# SERVER-EXPECT: absent  UNANSWERED (ship\.Drop|dogmaIM)
+# SERVER-EXPECT: absent  panicked at

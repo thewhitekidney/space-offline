@@ -1,0 +1,72 @@
+# res:/staticdata/dogmaeffects.fsdbinary -- SHAPE ONLY, plus five sample rows.
+#
+# 3,431 rows, 112-byte records, uint32 key (= effectID), hash on
+# key % 3431 buckets, and a 48-byte `modifierInfo` element in the
+# variable-length arena. Read with `tools/dogma.py`, decoded in
+# `docs/re/dogma.md`.
+#
+# Every field name, offset, type and presence bit below was read out of the
+# client's own generated loader, bin64/dogmaEffectsLoader.pyd, and is
+# reproducible with `tools/dogma.py derive dogmaeffects`. [V]
+#
+# `modifierInfo` is the part that matters: it is what says that an effect
+# multiplies attribute X of group Y by attribute Z.
+#
+# NOT the table. The contents of the client are not committed here: the rows
+# below exist only to show the reader produces the right thing, and anyone
+# who wants the data obtains the client themselves.
+field	record_offset	kind	optional_bit
+(key)	0	u32	-
+effectName	8	str	-
+guid	16	str	0x80
+modifierInfo	24	list	0x200
+sfxName	32	str	0x4000
+descriptionID	40	msgid	0x1
+dischargeAttributeID	44	u32	0x2
+displayNameID	48	msgid	0x4
+distribution	52	u32	0x8
+durationAttributeID	56	u32	0x10
+effectCategory	60	u32	-
+effectID	64	u32	-
+falloffAttributeID	68	u32	0x20
+fittingUsageChanceAttributeID	72	u32	0x40
+iconID	76	u32	0x100
+npcActivationChanceAttributeID	80	u32	0x400
+npcUsageChanceAttributeID	84	u32	0x800
+rangeAttributeID	88	u32	0x1000
+resistanceAttributeID	92	u32	0x2000
+trackingSpeedAttributeID	96	u32	0x8000
+disallowAutoRepeat	100	bool	-
+electronicChance	101	bool	-
+isAssistance	102	bool	-
+isOffensive	103	bool	-
+isWarpSafe	104	bool	-
+propulsionChance	105	bool	-
+published	106	bool	-
+rangeChance	107	bool	-
+(presence bitfield)	108	u32	-
+
+# element of modifierInfo: stride 48 bytes, offsets relative to the element
+field	element_offset	kind	optional_bit
+domain	0	str	-
+func	8	str	-
+effectID	16	u32	0x1
+groupID	20	u32	0x2
+modifiedAttributeID	24	u32	0x4
+modifyingAttributeID	28	u32	0x8
+operation	32	i32	0x10
+skillTypeID	36	u32	0x20
+(presence bitfield)	40	u32	-
+
+# five sample rows plus their modifiers. The table is 3,431 rows and is not here.
+effectID	effectName	effectCategory	isOffensive	isAssistance	published	durationAttributeID	dischargeAttributeID	rangeAttributeID	modifiers
+11	loPower	0	0	0	1	None	None	None	0
+12	hiPower	0	0	0	1	None	None	None	0
+13	medPower	0	0	0	1	None	None	None	0
+7248	shipPBonusROFMF	0	0	0	1	None	None	None	1
+6855	shipBonusDreadnoughtA1EnergyWarfareAmountBonus	0	0	0	0	None	None	None	2
+
+effectID	domain	func	modifiedAttribute	modifyingAttribute	operation	groupID	skillTypeID
+7248	shipID	LocationRequiredSkillModifier	speed	shipBonusMF	6	None	3302
+6855	shipID	LocationGroupModifier	energyNeutralizerAmount	shipBonusDreadnoughtA1	6	71	None
+6855	shipID	LocationGroupModifier	powerTransferAmount	shipBonusDreadnoughtA1	6	68	None

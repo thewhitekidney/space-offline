@@ -1,0 +1,222 @@
+# S1 (lane chatter): what bots say in Local and fleet chat. category TAB line.
+# Written for this project, in casual EVE player register. Slots {name} {system} {ore} {hull};
+# a line whose slot is unknown is not used. Every line is [A]: falsified by the owner finding the
+# register wrong or the lines repeating visibly in 10 minutes of Local.
+greet	o/
+greet	o/ welcome
+greet	hey o/
+greet	hi there
+greet	yo
+greet	o7 o/
+greet	hello o/
+greet	hey, welcome to {system}
+greet	o/ {name}
+greet	hi {name}
+greet	evening o/
+greet	morning o/
+greet	hej o/
+greet	hey hey
+greet	o/ safe flying
+greet	hi o/ quiet tonight
+greet	welcome in o/
+greet	ey o/
+greet	hello, o7
+greet	hi, belts are decent here
+greet	o/ {name}, fly safe
+greet	sup o/
+reply_greet	o/
+reply_greet	hey o/
+reply_greet	hi
+reply_greet	hello o/
+reply_greet	yo
+reply_greet	o7
+reply_greet	hey there
+reply_greet	hi hi
+reply_greet	o/ how's it going
+reply_greet	hey, all good here
+reply_greet	hello, quiet in {system} today
+reply_greet	o/ {name}
+reply_greet	hiya
+reply_greet	hej
+reply_greet	sup
+reply_greet	hey o/ mining away
+reply_greet	hi, just rocks and more rocks
+reply_greet	o/ nice to see someone talking
+reply_greet	hey o7
+reply_greet	heya
+reply_greet	hello hello
+reply_greet	o/ o/
+gf	o7
+gf	o7 gf
+gf	gf
+gf	ty o7
+gf	gg
+gf	nice one
+gf	lol o7
+gf	o7 gg
+gf	cheers
+gf	:)
+gf	ha o7
+gf	ok o7
+gf	gf gf
+gf	fair enough o7
+gf	gg o7
+gf	lol gg
+gf	o7 fly safe
+gf	yep o7
+gf	nice, o7
+gf	gf {name}
+gf	np {name}, o7
+boosts	orca here, invite me and I'll boost
+boosts	got an {hull}, send me a fleet invite
+boosts	boosts coming, invite me
+boosts	{hull} pilot here, invite and I'll run boosts
+boosts	yep, invite me to fleet
+boosts	I can boost, just invite
+boosts	invite me, boosts on
+boosts	orca here o/ fleet invite and I'm yours
+boosts	boosting if you invite me
+boosts	I have boosts, shoot me an invite
+boosts	{hull} here, invite pls
+boosts	yes, got a boost ship, invite me
+boosts	I'll boost, invite me to your fleet
+boosts	boosts here, need an invite first
+boosts	yep boosts, invite o/
+boosts	{hull} here, mining boosts ready
+boosts	ok invite me and I'll fire them up
+boosts	got you, invite me
+boosts	I run boosts, invite me in
+small	rocks are thin today
+small	this belt is picking up nicely
+small	anyone know a good place to sell ore around here
+small	my cargo is nearly full again
+small	lol the rats are bad here
+small	ore prices are meh lately
+small	slow night, just mining
+small	how's the mining going for everyone
+small	{ore} is selling ok at the moment
+small	need more yield on this rig
+small	{system} is quiet today
+small	anyone hauling ore out of here
+small	afk for a sec, hauling
+small	I should have trained mining sooner
+small	the belt is empty already lol
+small	a bit of mining then bed
+small	somebody has to mine this stuff
+small	my laser keeps cycling, nice and steady
+small	lag again?
+small	tidi anywhere?
+small	anyone seen rats in {system}
+small	mining is a calm life lol
+small	need a bigger hold
+small	coffee and rocks
+small	refining later, hold is almost full
+small	this {hull} is slow but it works
+small	mining {ore} here, slow but steady
+small	{ore} again, it never ends
+farewell	heading out o/
+farewell	jumping on, o7
+farewell	moving on, fly safe
+farewell	gotta run, o/
+farewell	off to the next system, o7
+farewell	see you around o/
+farewell	o7 jumping
+farewell	leaving {system}, fly safe
+farewell	time to move, o/
+farewell	taking the gate, o7
+farewell	later o/
+farewell	heading to sell, o7
+farewell	on my way, o/
+farewell	gate time, o7
+farewell	bye all o/
+farewell	going to dock up, o7
+farewell	safe flying everyone
+farewell	hauling out, o/
+farewell	o7 all
+farewell	heading out of {system}, o7
+farewell	bye {system}, back later maybe
+under_attack	hey, why am I being shot
+under_attack	someone is shooting me
+under_attack	under attack in {system}
+under_attack	lol who is that
+under_attack	I'm being attacked, help
+under_attack	what did I do
+under_attack	stop shooting pls
+under_attack	{name} is shooting me
+under_attack	someone help, I'm taking fire
+under_attack	help in {system}
+under_attack	getting shot at, anyone near
+under_attack	ok that's rude
+under_attack	I'm under fire
+under_attack	ugh, here we go
+under_attack	pirate in {system}
+under_attack	I have no guns, please stop
+under_attack	warping out, someone is on me
+under_attack	need help in {system}
+under_attack	anyone with guns nearby
+# CHATTER-3 (lane bot-polish): after a fight of my own, a mate shot, and a hostile bot's jab.
+# Same register and the same rule: every line is [A]. Only the hostile bots use `taunt`.
+gf_won	gf
+gf_won	gf o7
+gf_won	gg
+gf_won	good fight
+gf_won	gf, nice try
+gf_won	that was fun
+gf_won	gg o/
+gf_won	ggs
+gf_won	fun while it lasted
+gf_won	o7 good fight
+gf_won	gf mate
+gf_won	well fought
+gf_won	gg, no hard feelings
+gf_won	that went my way, gf
+gf_won	gf, fly safe
+gf_won	nice scrap, gf
+gf_lost	gf
+gf_lost	gg
+gf_lost	gf o7
+gf_lost	well played
+gf_lost	ok that was good, gf
+gf_lost	ggs, you got me
+gf_lost	gg wp
+gf_lost	fair enough, gf
+gf_lost	ah well, gf
+gf_lost	o7 gf
+gf_lost	you win, gf
+gf_lost	good one, gg
+gf_lost	nicely done
+gf_lost	lost that one, gf
+gf_lost	gf, back to the drawing board
+gf_lost	gf, I'll refit
+mate_attacked	my corp mate is under attack
+mate_attacked	someone is shooting one of ours
+mate_attacked	hey, leave my corp mate alone
+mate_attacked	a mate of mine is getting shot
+mate_attacked	who is attacking my friend
+mate_attacked	corp mate under fire here
+mate_attacked	they are on one of ours
+mate_attacked	anyone close to {system}, my mate is taking fire
+mate_attacked	that's my corp mate, back off
+mate_attacked	trouble in {system}, one of ours is hit
+mate_attacked	shots fired at a corp mate
+mate_attacked	someone's picking on my mate
+mate_attacked	my mate is being attacked, careful
+mate_attacked	watch out, they're shooting a corp mate
+mate_attacked	corp mate is hit, heads up
+mate_attacked	not cool, that's one of ours
+taunt	careful, it's not safe out here
+taunt	nice ship, shame if something happened to it
+taunt	anyone feeling brave in {system}
+taunt	{system} is mine tonight
+taunt	you should not be here
+taunt	I'm watching the gate
+taunt	quiet in here, for now
+taunt	someone is about to have a bad day
+taunt	I can see you from here
+taunt	nobody passes {system} for free
+taunt	I hope you brought friends
+taunt	still here? bold
+taunt	lovely night for it
+taunt	do you feel lucky
+taunt	one of you is going to pop
+taunt	just warming up

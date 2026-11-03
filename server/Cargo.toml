@@ -1,0 +1,20 @@
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.0.1"
+edition = "2024"
+license-file = "../LICENSE.md"
+publish = false
+
+# No external dependencies yet. The marshal and protocol codecs are pure byte
+# manipulation with no crates. Add deps here (and to server/deps.allow, and to
+# the build image) only when a crate genuinely earns its place.
+[workspace.dependencies]
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[profile.release]
+debug = "line-tables-only"

@@ -1,0 +1,67 @@
+# The site population: how many anomalies and signatures each security band
+# holds at once, and how they cycle. Read by the server (`population::AUTHORED`,
+# CP21); header frozen in docs/content/schema.md §4. Edit and restart.
+# Spec: docs/content/C3-population.md §4.1 (table T1) and §6, plan §3.3.
+# - key: the `site` delta's slot key (ruling 4). NEVER rename one (that drops
+#   its live deltas); retire a row by deleting it and add a new key.
+# - archetype: the client's dungeon archetypes, comma-separated (24 combat,
+#   27 ore, 28 ice, 30 gas, 44 relic, 45 data) [V names, appConst].
+# - count: live at once per system. A fraction is a per-system chance for one
+#   more, seeded per system. Every count is [A].
+# - difficulties: the client's 1-5 scan difficulty, or * for "the ore band of
+#   this band" (C3 §7.2 rule R4). Mapping difficulty to a band is [I].
+# - respawn_s: seconds after completion before the slot refills [A].
+# - ttl_s: an unvisited live site expires at the first rollover after it [A].
+# - The fw_* rows (W17 CP53b) hold the factional-warfare complexes (33-36,
+#   appConst dunArchetypesFactionalWarfare [V]). The server keeps them to the
+#   warzone systems and to complexes of that warzone's two militias
+#   (`facwar::militias_by_system`), so they never appear elsewhere in low sec.
+# Every row is [A] as a whole; `why` names what would falsify it.
+key	band	archetype	entry	count	difficulties	respawn_s	ttl_s	why
+combat_anom_high	high	24	anomaly	2	1,2	1200	259200	[A] C3 T1: falsified by humans calling hisec ratting empty or crowded
+combat_sig_high	high	24	signature	1	1,2	3600	259200	[A] C3 T1: falsified by probers finding no combat signature in hisec, or too many
+ore_anom_high	high	27	anomaly	1	*	3600	259200	[A] C3 T1: falsified by hisec miners finding no ore site, or a lowsec ore in one
+explo_sig_high	high	44,45	signature	1	2	3600	259200	[A] C3 T1: falsified by an explorer calling hisec data and relic sites too rare or too common
+gas_sig_high	high	30	signature	1	2	3600	259200	[A] C3 T1: falsified by a huffer finding a nullsec gas tier in hisec
+combat_anom_low	low	24	anomaly	3	2,3	1200	259200	[A] C3 T1: falsified by humans calling lowsec ratting empty or crowded
+combat_sig_low	low	24	signature	1	2,3,4	3600	259200	[A] C3 T1: falsified by probers finding no combat signature in lowsec, or too many
+ore_anom_low	low	27	anomaly	2	*	3600	259200	[A] C3 T1: falsified by lowsec miners finding no ore site
+explo_sig_low	low	44,45	signature	2	3	3600	259200	[A] C3 T1: falsified by an explorer calling lowsec data and relic sites too rare or too common
+gas_sig_low	low	30	signature	1	4,5	3600	259200	[A] C3 T1: falsified by a huffer finding no lowsec gas, or hisec gas in lowsec
+combat_anom_null	null	24	anomaly	5	3,4,5	1200	259200	[A] C3 T1: falsified by humans calling null ratting empty or a theme park
+combat_sig_null	null	24	signature	2	3,4,5	3600	259200	[A] C3 T1: falsified by probers finding no combat signature in null, or too many
+ore_anom_null	null	27	anomaly	3	*	3600	259200	[A] C3 T1: falsified by null miners finding no ore site
+explo_sig_null	null	44,45	signature	2	4	3600	259200	[A] C3 T1: falsified by an explorer calling null data and relic sites too rare or too common
+ice_anom_null	null	28	anomaly	0.25	*	86400	259200	[A] C3 T1, one null system in four: falsified by ice miners finding no ice belt in a region
+fw_novice_low	low	33	anomaly	1	4	1800	259200	[A] R-FW §6: one Novice complex per warzone system; falsified by militia pilots finding no Novice to run, or a queue for it
+fw_small_low	low	34	anomaly	1	4	1800	259200	[A] R-FW §6: one Small complex per warzone system; falsified by militia pilots finding no Small to run, or a queue for it
+fw_medium_low	low	35	anomaly	1	4	1800	259200	[A] R-FW §6: one Medium complex per warzone system; falsified by militia pilots finding no Medium to run, or a queue for it
+fw_large_low	low	36	anomaly	0.5	4	3600	259200	[A] R-FW §6: a Large complex in half the warzone systems; falsified by humans calling Large complexes everywhere or nowhere
+# SOC-B1: ice in high and low sec. Appended (never inserted) so no earlier
+# row's slot moves. `*` draws the ice dungeons of the band (dungeon_data
+# Difficulties::Star; X-ICE keys an ice dungeon's band to the ice it holds,
+# `ice_band`): high-sec the four basic ices, low-sec adds Glare Crust, null
+# the finer ices.
+ice_anom_high	high	28	anomaly	0.15	*	86400	259200	[A] R-SOCIETY SOC-B1, about one hisec system in seven: falsified by hisec ice miners flying more than five jumps for a field, or one in every system
+ice_anom_low	low	28	anomaly	0.25	*	86400	259200	[A] R-SOCIETY SOC-B1, as null: falsified by lowsec ice miners finding no ice belt in a region
+# Y-WH: wormhole space (band `wormhole`, the 31xxxxxx systems). Appended, so no
+# earlier row's slot moves. A wormhole row draws NOT by difficulty (`*` is a
+# placeholder) but by the system's J-space class C1-C6: only the dungeons
+# `content/wormholes/sites.tsv` lists for that class (`Prepared::with_wormhole`),
+# which is how the faction-500021 sites and the Fullerite reservoirs, excluded
+# everywhere else, come in for wormhole space alone. There are no belts in
+# J-space: no belt row exists for the band. Counts are per system.
+wh_combat_anom	wormhole	24	anomaly	3	*	3600	259200	[A] which sites exist comes from content/wormholes/combat-sites.tsv; the count is ours: falsified by a J-space pilot calling a class empty of Sleeper anomalies, or one with a wall of them
+wh_relic_sig	wormhole	44	signature	2	*	7200	259200	[A] as wh_combat_anom: falsified by explorers finding no Forgotten relic site in a class, or the ancient cans out-producing the closed economy's need for Ancient Salvage
+wh_data_sig	wormhole	45,24	signature	2	*	7200	259200	[A] as wh_relic_sig; archetype 24 is the one Unsecured data site the client files as combat (Perimeter Transponder Farm)
+wh_gas_sig	wormhole	30	signature	2	*	14400	86400	[A] one day's life; falsified by Fullerite stocks staying at zero in a closed soak with huffers diving, or by T3 hulls appearing within a game-week
+wh_ore_anom	wormhole	27	anomaly	1	*	14400	259200	[A] J-space ore deposits (Perimeter, Frontier, Core), no belts: falsified by miners in J-space finding none, or a thousand
+# L6b MINING-FUN-EVENTS (#33): contested rich sites. Appended, so no earlier slot
+# moves. The key contains "rich": `eve-mod-econ::motherlode` pays such a site extra
+# ore, three times the geode chance, and ambushes it while it is mined. They are
+# not announced (scanned down). About one system in five holds one, left alone
+# for four hours after it is cleared. The ore is the band's ordinary one (`*`):
+# "the region's rarer ores" are not done.
+ore_rich_low	low	27	anomaly	0.2	*	14400	259200	[A] r-nes-econ 2.6 E, one lowsec system in five: falsified by lowsec miners never finding one in a night, or one in every system
+ore_rich_null	null	27	anomaly	0.2	*	14400	259200	[A] r-nes-econ 2.6 E, one null system in five: falsified by null miners never finding one in a night, or one in every system
+wh_ore_rich	wormhole	27	anomaly	0.2	*	14400	259200	[A] r-nes-econ 2.6 E, one J-space system in five: falsified by J-space miners never finding one in a night, or one in every system

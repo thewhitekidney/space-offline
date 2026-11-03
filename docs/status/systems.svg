@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 902" role="img" aria-label="Progress by system">
+<title>Progress by system</title>
+<style>
+.bg{fill:#fcfcfb}.t{fill:#0b0b0b}.s{fill:#52514e}.track{fill:#e1e0d9}
+.proved{fill:#184f95}.built{fill:#3987e5}.part{fill:#86b6ef}.missing{fill:#e1e0d9}.unknown{fill:#eb6834}
+.bad{fill:#eb6834}.none{fill:#c3c2b7}
+.in-proved,.in-built,.in-unknown,.in-bad{fill:#fff}.in-part,.in-missing,.in-none{fill:#0b0b0b}
+@media (prefers-color-scheme:dark){
+.bg{fill:#1a1a19}.t{fill:#f0efec}.s{fill:#c3c2b7}.track{fill:#383835}
+.proved{fill:#86b6ef}.built{fill:#3987e5}.part{fill:#184f95}.missing{fill:#383835}.unknown{fill:#d95926}
+.bad{fill:#d95926}.none{fill:#52514e}
+.in-proved{fill:#0b0b0b}.in-part,.in-missing,.in-none{fill:#f0efec}
+}
+text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}
+.big{font-size:40px;font-weight:600}.b{font-weight:600}.sm{font-size:13px}
+</style>
+<rect width="480" height="902" rx="8" class="bg"/>
+<text x="16.0" y="26" class="t">Login and sessions</text>
+<text x="464.0" y="26" class="s sm" text-anchor="end">9 of 9 proved</text>
+<rect x="16.0" y="34" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="34" width="446.0" height="20" rx="4" class="proved"/>
+<text x="239.0" y="49.0" class="in-proved sm" text-anchor="middle">9</text>
+<text x="16.0" y="80" class="t">Market and wallet</text>
+<text x="464.0" y="80" class="s sm" text-anchor="end">16 of 16 proved</text>
+<rect x="16.0" y="88" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="88" width="446.0" height="20" rx="4" class="proved"/>
+<text x="239.0" y="103.0" class="in-proved sm" text-anchor="middle">16</text>
+<text x="16.0" y="134" class="t">Corp and social</text>
+<text x="464.0" y="134" class="s sm" text-anchor="end">18 of 20 proved</text>
+<rect x="16.0" y="142" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="142" width="401.2" height="20" rx="4" class="proved"/>
+<text x="216.6" y="157.0" class="in-proved sm" text-anchor="middle">18</text>
+<rect x="419.2" y="142" width="42.8" height="20" rx="4" class="part"/>
+<text x="440.6" y="157.0" class="in-part sm" text-anchor="middle">2</text>
+<text x="16.0" y="188" class="t">Space and movement</text>
+<text x="464.0" y="188" class="s sm" text-anchor="end">13 of 15 proved</text>
+<rect x="16.0" y="196" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="196" width="386.3" height="20" rx="4" class="proved"/>
+<text x="209.1" y="211.0" class="in-proved sm" text-anchor="middle">13</text>
+<rect x="404.3" y="196" width="27.9" height="20" rx="4" class="built"/>
+<text x="418.2" y="211.0" class="in-built sm" text-anchor="middle">1</text>
+<text x="448.1" y="211.0" class="in-missing sm" text-anchor="middle">1</text>
+<text x="16.0" y="242" class="t">Combat</text>
+<text x="464.0" y="242" class="s sm" text-anchor="end">25 of 29 proved</text>
+<rect x="16.0" y="250" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="250" width="384.2" height="20" rx="4" class="proved"/>
+<text x="208.1" y="265.0" class="in-proved sm" text-anchor="middle">25</text>
+<rect x="402.2" y="250" width="59.8" height="20" rx="4" class="built"/>
+<text x="432.1" y="265.0" class="in-built sm" text-anchor="middle">4</text>
+<text x="16.0" y="296" class="t">Modules</text>
+<text x="464.0" y="296" class="s sm" text-anchor="end">11 of 13 proved</text>
+<rect x="16.0" y="304" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="304" width="377.1" height="20" rx="4" class="proved"/>
+<text x="204.5" y="319.0" class="in-proved sm" text-anchor="middle">11</text>
+<rect x="395.1" y="304" width="66.9" height="20" rx="4" class="built"/>
+<text x="428.5" y="319.0" class="in-built sm" text-anchor="middle">2</text>
+<text x="16.0" y="350" class="t">Missions and exploration</text>
+<text x="464.0" y="350" class="s sm" text-anchor="end">17 of 21 proved</text>
+<rect x="16.0" y="358" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="358" width="360.7" height="20" rx="4" class="proved"/>
+<text x="196.3" y="373.0" class="in-proved sm" text-anchor="middle">17</text>
+<rect x="378.7" y="358" width="19.3" height="20" rx="4" class="built"/>
+<text x="388.3" y="373.0" class="in-built sm" text-anchor="middle">1</text>
+<text x="431.0" y="373.0" class="in-missing sm" text-anchor="middle">3</text>
+<text x="16.0" y="404" class="t">Fleet</text>
+<text x="464.0" y="404" class="s sm" text-anchor="end">7 of 9 proved</text>
+<rect x="16.0" y="412" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="412" width="346.4" height="20" rx="4" class="proved"/>
+<text x="189.2" y="427.0" class="in-proved sm" text-anchor="middle">7</text>
+<rect x="364.4" y="412" width="47.8" height="20" rx="4" class="built"/>
+<text x="388.3" y="427.0" class="in-built sm" text-anchor="middle">1</text>
+<rect x="414.2" y="412" width="47.8" height="20" rx="4" class="unknown"/>
+<text x="438.1" y="427.0" class="in-unknown sm" text-anchor="middle">1</text>
+<text x="16.0" y="458" class="t">Fitting and ships</text>
+<text x="464.0" y="458" class="s sm" text-anchor="end">9 of 12 proved</text>
+<rect x="16.0" y="466" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="466" width="334.0" height="20" rx="4" class="proved"/>
+<text x="183.0" y="481.0" class="in-proved sm" text-anchor="middle">9</text>
+<rect x="352.0" y="466" width="35.3" height="20" rx="4" class="built"/>
+<text x="369.7" y="481.0" class="in-built sm" text-anchor="middle">1</text>
+<rect x="389.3" y="466" width="35.3" height="20" rx="4" class="part"/>
+<text x="407.0" y="481.0" class="in-part sm" text-anchor="middle">1</text>
+<text x="444.3" y="481.0" class="in-missing sm" text-anchor="middle">1</text>
+<text x="16.0" y="512" class="t">Industry and mining</text>
+<text x="464.0" y="512" class="s sm" text-anchor="end">12 of 19 proved</text>
+<rect x="16.0" y="520" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="520" width="280.9" height="20" rx="4" class="proved"/>
+<text x="156.5" y="535.0" class="in-proved sm" text-anchor="middle">12</text>
+<rect x="298.9" y="520" width="92.3" height="20" rx="4" class="built"/>
+<text x="345.1" y="535.0" class="in-built sm" text-anchor="middle">4</text>
+<text x="427.6" y="535.0" class="in-missing sm" text-anchor="middle">3</text>
+<text x="16.0" y="566" class="t">Upwell structures</text>
+<text x="464.0" y="566" class="s sm" text-anchor="end">9 of 16 proved</text>
+<rect x="16.0" y="574" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="574" width="250.0" height="20" rx="4" class="proved"/>
+<text x="141.0" y="589.0" class="in-proved sm" text-anchor="middle">9</text>
+<rect x="268.0" y="574" width="26.0" height="20" rx="4" class="built"/>
+<text x="281.0" y="589.0" class="in-built sm" text-anchor="middle">1</text>
+<rect x="296.0" y="574" width="54.0" height="20" rx="4" class="part"/>
+<text x="323.0" y="589.0" class="in-part sm" text-anchor="middle">2</text>
+<text x="407.0" y="589.0" class="in-missing sm" text-anchor="middle">4</text>
+<text x="16.0" y="620" class="t">Tools and the friends path</text>
+<text x="464.0" y="620" class="s sm" text-anchor="end">6 of 15 proved</text>
+<rect x="16.0" y="628" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="628" width="177.2" height="20" rx="4" class="proved"/>
+<text x="104.6" y="643.0" class="in-proved sm" text-anchor="middle">6</text>
+<rect x="195.2" y="628" width="87.6" height="20" rx="4" class="built"/>
+<text x="239.0" y="643.0" class="in-built sm" text-anchor="middle">3</text>
+<rect x="284.8" y="628" width="57.7" height="20" rx="4" class="part"/>
+<text x="313.7" y="643.0" class="in-part sm" text-anchor="middle">2</text>
+<text x="403.3" y="643.0" class="in-missing sm" text-anchor="middle">4</text>
+<text x="16.0" y="674" class="t">Bots</text>
+<text x="464.0" y="674" class="s sm" text-anchor="end">7 of 23 proved</text>
+<rect x="16.0" y="682" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="682" width="134.3" height="20" rx="4" class="proved"/>
+<text x="83.2" y="697.0" class="in-proved sm" text-anchor="middle">7</text>
+<rect x="152.3" y="682" width="192.8" height="20" rx="4" class="built"/>
+<text x="248.7" y="697.0" class="in-built sm" text-anchor="middle">10</text>
+<rect x="347.1" y="682" width="17.5" height="20" rx="4" class="part"/>
+<text x="355.9" y="697.0" class="in-part sm" text-anchor="middle">1</text>
+<text x="394.8" y="697.0" class="in-missing sm" text-anchor="middle">3</text>
+<rect x="425.0" y="682" width="37.0" height="20" rx="4" class="unknown"/>
+<text x="443.5" y="697.0" class="in-unknown sm" text-anchor="middle">2</text>
+<text x="16.0" y="728" class="t">Sovereignty</text>
+<text x="464.0" y="728" class="s sm" text-anchor="end">2 of 8 proved</text>
+<rect x="16.0" y="736" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="736" width="110.0" height="20" rx="4" class="proved"/>
+<text x="71.0" y="751.0" class="in-proved sm" text-anchor="middle">2</text>
+<rect x="128.0" y="736" width="54.0" height="20" rx="4" class="built"/>
+<text x="155.0" y="751.0" class="in-built sm" text-anchor="middle">1</text>
+<rect x="184.0" y="736" width="166.0" height="20" rx="4" class="part"/>
+<text x="267.0" y="751.0" class="in-part sm" text-anchor="middle">3</text>
+<text x="407.0" y="751.0" class="in-missing sm" text-anchor="middle">2</text>
+<text x="16.0" y="782" class="t">Factional warfare</text>
+<text x="464.0" y="782" class="s sm" text-anchor="end">1 of 6 proved</text>
+<rect x="16.0" y="790" width="448.0" height="20" rx="4" class="track"/>
+<rect x="16.0" y="790" width="72.7" height="20" rx="4" class="proved"/>
+<text x="52.3" y="805.0" class="in-proved sm" text-anchor="middle">1</text>
+<rect x="90.7" y="790" width="147.3" height="20" rx="4" class="built"/>
+<text x="164.3" y="805.0" class="in-built sm" text-anchor="middle">2</text>
+<text x="351.0" y="805.0" class="in-missing sm" text-anchor="middle">3</text>
+<rect x="16.0" y="823" width="12.0" height="12" rx="2" class="proved"/>
+<text x="34.0" y="834" class="s sm">Proved</text>
+<rect x="240.0" y="823" width="12.0" height="12" rx="2" class="built"/>
+<text x="258.0" y="834" class="s sm">Built, not proved</text>
+<rect x="16.0" y="845" width="12.0" height="12" rx="2" class="part"/>
+<text x="34.0" y="856" class="s sm">Part built</text>
+<rect x="240.0" y="845" width="12.0" height="12" rx="2" class="missing"/>
+<text x="258.0" y="856" class="s sm">Missing</text>
+<rect x="16.0" y="867" width="12.0" height="12" rx="2" class="unknown"/>
+<text x="34.0" y="878" class="s sm">Unknown</text>
+</svg>

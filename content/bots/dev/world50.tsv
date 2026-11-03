@@ -1,0 +1,16 @@
+# DEV-MODE roster: 50 bots around one home system (--home).
+# 12 miners with two Orcas, 12 hunters on two sides, then PvE, trade, build, explore, PI and gas.
+orcaa	civ	foreman	1	role	Orca
+hulka	civ	mine	5	role	Hulk
+orcab	civ	foreman	1	role	Orca
+hulkb	civ	mine	5	role	Hulk
+redf	red	hunter	6	role	Rifter
+bluf	blue	hunter	6	role	Merlin
+sitesa	civ	sites	5	role	Vexor
+missa	civ	missions	3	role	Caracal
+tradea	civ	trader	3	role	-
+builda	civ	builder	4	role	-
+hacka	civ	hack	2	role	-
+icea	civ	ice	2	role	-
+pia	civ	pi	3	role	-
+huffa	civ	huff	4	role	-

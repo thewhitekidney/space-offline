@@ -1,0 +1,26 @@
+typeID	name	groupID	categoryID	volume	stackable	source
+587	Rifter	25	6	27289	singleton	fsd+const:662
+603	Merlin	25	6	16500	singleton	fsd+const:3573,662
+597	Punisher	25	6	28600	singleton	fsd+const:662
+594	Incursus	25	6	29500	singleton	fsd+const:662
+16242	Thrasher	420	6	43000	singleton	fsd+const:617
+16240	Catalyst	420	6	55000	singleton	fsd+const:617
+629	Rupture	26	6	96000	singleton	fsd+const:3576,558
+621	Caracal	26	6	92000	singleton	fsd+const:558
+2006	Omen	26	6	118000	singleton	fsd+const:558
+24702	Hurricane	419	6	216000	singleton	fsd+const:492
+16227	Ferox	419	6	252000	singleton	fsd+const:492
+641	Megathron	27	6	470000	singleton	fsd+const:493
+642	Apocalypse	27	6	470000	singleton	fsd+const:1448,493
+639	Tempest	27	6	450000	singleton	fsd+const:3579,493
+648	Badger	28	6	250000	singleton	fsd+const:687
+657	Iteron Mark V	28	6	275000	singleton	fsd+const:687
+1944	Bestower	28	6	260000	singleton	fsd+const:687
+601	Ibis	237	6	15000	singleton	fsd+const:3570,916
+484	125mm Gatling AutoCannon I	55	7	5	stackable	fsd+const:895
+483	Miner I	54	7	5	stackable	fsd+const:1695,732
+377	Small Shield Extender I	38	7	5	stackable	fsd+const:1141
+21853	Civilian Armor Repairer	62	7	5	stackable	fsd+const:1509,383
+21857	1MN Civilian Afterburner	46	7	5	stackable	fsd+const:1414,374
+185	EMP S	83	8	0.0025	stackable	fsd+const:894
+34	Tritanium	18	4	0.01	stackable	fsd+const:1899,729

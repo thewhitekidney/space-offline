@@ -1,0 +1,15 @@
+# Docs the public export omits on purpose (written by tools/public-export.py --out).
+docs/lanes/
+docs/port-tracker.md
+docs/plans/
+docs/review/state-of-the-emulator.md
+docs/review/plan.md
+docs/packets.tsv
+docs/guides/human-checks.md
+docs/guides/history-purge.md
+docs/archive/state-of-the-emulator-2026-11-01.md
+docs/archive/status-2026-10-31.md
+docs/archive/OVERNIGHT_PLAN.md
+docs/archive/plan-overnight-2026-10-23.md
+docs/archive/plan-overnight-261021.md
+docs/archive/plan-overnight-8h.md

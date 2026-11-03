@@ -1,0 +1,199 @@
+# What lanes relied on in the client: paths and symbols, never client data.
+# kinds and how each is checked: tools/port-recheck.py. Add a row here instead of prose.
+kind	client_path	symbol	lane
+symbol	eve/client/script/ui/services/menuSvcExtras/menuFunctions	Eject	be-2
+symbol	eve/client/script/ui/services/menuSvcExtras/menuFunctions	Board	be-2
+symbol	menucheckers/celestialCheckers	OfferEjectFromShip	be-2
+symbol	menucheckers/celestialCheckers	OfferBoardShip	be-2
+symbol	menucheckers/celestialCheckers	OfferTakeControl	be-2
+const	eve/common/lib/appConst	maxBoardingDistance	be-2
+const	eve/common/lib/appConst	minCloakingDistance	be-2
+const	eve/common/lib/appConst	microJumpDriveDistance	be-2
+const	eve/common/lib/appConst	invulnerabilityUndocking	be-2
+const	eve/common/lib/appConst	invulnerabilityRestoring	be-2
+const	eve/common/lib/appConst	jumpRadiusFactor	be-2
+const	eve/common/lib/appConst	SKILL_TRADING_*	be-2
+symbol	eve/client/script/remote/michelle	scatterEvents	be-2
+symbol	eve/client/script/remote/michelle	OnSlimItemChange	be-2
+symbol	eve/client/script/parklife/gameui	DoBallAdd	be-2
+symbol	eve/client/script/remote/michelle	Park.ProcessBallAdd	be-2
+symbol	eve/client/script/parklife/gameui	_HandleSessionChangeInSpace	be-2
+symbol	eve/client/script/parklife/gameui	wannaBeEgo	be-2
+symbol	eve/client/script/parklife/gameui	GetShipAccess	be-2
+symbol	eve/client/script/environment/effects/MicroJumpDrive	MicroJumpDriveEngage.Start	mjd-mass
+symbol	eve/client/script/environment/effects/MicroJumpDrive	MicroJumpDriveJump	mjd-mass
+symbol	eve/client/script/environment/effects/GenericEffect	_SpawnClientBall	mjd-mass
+symbol	eve/common/script/dogma/pythonEffects/microJumpDrive	BaseMicroJumpDrive	mjd-mass
+symbol	eve/client/script/ui/services/flightControls	UpdateDirection	mjd-mass
+symbol	eve/client/script/ui/shared/fittingScreen/fittingDogmaLocation	ModuleIsBlocked	mjd-mass
+symbol	eve/client/script/environment/spaceObject/scannerProbe	Assemble	bubbles-sb
+symbol	eve/client/script/environment/spaceObject/repository	GROUP_TO_SPACEOBJECT_MAPPING	bubbles-sb
+symbol	eve/client/script/environment/effects/WarpDisruptFieldGenerating	graphicInfo.range	bubbles-sb
+symbol	eve/common/script/dogma/pythonEffects/warpDisruptSphere	BaseWarpDisruptSphere	bubbles-sb
+errorkey	eve/client/script/parklife/autopilot	WarpDisrupted	bubbles-sb
+symbol	eve/client/script/environment/effects/EMPWave	effects.EMPWave	bubbles-sb
+group	-	330	bubbles-sb
+group	-	1189	bubbles-sb
+group	-	541	bubbles-sb
+group	-	894	bubbles-sb
+group	-	548	bubbles-sb
+group	-	589	bubbles-sb
+group	-	899	bubbles-sb
+group	-	908	bubbles-sb
+group	-	361	bubbles-sb
+group	-	46	bubbles-sb
+group	-	72	bubbles-sb
+symbol	eve/client/script/ui/inflight/shipModuleButton/shipmodulebutton	GetRelevantEffect	hic-script
+symbol	eve/client/script/ui/inflight/shipModuleButton/shipmodulebutton	ActivateEffect	hic-script
+effect	-	6848	hic-script
+effect	-	6849	hic-script
+symbol	dogma/effects/__init__	GetEwarTypeByEffectID	hic-script
+symbol	eve/client/script/environment/spaceObject/spaceObject	Display	cloak-1
+symbol	eve/client/script/environment/effects/cloaking	CloakNoAnim	cloak-1
+effect	-	607	cloak-1
+effect	-	980	cloak-1
+effect	-	5945	cloak-1
+attr	-	1163	cloak-1
+attr	-	2454	cloak-1
+attr	-	906	cloak-1
+attr	-	560	cloak-1
+attr	-	669	cloak-1
+attr	-	3123	cloak-1
+symbol	eve/client/script/ui/shared/fittingScreen/pythonEffects	FakeCloaking.PreStartChecks	cloak-1
+symbol	eve/client/script/ui/shared/fittingScreen/pythonEffects	FakeCloaking.EnforceActivationConditions	cloak-1
+symbol	eve/client/script/parklife/cloakingSvc	OnCloakModuleForceDeactivated	cloak-1
+symbol	eve/client/script/parklife/fxSequencer	effects.Cloak	cloak-1
+symbol	eve/client/script/parklife/fxSequencer	effects.Uncloak	cloak-1
+symbol	eve/client/script/ui/shared/abyss/baseActivationController	effects.Cloak	cloak-1
+symbol	eve/client/script/ui/crimewatch/crimewatchTimers	OnJumpCloakUpdated	cloak-2
+symbol	eve/client/script/ui/crimewatch/crimewatchTimers	TimerType.JumpCloak	cloak-2
+symbol	eve/client/script/ui/crimewatch/crimewatchTimers	CRIMEWATCH_TIMER_DATA	cloak-2
+module	structures/structure		u3
+module	structures/const		u3
+module	cosmetics/common/structures/const		u3
+module	structures/deployment		u3
+module	structures/types		u3
+module	eve/client/script/ui/services/structure/structureDeployment		u3
+module	eve/client/script/ui/services/structure/structureDirectory		u3
+module	eve/client/script/environment/spaceObject/structure		u3
+module	evegraphics/logoLoader		u3
+module	eve/client/script/ui/structure/structureBrowser/controllers/corpStructureBrowserController		u3
+module	eve/client/script/ui/structure/structureBrowser/controllers/structureBrowserController		u3
+module	eve/client/script/ui/structure/structureBrowser/controllers/structureEntryController		u3
+module	eve/client/script/ui/structure/structureBrowser/entries/structureEntryMyCorp		u3
+module	eve/client/script/ui/structure/deployment/deploymentCont		u3
+module	eve/client/script/ui/structure/deployment/deploymentEntity		u3
+symbol	eve/client/script/ui/util/uix	GetSlimItemName	u3
+symbol	eve/client/script/ui/shared/item	Deploy	u3
+module	eve/client/script/ui/services/structure/structureDocking		u4
+module	eve/client/script/ui/services/structure/structureHangarViewSvc		u4
+module	eve/client/script/ui/services/structure/structureGuests		u4
+module	structures/structureHangarViewState		u4
+symbol	eve/client/script/environment/invCache	GetInventory	u4
+symbol	eve/client/script/environment/invCache	GetInventoryFromId	u4
+symbol	eve/client/script/environment/godma	ProcessAllInfo	u4
+symbol	eve/client/script/environment/godma	OnGodmaShipEffect	u4
+module	eve/client/script/ui/view/hangarView		u4
+module	eve/client/script/ui/view/structureView		u4
+module	eve/client/script/ui/view/viewStateConfig		u4
+module	eve/client/script/ui/view/hangarBehaviours/modularHangarBehaviours		u4
+module	eve/client/script/ui/shared/dockedUI/undockingSvc		u4
+module	eve/client/script/ui/shared/dockedUI/guests		u4
+symbol	eve/client/script/ui/eveCommands	CmdEnterStructure	u4
+symbol	eve/client/script/ui/eveCommands	CmdEnterHangar	u4
+symbol	eve/client/script/ui/eveCommands	CmdLogOff	u4
+symbol	eve/common/script/sys/eveSessions	GetSessionValuesFromItemID	u4
+module	ballparkCommon/docking		u4
+symbol	eve/client/script/ui/station/repairshop/base_repairshop	GetRemoteRepairMgr	u5
+symbol	eve/client/script/ui/station/repairshop/base_repairshop	RepairItems	u5
+symbol	eve/client/script/ui/station/insurance/base_insurance	GetInsuranceMgr	u5
+symbol	eve/client/script/ui/services/clonejumpsvc	InstallCloneInStation	u5
+symbol	eve/client/script/ui/services/clonejumpsvc	InstallCloneInStructure	u5
+symbol	eve/client/script/util/eveMisc	_GetExtraParams	u5
+module	eve/client/script/ui/station/stationServiceConst		u5
+const	structures/services	SERVICE_*	u5
+module	homestation/validation		u5
+module	homestation/session		u5
+symbol	homestation/client/service	OnHomeStationMovedFromStructure	u5
+symbol	eve/client/script/ui/services/inventorysvc	GetInvLocationTreeData	u6
+symbol	eve/client/script/ui/shared/inventory/treeData	TreeDataStructure	u6
+symbol	eve/client/script/environment/invControllers	StructureFuelBay	u6
+symbol	eve/client/script/environment/invControllers	StructureDeedBay	u6
+module	eve/client/script/ui/shared/fitting/fittingController		u6
+module	eve/client/script/ui/shared/fittingScreen/structureFittingController		u6
+module	eve/client/script/ui/services/structure/structureControl		u6
+module	eve/client/script/ui/shared/dockedUI/lobbyWnd		u6
+symbol	eve/common/script/sys/eveCfg	IsControllingStructure	u6
+module	dogma/items/structureDogmaItem		u6
+module	eve/client/script/ui/services/facWarSvc		r-fw
+module	eve/client/script/ui/shared/factionalWarfare/enlistmentFlow/enlistCont		r-fw
+module	factionwarfare/client/enlistmentChecks		r-fw
+module	eve/client/script/ui/services/fwEnlistmentSvc		r-fw
+module	eve/client/script/ui/services/fwWarzoneSvc		r-fw
+module	factionwarfare/const		r-fw
+symbol	vgs/common/utils	create_offer_from_json	r-nes
+symbol	vgs/common/utils	create_category_from_json	r-nes
+const	vgs/common/const	*_STORE_ID	r-nes
+const	vgs/common/const	PLX_CURRENCY	r-nes
+module	vgs/client/vgsClient		r-nes
+module	plex/client/repository		r-nes
+symbol	plex/common/const	InvoiceType	r-nes
+module	vgs/common/listeners		r-nes
+symbol	eve/client/script/ui/services/redeemsvc	ClaimRedeemTokens	r-nes
+symbol	eve/client/script/ui/services/marketsvc	GetPlexBest	r-nes
+symbol	eve/client/script/ui/services/marketsvc	SellPlex	r-nes
+symbol	eve/client/script/ui/services/marketsvc	ModifyPlexOrder	r-nes
+symbol	eve/client/script/ui/services/marketsvc	GetPlexOrders	r-nes
+symbol	eve/client/script/ui/services/marketsvc	PlacePlexSellOrder	r-nes
+symbol	eve/client/script/ui/services/marketsvc	GetPlexHistory	r-nes
+module	cosmetics/client/cosmeticsSvc		r-nes
+module	shipskins/static		r-nes
+symbol	eve/client/script/ui/services/skillsvc	SkillsSvc.GetSkillHandler	r-nes
+symbol	eve/client/script/ui/services/skillsvc	GetMySkillHandler	r-nes
+module	mining/__init__		r-nes
+module	crates/storage		r-nes
+symbol	eve/client/script/ui/crate/controller	crateService	r-nes
+symbol	store/client/targetaudience/feature_flags	eve_tao_enabled	r-nes
+symbol	eve/common/script/dogma/pythonEffects/weaponDisruptionUtil	GetTrackingDisruptionAttributes	r-ewar
+symbol	eve/common/script/dogma/pythonEffects/weaponDisruptionUtil	GetGuidanceDisruptionAttributes	r-ewar
+module	eve/common/script/mgt/buffBarConst		r-ewar
+symbol	eve/client/script/environment/effects/Jump	graphicInfo	r-pve
+symbol	eve/client/script/parklife/subwaySvc	DetachCamera	r-repin
+symbol	eve/client/script/parklife/subwaySvc	SubwayService.OnSpecialFX	r-repin
+module	eve/client/script/parklife/sceneManager		r-repin
+const	crimewatch/const	*Timer*	r-p1
+const	crimewatch/const	*Duration*	r-p1
+const	dogma/const	attributeCanFit*	bp-1
+symbol	eve/common/script/dogma/baseDogmaStaticSvc	GetAttributeByName	fit-refuse
+symbol	eve/common/script/dogma/baseDogmaStaticSvc	attributesByName	fit-refuse
+symbol	eve/common/script/dogma/baseDogmaStaticSvc	effectsByName	fit-refuse
+module	autoexec_client_core		gate
+module	carbon/common/lib/autoexec_client_core		gate
+module	publicGateway/grpc/connectionConfig		gate
+module	remotefilecache/__init__		gate
+module	monolithsentry/transport		gate
+module	monolithipify/__init__		gate
+symbol	carbonui/services/settingsSvc	UpdateSettingsStatistics	ci
+symbol	carbonui/services/settingsSvc	SettingsInfo	ci
+symbol	carbonui/services/settingsSvc	GetSettingsInfo	ci
+typelist	-	50	r-abyss
+typelist	-	57	r-abyss
+typelist	-	92	r-abyss
+typelist	-	231	r-abyss
+typelist	-	233	r-abyss
+const	inventorycommon/const	typeAbyss*	r-abyss
+symbol	eve/client/script/ui/services/structure/structureControl	StructureControl.TakeControl	u6c
+symbol	eve/client/script/ui/services/structure/structureControl	StructureControl.ReleaseControl	u6c
+symbol	eve/client/script/ui/services/structure/structureControl	StructureControl.EjectFromStructure	u6c
+symbol	eve/client/script/ui/services/structure/structureControl	StructureControl.BoardStructure	u6c
+symbol	eve/client/script/ui/services/structure/structureControl	StructureControl.GetStructurePilot	u6c
+symbol	eve/client/script/ui/shared/dockedUI/controlButton	ControlButtonController.execute	u6c
+symbol	eve/client/script/ui/shared/dockedUI/controllers/structureController	StructureController.TakeControl	u6c
+symbol	eve/client/script/ui/shared/inventory/treeData	TreeDataStructure.GetChildren	u6c
+symbol	eve/client/script/dogma/clientDogmaLocation	_MakeShipActive	u6c
+const	inventorycommon/const	flagStructureFuel	u6c
+const	inventorycommon/const	flagStructureDeed	u6c
+const	inventorycommon/const	flagFighterBay	u6c
+const	inventorycommon/const	flagMoonMaterialBay	u6c
+const	inventorycommon/const	flagServiceSlot0	u6c
+const	inventorycommon/const	flagServiceSlot7	u6c

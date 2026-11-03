@@ -1,0 +1,74 @@
+# content-C4-pools.tsv -- COUNTS ONLY, no client rows. Lane C4, 2026-10-25.
+# The agent->mission pool the generator in docs/content/C4-agents-missions.md section 3
+# derives from the client's corpus (build 3619879). Every count is reproducible
+# from npccharacters / npccorporations / missions / dungeons / types .fsdbinary.
+#
+# Block 1: Basic-mission pools after the section 3.4 filters.
+#   level_source: difficulty = dungeons.difficulty of killMission.dungeonID [V], validated
+#   263/266 against dungeon names carrying "lvl N"; volume_band = courier
+#   objectiveQuantity * types.volume, bands <=250 / <=1000 / <=4000 / >4000 m3 [A].
+#   Chain parts with k>1 ("(k of n)") are not drawn, they follow part k-1 (section 3.6).
+pool	level	missions	families	faction_locked	chain_starts	level_source	offering_agents_type2
+security	1	152	75	55	10	difficulty	1093
+security	2	126	69	38	18	difficulty	1080
+security	3	164	87	48	13	difficulty	818
+security	4	119	57	10	16	difficulty	643
+security	5	96	45	35	15	difficulty	37
+distribution	1	68	66	12	18	volume_band	1040
+distribution	2	46	42	1	0	volume_band	1170
+distribution	3	56	56	0	0	volume_band	849
+distribution	4	33	31	0	0	volume_band	670
+mining	1	9	8	0	1	difficulty	391
+mining	2	10	6	0	0	difficulty	437
+mining	3	9	8	1	0	difficulty	303
+mining	4	12	9	0	0	difficulty	244
+fw	1	40	10	40	0	difficulty	-
+fw	2	40	11	40	0	difficulty	-
+fw	3	40	12	40	0	difficulty	-
+fw	4	40	10	40	0	difficulty	-
+
+# Block 2: excluded from the drawn pool.
+reason	missions
+chain part k>1 (offered as follow-up only)	215
+agentTypeID 9 (factional warfare; pool fw above)	160
+BasicKill with no killMission.dungeonID	1
+
+# Block 3: agents by agentType (npccharacters.agent.agentType) [V]; names from appConst.py:105-117.
+agentType	name	agents	divisions	levels	mission_source
+2	BasicAgent	8775	22:3729 24:3671 23:1375	1:2524 2:2687 3:1970 4:1557 5:37	pool (section 3)
+8	EventMissionAgent	698	24:344 22:283 23:66 18:5	1:271 2:59 3:87 4:138 5:143	367 with storyLineMissions (fixed list, section 8); 331 without -> pool
+6	GenericStorylineMissionAgent	651	24:274 22:273 23:104	1:651	storyline trigger (section 6)
+9	FactionalWarfareAgent	260	24:260	1:66 2:64 3:65 4:65	pool fw (deferred)
+4	ResearchAgent	244	18:244	1:78 2:81 3:53 4:32	deferred
+5	CONCORDAgent	143	22:74 24:69	1:43 2:49 3:32 4:19	pool
+12	CareerAgent	100	25..29: 20 each	1:100	fixed list, 10 missions each (section 8)
+10	EpicArcAgent	52	24:41 22:8 23:2 18:1	1:22 3:11 4:19	epic arcs (section 7)
+3	TutorialAgent	14	22:12 24:2	1:14	deferred
+11	Aura	12	22:12	1:12	Pilot Certification arcs (restart 1; client hides)
+13	Heraldry	12	37:12	1:12	HeraldryMission (Paragon), deferred
+7	StorylineMissionAgent	11	24:7 22:4	1:11	storyline trigger
+
+# Block 4: missions by contentTemplate and who offers them [V].
+template	rows	source
+BasicKillMission	992	pool security/fw
+StorylineTradeMission	443	388 via agent.storyLineMissions
+StorylineKillMission	301	298 via agent.storyLineMissions
+StorylineCourierMission	242	240 via agent.storyLineMissions
+BasicCourierMission	238	pool distribution
+EpicArcKillMission	186	epicarcs
+GenericStorylineKillMission	143	storyline trigger pool
+GenericStorylineCourierMission	115	storyline trigger pool
+HeraldryMission	78	Paragon (corporationID 1000419), deferred
+EpicArcTalkToAgentMission	53	epicarcs
+BasicMiningMission	42	pool mining
+EpicArcCourierMission	21	epicarcs
+EpicArcAgentInteractionMission	20	epicarcs
+GenericStorylineTradeMission	5	storyline trigger pool
+EpicArcTradeMission	4	epicarcs
+BasicTradeMission	4	pool distribution
+ResearchTradeMission	4	deferred
+ResearchCourierMission	1	deferred
+
+# Block 5: LP offer tables (npccorporations.lpOfferTables, list<i32>) [V].
+corps_with_tables	distinct_tables	tables_per_corp	widest_table
+181 of 283	76	1..7 (mode 4)	table 62, on 162 corps

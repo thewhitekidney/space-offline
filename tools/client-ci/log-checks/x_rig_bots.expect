@@ -1,0 +1,14 @@
+# Log check for X-RIG's bot half (docs/lanes/x-rig.md, "Bots"): a closed
+# economy with builders, ratters and a hauler or two, an hour or more (the
+# builders need the ratters' salvage and the rig blueprint first).  Run
+#     tools/soak.sh --closed     (or eve-bots with the economy on)
+# then:
+#     python3 -I tools/client-ci/server-expect.py x_rig_bots
+# A pilot's undock carries the note "rigs: fitted rig <type>" or "rigs: bought
+# rig <type>"; a refused fit is "rigs: rig <item>: ..." and is a finding, not a
+# failure (calibration is the server's rule).
+#
+# BOTS-EXPECT:   present rigs: .*fitted rig [0-9]+
+# BOTS-EXPECT:   absent  rigs: .*MISSING
+# SERVER-EXPECT: absent  UNANSWERED invbroker
+# SERVER-EXPECT: absent  panicked at

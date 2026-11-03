@@ -1,0 +1,15 @@
+# What a geode holds, by role (never by type id): `geode::open` draws a prize
+# per slot of the geode's tier, weighted by this table, and resolves the role
+# to a type at run time (`geode::prize`). Header in docs/content/schema.md §4.
+# `r-nes-econ` §2.6 A had these weights; every value is [A], falsified by a
+# week of `[econ-mod] geode` lines whose PLEX or injector totals leave the
+# target band (tunables.rs). A role with no row is never drawn; a row of an
+# unknown role is skipped with a line. Restart.
+role	weight	why
+minerals	70	[A] the common prize: the materials of 5-20 cycles of some ore
+rare	15	[A] the materials of a dear ore
+plex	6	[A] 5-25 PLEX straight to the vault
+injector_small	3	[A] a small skill injector
+injector_large	0.5	[A] a large skill injector
+skin	1	[A] a SKIN licence for a mining hull
+crystal	4.5	[A] a mining crystal

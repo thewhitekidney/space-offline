@@ -1,0 +1,12 @@
+[package]
+name = "eve-rowset"
+version.workspace = true
+edition.workspace = true
+license-file.workspace = true
+publish.workspace = true
+
+[dependencies]
+eve-marshal = { path = "../eve-marshal" }
+
+[lints]
+workspace = true

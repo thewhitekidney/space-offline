@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eve-offline admin</title>
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+  <header>
+    <h1>eve-offline admin</h1>
+    <div id="status" class="status">not connected</div>
+    <form id="login" class="login">
+      <input id="token" type="password" placeholder="admin token" autocomplete="off" spellcheck="false">
+      <label><input id="remember" type="checkbox"> remember</label>
+      <button type="submit">Connect</button>
+    </form>
+    <button id="logout" class="hidden" type="button">Forget token</button>
+  </header>
+  <main>
+    <section class="map-pane">
+      <canvas id="map"></canvas>
+      <div id="tip" class="tip hidden"></div>
+      <div class="map-help">drag to pan, wheel to zoom, click a system to filter</div>
+    </section>
+    <section class="side">
+      <details id="actions" class="actions" open>
+        <summary>Actions</summary>
+        <form id="f-spawn" class="row">
+          <input name="group" placeholder="group" size="8" required>
+          <input name="side" placeholder="side" size="6" value="red" required>
+          <input name="role" placeholder="role" size="8" value="mine" required>
+          <input name="count" type="number" min="1" value="3" style="width:4em" required>
+          <input name="ship" placeholder="ship" size="8" value="Hulk" required>
+          <input name="system" placeholder="system id" size="10">
+          <button type="submit">Spawn</button>
+        </form>
+        <form id="f-despawn" class="row">
+          <input name="group" placeholder="group (or all)" size="14" required>
+          <button type="submit">Despawn</button>
+          <button type="button" id="b-list">List groups</button>
+        </form>
+        <form id="f-broadcast" class="row">
+          <input name="text" placeholder="broadcast to all pilots" maxlength="300" size="30" required>
+          <button type="submit">Broadcast</button>
+        </form>
+        <div class="row"><button type="button" id="b-save">Save world now</button></div>
+        <pre id="answer" class="answer">no action yet</pre>
+      </details>
+      <div class="filters">
+        <input id="filter" type="search" placeholder="filter pilots, ships, systems">
+        <label><input id="show-humans" type="checkbox" checked> humans</label>
+        <label><input id="show-bots" type="checkbox" checked> bots</label>
+      </div>
+      <table id="pilots">
+        <thead>
+          <tr>
+            <th data-key="name">Pilot</th>
+            <th data-key="kind">Kind</th>
+            <th data-key="group">Group</th>
+            <th data-key="side">Side</th>
+            <th data-key="role">Role</th>
+            <th data-key="system">System</th>
+            <th data-key="state">Where</th>
+            <th data-key="ship">Ship</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+  <script src="/admin.js"></script>
+</body>
+</html>

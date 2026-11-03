@@ -1,0 +1,204 @@
+resource	bytes	format	readable	rows	key	columns_or_slots	notes
+res:/staticdata/accountingentrytypes.fsdbinary	27051	cfsd	columns	218	uint32 (hash % 95 buckets)	entryTypeID@+0:u32;description@+8:str;name@+16:str;entryTypeNameID@+32:msgid	confirmed columns only; rest of record unknown
+res:/staticdata/accountingkeys.fsdbinary	2016	cfsd	keys	19	uint32 (hash % 12 buckets)	stride=48	container decoded; record layout native (bin64/accountingkeysLoader.pyd)
+res:/staticdata/achievementevents.fsdbinary	19677	cfsd	keys	131	uint32 (hash % 49 buckets)	stride=40	container decoded; record layout native (bin64/achievementeventsLoader.pyd)
+res:/staticdata/achievements.static	7854	classic	yes	68	int	achievementID:int;descriptionID:localizationID;isClientAchievement:bool;isEnabled:bool;nameID:localizationID;notificationTextID:localizationID;simpleConditions:dict	embedded schema
+res:/staticdata/agencyhelpvideogroups.fsdbinary	424	cfsd	keys	6	uint32 (hash % 2 buckets)	stride=24	container decoded; record layout native (bin64/agencyhelpvideogroupsLoader.pyd)
+res:/staticdata/agencyhelpvideos.fsdbinary	4211	cfsd	keys	36	uint32 (hash % 13 buckets)	stride=24	container decoded; record layout native (bin64/agencyhelpvideosLoader.pyd)
+res:/staticdata/agentsinspace.fsdbinary	11576	cfsd	keys	360	uint32 (hash % 270 buckets)	stride=20	container decoded; record layout native (bin64/agentsinspaceLoader.pyd)
+res:/staticdata/agenttypes.fsdbinary	674	cfsd	keys	13	uint32 (hash % 4 buckets)	stride=16	container decoded; record layout native (bin64/agenttypesLoader.pyd)
+res:/staticdata/ancestries.fsdbinary	5190	cfsd	keys	43	uint32 (hash % 13 buckets)	stride=56	container decoded; record layout native (bin64/ancestriesLoader.pyd)
+res:/staticdata/archetypes.fsdbinary	5563	cfsd	keys	71	uint32 (hash % 22 buckets)	stride=40	container decoded; record layout native (bin64/archetypesLoader.pyd)
+res:/staticdata/asteroidcountbytypeidbeltid.static	3974962	classic	yes	40928	int	value type dict	embedded schema; buildIndex
+res:/staticdata/asteroidcountbytypeidroomiddungeonid.static	91153	classic	yes	1221	int	value type dict	embedded schema
+res:/staticdata/asteroidtypesbysolarsystemid.pickle	96712	pickle	yes	3974	int	value type tuple	plain Python pickle
+res:/staticdata/atoms.fsdbinary	243888	cfsd	keys	583	uint32 (hash % 219 buckets)	stride=64	container decoded; record layout native (bin64/atomsLoader.pyd)
+res:/staticdata/audiometadata.fsdbinary	2699512	cfsd	header-only	unknown	unknown	unknown	bucket table does not fit
+res:/staticdata/billboards.fsdbinary	1584	cfsd	rowcount	2	uint32 (hash % 2 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/billboardsLoader.pyd)
+res:/staticdata/billtypes.fsdbinary	612	cfsd	keys	7	uint32 (hash % 2 buckets)	stride=32	container decoded; record layout native (bin64/billtypesLoader.pyd)
+res:/staticdata/bloodlines.fsdbinary	1000	cfsd	keys	18	uint32 (hash % 5 buckets)	stride=48	container decoded; record layout native (bin64/bloodlinesLoader.pyd)
+res:/staticdata/blueprints.static	4612096	sqlite	yes	5100	string (cache.key)	activities;blueprintTypeID;maxProductionLimit	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/blueprintsbymaterialtypeids.pickle	131702	pickle	yes	1715	int	value type list	plain Python pickle
+res:/staticdata/brackets.static	18455	classic	yes	166	int	iconOffset:int;maxVisibleDistance:float;minVisibleDistance:float;name:string;texturePath:string;texturePathEmpty:string	embedded schema; buildIndex
+res:/staticdata/bracketsbycategory.static	754	classic	yes	7	int	value type int	embedded schema; buildIndex
+res:/staticdata/bracketsbygroup.static	9394	classic	yes	547	int	value type int	embedded schema; buildIndex
+res:/staticdata/bracketsbytype.static	20178	classic	yes	1221	int	value type int	embedded schema; buildIndex
+res:/staticdata/careerpaths.fsdbinary	283	cfsd	rowcount	4	uint32 (hash % 2 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/careerpathsLoader.pyd)
+res:/staticdata/categories.fsdbinary	2392	cfsd	columns	48	uint32 (hash % 24 buckets)	categoryID@+0:u32;categoryID (repeated)@+16:u32;categoryNameID@+20:msgid	confirmed columns only; rest of record unknown
+res:/staticdata/certificates.static	161713	classic	yes	1	-	object	embedded schema
+res:/staticdata/challengeconditions.fsdbinary	1932	cfsd	rowcount	33	uint32 (hash % 33 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/challengeconditionsLoader.pyd)
+res:/staticdata/challengeevents.fsdbinary	2320	cfsd	rowcount	35	uint32 (hash % 37 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/challengeeventsLoader.pyd)
+res:/staticdata/challenges.fsdbinary	247832	cfsd	keys	1210	uint32 (hash % 454 buckets)	stride=112	container decoded; record layout native (bin64/challengesLoader.pyd)
+res:/staticdata/character_avatarbehaviors.fsdbinary	540	cfsd	rowcount	1	uint32 (hash % 1 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/character_avatarbehaviorsLoader.pyd)
+res:/staticdata/character_colorlocations.fsdbinary	3323	cfsd	keys	55	uint32 (hash % 21 buckets)	stride=24	container decoded; record layout native (bin64/character_colorlocationsLoader.pyd)
+res:/staticdata/character_colornames.fsdbinary	20782	cfsd	keys	387	uint32 (hash % 194 buckets)	stride=24	container decoded; record layout native (bin64/character_colornamesLoader.pyd)
+res:/staticdata/character_modifierlocations.fsdbinary	2754	cfsd	keys	46	uint32 (hash % 17 buckets)	stride=24	container decoded; record layout native (bin64/character_modifierlocationsLoader.pyd)
+res:/staticdata/character_portraitresources.fsdbinary	11758	cfsd	keys	106	uint32 (hash % 40 buckets)	stride=32	container decoded; record layout native (bin64/character_portraitresourcesLoader.pyd)
+res:/staticdata/character_resources.fsdbinary	349303	cfsd	keys	2514	uint32 (hash % 2514 buckets)	stride=56	container decoded; record layout native (bin64/character_resourcesLoader.pyd)
+res:/staticdata/character_sculptinglocations.fsdbinary	12068	cfsd	keys	215	uint32 (hash % 81 buckets)	stride=24	container decoded; record layout native (bin64/character_sculptinglocationsLoader.pyd)
+res:/staticdata/checkpoints.fsdbinary	9910	cfsd	keys	78	uint32 (hash % 29 buckets)	stride=40	container decoded; record layout native (bin64/checkpointsLoader.pyd)
+res:/staticdata/clientlocationlists.fsdbinary	1588	cfsd	rowcount	6	uint32 (hash % 2 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/clientlocationlistsLoader.pyd)
+res:/staticdata/clonegrades.static	49152	sqlite	yes	4	string (cache.key)	internalDescription;skills	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/commandsets.fsdbinary	4502	cfsd	keys	12	uint32 (hash % 5 buckets)	stride=48	container decoded; record layout native (bin64/commandsetsLoader.pyd)
+res:/staticdata/community_track_templates.fsdbinary	224	cfsd	rowcount	1	uint32 (hash % 1 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/community_track_templatesLoader.pyd)
+res:/staticdata/compressibletypes.fsdbinary	4296	cfsd	keys	212	uint32 (hash % 159 buckets)	stride=8	container decoded; record layout native (bin64/compressibletypesLoader.pyd)
+res:/staticdata/constellations.schema	1340	schema	yes	-	-	optimized FSD schema, type=dict	YAML sidecar for the matching .static
+res:/staticdata/constellations.static	135948	classic	yes	1184	int	center:vector3;constellationID:int;factionID:int;nameID:int;neighbours:list;regionID:int;solarSystemIDs:list;wormholeClassID:int	schema in sidecar .schema
+res:/staticdata/contenttags.fsdbinary	5397	cfsd	rowcount	50	uint32 (hash % 50 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/contenttagsLoader.pyd)
+res:/staticdata/contenttagtypes.fsdbinary	200	cfsd	rowcount	3	uint32 (hash % 2 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/contenttagtypesLoader.pyd)
+res:/staticdata/contrabandtypes.fsdbinary	1680	cfsd	keys	8	uint32 (hash % 3 buckets)	stride=24	container decoded; record layout native (bin64/contrabandtypesLoader.pyd)
+res:/staticdata/contributionmethods.fsdbinary	12800	cfsd	rowcount	22	uint32 (hash % 22 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/contributionmethodsLoader.pyd)
+res:/staticdata/controltowerresources.fsdbinary	9600	cfsd	keys	44	uint32 (hash % 22 buckets)	stride=16	container decoded; record layout native (bin64/controltowerresourcesLoader.pyd)
+res:/staticdata/conversationagents.fsdbinary	9083	cfsd	keys	44	uint32 (hash % 22 buckets)	stride=72	container decoded; record layout native (bin64/conversationagentsLoader.pyd)
+res:/staticdata/conversations.fsdbinary	319116	cfsd	keys	1275	uint32 (hash % 638 buckets)	stride=24	container decoded; record layout native (bin64/conversationsLoader.pyd)
+res:/staticdata/corporationactivities.fsdbinary	296	cfsd	keys	20	uint32 (hash % 5 buckets)	stride=8	container decoded; record layout native (bin64/corporationactivitiesLoader.pyd)
+res:/staticdata/corporationrolegroups.fsdbinary	1025	cfsd	keys	9	uint32 (hash % 2 buckets)	stride=48	container decoded; record layout native (bin64/corporationrolegroupsLoader.pyd)
+res:/staticdata/corporationroles.fsdbinary	3855	cfsd	keys	55	uint32 (hash % 17 buckets)	stride=32	container decoded; record layout native (bin64/corporationrolesLoader.pyd)
+res:/staticdata/crates.fsdbinary	133512	cfsd	keys	637	uint32 (hash % 319 buckets)	stride=168	container decoded; record layout native (bin64/cratesLoader.pyd)
+res:/staticdata/currencybuckets.fsdbinary	392	cfsd	keys	11	uint32 (hash % 3 buckets)	stride=24	container decoded; record layout native (bin64/currencybucketsLoader.pyd)
+res:/staticdata/dbuffcollections.static	139264	sqlite	yes	277	string (cache.key)	aggregateMode;developerDescription;displayNameID;itemModifiers;locationGroupModifiers;locationModifiers;locationRequiredSkillModifiers;operationName;showOutputValueInUI	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/defaultoverviews.fsdbinary	6992	cfsd	rowcount	7	uint32 (hash % 2 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/defaultoverviewsLoader.pyd)
+res:/staticdata/dialogs.schema	1517	schema	yes	-	-	optimized FSD schema, type=dict	YAML sidecar for the matching .static
+res:/staticdata/dialogs.static	317606	classic	yes	4223	string	bodyID:int;closable:bool;dialogID:int;dialogType:enum;suppressable:enum;titleID:int;urlAudio:string;urlIcon:string	schema in sidecar .schema
+res:/staticdata/dogmaattributecategories.fsdbinary	3945	cfsd	keys	37	uint32 (hash % 14 buckets)	stride=32	container decoded; record layout native (bin64/dogmaattributecategoriesLoader.pyd)
+res:/staticdata/dogmaattributes.fsdbinary	451437	cfsd	keys	2872	uint32 (hash % 1436 buckets)	stride=80	container decoded; record layout native (bin64/dogmaattributesLoader.pyd)
+res:/staticdata/dogmaeffects.fsdbinary	878768	cfsd	keys	3431	uint32 (hash % 3431 buckets)	stride=112	container decoded; record layout native (bin64/dogmaeffectsLoader.pyd)
+res:/staticdata/dogmaunits.fsdbinary	3769	cfsd	keys	60	uint32 (hash % 22 buckets)	stride=32	container decoded; record layout native (bin64/dogmaunitsLoader.pyd)
+res:/staticdata/dungeonenvironmenttemplates.fsdbinary	11816	cfsd	keys	114	uint32 (hash % 114 buckets)	stride=40	container decoded; record layout native (bin64/dungeonenvironmenttemplatesLoader.pyd)
+res:/staticdata/dungeonobjectives.fsdbinary	8024	cfsd	keys	85	uint32 (hash % 32 buckets)	stride=56	container decoded; record layout native (bin64/dungeonobjectivesLoader.pyd)
+res:/staticdata/dungeons.fsdbinary	52395840	cfsd	columns	5516	uint32 (hash % 4137 buckets)	dungeonID@+0:u32;rooms@+32:listc;rooms@+40:listd;descriptionID@+68:msgid;dungeonID (repeated)@+76:u32;dungeonNameID@+80:msgid;typeID@+88:u32;factionID@+92:u32;prose A@+96:msgid;objectiveTextID@+100:msgid	confirmed columns only; rest of record unknown
+res:/staticdata/dusticons.static	182032	classic	yes	2036	typeID	iconFile:resPath	embedded schema; buildIndex
+res:/staticdata/dynamicitemattributes.fsdbinary	127704	cfsd	keys	441	uint32 (hash % 441 buckets)	stride=32	container decoded; record layout native (bin64/dynamicitemattributesLoader.pyd)
+res:/staticdata/effects.fsdbinary	52472	cfsd	rowcount	213	uint32 (hash % 372 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/effectsLoader.pyd)
+res:/staticdata/effectsequences.fsdbinary	2312	cfsd	rowcount	1	uint32 (hash % 1 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/effectsequencesLoader.pyd)
+res:/staticdata/empireselection.static	2619	classic	yes	4	enum	bloodlines:dict;empireColor:color;logoPath:resPath;namedLogoPath:resPath;quote:localizationID;sealPath:resPath	embedded schema
+res:/staticdata/empiretechnologies.static	6738	classic	yes	4	int	examples:dict;icon:resPath;isDisplayed:bool;mainTextAmarr:localizationID;mainTextCaldari:localizationID;mainTextGallente:localizationID;mainTextMinmatar:localizationID;mainViewAmarr:resPath;mainViewCaldari:resPath;mainViewGallente:resPath;mainViewMinmatar:resPath;order:int;title:localizationID	embedded schema
+res:/staticdata/environmenttemplateanchorcategoryids.fsdbinary	112	cfsd	rowcount	1	uint32 (hash % 1 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/environmenttemplateanchorcategoryidsLoader.pyd)
+res:/staticdata/environmenttemplateanchorgroupids.fsdbinary	168	cfsd	keys	2	uint32 (hash % 2 buckets)	stride=32	container decoded; record layout native (bin64/environmenttemplateanchorgroupidsLoader.pyd)
+res:/staticdata/environmenttemplateanchortypeids.fsdbinary	13880	cfsd	keys	246	uint32 (hash % 246 buckets)	stride=32	container decoded; record layout native (bin64/environmenttemplateanchortypeidsLoader.pyd)
+res:/staticdata/environmenttemplates.fsdbinary	126196	cfsd	keys	188	uint32 (hash % 141 buckets)	stride=256	container decoded; record layout native (bin64/environmenttemplatesLoader.pyd)
+res:/staticdata/epicarcs.fsdbinary	16692	cfsd	keys	21	uint32 (hash % 11 buckets)	stride=56	container decoded; record layout native (bin64/epicarcsLoader.pyd)
+res:/staticdata/essreservekeys.fsdbinary	216	cfsd	keys	8	uint32 (hash % 2 buckets)	stride=16	container decoded; record layout native (bin64/essreservekeysLoader.pyd)
+res:/staticdata/eventmessagetypes.static	968	classic	yes	8	int	messageTypeName:string	embedded schema
+res:/staticdata/eventtypes.static	3869	classic	yes	72	int	eventTypeName:string	embedded schema
+res:/staticdata/expertsystems.fsdbinary	58696	cfsd	keys	59	uint32 (hash % 44 buckets)	stride=56	container decoded; record layout native (bin64/expertsystemsLoader.pyd)
+res:/staticdata/explosionbucketids.fsdbinary	16336	cfsd	keys	87	uint32 (hash % 33 buckets)	stride=56	container decoded; record layout native (bin64/explosionbucketidsLoader.pyd)
+res:/staticdata/explosionids.fsdbinary	9088	cfsd	rowcount	55	uint32 (hash % 85 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/explosionidsLoader.pyd)
+res:/staticdata/factions.fsdbinary	3468	cfsd	keys	27	uint32 (hash % 7 buckets)	stride=80	container decoded; record layout native (bin64/factionsLoader.pyd)
+res:/staticdata/factionsowningsolarsystems.schema	63	schema	yes	-	-	optimized FSD schema, type=list	YAML sidecar for the matching .static
+res:/staticdata/factionsowningsolarsystems.static	92	classic	yes	22	index	item type int	schema in sidecar .schema
+res:/staticdata/fighterabilities.static	32768	sqlite	yes	36	string (cache.key)	disallowInHighSec;disallowInLowSec;displayNameID;iconID;targetMode;tooltipTextID;turretGraphicID	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/fighterabilitiesbytype.static	45056	sqlite	yes	94	string (cache.key)	abilitySlot0;abilitySlot1;abilitySlot2	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/gastypesbydungeonid.static	1958	classic	yes	83	int	value type list	embedded schema
+res:/staticdata/globaltypes.fsdbinary	2792	cfsd	keys	8	uint32 (hash % 3 buckets)	stride=24	container decoded; record layout native (bin64/globaltypesLoader.pyd)
+res:/staticdata/goals.fsdbinary	306	cfsd	rowcount	2	uint32 (hash % 2 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/goalsLoader.pyd)
+res:/staticdata/graphicids.fsdbinary	1536400	cfsd	keys	6161	uint32 (hash % 6161 buckets)	stride=160	container decoded; record layout native (bin64/graphicidsLoader.pyd)
+res:/staticdata/graphiclocations.fsdbinary	16952	cfsd	keys	68	uint32 (hash % 21 buckets)	stride=40	container decoded; record layout native (bin64/graphiclocationsLoader.pyd)
+res:/staticdata/graphicmaterialsets.fsdbinary	244202	cfsd	keys	956	uint32 (hash % 478 buckets)	stride=168	container decoded; record layout native (bin64/graphicmaterialsetsLoader.pyd)
+res:/staticdata/groupgraphics.fsdbinary	35088	cfsd	keys	79	uint32 (hash % 40 buckets)	stride=72	container decoded; record layout native (bin64/groupgraphicsLoader.pyd)
+res:/staticdata/grouprewards.fsdbinary	97048	cfsd	keys	161	uint32 (hash % 61 buckets)	stride=56	container decoded; record layout native (bin64/grouprewardsLoader.pyd)
+res:/staticdata/groups.fsdbinary	70936	cfsd	columns	1611	uint32 (hash % 1208 buckets)	groupID@+0:u32;categoryID@+4:u32;groupID (repeated)@+8:u32;groupNameID@+12:msgid	confirmed columns only; rest of record unknown
+res:/staticdata/huecategories.fsdbinary	1296	cfsd	rowcount	25	uint32 (hash % 25 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/huecategoriesLoader.pyd)
+res:/staticdata/icetypesbydungeonid.static	1114	classic	yes	21	int	value type list	embedded schema
+res:/staticdata/iconids.fsdbinary	547160	cfsd	keys	4806	uint32 (hash % 3904 buckets)	stride=32	container decoded; record layout native (bin64/iconidsLoader.pyd)
+res:/staticdata/industry_activities.static	24576	sqlite	yes	6	string (cache.key)	activityID;activityName;description	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/industry_activity_modifier_sources.static	77824	sqlite	yes	220	string (cache.key)	copying;invention;manufacturing;reaction;research_material;research_time	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/industry_activity_target_filters.static	24576	sqlite	yes	18	string (cache.key)	categoryIDs;groupIDs;name	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/industry_assembly_lines.static	385024	sqlite	yes	146	string (cache.key)	activity;base_cost_multiplier;base_material_multiplier;base_time_multiplier;description;details_per_category;details_per_group;details_per_type_list;id;name	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/industry_installation_types.static	40960	sqlite	yes	102	string (cache.key)	assembly_lines;type_id	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/infobubbles.static	393216	sqlite	yes	5	string (cache.key)	10;11;11011;11129;11132;11134;11172;11174;11176;11178;11182;11184;11186;11188;11190;11192;11194;11196;11198;11200;11202;11365;11371;11377;...(781 fields; keys look data-dependent)	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/itemtraderrecipes.fsdbinary	104384	cfsd	keys	544	uint32 (hash % 204 buckets)	stride=72	container decoded; record layout native (bin64/itemtraderrecipesLoader.pyd)
+res:/staticdata/jumps.schema	939	schema	yes	-	-	optimized FSD schema, type=list	YAML sidecar for the matching .static
+res:/staticdata/jumps.static	454289	classic	yes	6989	index	fromCoordinate:vector3;fromSystemID:int;jumpID:int;jumpType:enum;stargateID:int;toCoordinate:vector3;toSystemID:int	schema in sidecar .schema
+res:/staticdata/landmarks.static	4772	classic	yes	45	int	descriptionID:localizationID;iconID:int;landmarkNameID:localizationID;landmarkType:enum;locationID:int;position:vector3;position2d:vector2	embedded schema
+res:/staticdata/locationcache.static	5773406	classic	yes	481068	int	value type int	embedded schema
+res:/staticdata/manufacturableitems.fsdbinary	19592	cfsd	rowcount	1	uint32 (hash % 1 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/manufacturableitemsLoader.pyd)
+res:/staticdata/marketgroups.fsdbinary	76160	cfsd	keys	2114	uint32 (hash % 1057 buckets)	stride=28	container decoded; record layout native (bin64/marketgroupsLoader.pyd)
+res:/staticdata/menuhighlights.fsdbinary	2456	cfsd	keys	24	uint32 (hash % 13 buckets)	stride=32	container decoded; record layout native (bin64/menuhighlightsLoader.pyd)
+res:/staticdata/metagroups.fsdbinary	984	cfsd	keys	13	uint32 (hash % 4 buckets)	stride=48	container decoded; record layout native (bin64/metagroupsLoader.pyd)
+res:/staticdata/missions.fsdbinary	1288248	cfsd	columns	2892	uint32 (hash % 2892 buckets)	missionID@+0:u32;contentTemplateKey@+48:str;messages@+56:listc;messages@+64:listd;npcCorporationID@+92:u32;factionID@+120:u32;dungeonID@+144:u32;missionNameID@+196:msgid	confirmed columns only; rest of record unknown
+res:/staticdata/musictriggers.fsdbinary	29241	cfsd	keys	392	uint32 (hash % 147 buckets)	stride=24	container decoded; record layout native (bin64/musictriggersLoader.pyd)
+res:/staticdata/newactivities.fsdbinary	10892	cfsd	keys	46	uint32 (hash % 14 buckets)	stride=88	container decoded; record layout native (bin64/newactivitiesLoader.pyd)
+res:/staticdata/newfeatures.fsdbinary	45987	cfsd	keys	198	uint32 (hash % 99 buckets)	stride=104	container decoded; record layout native (bin64/newfeaturesLoader.pyd)
+res:/staticdata/nodegraphs.fsdbinary	8256376	cfsd	keys	584	uint32 (hash % 292 buckets)	stride=72	container decoded; record layout native (bin64/nodegraphsLoader.pyd)
+res:/staticdata/nodetypes.fsdbinary	23224	cfsd	keys	45	uint32 (hash % 17 buckets)	stride=96	container decoded; record layout native (bin64/nodetypesLoader.pyd)
+res:/staticdata/npccharacters.fsdbinary	1873264	cfsd	keys	11424	uint32 (hash % 4998 buckets)	stride=136	container decoded; record layout native (bin64/npccharactersLoader.pyd)
+res:/staticdata/npccorporationdivisions.fsdbinary	1075	cfsd	keys	10	uint32 (hash % 3 buckets)	stride=40	container decoded; record layout native (bin64/npccorporationdivisionsLoader.pyd)
+res:/staticdata/npccorporations.fsdbinary	713054	cfsd	keys	283	uint32 (hash % 142 buckets)	stride=224	container decoded; record layout native (bin64/npccorporationsLoader.pyd)
+res:/staticdata/npcstationtaxmodifier.fsdbinary	224	cfsd	rowcount	1	uint32 (hash % 1 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/npcstationtaxmodifierLoader.pyd)
+res:/staticdata/npcstructuresettings.fsdbinary	296	cfsd	keys	2	uint32 (hash % 2 buckets)	stride=24	container decoded; record layout native (bin64/npcstructuresettingsLoader.pyd)
+res:/staticdata/objectivechains.fsdbinary	239256	cfsd	keys	111	uint32 (hash % 42 buckets)	stride=40	container decoded; record layout native (bin64/objectivechainsLoader.pyd)
+res:/staticdata/objectives.fsdbinary	1187	cfsd	keys	8	uint32 (hash % 3 buckets)	stride=64	container decoded; record layout native (bin64/objectivesLoader.pyd)
+res:/staticdata/objectivetasktypes.fsdbinary	8534	cfsd	keys	53	uint32 (hash % 20 buckets)	stride=48	container decoded; record layout native (bin64/objectivetasktypesLoader.pyd)
+res:/staticdata/objectivetypes.fsdbinary	61024	cfsd	keys	95	uint32 (hash % 48 buckets)	stride=40	container decoded; record layout native (bin64/objectivetypesLoader.pyd)
+res:/staticdata/operationcategories.fsdbinary	1088	cfsd	keys	8	uint32 (hash % 2 buckets)	stride=56	container decoded; record layout native (bin64/operationcategoriesLoader.pyd)
+res:/staticdata/operations.fsdbinary	97040	cfsd	keys	325	uint32 (hash % 122 buckets)	stride=152	container decoded; record layout native (bin64/operationsLoader.pyd)
+res:/staticdata/operationsites.fsdbinary	2159	cfsd	keys	21	uint32 (hash % 11 buckets)	stride=56	container decoded; record layout native (bin64/operationsitesLoader.pyd)
+res:/staticdata/operationtasks.fsdbinary	114112	cfsd	keys	397	uint32 (hash % 199 buckets)	stride=120	container decoded; record layout native (bin64/operationtasksLoader.pyd)
+res:/staticdata/operationtreestructures.fsdbinary	5892	cfsd	keys	28	uint32 (hash % 14 buckets)	stride=40	container decoded; record layout native (bin64/operationtreestructuresLoader.pyd)
+res:/staticdata/oretypesbydungeonid.static	24674	classic	yes	1120	int	value type list	embedded schema
+res:/staticdata/paints.fsdbinary	10531	cfsd	keys	96	uint32 (hash % 30 buckets)	stride=48	container decoded; record layout native (bin64/paintsLoader.pyd)
+res:/staticdata/paperdolls.fsdbinary	13178168	cfsd	keys	11291	uint32 (hash % 4234 buckets)	stride=352	container decoded; record layout native (bin64/paperdollsLoader.pyd)
+res:/staticdata/petitionevents.fsdbinary	1353	cfsd	keys	21	uint32 (hash % 6 buckets)	stride=32	container decoded; record layout native (bin64/petitioneventsLoader.pyd)
+res:/staticdata/petitionproperties.fsdbinary	2713	cfsd	keys	12	uint32 (hash % 3 buckets)	stride=64	container decoded; record layout native (bin64/petitionpropertiesLoader.pyd)
+res:/staticdata/podguide.static	4892	classic	yes	44	int	groupID:int;imageSize:enum;longTextID:localizationID;loreTextID:localizationID;shortTextID:localizationID;termID:int;termTitleID:localizationID;texturePath:string	embedded schema
+res:/staticdata/podguidegroups.static	1302	classic	yes	14	int	belongsToGroup:int;groupID:int;groupName:localizationID;groupType:enum	embedded schema
+res:/staticdata/pvpfilamenteventdates.fsdbinary	10715	cfsd	keys	118	uint32 (hash % 44 buckets)	stride=40	container decoded; record layout native (bin64/pvpfilamenteventdatesLoader.pyd)
+res:/staticdata/pvpfilamentmatchtypes.fsdbinary	14104	cfsd	keys	86	uint32 (hash % 32 buckets)	stride=96	container decoded; record layout native (bin64/pvpfilamentmatchtypesLoader.pyd)
+res:/staticdata/races.fsdbinary	6576	cfsd	keys	11	uint32 (hash % 9 buckets)	stride=48	container decoded; record layout native (bin64/racesLoader.pyd)
+res:/staticdata/recruitmentgroups.fsdbinary	232	cfsd	keys	8	uint32 (hash % 3 buckets)	stride=16	container decoded; record layout native (bin64/recruitmentgroupsLoader.pyd)
+res:/staticdata/recruitmenttypes.fsdbinary	1148	cfsd	keys	45	uint32 (hash % 12 buckets)	stride=20	container decoded; record layout native (bin64/recruitmenttypesLoader.pyd)
+res:/staticdata/regions.schema	1606	schema	yes	-	-	optimized FSD schema, type=dict	YAML sidecar for the matching .static
+res:/staticdata/regions.static	55704	classic	yes	114	int	center:vector3;constellationIDs:list;descriptionID:int;factionID:int;nameID:int;nebulaID:int;nebulaPath:resPath;neighbours:list;regionID:int;solarSystemIDs:list;wormholeClassID:int	schema in sidecar .schema
+res:/staticdata/requiredskillsfortypes.fsdbinary	863944	cfsd	keys	9575	uint32 (hash % 16756 buckets)	stride=24	container decoded; record layout native (bin64/requiredskillsfortypesLoader.pyd)
+res:/staticdata/requiredskillsindex.fsdbinary	266144	cfsd	keys	421	uint32 (hash % 421 buckets)	stride=24	container decoded; record layout native (bin64/requiredskillsindexLoader.pyd)
+res:/staticdata/schematics.fsdbinary	10952	cfsd	keys	68	uint32 (hash % 21 buckets)	stride=40	container decoded; record layout native (bin64/schematicsLoader.pyd)
+res:/staticdata/schoolmap.fsdbinary	248	cfsd	keys	12	uint32 (hash % 3 buckets)	stride=12	container decoded; record layout native (bin64/schoolmapLoader.pyd)
+res:/staticdata/schools.fsdbinary	2680	cfsd	keys	23	uint32 (hash % 7 buckets)	stride=64	container decoded; record layout native (bin64/schoolsLoader.pyd)
+res:/staticdata/seasonalcampaignsloginrewards.fsdbinary	226568	cfsd	keys	131	uint32 (hash % 66 buckets)	stride=64	container decoded; record layout native (bin64/seasonalcampaignsloginrewardsLoader.pyd)
+res:/staticdata/seasonselection.fsdbinary	166	cfsd	header-only	unknown	unknown	unknown	bucketCount=2505396158260903
+res:/staticdata/selectiongroups.static	4231	classic	yes	66	int	pitch:float;roll:float;roomID:int;selectionGroupName:unicode;yaw:float	embedded schema
+res:/staticdata/ship_cosmetic_slot_categories.fsdbinary	214	cfsd	rowcount	3	uint32 (hash % 2 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/ship_cosmetic_slot_categoriesLoader.pyd)
+res:/staticdata/ship_cosmetic_slot_configurations.fsdbinary	952	cfsd	rowcount	4	uint32 (hash % 2 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/ship_cosmetic_slot_configurationsLoader.pyd)
+res:/staticdata/ship_cosmetic_slot_names.fsdbinary	450	cfsd	keys	8	uint32 (hash % 2 buckets)	stride=16	container decoded; record layout native (bin64/ship_cosmetic_slot_namesLoader.pyd)
+res:/staticdata/ship_cosmetic_slots.fsdbinary	464	cfsd	keys	8	uint32 (hash % 2 buckets)	stride=32	container decoded; record layout native (bin64/ship_cosmetic_slotsLoader.pyd)
+res:/staticdata/ship_skin_design_component_categories.fsdbinary	193	cfsd	keys	3	uint32 (hash % 2 buckets)	stride=16	container decoded; record layout native (bin64/ship_skin_design_component_categoriesLoader.pyd)
+res:/staticdata/ship_skin_design_component_point_values.fsdbinary	424	cfsd	rowcount	3	uint32 (hash % 2 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/ship_skin_design_component_point_valuesLoader.pyd)
+res:/staticdata/ship_skin_design_component_rarities.fsdbinary	160	cfsd	keys	6	uint32 (hash % 2 buckets)	stride=12	container decoded; record layout native (bin64/ship_skin_design_component_raritiesLoader.pyd)
+res:/staticdata/ship_skin_design_components.fsdbinary	216574	cfsd	keys	613	uint32 (hash % 460 buckets)	stride=112	container decoded; record layout native (bin64/ship_skin_design_componentsLoader.pyd)
+res:/staticdata/ship_skin_design_components_post_process.fsdbinary	23848	cfsd	keys	613	uint32 (hash % 460 buckets)	stride=16	container decoded; record layout native (bin64/ship_skin_design_components_post_processLoader.pyd)
+res:/staticdata/ship_skin_design_tier_thresholds.fsdbinary	13296	cfsd	keys	49	uint32 (hash % 19 buckets)	stride=24	container decoded; record layout native (bin64/ship_skin_design_tier_thresholdsLoader.pyd)
+res:/staticdata/shipcosmeticlicenses.fsdbinary	20800	cfsd	keys	830	uint32 (hash % 259 buckets)	stride=20	container decoded; record layout native (bin64/shipcosmeticlicensesLoader.pyd)
+res:/staticdata/skillplans.fsdbinary	28788	cfsd	keys	40	uint32 (hash % 12 buckets)	stride=56	container decoded; record layout native (bin64/skillplansLoader.pyd)
+res:/staticdata/skilltags.static	594	classic	yes	0	int	value type list	embedded schema
+res:/staticdata/skilltreegroups.fsdbinary	252	cfsd	keys	3	uint32 (hash % 2 buckets)	stride=32	container decoded; record layout native (bin64/skilltreegroupsLoader.pyd)
+res:/staticdata/skinlicenses.static	1941504	sqlite	yes	11879	string (cache.key)	duration;isSingleUse;licenseTypeID;skinID	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/skinmaterials.static	184320	sqlite	yes	876	string (cache.key)	displayNameID;materialSetID;skinMaterialID	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/skins.static	4100096	sqlite	yes	7050	string (cache.key)	allowCCPDevs;internalName;isStructureSkin;skinDescription;skinID;skinMaterialID;types;visibleSerenity;visibleTranquility	fsdlite sqlite cache: cache(key,value JSON,time) + indexes(key,value); tables=cache,indexes
+res:/staticdata/skyboxeffects.fsdbinary	1159	cfsd	keys	6	uint32 (hash % 2 buckets)	stride=72	container decoded; record layout native (bin64/skyboxeffectsLoader.pyd)
+res:/staticdata/solarsystemcontent.static	92396316	classic	yes	8490	int	border:bool;center:vector3;corridor:bool;descriptionID:localizationID;disallowCyno:bool;disallowScanning:bool;disallowedAnchorCategories:list;disallowedAnchorGroups:list;disruptedStargates:dict;dscanRange:float;factionID:factionID;fringe:bool;hub:bool;international:bool;luminosity:float;max:vector3;min:vector3;planets:dict;radius:float;regional:bool;secondarySun:object;security:float;securityClass:string;solarSystemID:int;solarSystemNameID:localizationID;star:object;stargates:dict;sunFlareGraphicID:fsdReference;sunTypeID:typeID;systemWideCloud:int;visualEffect:string;warpTunnelOverwrite:int;wormholeClassID:int	embedded schema; buildIndex,multiIndex
+res:/staticdata/soundids.fsdbinary	101640	cfsd	keys	1470	uint32 (hash % 1470 buckets)	stride=16	container decoded; record layout native (bin64/soundidsLoader.pyd)
+res:/staticdata/spacecomponentsbytype.fsdbinary	23643936	cfsd	keys	11238	uint32 (hash % 16857 buckets)	stride=1824	container decoded; record layout native (bin64/spacecomponentsbytypeLoader.pyd)
+res:/staticdata/spaceobjecthighlights.fsdbinary	4179	cfsd	keys	46	uint32 (hash % 23 buckets)	stride=48	container decoded; record layout native (bin64/spaceobjecthighlightsLoader.pyd)
+res:/staticdata/starmapcache.pickle	2165420	pickle	yes	4	str	value type dict	plain Python pickle
+res:/staticdata/stationoperations.fsdbinary	14984	cfsd	keys	69	uint32 (hash % 26 buckets)	stride=88	container decoded; record layout native (bin64/stationoperationsLoader.pyd)
+res:/staticdata/stationservices.fsdbinary	600	cfsd	keys	27	uint32 (hash % 7 buckets)	stride=16	container decoded; record layout native (bin64/stationservicesLoader.pyd)
+res:/staticdata/stationstandingsrestrictions.fsdbinary	296	cfsd	rowcount	2	uint32 (hash % 2 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/stationstandingsrestrictionsLoader.pyd)
+res:/staticdata/surveys.fsdbinary	480	cfsd	rowcount	1	uint32 (hash % 1 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/surveysLoader.pyd)
+res:/staticdata/systems.schema	3210	schema	yes	-	-	optimized FSD schema, type=dict	YAML sidecar for the matching .static
+res:/staticdata/systems.static	1906081	classic	yes	8490	int	center:vector3;constellationID:int;factionID:int;nameID:int;neighbours:list;planetCountByType:dict;planetItemIDs:list;pseudoSecurity:float;regionID:int;securityClass:string;securityStatus:float;solarSystemID:int;sunFlareGraphicID:int;sunTypeID:int;systemWideCloud:int;warpTunnelOverwrite:int;wormholeClassID:int	schema in sidecar .schema
+res:/staticdata/tags.fsdbinary	4097	cfsd	keys	49	uint32 (hash % 13 buckets)	stride=40	container decoded; record layout native (bin64/tagsLoader.pyd)
+res:/staticdata/traveleffects.fsdbinary	2284	cfsd	rowcount	8	uint32 (hash % 2 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/traveleffectsLoader.pyd)
+res:/staticdata/triggertypes.static	3199	classic	yes	51	int	allowOnGuardObject:bool;allowOnGuards:bool;triggerTypeName:string	embedded schema
+res:/staticdata/typedogma.fsdbinary	12338696	cfsd	keys	27162	uint32 (hash % 27162 buckets)	stride=24	container decoded; record layout native (bin64/typedogmaLoader.pyd)
+res:/staticdata/typelist.fsdbinary	153289	cfsd	keys	472	uint32 (hash % 236 buckets)	stride=88	container decoded; record layout native (bin64/typelistLoader.pyd)
+res:/staticdata/typematerials.fsdbinary	1088168	cfsd	keys	9868	uint32 (hash % 14802 buckets)	stride=32	container decoded; record layout native (bin64/typematerialsLoader.pyd)
+res:/staticdata/types.fsdbinary	9171168	cfsd	columns	53299	uint32 (hash % 39974 buckets)	typeID@+0:u32;basePrice@+8:f64;capacity@+16:f64;mass@+32:f64;portionSize@+40:u32;radius@+48:f64;volume@+56:f64;descriptionID@+68:msgid;groupID@+84:u32;marketGroupID@+96:u32;quoteAuthorID@+108:msgid;quoteID@+112:msgid;raceID@+116:u32;typeID (repeated)@+128:u32;typeNameID@+132:msgid	confirmed columns only; rest of record unknown
+res:/staticdata/uiblinks.fsdbinary	5951	cfsd	keys	38	uint32 (hash % 14 buckets)	stride=48	container decoded; record layout native (bin64/uiblinksLoader.pyd)
+res:/staticdata/uielementtypes.fsdbinary	4523	cfsd	keys	27	uint32 (hash % 8 buckets)	stride=40	container decoded; record layout native (bin64/uielementtypesLoader.pyd)
+res:/staticdata/uihelppointers.fsdbinary	34841	cfsd	keys	193	uint32 (hash % 61 buckets)	stride=80	container decoded; record layout native (bin64/uihelppointersLoader.pyd)
+res:/staticdata/uihidingtemplates.fsdbinary	3848	cfsd	keys	13	uint32 (hash % 5 buckets)	stride=48	container decoded; record layout native (bin64/uihidingtemplatesLoader.pyd)
+res:/staticdata/uihighlights.fsdbinary	29118	cfsd	keys	160	uint32 (hash % 100 buckets)	stride=104	container decoded; record layout native (bin64/uihighlightsLoader.pyd)
+res:/staticdata/voidspaceencounters.fsdbinary	680	cfsd	keys	8	uint32 (hash % 3 buckets)	stride=48	container decoded; record layout native (bin64/voidspaceencountersLoader.pyd)
+res:/staticdata/warzonespositiondata.fsdbinary	28638	cfsd	rowcount	2	uint32 (hash % 2 buckets)	stride=None	stride undetermined (too few multi-row buckets); container decoded; record layout native (bin64/warzonespositiondataLoader.pyd)
+res:/staticdata/wrecks.static	15756	classic	yes	294	int	raceIdToWreckTypeId:dict	embedded schema

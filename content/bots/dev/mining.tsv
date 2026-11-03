@@ -1,0 +1,7 @@
+# DEV-MODE roster (docs/guides/dev-mode.md): group side role count skills ship [system]
+# Two mining fleets: a foreman in an Orca boosts and compresses for five exhumers.
+# Type NAMES only; the bundle resolves them at run time.
+orcaa	miners	foreman	1	role	Orca
+hulka	miners	mine	5	role	Hulk
+orcab	miners	foreman	1	role	Orca
+hulkb	miners	mine	5	role	Hulk

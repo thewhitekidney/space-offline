@@ -1,0 +1,30 @@
+#!/bin/sh
+# The census browser stand-in, recorder R4a (packet CEN-1, docs/guides/census.md).
+#
+# Every name in tools/census/bin/ is a symlink to this file: xdg-open, the
+# Debian alternatives, and every name in Wine's winebrowser default list.
+# In census mode the shim (CEN-3) puts tools/census/bin first on PATH, so a
+# URL hand-off (ShellExecute -> winebrowser -> xdg-open -> a browser) ends
+# here: one line in $CENSUS_EXEC_LOG naming the program and its argv, and
+# exit 1. Nothing is opened and nothing is executed.
+#
+# Line format, one per exec, fields separated by a TAB:
+#   t=<unix ms>  name=<argv0 basename>  pid=<pid>  argc=<n>  arg=<a1>  arg=<a2> ...
+# Inside a field, a backslash is written \\, a TAB \t and a newline \n, so
+# a line never splits. With CENSUS_EXEC_LOG unset the line goes to stderr,
+# so an exec is never silent.
+esc() {
+    printf '%s' "$1" | sed -e 's/\\/\\\\/g' -e 's/	/\\t/g' | awk 'NR > 1 { printf "\\n" } { printf "%s", $0 }'
+}
+t=$(date +%s%N 2>/dev/null | cut -c1-13)
+[ -n "$t" ] || t=0
+line="t=$t	name=$(esc "${0##*/}")	pid=$$	argc=$#"
+for a in "$@"; do
+    line="$line	arg=$(esc "$a")"
+done
+if [ -n "${CENSUS_EXEC_LOG:-}" ]; then
+    printf '%s\n' "$line" >>"$CENSUS_EXEC_LOG" || printf '%s\n' "$line" >&2
+else
+    printf '%s\n' "$line" >&2
+fi
+exit 1

@@ -1,0 +1,81 @@
+# Select a character and then ask for the things only a server can author.
+#
+# This is the script that pays for the lane: everything below the selection is
+# data no shipped file holds — station contents, the skill queue, dogma state,
+# corporation rows, agent journals, a market with a region behind it.
+#
+# The ids are the ones a particular EvEJS install happens to hold. Read them
+# off a `charsel.probe` run's `charUnboundMgr.GetCharacterSelectionData` line
+# and edit this file; that is the whole reason the script is data.
+#
+#   charID    140000005
+#   corpID     98000001
+#   allianceID 99000001
+#   stationID  60003760   (Jita IV - Moon 4)
+#   systemID   30000142   (Jita)
+#   regionID   10000002   (The Forge)
+#
+#   probe run --script crates/eve-probe/scripts/ingame.probe --out <dir>
+
+note stage 4h: selecting a character
+call charUnboundMgr.SelectCharacterID 140000005
+drain 8000
+
+note stage 4i: the character sheet and what the client loads with it
+call charMgr.GetSettingsInfo
+call charMgr.GetCharacterSettings
+call charMgr.GetPublicInfo 140000005
+call skillMgr2.GetMySkillHandler
+call paperDollServer.GetPaperDollData 140000005
+call userSvc.GetMultiCharactersTrainingSlots [140000005]
+call home_station.get_home_station
+
+note stage 4j: bound objects — skills, dogma, inventory, crimewatch
+bind skillHandler 140000005 GetSkills
+bind dogmaIM (30000142, 5) GetAllInfo true, true, none
+bind invbroker (30000142, 5) GetInventoryFromId 140000005, 1
+bind crimewatch (30000142, 5) GetClientStates
+
+note stage 4j2: calls on the objects those binds returned
+# `bind` labels the object with its service name; the fused call's own return
+# value, when that is also an object, is labelled `<service>.retval`.
+on skillHandler GetSkillQueueAndFreePoints
+on crimewatch GetClientStates
+on dogmaIM GetCharacterBaseAttributes
+on invbroker.retval List
+
+note stage 4k: corporation and alliance
+bind corpRegistry 98000001 GetAggressionSettings
+bind warRegistry (98000001, 1) GetWars 98000001
+call corpRegistry.GetCorporationIDsWithTheirAllianceID [98000001]
+call allianceRegistry.GetAlliance 99000001
+
+note stage 4l: agents, missions and standings for a real character
+call agentMgr.GetAgents
+call agentMgr.GetMyJournalDetails
+call standingMgr.GetCharStandings
+call standingMgr.GetMyKillRights
+call bountyProxy.GetBountiesAndKillRights
+
+note stage 4m: the station we are docked in
+call station.GetGuests
+call stationSvc.GetStationItemBits 60003760
+call structureDirectory.GetMyDockableStructures 30000142
+
+note stage 4n: the market, now that the session has a region
+call marketProxy.StartupCheck
+call marketProxy.GetRegionBest 10000002
+call marketProxy.GetOrders 10000002, 34
+call marketProxy.GetCharOrders
+call marketProxy.GetMarketGroups
+
+note stage 4o: wallet, industry and the rest of the long tail
+call account.GetCashBalance 0
+call account.GetJournal 1000, none, 140000005, none, none
+call contractMgr.NumRequiringAttention
+call lootSvc.GetLootRights
+call jumpTimers.GetTimers 140000005
+call keeper.GetCurrentDungeonForCharacter
+
+note stage 4p: drain the tail
+drain 6000

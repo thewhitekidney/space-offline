@@ -1,0 +1,22 @@
+# The hostile bot's engagement policy (eve-bots --hostile --loop hostile;
+# eve-bot/src/hostile.rs, CP56; header in docs/content/schema.md §4; plan
+# §4.7). Read at eve-bots startup from ./content/bots/hostile.tsv when it is
+# there, else this compiled-in copy. Edit and restart the bots.
+# - ship_class: the target hull's class: capsule, or the client's rig size
+#   (rigSize, 1547) as small, medium, large or capital; * for any hull,
+#   including one whose class the bot does not know.
+# - min_sec, max_sec: the system's security as the client rounds it,
+#   inclusive.
+# - engage: 1 attack, 0 leave alone. The FIRST matching row decides; no row
+#   matching means leave alone.
+# A row can never make the bot commit a crime: wherever crimewatch flags
+# apply (security above 0.0 as the client rounds it, or a system the bot has
+# no security for) it attacks nobody, whatever this table says (CP3b).
+# Every row is [A] as a whole; `why` names what would falsify it.
+ship_class	min_sec	max_sec	engage	why
+capsule	-1.0	1.0	0	[A] no podding: falsified by a friend asking the bots to play it rough
+small	-1.0	0.0	1	[A] a Rifter hunts its own size: falsified by friends calling small-ship null roams dull or unfair
+medium	-1.0	0.0	1	[A] a cruiser is a fair fight for a frigate with friends: falsified by bots dying to every cruiser
+large	-1.0	0.0	0	[A] a frigate does not pick a battleship: falsified by a friend wanting a battleship tackled
+capital	-1.0	0.0	0	[A] a frigate does not tackle a capital alone: falsified by a friend wanting one tackled
+*	-1.0	0.0	0	[A] a hull the bot cannot class is left alone: falsified by bots ignoring shuttles and haulers friends want hunted

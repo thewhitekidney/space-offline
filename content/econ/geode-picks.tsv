@@ -1,0 +1,10 @@
+# Which of the client's crates are geodes: the owner's pick (issue #32).
+# `tools/content_geodes.py` matches `name` EXACTLY against the en-us name of
+# each candidate crate and writes the types it finds to `mining/geodes.tsv`;
+# `mining/geode-candidates.tsv` in the bundle lists every candidate to pick
+# from. Every type of a name becomes a geode of `tier` (1 common to 3 rare:
+# a higher tier holds more prizes and bigger ones, `tunables::PRIZES_BY_TIER`).
+# No real name is kept in this repository, so this ships EMPTY and a world
+# with no pick makes no geodes; mining is then unchanged. A name that matches
+# no candidate stops the extraction. Re-extract (tools/up.sh) after editing.
+name	tier	why

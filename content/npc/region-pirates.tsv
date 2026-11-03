@@ -1,0 +1,14 @@
+# Sparse overrides of C6 R3 (which pirates spawn in a region), applied by
+# tools/content_npc_regions.py when it writes out/content/npc/regions.tsv.
+# The server never reads this file; edit it and tools/up.sh re-extracts
+# (the bundle's manifest records it as an `input`).
+#
+# region_id, faction_id: client ids. weight: replaces the derived weight of
+# that pair, or adds the pair; 0 removes it. A region's derived weights sum
+# to 1; a secondary pirate has SECONDARY_WEIGHT. why: the falsifier, [A].
+#
+# Ships with no rows: every region is derived. Add a row only to correct a
+# rule a pilot has shown wrong, and say how in `why`. Example (invented, so
+# commented out):
+# 39999901	599001	0.5	[A] invented example row
+region_id	faction_id	weight	why

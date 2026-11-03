@@ -1,0 +1,15 @@
+# The NPC exchange's Tier B hubs (C5 §4.3; econ_exchange::TABLE, CP35; header
+# in docs/content/schema.md §4). Under O5-d (E5) a hub posts only floor bids
+# on loot-only modules and tags, never an ask. These bids are an [A] loot
+# crutch, NOT TQ: TQ has no NPC bid on any module, charge or pirate tag
+# (R-NPCTRADE, E5b). They stand only while econ_exchange::LOOT_BIDS is true,
+# until the loot tables drop TQ's sink goods. Every row is policy, so [A]; a
+# station not in the bundle is ignored. Add the humans' home stations here
+# (O7). Restart.
+station_id	why
+60003760	[A] the Caldari trade hub (C5 §2.4); falsified by nobody trading there
+60008494	[A] the Amarr trade hub (C5 §2.4); falsified by nobody trading there
+60011866	[A] the Gallente trade hub (C5 §2.4); falsified by nobody trading there
+60004588	[A] the Minmatar trade hub (C5 §2.4); falsified by nobody trading there
+60005686	[A] the fifth empire trade hub (C5 §2.4); falsified by nobody trading there
+60012526	[A] the humans' home station (O7, C4 §7.1); falsified by the humans moving home

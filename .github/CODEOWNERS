@@ -1,0 +1,21 @@
+# Guarded paths: a change here needs the owner (tools/pr_guard.py has the same list,
+# and label.yml marks such a PR `needs-human`).
+/CLAUDE.md                          @thewhitekidney
+/AGENTS.md                          @thewhitekidney
+/LICENSE                            @thewhitekidney
+/LICENSE.md                         @thewhitekidney
+/CONTRIBUTING-terms.md              @thewhitekidney
+/NOTICE                             @thewhitekidney
+/docs/guides/public-export.md       @thewhitekidney
+/docs/guides/jail.md                @thewhitekidney
+/tools/land.sh                      @thewhitekidney
+/tools/gate.sh                      @thewhitekidney
+/tools/dev.sh                       @thewhitekidney
+/tools/public-export.py             @thewhitekidney
+/tools/pr_guard.py                  @thewhitekidney
+/containers/                        @thewhitekidney
+/.github/                           @thewhitekidney
+/server/deps.allow                  @thewhitekidney
+/server/Cargo.lock                  @thewhitekidney
+Cargo.toml                          @thewhitekidney
+build.rs                            @thewhitekidney

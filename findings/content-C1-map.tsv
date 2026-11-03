@@ -1,0 +1,204 @@
+resource	format	rows	layout	subsystem	consumed_today	consumer	value	owner_extractor	out_content_file	mark	note
+res:/staticdata/accountingentrytypes.fsdbinary	cfsd	218	pyd stride=40 delta=8	wallet/journal	baked	ledger.rs (refTypeIDs)	P1	none	-	V	server needs only the refType ids it emits; client resolves text
+res:/staticdata/accountingkeys.fsdbinary	cfsd	19	pyd stride=48 delta=8	wallet/journal	baked	ledger.rs (refTypeIDs)	P1	none	-	V	server needs only the refType ids it emits; client resolves text
+res:/staticdata/achievementevents.fsdbinary	cfsd	131	pyd stride=40 delta=8	achievements	none	-	P3	tools/content.py:agency	-	I	
+res:/staticdata/achievements.static	classic	68	self-describing	achievements	none	-	P3	tools/content.py:agency	-	I	
+res:/staticdata/agencyhelpvideogroups.fsdbinary	cfsd	6	pyd stride=24 delta=8	misc/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/agencyhelpvideos.fsdbinary	cfsd	36	pyd stride=24 delta=8	misc/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/agentsinspace.fsdbinary	cfsd	360	pyd stride=20 delta=4	agents/in-space	none	-	P2	tools/content.py:dungeons	dungeons/agents-in-space.tsv	V	360 rows (dungeonID, solarSystemID, spawnPointID, typeID): fully specified placement
+res:/staticdata/agenttypes.fsdbinary	cfsd	13	scalar-row (no getattro)	agents	none	-	P1	tools/content.py:agents	agents/agent-types.tsv	V	13 rows, bare scalar row (no getattro)
+res:/staticdata/ancestries.fsdbinary	cfsd	43	pyd stride=56 delta=8	character creation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/archetypes.fsdbinary	cfsd	71	pyd stride=40 delta=8	dungeons/sites	none	-	P1	tools/content.py:dungeons	dungeons/archetypes.tsv	V	71 archetypes: the site class key for anomaly generation (C3)
+res:/staticdata/asteroidcountbytypeidbeltid.static	classic	40928	self-describing	mining/belts	runtime	tools/asteroids.py -> --belt-rocks	P0	tools/content.py:belts	belts/rocks.tsv	V	per-belt rock counts by type
+res:/staticdata/asteroidcountbytypeidroomiddungeonid.static	classic	1221	self-describing	dungeons/ore sites	ref	tools/fsd.py (verification only)	P1	tools/content.py:dungeons	dungeons/room-rocks.tsv	V	3,054 cells, matches dungeons rooms exactly
+res:/staticdata/asteroidtypesbysolarsystemid.pickle	pickle	3974	self-describing	mining/belts	none	-	P1	tools/content.py:belts	belts/ore-by-system.tsv	I	3,974 systems -> ore type tuple: the regrowth palette for belts and ore anomalies (C3)
+res:/staticdata/atoms.fsdbinary	cfsd	583	pyd stride=64 delta=8	agency/node graphs	none	-	P2	none (client-only)	-	I	8 MB of client-run node graphs (C2)
+res:/staticdata/audiometadata.fsdbinary	cfsd	unknown	pyd stride=72 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/billboards.fsdbinary	cfsd	2	pyd stride=88 delta=8	UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/billtypes.fsdbinary	cfsd	7	pyd stride=32 delta=8	misc/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/bloodlines.fsdbinary	cfsd	18	pyd stride=48 delta=4	character creation	baked	service/character.rs (school/bloodline ids)	P0	tools/content.py:agents	agents/schools.tsv	V	client reads these itself; server must only agree on ids and start stations
+res:/staticdata/blueprints.static	sqlite	5100	self-describing	industry	baked	industry/tables.rs BLUEPRINTS (23 of 4,890)	P1	tools/content.py:industry	industry/blueprints.tsv	V	
+res:/staticdata/blueprintsbymaterialtypeids.pickle	pickle	1715	self-describing	industry/UI	none	-	P3	none (client-only)	-	I	reverse index for the 'used in' tab
+res:/staticdata/brackets.static	classic	166	self-describing	overview	none	-	P3	none (client-only)	-	I	client picks brackets from groupID
+res:/staticdata/bracketsbycategory.static	classic	7	self-describing	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/bracketsbygroup.static	classic	547	self-describing	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/bracketsbytype.static	classic	1221	self-describing	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/careerpaths.fsdbinary	cfsd	4	pyd stride=24 delta=8	skills/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/categories.fsdbinary	cfsd	48	pyd stride=40 delta=8	types	runtime	tools/typedata.py (join only)	P0	tools/content.py:types	types/groups.tsv,types/categories.tsv	V	
+res:/staticdata/certificates.static	classic	1	self-describing	skills/UI	ref	service.rs (doc)	P3	none (client-only)	-	I	
+res:/staticdata/challengeconditions.fsdbinary	cfsd	33	scalar-row (no getattro)	agency/challenges	none	-	P2	tools/content.py:agency	agency/challenges.tsv	V	1,210 challenges (isk_awarded, max_progress, event_conditions)
+res:/staticdata/challengeevents.fsdbinary	cfsd	35	scalar-row (no getattro)	agency/challenges	none	-	P2	tools/content.py:agency	agency/challenges.tsv	V	1,210 challenges (isk_awarded, max_progress, event_conditions)
+res:/staticdata/challenges.fsdbinary	cfsd	1210	pyd stride=112 delta=8	agency/challenges	none	-	P2	tools/content.py:agency	agency/challenges.tsv	V	1,210 challenges (isk_awarded, max_progress, event_conditions)
+res:/staticdata/character_avatarbehaviors.fsdbinary	cfsd	1	pyd stride=32 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/character_colorlocations.fsdbinary	cfsd	55	pyd stride=24 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/character_colornames.fsdbinary	cfsd	387	pyd stride=24 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/character_modifierlocations.fsdbinary	cfsd	46	pyd stride=24 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/character_portraitresources.fsdbinary	cfsd	106	pyd stride=32 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/character_resources.fsdbinary	cfsd	2514	pyd stride=56 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/character_sculptinglocations.fsdbinary	cfsd	215	pyd stride=24 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/checkpoints.fsdbinary	cfsd	78	pyd stride=40 delta=8	misc/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/clientlocationlists.fsdbinary	cfsd	6	pyd stride=24 delta=8	ESS/lists	none	-	P2	tools/content.py:agency	agency/location-lists.tsv	I	6 lists; essreservekeys.locationListID closes here [I]
+res:/staticdata/clonegrades.static	sqlite	4	self-describing	character/alpha	none	-	P3	none	-	I	alpha clone skill caps; offline server can ignore
+res:/staticdata/commandsets.fsdbinary	cfsd	12	pyd stride=48 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/community_track_templates.fsdbinary	cfsd	1	pyd stride=32 delta=8	corp goals	none	-	P3	tools/content.py:agency	-	I	
+res:/staticdata/compressibletypes.fsdbinary	cfsd	212	scalar-row (no getattro)	industry/reprocess	baked	reprocess/tables.rs COMPRESSED (212)	P1	tools/content.py:types	types/compress.tsv	V	
+res:/staticdata/constellations.schema	schema	-	self-describing	schema sidecar	none	-	P1	tools/fsd.py (reader)	-	V	YAML schema for the sibling .static; tools/fsd.py reads it
+res:/staticdata/constellations.static	classic	1184	self-describing	universe/map	none	-	P1	tools/content.py:universe	universe/regions.tsv,universe/constellations.tsv	I	region/constellation faction + neighbours; needed for spawn faction by region and wormholeClassID
+res:/staticdata/contenttags.fsdbinary	cfsd	50	pyd stride=40 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/contenttagtypes.fsdbinary	cfsd	3	pyd stride=12 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/contrabandtypes.fsdbinary	cfsd	8	pyd stride=24 delta=8	security/customs	none	-	P2	tools/content.py:npc	npc/contraband.tsv	V	8 types x faction: fine/confiscate/attack minSec
+res:/staticdata/contributionmethods.fsdbinary	cfsd	22	pyd stride=72 delta=8	corp goals	none	-	P3	tools/content.py:agency	-	I	
+res:/staticdata/controltowerresources.fsdbinary	cfsd	44	pyd stride=16 delta=8	structures/POS	none	-	P3	tools/content.py:industry	-	I	
+res:/staticdata/conversationagents.fsdbinary	cfsd	44	pyd stride=72 delta=8	agents/NPE dialogue	none	-	P3	tools/content.py:agents	-	I	Agency/NPE scripted dialogue, client-driven [I]
+res:/staticdata/conversations.fsdbinary	cfsd	1275	pyd stride=24 delta=8	agents/NPE dialogue	none	-	P3	tools/content.py:agents	-	I	Agency/NPE scripted dialogue, client-driven [I]
+res:/staticdata/corporationactivities.fsdbinary	cfsd	20	pyd stride=8 delta=4	misc/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/corporationrolegroups.fsdbinary	cfsd	9	pyd stride=48 delta=8	misc/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/corporationroles.fsdbinary	cfsd	55	pyd stride=32 delta=8	corp	none	-	P3	none (client-only)	-	I	role names; server uses its own role bit constants (roles.rs)
+res:/staticdata/crates.fsdbinary	cfsd	637	pyd stride=168 delta=8	npc/loot containers	none	-	P2	tools/content.py:npc	npc/crates.tsv	V	637 crates; lootTableByRace ids point outside the corpus
+res:/staticdata/currencybuckets.fsdbinary	cfsd	11	pyd stride=24 delta=8	wallet	none	-	P3	none (client-only)	-	I	
+res:/staticdata/dbuffcollections.static	sqlite	277	self-describing	dogma/fleet boosts	none	-	P2	tools/content.py:types	types/dbuffs.tsv	I	277 warfare buff collections: command bursts, system effects (wormhole/incursion)
+res:/staticdata/defaultoverviews.fsdbinary	cfsd	7	pyd stride=32 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/dialogs.schema	schema	-	self-describing	errors/UI text	runtime	tools/loctable.py	P3	tools/fsd.py (reader)	-	V	schema for dialogs.static
+res:/staticdata/dialogs.static	classic	4223	self-describing	errors/UI text	ref	store.rs, fleet.rs, damage.rs (dialog keys)	P1	tools/fsd.py (reader)	-	V	server must emit keys that exist; tools/loctable.py validates
+res:/staticdata/dogmaattributecategories.fsdbinary	cfsd	37	pyd stride=32 delta=8	dogma/UI	none	-	P3	none (client-only)	-	I	display only
+res:/staticdata/dogmaattributes.fsdbinary	cfsd	2872	pyd stride=80 delta=8	dogma	runtime	tools/typedata.py -> --typedata	P0	tools/content.py:types	types/types.tsv:attrs,types/attributes.tsv,types/effects.tsv,types/modifiers.tsv	V	cat-11 NPC rows present since b8a6234 (npc.rs derive_all)
+res:/staticdata/dogmaeffects.fsdbinary	cfsd	3431	pyd stride=112 delta=8	dogma	runtime	tools/typedata.py -> --typedata	P0	tools/content.py:types	types/types.tsv:attrs,types/attributes.tsv,types/effects.tsv,types/modifiers.tsv	V	cat-11 NPC rows present since b8a6234 (npc.rs derive_all)
+res:/staticdata/dogmaunits.fsdbinary	cfsd	60	pyd stride=32 delta=8	dogma/UI	none	-	P3	none (client-only)	-	I	display only
+res:/staticdata/dungeonenvironmenttemplates.fsdbinary	cfsd	114	pyd stride=40 delta=8	graphics/environment	none	-	P3	none (client-only)	-	I	client renders from dungeonID/typeID alone [I]
+res:/staticdata/dungeonobjectives.fsdbinary	cfsd	85	pyd stride=56 delta=8	dungeons/objectives	none	-	P2	tools/content.py:agency	agency/dungeon-objectives.tsv	V	dungeon.objectivesID -> client objective chain
+res:/staticdata/dungeons.fsdbinary	cfsd	5516	pyd stride=120 delta=8	dungeons/sites	baked	dungeon.rs/mission.rs (ids only)	P1	tools/content.py:dungeons	dungeons/dungeons.tsv,dungeons/rooms.tsv,dungeons/objects.tsv,dungeons/gates.tsv,dungeons/spawns.tsv	V	5,516 / 8,483 rooms / 260k objects / 30,610 spawn entities; no extractor writes it
+res:/staticdata/dusticons.static	classic	2036	self-describing	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/dynamicitemattributes.fsdbinary	cfsd	441	pyd stride=32 delta=8	items/abyssal mutaplasmids	none	-	P3	tools/content.py:types	types/mutators.tsv	I	
+res:/staticdata/effects.fsdbinary	cfsd	213	pyd stride=128 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/effectsequences.fsdbinary	cfsd	1	pyd stride=40 delta=0	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/empireselection.static	classic	4	self-describing	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/empiretechnologies.static	classic	4	self-describing	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/environmenttemplateanchorcategoryids.fsdbinary	cfsd	1	pyd stride=32 delta=8	graphics/environment	none	-	P3	none (client-only)	-	I	client renders from dungeonID/typeID alone [I]
+res:/staticdata/environmenttemplateanchorgroupids.fsdbinary	cfsd	2	pyd stride=32 delta=8	graphics/environment	none	-	P3	none (client-only)	-	I	client renders from dungeonID/typeID alone [I]
+res:/staticdata/environmenttemplateanchortypeids.fsdbinary	cfsd	246	pyd stride=32 delta=8	graphics/environment	none	-	P3	none (client-only)	-	I	client renders from dungeonID/typeID alone [I]
+res:/staticdata/environmenttemplates.fsdbinary	cfsd	188	pyd stride=256 delta=8	graphics/environment	none	-	P3	none (client-only)	-	I	client renders from dungeonID/typeID alone [I]
+res:/staticdata/epicarcs.fsdbinary	cfsd	21	pyd stride=56 delta=8	agents/arcs	none	-	P2	tools/content.py:agents	agents/epic-arcs.tsv	V	21 arcs: missions graph (nextMissions, agentID, failMissionID)
+res:/staticdata/essreservekeys.fsdbinary	cfsd	8	pyd stride=16 delta=4	ESS	none	-	P2	tools/content.py:agency	agency/ess.tsv	V	8 rows keyTypeID,locationListID,totalPulses
+res:/staticdata/eventmessagetypes.static	classic	8	self-describing	dungeons/events	none	-	P2	tools/content.py:dungeons	-	I	event vocab for triggers; read at extractor time to validate spawns.tsv
+res:/staticdata/eventtypes.static	classic	72	self-describing	dungeons/events	none	-	P2	tools/content.py:dungeons	-	I	event vocab for triggers; read at extractor time to validate spawns.tsv
+res:/staticdata/expertsystems.fsdbinary	cfsd	59	pyd stride=56 delta=8	skills/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/explosionbucketids.fsdbinary	cfsd	87	pyd stride=56 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/explosionids.fsdbinary	cfsd	55	pyd stride=32 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/factions.fsdbinary	cfsd	27	pyd stride=80 delta=8	npc/factions	baked	npc.rs FACTIONS (Angel only), service.rs	P0	tools/content.py:npc	npc/factions.tsv	V	27 factions; corporationID, militiaCorporationID, memberRaces
+res:/staticdata/factionsowningsolarsystems.schema	schema	-	self-describing	schema sidecar	none	-	P1	tools/fsd.py (reader)	-	V	YAML schema for the sibling .static; tools/fsd.py reads it
+res:/staticdata/factionsowningsolarsystems.static	classic	22	self-describing	universe/sovereignty	none	-	P1	tools/content.py:universe	universe/systems.tsv:owner_faction	I	22 rows; feeds faction of empire space for rat/navy choice
+res:/staticdata/fighterabilities.static	sqlite	36	self-describing	fighters	none	-	P3	tools/content.py:types	-	I	
+res:/staticdata/fighterabilitiesbytype.static	sqlite	94	self-describing	fighters	none	-	P3	tools/content.py:types	-	I	
+res:/staticdata/gastypesbydungeonid.static	classic	83	self-describing	dungeons/resource sites	none	-	P1	tools/content.py:dungeons	dungeons/resources.tsv	V	1120/83/21 dungeons -> harvestable types
+res:/staticdata/globaltypes.fsdbinary	cfsd	8	pyd stride=24 delta=8	planets/PI	runtime	tools/pi_statics.py -> --planets	P0	tools/content.py:planets	planets/statics.tsv	V	
+res:/staticdata/goals.fsdbinary	cfsd	2	pyd stride=40 delta=8	corp goals	none	-	P3	tools/content.py:agency	-	I	
+res:/staticdata/graphicids.fsdbinary	cfsd	6161	pyd stride=160 delta=8	docking/asteroid graphics	baked	docking.rs, asteroid.rs (ids)	P2	tools/content.py:universe	-	V	join only: station type -> graphicLocationID
+res:/staticdata/graphiclocations.fsdbinary	cfsd	68	pyd stride=40 delta=8	docking geometry	baked	docking.rs STATIONS	P1	tools/content.py:universe	universe/dock-locators.tsv	V	68 rows, 235 directional locators; dock/undock points
+res:/staticdata/graphicmaterialsets.fsdbinary	cfsd	956	pyd stride=168 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/groupgraphics.fsdbinary	cfsd	79	pyd stride=72 delta=8	asteroid graphics	ref	asteroid.rs (doc)	P3	none (client-only)	-	V	
+res:/staticdata/grouprewards.fsdbinary	cfsd	161	pyd stride=56 delta=8	npc/rewards	none	-	P2	tools/content.py:npc	npc/group-rewards.tsv	V	161 shared-reward tables (playerCount->quantity, rewardingNpcCorporationID)
+res:/staticdata/groups.fsdbinary	cfsd	1611	pyd stride=32 delta=4	types	runtime	tools/typedata.py (join only)	P0	tools/content.py:types	types/groups.tsv,types/categories.tsv	V	
+res:/staticdata/huecategories.fsdbinary	cfsd	25	pyd stride=16 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/icetypesbydungeonid.static	classic	21	self-describing	dungeons/resource sites	none	-	P1	tools/content.py:dungeons	dungeons/resources.tsv	V	1120/83/21 dungeons -> harvestable types
+res:/staticdata/iconids.fsdbinary	cfsd	4806	pyd stride=32 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/industry_activities.static	sqlite	6	self-describing	industry	ref	industry.rs (doc + constants)	P2	tools/content.py:industry	industry/lines.tsv	V	
+res:/staticdata/industry_activity_modifier_sources.static	sqlite	220	self-describing	industry	ref	industry.rs (doc + constants)	P2	tools/content.py:industry	industry/lines.tsv	V	
+res:/staticdata/industry_activity_target_filters.static	sqlite	18	self-describing	industry	ref	industry.rs (doc + constants)	P2	tools/content.py:industry	industry/lines.tsv	V	
+res:/staticdata/industry_assembly_lines.static	sqlite	146	self-describing	industry	ref	industry.rs (doc + constants)	P2	tools/content.py:industry	industry/lines.tsv	V	
+res:/staticdata/industry_installation_types.static	sqlite	102	self-describing	industry	ref	industry.rs (doc + constants)	P2	tools/content.py:industry	industry/lines.tsv	V	
+res:/staticdata/infobubbles.static	sqlite	5	self-describing	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/itemtraderrecipes.fsdbinary	cfsd	544	pyd stride=72 delta=8	npc/item trader	none	-	P3	tools/content.py:industry	-	I	
+res:/staticdata/jumps.schema	schema	-	self-describing	schema sidecar	none	-	P1	tools/fsd.py (reader)	-	V	YAML schema for the sibling .static; tools/fsd.py reads it
+res:/staticdata/jumps.static	classic	6989	self-describing	universe/jumps	none	-	P2	tools/content.py:universe	-	I	redundant: gate destinations already come from solarsystemcontent stargates; keep as an extractor cross-check only
+res:/staticdata/landmarks.static	classic	45	self-describing	universe/map UI	none	-	P3	none (client-only)	-	I	starmap landmarks
+res:/staticdata/locationcache.static	classic	481068	self-describing	universe/lookup	none	-	P3	none	-	I	481k id->int index, client-side lookup cache [I]; server has its own ids
+res:/staticdata/manufacturableitems.fsdbinary	cfsd	1	scalar-row (no getattro)	industry	none	-	P3	none	-	I	1 row, bare scalar
+res:/staticdata/marketgroups.fsdbinary	cfsd	2114	pyd stride=28 delta=4	market	none	-	P1	tools/content.py:types	types/marketgroups.tsv	V	2,114 groups; 19,957 types carry marketGroupID: the NPC seeding universe (C5)
+res:/staticdata/menuhighlights.fsdbinary	cfsd	24	pyd stride=32 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/metagroups.fsdbinary	cfsd	13	pyd stride=48 delta=8	types/loot	none	-	P2	tools/content.py:types	types/metagroups.tsv	I	meta tier for loot rolls (C6)
+res:/staticdata/missions.fsdbinary	cfsd	2892	pyd stride=224 delta=8	agents/missions	baked	mission.rs (COURIER + ids)	P1	tools/content.py:agents	agents/missions.tsv,agents/mission-messages.tsv	V	2,892 missions; dungeonID, rewards, contentTemplate
+res:/staticdata/musictriggers.fsdbinary	cfsd	392	pyd stride=24 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/newactivities.fsdbinary	cfsd	46	pyd stride=88 delta=8	agency/live	none	-	P2	tools/content.py:agency	agency/activities.tsv	I	dated banner rows; client filters by date [I] (C2)
+res:/staticdata/newfeatures.fsdbinary	cfsd	198	pyd stride=104 delta=8	agency/live	none	-	P2	tools/content.py:agency	agency/activities.tsv	I	dated banner rows; client filters by date [I] (C2)
+res:/staticdata/nodegraphs.fsdbinary	cfsd	584	pyd stride=72 delta=8	agency/node graphs	none	-	P2	none (client-only)	-	I	8 MB of client-run node graphs (C2)
+res:/staticdata/nodetypes.fsdbinary	cfsd	45	pyd stride=96 delta=8	agency/node graphs	none	-	P2	none (client-only)	-	I	8 MB of client-run node graphs (C2)
+res:/staticdata/npccharacters.fsdbinary	cfsd	11424	pyd stride=136 delta=8	agents	baked	service.rs (one agent row), mission.rs AGENT_ID	P1	tools/content.py:agents	agents/agents.tsv,agents/npc-characters.tsv	V	11,424 chars; struct agent{agentLevel,agentDivisionID,agentType,agentLocateCharacter,storyLineMissions}, corporationID, stationID
+res:/staticdata/npccorporationdivisions.fsdbinary	cfsd	10	pyd stride=40 delta=8	agents	none	-	P1	tools/content.py:agents	agents/divisions.tsv	V	10 divisions
+res:/staticdata/npccorporations.fsdbinary	cfsd	283	pyd stride=224 delta=8	npc/corps+LP	baked	model.rs, npc.rs (hand ids)	P1	tools/content.py:npc	npc/corporations.tsv	V	283 corps; factionID, stationID, solarSystemID, divisions{divisionNumber,leaderID,size}, lpOfferTables (ids only, no offer rows in corpus), friendID/enemyID, taxRate, minSecurity
+res:/staticdata/npcstationtaxmodifier.fsdbinary	cfsd	1	pyd stride=24 delta=8	market/tax	ref	reprocess.rs (doc)	P2	tools/content.py:industry	-	V	1 row taxModifierByValue
+res:/staticdata/npcstructuresettings.fsdbinary	cfsd	2	pyd stride=24 delta=8	npc/structures	none	-	P3	tools/content.py:npc	-	I	
+res:/staticdata/objectivechains.fsdbinary	cfsd	111	pyd stride=40 delta=8	agency/objectives	none	-	P2	tools/content.py:agency	-	I	client-run node graphs; server feeds blackboard values (C2)
+res:/staticdata/objectives.fsdbinary	cfsd	8	pyd stride=64 delta=8	agents/NPE	none	-	P3	none (client-only)	-	I	8 rows
+res:/staticdata/objectivetasktypes.fsdbinary	cfsd	53	pyd stride=48 delta=8	agency/objectives	none	-	P2	tools/content.py:agency	-	I	client-run node graphs; server feeds blackboard values (C2)
+res:/staticdata/objectivetypes.fsdbinary	cfsd	95	pyd stride=40 delta=8	agency/objectives	none	-	P2	tools/content.py:agency	-	I	client-run node graphs; server feeds blackboard values (C2)
+res:/staticdata/operationcategories.fsdbinary	cfsd	8	pyd stride=56 delta=8	agency/operations (NPE)	none	-	P2	tools/content.py:agency	agency/operations.tsv	I	NPE/Agency operations; operationsites lists dungeonIDs (C2)
+res:/staticdata/operations.fsdbinary	cfsd	325	pyd stride=152 delta=8	agency/operations (NPE)	none	-	P2	tools/content.py:agency	agency/operations.tsv	I	NPE/Agency operations; operationsites lists dungeonIDs (C2)
+res:/staticdata/operationsites.fsdbinary	cfsd	21	pyd stride=56 delta=8	agency/operations (NPE)	none	-	P2	tools/content.py:agency	agency/operations.tsv	I	NPE/Agency operations; operationsites lists dungeonIDs (C2)
+res:/staticdata/operationtasks.fsdbinary	cfsd	397	pyd stride=120 delta=8	agency/operations (NPE)	none	-	P2	tools/content.py:agency	agency/operations.tsv	I	NPE/Agency operations; operationsites lists dungeonIDs (C2)
+res:/staticdata/operationtreestructures.fsdbinary	cfsd	28	pyd stride=40 delta=8	agency/operations (NPE)	none	-	P2	tools/content.py:agency	agency/operations.tsv	I	NPE/Agency operations; operationsites lists dungeonIDs (C2)
+res:/staticdata/oretypesbydungeonid.static	classic	1120	self-describing	dungeons/resource sites	none	-	P1	tools/content.py:dungeons	dungeons/resources.tsv	V	1120/83/21 dungeons -> harvestable types
+res:/staticdata/paints.fsdbinary	cfsd	96	pyd stride=48 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/paperdolls.fsdbinary	cfsd	11291	pyd stride=352 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/petitionevents.fsdbinary	cfsd	21	pyd stride=32 delta=8	misc/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/petitionproperties.fsdbinary	cfsd	12	pyd stride=64 delta=8	misc/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/podguide.static	classic	44	self-describing	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/podguidegroups.static	classic	14	self-describing	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/pvpfilamenteventdates.fsdbinary	cfsd	118	pyd stride=40 delta=8	PvP filaments	none	-	P3	tools/content.py:agency	-	I	arena PvP for friends is a cheap win later [I]
+res:/staticdata/pvpfilamentmatchtypes.fsdbinary	cfsd	86	pyd stride=96 delta=8	PvP filaments	none	-	P3	tools/content.py:agency	-	I	arena PvP for friends is a cheap win later [I]
+res:/staticdata/races.fsdbinary	cfsd	11	pyd stride=48 delta=8	character creation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/recruitmentgroups.fsdbinary	cfsd	8	pyd stride=16 delta=4	misc/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/recruitmenttypes.fsdbinary	cfsd	45	pyd stride=20 delta=4	misc/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/regions.schema	schema	-	self-describing	schema sidecar	none	-	P1	tools/fsd.py (reader)	-	V	YAML schema for the sibling .static; tools/fsd.py reads it
+res:/staticdata/regions.static	classic	114	self-describing	universe/map	none	-	P1	tools/content.py:universe	universe/regions.tsv,universe/constellations.tsv	I	region/constellation faction + neighbours; needed for spawn faction by region and wormholeClassID
+res:/staticdata/requiredskillsfortypes.fsdbinary	cfsd	9575	scalar-row (no getattro)	skills	runtime	tools/skills.py -> --skills	P0	tools/content.py:types	types/reqskills.tsv	V	row is a bare dict, no getattro (native-loaders.md §1)
+res:/staticdata/requiredskillsindex.fsdbinary	cfsd	421	scalar-row (no getattro)	skills/UI	none	-	P3	none (client-only)	-	I	reverse index; client builds the 'used by' tab from it
+res:/staticdata/schematics.fsdbinary	cfsd	68	pyd stride=40 delta=8	planets/PI	runtime	tools/pi_statics.py -> --planets	P0	tools/content.py:planets	planets/statics.tsv	V	
+res:/staticdata/schoolmap.fsdbinary	cfsd	12	pyd stride=12 delta=4	character/new pilot	none	-	P2	tools/content.py:agents	agents/schools.tsv	I	school -> start system
+res:/staticdata/schools.fsdbinary	cfsd	23	pyd stride=64 delta=8	character creation	baked	service/character.rs (school/bloodline ids)	P0	tools/content.py:agents	agents/schools.tsv	V	client reads these itself; server must only agree on ids and start stations
+res:/staticdata/seasonalcampaignsloginrewards.fsdbinary	cfsd	131	pyd stride=64 delta=8	agency/seasons	none	-	P3	tools/content.py:agency	-	I	
+res:/staticdata/seasonselection.fsdbinary	cfsd	unknown	pyd stride=None delta=None	agency/seasons	none	-	P3	tools/content.py:agency	-	I	
+res:/staticdata/selectiongroups.static	classic	66	self-describing	dungeons/editor	none	-	P3	none (client-only)	-	I	roomID-keyed camera presets [I]
+res:/staticdata/ship_cosmetic_slot_categories.fsdbinary	cfsd	3	pyd stride=16 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/ship_cosmetic_slot_configurations.fsdbinary	cfsd	4	pyd stride=48 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/ship_cosmetic_slot_names.fsdbinary	cfsd	8	pyd stride=16 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/ship_cosmetic_slots.fsdbinary	cfsd	8	pyd stride=32 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/ship_skin_design_component_categories.fsdbinary	cfsd	3	pyd stride=16 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/ship_skin_design_component_point_values.fsdbinary	cfsd	3	scalar-row (no getattro)	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/ship_skin_design_component_rarities.fsdbinary	cfsd	6	pyd stride=12 delta=4	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/ship_skin_design_components.fsdbinary	cfsd	613	pyd stride=112 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/ship_skin_design_components_post_process.fsdbinary	cfsd	613	scalar-row (no getattro)	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/ship_skin_design_tier_thresholds.fsdbinary	cfsd	49	scalar-row (no getattro)	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/shipcosmeticlicenses.fsdbinary	cfsd	830	pyd stride=20 delta=4	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/skillplans.fsdbinary	cfsd	40	pyd stride=56 delta=8	skills/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/skilltags.static	classic	0	self-describing	skills/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/skilltreegroups.fsdbinary	cfsd	3	pyd stride=32 delta=8	skills/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/skinlicenses.static	sqlite	11879	self-describing	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/skinmaterials.static	sqlite	876	self-describing	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/skins.static	sqlite	7050	self-describing	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/skyboxeffects.fsdbinary	cfsd	6	pyd stride=72 delta=8	graphics/environment	none	-	P3	none (client-only)	-	I	client renders from dungeonID/typeID alone [I]
+res:/staticdata/solarsystemcontent.static	classic	8490	self-describing	universe/space	runtime	tools/celestials.py,tools/asteroids.py -> --celestials/--belt-rocks	P0	tools/content.py:universe	universe/celestials.tsv,universe/belts.tsv,universe/gates.tsv	V	every planet/moon/belt/station/gate/star of 8,490 systems
+res:/staticdata/soundids.fsdbinary	cfsd	1470	pyd stride=16 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/spacecomponentsbytype.fsdbinary	cfsd	11238	pyd stride=1832 delta=8	npc/components	none	-	P1	tools/content.py:npc	npc/components.tsv,npc/reactive-spawn.tsv,npc/bounty.tsv	V	11,238 typeIDs, 1832-byte record; reactiveSpawnComponent (spawnTableID, npcFleetTypeID refs), entityBounty, cargoBay, proximity*
+res:/staticdata/spaceobjecthighlights.fsdbinary	cfsd	46	pyd stride=48 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/starmapcache.pickle	pickle	4	self-describing	universe/map	baked	model.rs (one system's ids, doc)	P2	tools/content.py:universe	-	V	client's own map cache; server needs only what systems.static gives
+res:/staticdata/stationoperations.fsdbinary	cfsd	69	pyd stride=88 delta=8	stations	baked	reprocess.rs, industry.rs, world.rs	P1	tools/content.py:industry	stations/operations.tsv	V	station services per operation: which stations have market/repair/reprocess
+res:/staticdata/stationservices.fsdbinary	cfsd	27	pyd stride=16 delta=4	stations	none	-	P1	tools/content.py:industry	stations/operations.tsv	I	joined into stations/operations.tsv
+res:/staticdata/stationstandingsrestrictions.fsdbinary	cfsd	2	pyd stride=24 delta=8	stations	none	-	P1	tools/content.py:industry	stations/operations.tsv	I	joined into stations/operations.tsv
+res:/staticdata/surveys.fsdbinary	cfsd	1	pyd stride=104 delta=8	misc/UI	none	-	P3	none (client-only)	-	I	
+res:/staticdata/systems.schema	schema	-	self-describing	schema sidecar	runtime	tools/fsd.py parses it for tools/celestials.py	P0	tools/fsd.py (reader)	-	V	YAML schema for the sibling .static; consumed by the reader, not a content file
+res:/staticdata/systems.static	classic	8490	self-describing	universe/security	partial	tools/celestials.py reads it; server never sees securityStatus (crimewatch.rs:674)	P0	tools/content.py:universe	universe/systems.tsv	V	securityStatus/securityClass/regionID/constellationID/factionID: the input every generator keys on
+res:/staticdata/tags.fsdbinary	cfsd	49	pyd stride=40 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/traveleffects.fsdbinary	cfsd	8	pyd stride=72 delta=8	jump visuals	ref	destiny.rs (doc)	P3	none (client-only)	-	V	
+res:/staticdata/triggertypes.static	classic	51	self-describing	dungeons/triggers	none	-	P2	tools/content.py:dungeons	dungeons/trigger-types.tsv	V	51 trigger names; vocabulary only, instances absent (dungeon-model §5)
+res:/staticdata/typedogma.fsdbinary	cfsd	27162	pyd stride=24 delta=8	dogma	runtime	tools/typedata.py -> --typedata	P0	tools/content.py:types	types/types.tsv:attrs,types/attributes.tsv,types/effects.tsv,types/modifiers.tsv	V	cat-11 NPC rows present since b8a6234 (npc.rs derive_all)
+res:/staticdata/typelist.fsdbinary	cfsd	472	pyd stride=88 delta=8	types/filters	baked	industry.rs (raw read)	P1	tools/content.py:types	types/typelists.tsv	V	472 lists; referenced by dungeons.connections allowedShipsList, voidspace, pvp filaments
+res:/staticdata/typematerials.fsdbinary	cfsd	9868	pyd stride=32 delta=8	industry/reprocess	baked	reprocess/tables.rs REPROCESSABLE (484 of 9,556)	P1	tools/content.py:types	types/materials.tsv	V	scrapmetal needs all 9,556
+res:/staticdata/types.fsdbinary	cfsd	53299	pyd stride=152 delta=8	types	runtime	tools/typedata.py,skills.py,pi_statics.py,celestials.py -> --typedata etc.	P0	tools/content.py:types	types/types.tsv	V	typedata.py CATEGORIES=(6,7,8,11,16,18) since b8a6234; asteroid cat 25 absent; basePrice/marketGroupID/metaLevel/factionID/raceID/wreckTypeID not written
+res:/staticdata/uiblinks.fsdbinary	cfsd	38	pyd stride=48 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/uielementtypes.fsdbinary	cfsd	27	pyd stride=40 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/uihelppointers.fsdbinary	cfsd	193	pyd stride=80 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/uihidingtemplates.fsdbinary	cfsd	13	pyd stride=48 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/uihighlights.fsdbinary	cfsd	160	pyd stride=104 delta=8	presentation	none	-	P3	none (client-only)	-	I	client reads it itself
+res:/staticdata/voidspaceencounters.fsdbinary	cfsd	8	pyd stride=48 delta=8	dungeons/filament	none	-	P3	tools/content.py:dungeons	dungeons/voidspace.tsv	I	
+res:/staticdata/warzonespositiondata.fsdbinary	cfsd	2	pyd stride=32 delta=8	FW/insurgency	none	-	P3	none (client-only)	-	I	map sprite positions
+res:/staticdata/wrecks.static	classic	294	self-describing	combat/wrecks	none	-	P2	tools/content.py:npc	npc/wrecks.tsv	V	294 rows {raceIdToWreckTypeId}; key semantics unknown. combat.rs WRECKS comes from types.wreckTypeID instead (combat.rs:313)

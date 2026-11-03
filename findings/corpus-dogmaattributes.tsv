@@ -1,0 +1,46 @@
+# res:/staticdata/dogmaattributes.fsdbinary -- SHAPE ONLY, plus six sample rows.
+#
+# 2,872 rows, 80-byte records, uint32 key (= attributeID), hash on
+# key % 1436 buckets. Read with `tools/dogma.py`, decoded in
+# `docs/re/dogma.md`.
+#
+# Every field name, offset, type and presence bit below was read out of the
+# client's own generated loader, bin64/dogmaAttributesLoader.pyd, and is
+# reproducible with `tools/dogma.py derive dogmaattributes`. [V]
+#
+# A field with an optional_bit reads as absent when that bit is clear in the
+# presence bitfield; the generated getter returns None in exactly that case.
+#
+# NOT the table. The contents of the client are not committed here: the rows
+# below exist only to show the reader produces the right thing, and anyone
+# who wants the data obtains the client themselves.
+field	record_offset	kind	optional_bit
+(key)	0	u32	-
+description	8	str	0x4
+name	16	str	-
+attributeID	24	u32	-
+categoryID	28	u32	0x1
+chargeRechargeTimeID	32	u32	0x2
+dataType	36	u32	-
+defaultValue	40	f32	-
+displayNameID	44	msgid	0x8
+iconID	48	u32	0x20
+maxAttributeID	52	u32	0x40
+minAttributeID	56	u32	0x80
+tooltipDescriptionID	60	msgid	0x100
+tooltipTitleID	64	msgid	0x200
+unitID	68	u32	0x400
+displayWhenZero	72	bool	0x10
+highIsGood	73	bool	-
+published	74	bool	-
+stackable	75	bool	-
+(presence bitfield)	76	u32	-
+
+# six sample rows, to prove the reader works. The table is 2,872 rows and is not here.
+attributeID	name	categoryID	unitID	defaultValue	dataType	highIsGood	stackable	published	displayNameID	displayName(en-us)
+9	hp	4	113	0	4	1	1	1	233553	Structure Hitpoints
+12	lowSlots	1	122	0	4	1	1	1	233279	Low Slots
+13	medSlots	1	122	0	4	1	1	1	233423	Medium Slots
+14	hiSlots	1	122	0	4	1	1	1	233229	High Slots
+280	skillLevel	7	None	0	4	1	1	1	233212	Level
+552	signatureRadius	6	1	100	5	0	0	1	233417	Signature Radius

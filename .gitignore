@@ -1,0 +1,34 @@
+out/
+__pycache__/
+*.pyc
+/server/target/
+logs/
+# The hosted world and its per-start backups (tools/serve.sh).
+var/
+
+# Captures: ignored in bulk, with one curated exception.
+#
+# A capture is the only artefact this project cannot regenerate -- it is a
+# recording of a real client, taken on a machine with a real installation,
+# and no amount of reasoning reproduces one. The whole archive was ignored
+# and therefore untracked, unbacked-up and present on exactly one disk: one
+# `rm -rf`, or a fresh clone, and the lot was gone.
+#
+# So `captures/regression/` is tracked and the rest is not. The tracked set
+# is small and chosen: enough to replay against the server as a regression
+# test, including one capture that holds a bug we have since fixed, because a
+# recording of the failure is worth more than the memory of it.
+captures/*
+!captures/regression/
+
+# Scratch files that are not part of the project (client log dumps, one-off
+# captures pasted in while debugging). Nothing here is ever committed.
+tmp/
+
+# Claude Code session state (scheduled-task locks and the like). Harness
+# bookkeeping for whoever is driving the session, not project content.
+.claude/
+
+# patch(1) leftovers: a fuzzed coordinator-diff apply once committed one (review V1)
+*.orig
+*.rej

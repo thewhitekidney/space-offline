@@ -1,0 +1,45 @@
+name	value	mark	source	consumer
+marketCommissionPercentage	3.0	V	marketutil/const.py:7	broker fee base (%)
+marketSccCommissionPercentage	0.5	V	marketutil/const.py:8	SCC market surcharge (%)
+BROKER_RELATIONS_SKILL_MODIFIER	0.3	V	marketutil/const.py:10	broker fee points per level
+ACCOUNTING_SKILL_MODIFIER	0.11	V	marketutil/const.py:11	sales tax reduction per level
+MARKET_FACTION_STANDING_MULTIPLIER	0.0003	V	marketutil/const.py:13	broker fee standings term
+MARKET_NPC_CORP_STANDING_MULTIPLIER	0.0002	V	marketutil/const.py:14	broker fee standings term
+MKT_TRANSACTION_TAX_DEFAULT	8.0	V	marketutil/const.py:33; marketsvc.py:112-114 (feature flag 'market-transaction-tax')	sales tax (%)
+mktMinimumFee	100	V	appConst	broker fee minimum (ISK)
+mktModificationDelay	300	V	appConst	order modify cooldown (s)
+maxOrders	5+4*Trade+8*Retail+16*Wholesale+32*Tycoon	V	marketutil/skilllimits.py:82	order count limit
+refMarketTransaction	2	V	appConst	journal
+refBountyPrize	17	V	appConst	journal
+refInsurance	19	V	appConst	journal
+refAgentMissionReward	33	V	appConst	journal
+refAgentMissionTimeBonusReward	34	V	appConst	journal
+refBrokerfee	46	V	appConst	journal
+refTransactionTax	54	V	appConst	journal (sales tax)
+refManufacturing	56	V	appConst	journal
+refReprocessingTax	127	V	appConst	journal
+BASE_INSURANCE_FRACTION	0.4	V	eve/common/script/util/insuranceConst.py:5	premium = full*(f-0.4)*0.5
+INSURANCE_FRACTION_INCREMENT	0.5	V	insuranceConst.py:6	premium
+INSURANCE_PACKAGES	Basic .5 Standard .6 Bronze .7 Silver .8 Gold .9 Platinum 1.0	V	insuranceConst.py:33-39	quote rowset
+NPC_BOUNTY_SECURITY_TAX_RATE	0.2	V	security/common/const.py:5	not applied (where unknown)
+MARKET_SECURITY_TAX_RATE	0.05	V	security/common/const.py:3	not applied (where unknown)
+SCC_SURCHARGE_RATE	0.04	V	industry.rs:478 (already in tree)	industry job
+dynamicBounty cache	5400 s	V	dynamicResourceSvc.py:92	GetOutputForClientSolarSystem memoize
+GetAveragePrice special case	typeID 79785 -> 1000	V	inventorycommon/typeHelpers.py:115-117	client-side
+INSURANCE_FULL_FACTOR	0.8 * P_ref(hull)	A	C5 §5.5	insuranceSvc.GetInsurancePrice
+META_MULT	{1:1,2:1,3:2,4:5,5:20,6:8,14:1}	A	C5 §3.2	oracle parent rule
+TIER_A_SELL_MULT	1.10 (BPO/skill: basePrice)	A	C5 §4.2	NPC asks
+TIER_A_BUY_MULT	0.90	A	C5 §4.2	NPC bids
+TIER_A_STOCK	1000 (cat 9,16); else ceil(20M/price) in [5,5000]	A	C5 §4.2	NPC volume
+TIER_B_ASK_MULT	1.25 start, bounds [1.15,1.60], +5%/-2% per day	A	C5 §4.3/4.5	hub ceiling
+TIER_B_BID_MULT	0.60 start, bounds [0.40,0.70], -5%/+2% per day	A	C5 §4.3/4.5	hub floor
+TIER_B_VALUE	20M ISK per type per hub per day	A	C5 §4.3	hub volume
+REFILL_PERIOD	24 h linear trickle, lazy on read	A	C5 §4.4	npcorder delta
+AVG_EWMA_ALPHA	0.2 per day, clamp [0.5,2.0]*P_ref	A	C5 §3.4	averagePrice
+DBS_RANGE	[0.25,1.25], pool 200M*(1.5-sec), +4%/h recovery	A	C5 §5.3	bounty multiplier
+COST_INDEX	0.02	A	C5 §5.2	industry job sink
+LP_ISK_RATE	1000 ISK/LP, ISK part 40%	A	C5 §5.6	LP offer rule (C4)
+STARTING_ISK	1000000	A	C5 §5.8	character creation
+BOT_WALLET_CAP	50M, excess burned at rollover	A	C5 §7.2	bots
+BOT_DEMAND	4M * humans_active / bots per bot per day	A	C5 §7.2	bots buying human orders
+HISTORY_KEEP	30 days, older -> mkthist	A	C5 §8	Book pruning

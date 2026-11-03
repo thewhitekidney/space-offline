@@ -1,0 +1,29 @@
+# The rookie ship's civilian fit (R-ECON §2.4, packet E7; starter_ship::TABLE;
+# header in docs/content/schema.md §4). `dogmaIM.CreateNewbieShip` mints the
+# race's corvette (the bundle's agents/races.tsv `ship_type_id` [V]) and fits
+# these modules into it, one row per module, in row order, each into the
+# lowest free slot of its own rack. A row whose module does not fit the hull
+# is skipped and logged. Restart to apply.
+#
+# The client ships no starter fit: no FSD resource, no python table (searched
+# for build 3619879: only the civilian type constants exist, in
+# inventorycommon/const and shipfitting/fittingWarningConst) [V]. So every row
+# is ours, [A]: a civilian gun of the race's turret family, the civilian
+# miner and the civilian afterburner, a plausible
+# rookie fit. Falsified by a Tranquility capture of a fresh
+# corvette's fit.
+#
+# ship_type_id: the corvette. type_id: one module. why: the falsifier.
+ship_type_id	type_id	why
+601	3638	[A] Ibis: Civilian Gatling Railgun; falsified by a TQ capture of a fresh Ibis
+601	3651	[A] Ibis: Civilian Miner; falsified by a TQ capture of a fresh Ibis
+601	21857	[A] Ibis: 1MN Civilian Afterburner; falsified by a TQ capture of a fresh Ibis
+588	3636	[A] Reaper: Civilian Gatling Autocannon; falsified by a TQ capture of a fresh Reaper
+588	3651	[A] Reaper: Civilian Miner; falsified by a TQ capture of a fresh Reaper
+588	21857	[A] Reaper: 1MN Civilian Afterburner; falsified by a TQ capture of a fresh Reaper
+596	3634	[A] Impairor: Civilian Gatling Pulse Laser; falsified by a TQ capture of a fresh Impairor
+596	3651	[A] Impairor: Civilian Miner; falsified by a TQ capture of a fresh Impairor
+596	21857	[A] Impairor: 1MN Civilian Afterburner; falsified by a TQ capture of a fresh Impairor
+606	3640	[A] Velator: Civilian Light Electron Blaster; falsified by a TQ capture of a fresh Velator
+606	3651	[A] Velator: Civilian Miner; falsified by a TQ capture of a fresh Velator
+606	21857	[A] Velator: 1MN Civilian Afterburner; falsified by a TQ capture of a fresh Velator

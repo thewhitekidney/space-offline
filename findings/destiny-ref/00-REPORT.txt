@@ -1,0 +1,1437 @@
+eve-offline -- Destiny reference blob dump
+==========================================
+
+Produced by tools/client-overrides/destiny_dump.py running inside the
+real client.  Every blob beside this file came out of
+destiny.Ballpark.WriteFullStateToStream in _destiny.dll.
+
+environment
+  build         24.01 / 3619879
+  wallclock     134370640633282633L
+  session       charid=90000001 shipid=100000001 solarsystemid=None stationid=60012526
+  role          0x6178005200e41000
+
+destiny.settings -- the blob layout depends on these
+  useDynamicalOrientation                  False
+  disableDynamicalOrientationForMissiles   False
+  useNewOrbit                              False
+  (useDynamicalOrientation also selects which AddBall format
+   string _destiny.dll parses with, 17 args vs 19.)
+
+probes
+  ballpark ctor  destiny.Ballpark()                                 ok
+  memstream     Seek(0) + Read(ms.size)                            ok, verified against a known payload
+  memstream     Seek(0) + Read()                                   ok, verified against a known payload
+  memstream     Seek(0) + Read(ms.Size)                            FAILED  AttributeError: Size
+  memstream     ms.data                                            FAILED  AttributeError: data
+  AddBall       17 positional args                                 ok
+
+  resolved: ballpark=destiny.Ballpark(), memstream=Seek(0) + Read(ms.size), AddBall=17 args
+
+-- 01-empty-park -----------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  no balls added
+  5 bytes -> C:\eve-logs\destiny-ref\01-empty-park.bin
+  0000  00 44 33 22 11                                   .D3".
+  expected shape, from _destiny.dll 0x180096c70 and 0x1800969d0:
+    byte 0      packet type; the writer emits 0 for a full state
+                and 1 for WriteBallsToStream. The reader rejects
+                anything > 1 with "Unknown packet type".
+    bytes 1..5  Ballpark+0x1c as u32 LE -- compare against the
+                currentTime line above, and against the next dump,
+                which is the same park at tick 0x55667788
+    then        self-delimiting ball records until end of stream
+
+-- 02-empty-park-alt-tick --------------------------------------------------
+  currentTime   1432778632 (0x55667788)
+  no balls added
+  5 bytes -> C:\eve-logs\destiny-ref\02-empty-park-alt-tick.bin
+  0000  00 88 77 66 55                                   ..wfU
+
+-- 03-base-one-ball --------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  one ball, baseline arguments:
+      [ 1] ballID   72623859790382856L
+      [ 2] a2_d     1234.5
+      [ 3] a3_f     56.25
+      [ 4] a4_f     78.5
+      [ 5] a5_i     1
+      [ 6] a6_i     1
+      [ 7] a7_i     1
+      [ 8] a8_i     1
+      [ 9] a9_i     1
+      [10] x        101.0
+      [11] y        202.0
+      [12] z        303.0
+      [13] vx       11.0
+      [14] vy       22.0
+      [15] vz       33.0
+      [16] a16_f    44.5
+      [17] a17_f    55.25
+  105 bytes -> C:\eve-logs\destiny-ref\03-base-one-ball.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+
+-- 04-two-balls ------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  two balls: 0x0102030405060708 and 0x1112131415161718
+  the second differs from the first only in ballID,
+  so the record stride is the offset between the two ids.
+  205 bytes -> C:\eve-logs\destiny-ref\04-two-balls.bin
+  0000  00 44 33 22 11 18 17 16 15 14 13 12 11 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 08 07 06 05 04 03 02  ..2B..]B........
+  0070  01 02 00 00 61 42 00 00 00 00 00 40 59 40 00 00  ....aB.....@Y@..
+  0080  00 00 00 40 69 40 00 00 00 00 00 f0 72 40 1f 00  ...@i@......r@..
+  0090  00 00 00 00 4a 93 40 00 ff ff ff ff ff ff ff ff  ....J.@.........
+  00a0  ff ff ff ff ff ff ff ff 00 00 9d 42 00 00 00 00  ...........B....
+  00b0  00 00 26 40 00 00 00 00 00 00 36 40 00 00 00 00  ..&@......6@....
+  00c0  00 80 40 40 00 00 32 42 00 00 5d 42 ff           ..@@..2B..]B.
+
+-- 05-write-balls-to-stream ------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  one ball, written with WriteBallsToStream([ballID])
+  SKIPPED: writer raised TypeError: must be list, not blue.MemStream
+
+-- AddBall argument variants -----------------------------------------------
+  Each dump below changes exactly one AddBall argument from the
+  baseline. The diff localises that argument in the record.
+
+-- 06-arg-ballID -----------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ballID = 2387509390608836392L (baseline 72623859790382856L)
+  105 bytes -> C:\eve-logs\destiny-ref\06-arg-ballID.bin
+  0000  00 44 33 22 11 28 27 26 25 24 23 22 21 02 00 00  .D3".('&%$#"!...
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument ballID:
+      0x0005..0x000d (8 bytes)
+        base    08 07 06 05 04 03 02 01
+        variant 28 27 26 25 24 23 22 21
+        MATCH: the probe value encodes as i64 at offset 0x0005, u64 at offset 0x0005
+        FIELD i64 at 0x0005..0x000d:
+          base    08 07 06 05 04 03 02 01
+          variant 28 27 26 25 24 23 22 21
+        FIELD u64 at 0x0005..0x000d:
+          base    08 07 06 05 04 03 02 01
+          variant 28 27 26 25 24 23 22 21
+
+-- 07-arg-a2_d -------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  a2_d = 4242.5 (baseline 1234.5)
+  105 bytes -> C:\eve-logs\destiny-ref\07-arg-a2_d.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 80  i@......r@......
+  0030  92 b0 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  ..@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument a2_d:
+      0x002f..0x0032 (3 bytes)
+        base    00 4a 93
+        variant 80 92 b0
+        MATCH: the probe value encodes as f64 at offset 0x002b
+        FIELD f64 at 0x002b..0x0033:
+          base    00 00 00 00 00 4a 93 40
+          variant 00 00 00 00 80 92 b0 40
+
+-- 08-arg-a3_f -------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  a3_f = 1337.25 (baseline 56.25)
+  105 bytes -> C:\eve-logs\destiny-ref\08-arg-a3_f.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 28  .D3"...........(
+  0010  a7 44 00 00 00 00 00 40 59 40 00 00 00 00 00 40  .D.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument a3_f:
+      0x000f..0x0012 (3 bytes)
+        base    00 61 42
+        variant 28 a7 44
+        MATCH: the probe value encodes as f32 at offset 0x000e
+        FIELD f32 at 0x000e..0x0012:
+          base    00 00 61 42
+          variant 00 28 a7 44
+
+-- 09-arg-a4_f -------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  a4_f = 2048.5 (baseline 78.5)
+  105 bytes -> C:\eve-logs\destiny-ref\09-arg-a4_f.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 08 00 45 00 00 00 00 00 00 26 40  .......E......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument a4_f:
+      0x0045..0x0048 (3 bytes)
+        base    00 9d 42
+        variant 08 00 45
+        MATCH: the probe value encodes as f32 at offset 0x0044
+        FIELD f32 at 0x0044..0x0048:
+          base    00 00 9d 42
+          variant 00 08 00 45
+
+-- 10-arg-a5_i -------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  a5_i = 0 (baseline 1)
+  69 bytes -> C:\eve-logs\destiny-ref\10-arg-a5_i.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1e 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff ff                                   .....
+    LENGTH CHANGED: 105 -> 69 bytes. AddBall argument a5_i changes the record size, so the field is optional or length-prefixed.
+    2 differing window(s) for AddBall argument a5_i:
+      0x002a..0x002b (1 bytes)
+        base    1f
+        variant 1e
+        1-byte field: 0x1f -> 0x1e
+      0x0044..0x0045 (1 bytes)
+        base    00
+        variant ff
+        1-byte field: 0x00 -> 0xff
+
+-- 11-arg-a6_i -------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  a6_i = 0 (baseline 1)
+  105 bytes -> C:\eve-logs\destiny-ref\11-arg-a6_i.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1d 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument a6_i:
+      0x002a..0x002b (1 bytes)
+        base    1f
+        variant 1d
+        1-byte field: 0x1f -> 0x1d
+
+-- 12-arg-a7_i -------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  a7_i = 0 (baseline 1)
+  105 bytes -> C:\eve-logs\destiny-ref\12-arg-a7_i.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1b 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument a7_i:
+      0x002a..0x002b (1 bytes)
+        base    1f
+        variant 1b
+        1-byte field: 0x1f -> 0x1b
+
+-- 13-arg-a8_i -------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  a8_i = 0 (baseline 1)
+  105 bytes -> C:\eve-logs\destiny-ref\13-arg-a8_i.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 17 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument a8_i:
+      0x002a..0x002b (1 bytes)
+        base    1f
+        variant 17
+        1-byte field: 0x1f -> 0x17
+
+-- 14-arg-a9_i -------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  a9_i = 0 (baseline 1)
+  105 bytes -> C:\eve-logs\destiny-ref\14-arg-a9_i.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 0f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument a9_i:
+      0x002a..0x002b (1 bytes)
+        base    1f
+        variant 0f
+        1-byte field: 0x1f -> 0x0f
+
+-- 15-arg-x ----------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  x = 1001.0 (baseline 101.0)
+  105 bytes -> C:\eve-logs\destiny-ref\15-arg-x.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 48 8f 40 00 00 00 00 00 40  aB.....H.@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument x:
+      0x0017..0x0019 (2 bytes)
+        base    40 59
+        variant 48 8f
+        MATCH: the probe value encodes as f64 at offset 0x0012
+        FIELD f64 at 0x0012..0x001a:
+          base    00 00 00 00 00 40 59 40
+          variant 00 00 00 00 00 48 8f 40
+
+-- 16-arg-y ----------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  y = 2002.0 (baseline 202.0)
+  105 bytes -> C:\eve-logs\destiny-ref\16-arg-y.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 48  aB.....@Y@.....H
+  0020  9f 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  .@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument y:
+      0x001f..0x0021 (2 bytes)
+        base    40 69
+        variant 48 9f
+        MATCH: the probe value encodes as f64 at offset 0x001a
+        FIELD f64 at 0x001a..0x0022:
+          base    00 00 00 00 00 40 69 40
+          variant 00 00 00 00 00 48 9f 40
+
+-- 17-arg-z ----------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  z = 3003.0 (baseline 303.0)
+  105 bytes -> C:\eve-logs\destiny-ref\17-arg-z.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 76 a7 40 1f 00 00 00 00 00  i@.....v.@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument z:
+      0x0027..0x0029 (2 bytes)
+        base    f0 72
+        variant 76 a7
+        MATCH: the probe value encodes as f64 at offset 0x0022
+        FIELD f64 at 0x0022..0x002a:
+          base    00 00 00 00 00 f0 72 40
+          variant 00 00 00 00 00 76 a7 40
+
+-- 18-arg-vx ---------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  vx = 111.0 (baseline 11.0)
+  105 bytes -> C:\eve-logs\destiny-ref\18-arg-vx.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 c0 5b 40  .......B......[@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument vx:
+      0x004d..0x004f (2 bytes)
+        base    00 26
+        variant c0 5b
+        MATCH: the probe value encodes as f64 at offset 0x0048
+        FIELD f64 at 0x0048..0x0050:
+          base    00 00 00 00 00 00 26 40
+          variant 00 00 00 00 00 c0 5b 40
+
+-- 19-arg-vy ---------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  vy = 222.0 (baseline 22.0)
+  105 bytes -> C:\eve-logs\destiny-ref\19-arg-vy.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 c0 6b 40 00 00 00 00 00 80 40 40  ......k@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument vy:
+      0x0055..0x0057 (2 bytes)
+        base    00 36
+        variant c0 6b
+        MATCH: the probe value encodes as f64 at offset 0x0050
+        FIELD f64 at 0x0050..0x0058:
+          base    00 00 00 00 00 00 36 40
+          variant 00 00 00 00 00 c0 6b 40
+
+-- 20-arg-vz ---------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  vz = 333.0 (baseline 33.0)
+  105 bytes -> C:\eve-logs\destiny-ref\20-arg-vz.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 d0 74 40  ......6@......t@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for AddBall argument vz:
+      0x005d..0x005f (2 bytes)
+        base    80 40
+        variant d0 74
+        MATCH: the probe value encodes as f64 at offset 0x0058
+        FIELD f64 at 0x0058..0x0060:
+          base    00 00 00 00 00 80 40 40
+          variant 00 00 00 00 00 d0 74 40
+
+-- 21-arg-a16_f ------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  a16_f = 144.5 (baseline 44.5)
+  105 bytes -> C:\eve-logs\destiny-ref\21-arg-a16_f.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 80 10 43 00 00 5d 42 ff                       ...C..]B.
+    1 differing window(s) for AddBall argument a16_f:
+      0x0061..0x0064 (3 bytes)
+        base    00 32 42
+        variant 80 10 43
+        MATCH: the probe value encodes as f32 at offset 0x0060
+        FIELD f32 at 0x0060..0x0064:
+          base    00 00 32 42
+          variant 00 80 10 43
+
+-- 22-arg-a17_f ------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  a17_f = 155.25 (baseline 55.25)
+  105 bytes -> C:\eve-logs\destiny-ref\22-arg-a17_f.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 40 1b 43 ff                       ..2B.@.C.
+    1 differing window(s) for AddBall argument a17_f:
+      0x0065..0x0068 (3 bytes)
+        base    00 5d 42
+        variant 40 1b 43
+        MATCH: the probe value encodes as f32 at offset 0x0064
+        FIELD f32 at 0x0064..0x0068:
+          base    00 00 5d 42
+          variant 00 40 1b 43
+
+-- destiny.Ball attribute variants -----------------------------------------
+  Same method, driven through setattr on the Ball object rather
+  than through AddBall, which reaches fields AddBall cannot set.
+
+-- 23-attr-mass ------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.mass: 1234.5 -> 4242.5 (set 4242.5)
+  105 bytes -> C:\eve-logs\destiny-ref\23-attr-mass.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 80  i@......r@......
+  0030  92 b0 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  ..@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.mass:
+      0x002f..0x0032 (3 bytes)
+        base    00 4a 93
+        variant 80 92 b0
+        MATCH: the probe value encodes as f64 at offset 0x002b
+        FIELD f64 at 0x002b..0x0033:
+          base    00 00 00 00 00 4a 93 40
+          variant 00 00 00 00 80 92 b0 40
+
+-- 24-attr-radius ----------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.radius: 56.25 -> 1337.25 (set 1337.25)
+  105 bytes -> C:\eve-logs\destiny-ref\24-attr-radius.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 28  .D3"...........(
+  0010  a7 44 00 00 00 00 00 40 59 40 00 00 00 00 00 40  .D.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.radius:
+      0x000f..0x0012 (3 bytes)
+        base    00 61 42
+        variant 28 a7 44
+        MATCH: the probe value encodes as f32 at offset 0x000e
+        FIELD f32 at 0x000e..0x0012:
+          base    00 00 61 42
+          variant 00 28 a7 44
+
+-- 25-attr-maxVelocity -----------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.maxVelocity: 78.5 -> 2500.5 (set 2500.5)
+  105 bytes -> C:\eve-logs\destiny-ref\25-attr-maxVelocity.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 48 1c 45 00 00 00 00 00 00 26 40  .....H.E......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.maxVelocity:
+      0x0045..0x0048 (3 bytes)
+        base    00 9d 42
+        variant 48 1c 45
+        MATCH: the probe value encodes as f32 at offset 0x0044
+        FIELD f32 at 0x0044..0x0048:
+          base    00 00 9d 42
+          variant 00 48 1c 45
+
+-- 26-attr-maxAngularVelocity ----------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.maxAngularVelocity: 1.5707963705062866 -> 3.25 (set 3.25)
+  105 bytes -> C:\eve-logs\destiny-ref\26-attr-maxAngularVelocity.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    no byte differs from the baseline. Ball.maxAngularVelocity is either not serialised, or the write was rejected silently.
+
+-- 27-attr-isFree ----------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.isFree: True -> False (set 0)
+  69 bytes -> C:\eve-logs\destiny-ref\27-attr-isFree.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1e 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff ff                                   .....
+    LENGTH CHANGED: 105 -> 69 bytes. Ball.isFree changes the record size, so the field is optional or length-prefixed.
+    2 differing window(s) for Ball.isFree:
+      0x002a..0x002b (1 bytes)
+        base    1f
+        variant 1e
+        1-byte field: 0x1f -> 0x1e
+      0x0044..0x0045 (1 bytes)
+        base    00
+        variant ff
+        1-byte field: 0x00 -> 0xff
+
+-- 28-attr-isGlobal --------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.isGlobal: True -> False (set 0)
+  105 bytes -> C:\eve-logs\destiny-ref\28-attr-isGlobal.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1d 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.isGlobal:
+      0x002a..0x002b (1 bytes)
+        base    1f
+        variant 1d
+        1-byte field: 0x1f -> 0x1d
+
+-- 29-attr-isMassive -------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.isMassive: True -> False (set 0)
+  105 bytes -> C:\eve-logs\destiny-ref\29-attr-isMassive.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1b 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.isMassive:
+      0x002a..0x002b (1 bytes)
+        base    1f
+        variant 1b
+        1-byte field: 0x1f -> 0x1b
+
+-- 30-attr-isInteractive ---------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.isInteractive: True -> False (set 0)
+  105 bytes -> C:\eve-logs\destiny-ref\30-attr-isInteractive.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 17 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.isInteractive:
+      0x002a..0x002b (1 bytes)
+        base    1f
+        variant 17
+        1-byte field: 0x1f -> 0x17
+
+-- 31-attr-isCloaked -------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.isCloaked: 0 -> 1 (set 1)
+  105 bytes -> C:\eve-logs\destiny-ref\31-attr-isCloaked.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 01 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.isCloaked:
+      0x0033..0x0034 (1 bytes)
+        base    00
+        variant 01
+        1-byte field: 0x00 -> 0x01
+
+-- 32-attr-isMoribund ------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised AttributeError: Python property 'isMoribund' is read-only
+
+-- 33-attr-harmonic --------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised TypeError: harmonic is type 9, got float
+
+-- 34-attr-corporationID ---------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.corporationID: -1 -> 98000001 (set 98000001)
+  105 bytes -> C:\eve-logs\destiny-ref\34-attr-corporationID.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff 81 5c d7 05  J.@..........\..
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.corporationID:
+      0x003c..0x0040 (4 bytes)
+        base    ff ff ff ff
+        variant 81 5c d7 05
+        MATCH: the probe value encodes as i32 at offset 0x003c, u32 at offset 0x003c
+        FIELD i32 at 0x003c..0x0040:
+          base    ff ff ff ff
+          variant 81 5c d7 05
+        FIELD u32 at 0x003c..0x0040:
+          base    ff ff ff ff
+          variant 81 5c d7 05
+
+-- 35-attr-allianceID ------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.allianceID: -1 -> 99000001 (set 99000001)
+  105 bytes -> C:\eve-logs\destiny-ref\35-attr-allianceID.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  c1 9e e6 05 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.allianceID:
+      0x0040..0x0044 (4 bytes)
+        base    ff ff ff ff
+        variant c1 9e e6 05
+        MATCH: the probe value encodes as i32 at offset 0x0040, u32 at offset 0x0040
+        FIELD i32 at 0x0040..0x0044:
+          base    ff ff ff ff
+          variant c1 9e e6 05
+        FIELD u32 at 0x0040..0x0044:
+          base    ff ff ff ff
+          variant c1 9e e6 05
+
+-- 36-attr-x ---------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.x: 101.0 -> 1001.0 (set 1001.0)
+  105 bytes -> C:\eve-logs\destiny-ref\36-attr-x.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 48 8f 40 00 00 00 00 00 40  aB.....H.@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.x:
+      0x0017..0x0019 (2 bytes)
+        base    40 59
+        variant 48 8f
+        MATCH: the probe value encodes as f64 at offset 0x0012
+        FIELD f64 at 0x0012..0x001a:
+          base    00 00 00 00 00 40 59 40
+          variant 00 00 00 00 00 48 8f 40
+
+-- 37-attr-y ---------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.y: 202.0 -> 2002.0 (set 2002.0)
+  105 bytes -> C:\eve-logs\destiny-ref\37-attr-y.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 48  aB.....@Y@.....H
+  0020  9f 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  .@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.y:
+      0x001f..0x0021 (2 bytes)
+        base    40 69
+        variant 48 9f
+        MATCH: the probe value encodes as f64 at offset 0x001a
+        FIELD f64 at 0x001a..0x0022:
+          base    00 00 00 00 00 40 69 40
+          variant 00 00 00 00 00 48 9f 40
+
+-- 38-attr-z ---------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.z: 303.0 -> 3003.0 (set 3003.0)
+  105 bytes -> C:\eve-logs\destiny-ref\38-attr-z.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 76 a7 40 1f 00 00 00 00 00  i@.....v.@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.z:
+      0x0027..0x0029 (2 bytes)
+        base    f0 72
+        variant 76 a7
+        MATCH: the probe value encodes as f64 at offset 0x0022
+        FIELD f64 at 0x0022..0x002a:
+          base    00 00 00 00 00 f0 72 40
+          variant 00 00 00 00 00 76 a7 40
+
+-- 39-attr-vx --------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.vx: 11.0 -> 111.0 (set 111.0)
+  105 bytes -> C:\eve-logs\destiny-ref\39-attr-vx.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 c0 5b 40  .......B......[@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.vx:
+      0x004d..0x004f (2 bytes)
+        base    00 26
+        variant c0 5b
+        MATCH: the probe value encodes as f64 at offset 0x0048
+        FIELD f64 at 0x0048..0x0050:
+          base    00 00 00 00 00 00 26 40
+          variant 00 00 00 00 00 c0 5b 40
+
+-- 40-attr-vy --------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.vy: 22.0 -> 222.0 (set 222.0)
+  105 bytes -> C:\eve-logs\destiny-ref\40-attr-vy.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 c0 6b 40 00 00 00 00 00 80 40 40  ......k@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.vy:
+      0x0055..0x0057 (2 bytes)
+        base    00 36
+        variant c0 6b
+        MATCH: the probe value encodes as f64 at offset 0x0050
+        FIELD f64 at 0x0050..0x0058:
+          base    00 00 00 00 00 00 36 40
+          variant 00 00 00 00 00 c0 6b 40
+
+-- 41-attr-vz --------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.vz: 33.0 -> 333.0 (set 333.0)
+  105 bytes -> C:\eve-logs\destiny-ref\41-attr-vz.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 d0 74 40  ......6@......t@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    1 differing window(s) for Ball.vz:
+      0x005d..0x005f (2 bytes)
+        base    80 40
+        variant d0 74
+        MATCH: the probe value encodes as f64 at offset 0x0058
+        FIELD f64 at 0x0058..0x0060:
+          base    00 00 00 00 00 80 40 40
+          variant 00 00 00 00 00 d0 74 40
+
+-- 42-attr-wx --------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.wx: 0.0 -> 0.125 (set 0.125)
+  105 bytes -> C:\eve-logs\destiny-ref\42-attr-wx.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    no byte differs from the baseline. Ball.wx is either not serialised, or the write was rejected silently.
+
+-- 43-attr-wy --------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.wy: 0.0 -> 0.25 (set 0.25)
+  105 bytes -> C:\eve-logs\destiny-ref\43-attr-wy.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    no byte differs from the baseline. Ball.wy is either not serialised, or the write was rejected silently.
+
+-- 44-attr-wz --------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.wz: 0.0 -> 0.5 (set 0.5)
+  105 bytes -> C:\eve-logs\destiny-ref\44-attr-wz.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    no byte differs from the baseline. Ball.wz is either not serialised, or the write was rejected silently.
+
+-- 45-attr-rx --------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.rx: 0.0 -> 0.10872659087181091 (set 0.109375)
+  105 bytes -> C:\eve-logs\destiny-ref\45-attr-rx.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    no byte differs from the baseline. Ball.rx is either not serialised, or the write was rejected silently.
+
+-- 46-attr-ry --------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.ry: 0.0 -> 0.21369686722755432 (set 0.21875)
+  105 bytes -> C:\eve-logs\destiny-ref\46-attr-ry.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    no byte differs from the baseline. Ball.ry is either not serialised, or the write was rejected silently.
+
+-- 47-attr-rz --------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.rz: 0.0 -> 0.4008188545703888 (set 0.4375)
+  105 bytes -> C:\eve-logs\destiny-ref\47-attr-rz.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    no byte differs from the baseline. Ball.rz is either not serialised, or the write was rejected silently.
+
+-- 48-attr-rw --------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.rw: 1.0 -> 1.0 (set 0.875)
+  105 bytes -> C:\eve-logs\destiny-ref\48-attr-rw.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    no byte differs from the baseline. Ball.rw is either not serialised, or the write was rejected silently.
+
+-- 49-attr-yaw -------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised AttributeError: Python property 'yaw' is read-only
+
+-- 50-attr-pitch -----------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised AttributeError: Python property 'pitch' is read-only
+
+-- 51-attr-roll ------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised AttributeError: Python property 'roll' is read-only
+
+-- 52-attr-Agility ---------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.Agility: 44.5 -> 1.5 (set 1.5)
+  105 bytes -> C:\eve-logs\destiny-ref\52-attr-Agility.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 c0 3f 00 00 5d 42 ff                       ...?..]B.
+    1 differing window(s) for Ball.Agility:
+      0x0062..0x0064 (2 bytes)
+        base    32 42
+        variant c0 3f
+        MATCH: the probe value encodes as f32 at offset 0x0060
+        FIELD f32 at 0x0060..0x0064:
+          base    00 00 32 42
+          variant 00 00 c0 3f
+
+-- 53-attr-RotationalAgility -----------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.RotationalAgility: 0.8999999761581421 -> 2.5 (set 2.5)
+  105 bytes -> C:\eve-logs\destiny-ref\53-attr-RotationalAgility.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    no byte differs from the baseline. Ball.RotationalAgility is either not serialised, or the write was rejected silently.
+
+-- 54-attr-speedFraction ---------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.speedFraction: 55.25 -> 0.375 (set 0.375)
+  105 bytes -> C:\eve-logs\destiny-ref\54-attr-speedFraction.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 c0 3e ff                       ..2B...>.
+    1 differing window(s) for Ball.speedFraction:
+      0x0066..0x0068 (2 bytes)
+        base    5d 42
+        variant c0 3e
+        MATCH: the probe value encodes as f32 at offset 0x0064
+        FIELD f32 at 0x0064..0x0068:
+          base    00 00 5d 42
+          variant 00 00 c0 3e
+
+-- 55-attr-mode ------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised AttributeError: Python property 'mode' is read-only
+
+-- 56-attr-gotoX -----------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.gotoX: 0.0 -> 4004.0 (set 4004.0)
+  129 bytes -> C:\eve-logs\destiny-ref\56-attr-gotoX.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 00 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 00 00 00 00 00 48 af  ..2B..]B......H.
+  0070  40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  @...............
+  0080  00                                               .
+    LENGTH CHANGED: 105 -> 129 bytes. Ball.gotoX changes the record size, so the field is optional or length-prefixed.
+    1 differing window(s) for Ball.gotoX:
+      0x000d..0x000e (1 bytes)
+        base    02
+        variant 00
+        1-byte field: 0x02 -> 0x00
+
+-- 57-attr-gotoY -----------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.gotoY: 0.0 -> 5005.0 (set 5005.0)
+  129 bytes -> C:\eve-logs\destiny-ref\57-attr-gotoY.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 00 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 00 00 00 00 00 00 00  ..2B..]B........
+  0070  00 00 00 00 00 00 8d b3 40 00 00 00 00 00 00 00  ........@.......
+  0080  00                                               .
+    LENGTH CHANGED: 105 -> 129 bytes. Ball.gotoY changes the record size, so the field is optional or length-prefixed.
+    1 differing window(s) for Ball.gotoY:
+      0x000d..0x000e (1 bytes)
+        base    02
+        variant 00
+        1-byte field: 0x02 -> 0x00
+
+-- 58-attr-gotoZ -----------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.gotoZ: 0.0 -> 6006.0 (set 6006.0)
+  129 bytes -> C:\eve-logs\destiny-ref\58-attr-gotoZ.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 00 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 00 00 00 00 00 00 00  ..2B..]B........
+  0070  00 00 00 00 00 00 00 00 00 00 00 00 00 00 76 b7  ..............v.
+  0080  40                                               @
+    LENGTH CHANGED: 105 -> 129 bytes. Ball.gotoZ changes the record size, so the field is optional or length-prefixed.
+    1 differing window(s) for Ball.gotoZ:
+      0x000d..0x000e (1 bytes)
+        base    02
+        variant 00
+        1-byte field: 0x02 -> 0x00
+
+-- 59-attr-followId --------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised AttributeError: Python property 'followId' is read-only
+
+-- 60-attr-followRange -----------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised AttributeError: Python property 'followRange' is read-only
+
+-- 61-attr-ownerId ---------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  ball.ownerId: 0L -> 90000001L (set 90000001)
+  105 bytes -> C:\eve-logs\destiny-ref\61-attr-ownerId.bin
+  0000  00 44 33 22 11 08 07 06 05 04 03 02 01 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff                       ..2B..]B.
+    no byte differs from the baseline. Ball.ownerId is either not serialised, or the write was rejected silently.
+
+-- 62-attr-effectStamp -----------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised AttributeError: Python property 'effectStamp' is read-only
+
+-- 63-attr-newBubbleId -----------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised AttributeError: Python property 'newBubbleId' is read-only
+
+-- 64-attr-oldBubbleId -----------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised AttributeError: Python property 'oldBubbleId' is read-only
+
+-- 65-attr-formationID -----------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised AttributeError: Python property 'formationID' is read-only
+
+-- Ballpark method variants ------------------------------------------------
+  A failure here is still evidence: _destiny.dll answers a bad
+  call with "Function expects %i arguments" or "Could not match
+  argument %i to expected type: %s", which names the signature.
+
+-- 66-call-Stop ------------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  two balls (Stop needs a target), then Stop
+  Stop(72623859790382856) -- expect mode DSTBALL_STOP (2)
+  205 bytes -> C:\eve-logs\destiny-ref\66-call-Stop.bin
+  0000  00 44 33 22 11 18 17 16 15 14 13 12 11 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 08 07 06 05 04 03 02  ..2B..]B........
+  0070  01 02 00 00 61 42 00 00 00 00 00 40 59 40 00 00  ....aB.....@Y@..
+  0080  00 00 00 40 69 40 00 00 00 00 00 f0 72 40 1f 00  ...@i@......r@..
+  0090  00 00 00 00 4a 93 40 00 ff ff ff ff ff ff ff ff  ....J.@.........
+  00a0  ff ff ff ff ff ff ff ff 00 00 9d 42 00 00 00 00  ...........B....
+  00b0  00 00 26 40 00 00 00 00 00 00 36 40 00 00 00 00  ..&@......6@....
+  00c0  00 80 40 40 00 00 32 42 00 00 5d 42 ff           ..@@..2B..]B.
+    (compare against 04-two-balls.bin, not the baseline:
+     this variant has two balls)
+
+-- 67-call-FollowBall ------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  two balls (FollowBall needs a target), then FollowBall
+  FollowBall(72623859790382856, 1230066625199609624, 500.0) -- format LL|f, expect mode DSTBALL_FOLLOW (1) and followId set
+  217 bytes -> C:\eve-logs\destiny-ref\67-call-FollowBall.bin
+  0000  00 44 33 22 11 18 17 16 15 14 13 12 11 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 08 07 06 05 04 03 02  ..2B..]B........
+  0070  01 01 00 00 61 42 00 00 00 00 00 40 59 40 00 00  ....aB.....@Y@..
+  0080  00 00 00 40 69 40 00 00 00 00 00 f0 72 40 1f 00  ...@i@......r@..
+  0090  00 00 00 00 4a 93 40 00 ff ff ff ff ff ff ff ff  ....J.@.........
+  00a0  ff ff ff ff ff ff ff ff 00 00 9d 42 00 00 00 00  ...........B....
+  00b0  00 00 26 40 00 00 00 00 00 00 36 40 00 00 00 00  ..&@......6@....
+  00c0  00 80 40 40 00 00 32 42 00 00 5d 42 ff 18 17 16  ..@@..2B..]B....
+  00d0  15 14 13 12 11 00 00 fa 43                       ........C
+    (compare against 04-two-balls.bin, not the baseline:
+     this variant has two balls)
+
+-- 68-call-Orbit -----------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  two balls (Orbit needs a target), then Orbit
+  Orbit(72623859790382856, 1230066625199609624, 1000.0) -- expect mode DSTBALL_ORBIT (4)
+  217 bytes -> C:\eve-logs\destiny-ref\68-call-Orbit.bin
+  0000  00 44 33 22 11 18 17 16 15 14 13 12 11 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 08 07 06 05 04 03 02  ..2B..]B........
+  0070  01 04 00 00 61 42 00 00 00 00 00 40 59 40 00 00  ....aB.....@Y@..
+  0080  00 00 00 40 69 40 00 00 00 00 00 f0 72 40 1f 00  ...@i@......r@..
+  0090  00 00 00 00 4a 93 40 00 ff ff ff ff ff ff ff ff  ....J.@.........
+  00a0  ff ff ff ff ff ff ff ff 00 00 9d 42 00 00 00 00  ...........B....
+  00b0  00 00 26 40 00 00 00 00 00 00 36 40 00 00 00 00  ..&@......6@....
+  00c0  00 80 40 40 00 00 32 42 00 00 5d 42 ff 18 17 16  ..@@..2B..]B....
+  00d0  15 14 13 12 11 00 00 7a 44                       .......zD
+    (compare against 04-two-balls.bin, not the baseline:
+     this variant has two balls)
+
+-- 69-call-GotoPoint -------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  two balls (GotoPoint needs a target), then GotoPoint
+  GotoPoint -- expect mode DSTBALL_GOTO (0) and gotoX/Y/Z
+  229 bytes -> C:\eve-logs\destiny-ref\69-call-GotoPoint.bin
+  0000  00 44 33 22 11 18 17 16 15 14 13 12 11 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 08 07 06 05 04 03 02  ..2B..]B........
+  0070  01 00 00 00 61 42 00 00 00 00 00 40 59 40 00 00  ....aB.....@Y@..
+  0080  00 00 00 40 69 40 00 00 00 00 00 f0 72 40 1f 00  ...@i@......r@..
+  0090  00 00 00 00 4a 93 40 00 ff ff ff ff ff ff ff ff  ....J.@.........
+  00a0  ff ff ff ff ff ff ff ff 00 00 9d 42 00 00 00 00  ...........B....
+  00b0  00 00 26 40 00 00 00 00 00 00 36 40 00 00 00 00  ..&@......6@....
+  00c0  00 80 40 40 00 00 32 42 00 00 5d 42 ff 00 00 00  ..@@..2B..]B....
+  00d0  00 00 48 af 40 00 00 00 00 00 8d b3 40 00 00 00  ..H.@.......@...
+  00e0  00 00 76 b7 40                                   ..v.@
+    (compare against 04-two-balls.bin, not the baseline:
+     this variant has two balls)
+
+-- 70-call-SetBallRigid ----------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised TypeError: function takes exactly 1 argument (2 given)
+
+-- 71-call-SetBallTroll ----------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  two balls (SetBallTroll needs a target), then SetBallTroll
+  SetBallTroll -- expect mode DSTBALL_TROLL (8)
+  209 bytes -> C:\eve-logs\destiny-ref\71-call-SetBallTroll.bin
+  0000  00 44 33 22 11 18 17 16 15 14 13 12 11 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 08 07 06 05 04 03 02  ..2B..]B........
+  0070  01 08 00 00 61 42 00 00 00 00 00 40 59 40 00 00  ....aB.....@Y@..
+  0080  00 00 00 40 69 40 00 00 00 00 00 f0 72 40 1f 00  ...@i@......r@..
+  0090  00 00 00 00 4a 93 40 00 ff ff ff ff ff ff ff ff  ....J.@.........
+  00a0  ff ff ff ff ff ff ff ff 00 00 9d 42 00 00 00 00  ...........B....
+  00b0  00 00 26 40 00 00 00 00 00 00 36 40 00 00 00 00  ..&@......6@....
+  00c0  00 80 40 40 00 00 32 42 00 00 5d 42 ff 45 33 22  ..@@..2B..]B.E3"
+  00d0  11                                               .
+    (compare against 04-two-balls.bin, not the baseline:
+     this variant has two balls)
+
+-- 72-call-CloakBall -------------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised TypeError: function takes at least 2 arguments (1 given)
+
+-- 73-call-SetSpeedFraction ------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  two balls (SetSpeedFraction needs a target), then SetSpeedFraction
+  SetSpeedFraction(0.375)
+  205 bytes -> C:\eve-logs\destiny-ref\73-call-SetSpeedFraction.bin
+  0000  00 44 33 22 11 18 17 16 15 14 13 12 11 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 08 07 06 05 04 03 02  ..2B..]B........
+  0070  01 02 00 00 61 42 00 00 00 00 00 40 59 40 00 00  ....aB.....@Y@..
+  0080  00 00 00 40 69 40 00 00 00 00 00 f0 72 40 1f 00  ...@i@......r@..
+  0090  00 00 00 00 4a 93 40 00 ff ff ff ff ff ff ff ff  ....J.@.........
+  00a0  ff ff ff ff ff ff ff ff 00 00 9d 42 00 00 00 00  ...........B....
+  00b0  00 00 26 40 00 00 00 00 00 00 36 40 00 00 00 00  ..&@......6@....
+  00c0  00 80 40 40 00 00 32 42 00 00 c0 3e ff           ..@@..2B...>.
+    (compare against 04-two-balls.bin, not the baseline:
+     this variant has two balls)
+
+-- 74-call-SetMaxSpeed -----------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  two balls (SetMaxSpeed needs a target), then SetMaxSpeed
+  SetMaxSpeed(2500.5)
+  205 bytes -> C:\eve-logs\destiny-ref\74-call-SetMaxSpeed.bin
+  0000  00 44 33 22 11 18 17 16 15 14 13 12 11 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 08 07 06 05 04 03 02  ..2B..]B........
+  0070  01 02 00 00 61 42 00 00 00 00 00 40 59 40 00 00  ....aB.....@Y@..
+  0080  00 00 00 40 69 40 00 00 00 00 00 f0 72 40 1f 00  ...@i@......r@..
+  0090  00 00 00 00 4a 93 40 00 ff ff ff ff ff ff ff ff  ....J.@.........
+  00a0  ff ff ff ff ff ff ff ff 00 48 1c 45 00 00 00 00  .........H.E....
+  00b0  00 00 26 40 00 00 00 00 00 00 36 40 00 00 00 00  ..&@......6@....
+  00c0  00 80 40 40 00 00 32 42 00 00 5d 42 ff           ..@@..2B..]B.
+    (compare against 04-two-balls.bin, not the baseline:
+     this variant has two balls)
+
+-- 75-call-SetBallHarmonic -------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  SKIPPED: prepare raised TypeError: function takes exactly 5 arguments (2 given)
+
+-- 76-call-SetBallRadius ---------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  two balls (SetBallRadius needs a target), then SetBallRadius
+  SetBallRadius(1337.25)
+  205 bytes -> C:\eve-logs\destiny-ref\76-call-SetBallRadius.bin
+  0000  00 44 33 22 11 18 17 16 15 14 13 12 11 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 08 07 06 05 04 03 02  ..2B..]B........
+  0070  01 02 00 28 a7 44 00 00 00 00 00 40 59 40 00 00  ...(.D.....@Y@..
+  0080  00 00 00 40 69 40 00 00 00 00 00 f0 72 40 1f 00  ...@i@......r@..
+  0090  00 00 00 00 4a 93 40 00 ff ff ff ff ff ff ff ff  ....J.@.........
+  00a0  ff ff ff ff ff ff ff ff 00 00 9d 42 00 00 00 00  ...........B....
+  00b0  00 00 26 40 00 00 00 00 00 00 36 40 00 00 00 00  ..&@......6@....
+  00c0  00 80 40 40 00 00 32 42 00 00 5d 42 ff           ..@@..2B..]B.
+    (compare against 04-two-balls.bin, not the baseline:
+     this variant has two balls)
+
+-- 77-call-SetBallMass -----------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  two balls (SetBallMass needs a target), then SetBallMass
+  SetBallMass(4242.5)
+  205 bytes -> C:\eve-logs\destiny-ref\77-call-SetBallMass.bin
+  0000  00 44 33 22 11 18 17 16 15 14 13 12 11 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 08 07 06 05 04 03 02  ..2B..]B........
+  0070  01 02 00 00 61 42 00 00 00 00 00 40 59 40 00 00  ....aB.....@Y@..
+  0080  00 00 00 40 69 40 00 00 00 00 00 f0 72 40 1f 00  ...@i@......r@..
+  0090  00 00 00 80 92 b0 40 00 ff ff ff ff ff ff ff ff  ......@.........
+  00a0  ff ff ff ff ff ff ff ff 00 00 9d 42 00 00 00 00  ...........B....
+  00b0  00 00 26 40 00 00 00 00 00 00 36 40 00 00 00 00  ..&@......6@....
+  00c0  00 80 40 40 00 00 32 42 00 00 5d 42 ff           ..@@..2B..]B.
+    (compare against 04-two-balls.bin, not the baseline:
+     this variant has two balls)
+
+-- 78-call-SetBallVelocity -------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  two balls (SetBallVelocity needs a target), then SetBallVelocity
+  SetBallVelocity(111, 222, 333)
+  205 bytes -> C:\eve-logs\destiny-ref\78-call-SetBallVelocity.bin
+  0000  00 44 33 22 11 18 17 16 15 14 13 12 11 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 08 07 06 05 04 03 02  ..2B..]B........
+  0070  01 02 00 00 61 42 00 00 00 00 00 40 59 40 00 00  ....aB.....@Y@..
+  0080  00 00 00 40 69 40 00 00 00 00 00 f0 72 40 1f 00  ...@i@......r@..
+  0090  00 00 00 00 4a 93 40 00 ff ff ff ff ff ff ff ff  ....J.@.........
+  00a0  ff ff ff ff ff ff ff ff 00 00 9d 42 00 00 00 00  ...........B....
+  00b0  00 c0 5b 40 00 00 00 00 00 c0 6b 40 00 00 00 00  ..[@......k@....
+  00c0  00 d0 74 40 00 00 32 42 00 00 5d 42 ff           ..t@..2B..]B.
+    (compare against 04-two-balls.bin, not the baseline:
+     this variant has two balls)
+
+-- 79-call-SetBallPosition -------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  two balls (SetBallPosition needs a target), then SetBallPosition
+  SetBallPosition(1001, 2002, 3003)
+  205 bytes -> C:\eve-logs\destiny-ref\79-call-SetBallPosition.bin
+  0000  00 44 33 22 11 18 17 16 15 14 13 12 11 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 08 07 06 05 04 03 02  ..2B..]B........
+  0070  01 02 00 00 61 42 00 00 00 00 00 48 8f 40 00 00  ....aB.....H.@..
+  0080  00 00 00 48 9f 40 00 00 00 00 00 76 a7 40 1f 00  ...H.@.....v.@..
+  0090  00 00 00 00 4a 93 40 00 ff ff ff ff ff ff ff ff  ....J.@.........
+  00a0  ff ff ff ff ff ff ff ff 00 00 9d 42 00 00 00 00  ...........B....
+  00b0  00 00 26 40 00 00 00 00 00 00 36 40 00 00 00 00  ..&@......6@....
+  00c0  00 80 40 40 00 00 32 42 00 00 5d 42 ff           ..@@..2B..]B.
+    (compare against 04-two-balls.bin, not the baseline:
+     this variant has two balls)
+
+-- 80-call-SetBallFormation ------------------------------------------------
+  currentTime   287454020 (0x11223344)
+  two balls (SetBallFormation needs a target), then SetBallFormation
+  SetBallFormation(11) -- expect mode DSTBALL_FORMATION (12)
+  205 bytes -> C:\eve-logs\destiny-ref\80-call-SetBallFormation.bin
+  0000  00 44 33 22 11 18 17 16 15 14 13 12 11 02 00 00  .D3"............
+  0010  61 42 00 00 00 00 00 40 59 40 00 00 00 00 00 40  aB.....@Y@.....@
+  0020  69 40 00 00 00 00 00 f0 72 40 1f 00 00 00 00 00  i@......r@......
+  0030  4a 93 40 00 ff ff ff ff ff ff ff ff ff ff ff ff  J.@.............
+  0040  ff ff ff ff 00 00 9d 42 00 00 00 00 00 00 26 40  .......B......&@
+  0050  00 00 00 00 00 00 36 40 00 00 00 00 00 80 40 40  ......6@......@@
+  0060  00 00 32 42 00 00 5d 42 ff 08 07 06 05 04 03 02  ..2B..]B........
+  0070  01 02 00 00 61 42 00 00 00 00 00 40 59 40 00 00  ....aB.....@Y@..
+  0080  00 00 00 40 69 40 00 00 00 00 00 f0 72 40 1f 00  ...@i@......r@..
+  0090  00 00 00 00 4a 93 40 00 ff ff ff ff ff ff ff ff  ....J.@.........
+  00a0  ff ff ff ff ff ff ff ff 00 00 9d 42 00 00 00 00  ...........B....
+  00b0  00 00 26 40 00 00 00 00 00 00 36 40 00 00 00 00  ..&@......6@....
+  00c0  00 80 40 40 00 00 32 42 00 00 5d 42 ff           ..@@..2B..]B.
+    (compare against 04-two-balls.bin, not the baseline:
+     this variant has two balls)
+
+-- round trip through ReadFullStateFromStream ------------------------------
+  accepted.
+  currentTime after read: 287454020 (wrote 0x11223344)
+  balls in the park after read: [72623859790382856L]
+  ball 72623859790382856 reads back as:
+    id                   72623859790382856L
+    mass                 1234.5
+    radius               56.25
+    maxVelocity          78.5
+    maxAngularVelocity   1.5707963705062866
+    isFree               True
+    isGlobal             True
+    isMassive            True
+    isInteractive        True
+    isCloaked            0
+    isMoribund           False
+    harmonic             -1L
+    corporationID        -1
+    allianceID           -1
+    x                    101.0
+    y                    202.0
+    z                    303.0
+    vx                   11.0
+    vy                   22.0
+    vz                   33.0
+    wx                   0.0
+    wy                   0.0
+    wz                   0.0
+    rx                   0.0
+    ry                   0.0
+    rz                   0.0
+    rw                   1.0
+    yaw                  0.3217505543966422
+    pitch                -0.5639426413606289
+    roll                 0.0
+    Agility              44.5
+    RotationalAgility    0.8999999761581421
+    speedFraction        55.25
+    mode                 2
+    gotoX                0.0
+    gotoY                0.0
+    gotoZ                0.0
+    followId             0L
+    followRange          10.0
+    ownerId              0L
+    effectStamp          0
+    newBubbleId          -1
+    oldBubbleId          -1
+    formationID          255
+
+-- live ballpark (read-only) -----------------------------------------------
+  michelle.GetBallpark() is None -- bpReady is False, or we are docked.
+  Nothing to dump; the private-ballpark dumps above are unaffected.
+
+-- manifest ----------------------------------------------------------------
+  01-empty-park.bin                             5 bytes
+  02-empty-park-alt-tick.bin                    5 bytes
+  03-base-one-ball.bin                        105 bytes
+  04-two-balls.bin                            205 bytes
+  06-arg-ballID.bin                           105 bytes
+  07-arg-a2_d.bin                             105 bytes
+  08-arg-a3_f.bin                             105 bytes
+  09-arg-a4_f.bin                             105 bytes
+  10-arg-a5_i.bin                              69 bytes
+  11-arg-a6_i.bin                             105 bytes
+  12-arg-a7_i.bin                             105 bytes
+  13-arg-a8_i.bin                             105 bytes
+  14-arg-a9_i.bin                             105 bytes
+  15-arg-x.bin                                105 bytes
+  16-arg-y.bin                                105 bytes
+  17-arg-z.bin                                105 bytes
+  18-arg-vx.bin                               105 bytes
+  19-arg-vy.bin                               105 bytes
+  20-arg-vz.bin                               105 bytes
+  21-arg-a16_f.bin                            105 bytes
+  22-arg-a17_f.bin                            105 bytes
+  23-attr-mass.bin                            105 bytes
+  24-attr-radius.bin                          105 bytes
+  25-attr-maxVelocity.bin                     105 bytes
+  26-attr-maxAngularVelocity.bin              105 bytes
+  27-attr-isFree.bin                           69 bytes
+  28-attr-isGlobal.bin                        105 bytes
+  29-attr-isMassive.bin                       105 bytes
+  30-attr-isInteractive.bin                   105 bytes
+  31-attr-isCloaked.bin                       105 bytes
+  34-attr-corporationID.bin                   105 bytes
+  35-attr-allianceID.bin                      105 bytes
+  36-attr-x.bin                               105 bytes
+  37-attr-y.bin                               105 bytes
+  38-attr-z.bin                               105 bytes
+  39-attr-vx.bin                              105 bytes
+  40-attr-vy.bin                              105 bytes
+  41-attr-vz.bin                              105 bytes
+  42-attr-wx.bin                              105 bytes
+  43-attr-wy.bin                              105 bytes
+  44-attr-wz.bin                              105 bytes
+  45-attr-rx.bin                              105 bytes
+  46-attr-ry.bin                              105 bytes
+  47-attr-rz.bin                              105 bytes
+  48-attr-rw.bin                              105 bytes
+  52-attr-Agility.bin                         105 bytes
+  53-attr-RotationalAgility.bin               105 bytes
+  54-attr-speedFraction.bin                   105 bytes
+  56-attr-gotoX.bin                           129 bytes
+  57-attr-gotoY.bin                           129 bytes
+  58-attr-gotoZ.bin                           129 bytes
+  61-attr-ownerId.bin                         105 bytes
+  66-call-Stop.bin                            205 bytes
+  67-call-FollowBall.bin                      217 bytes
+  68-call-Orbit.bin                           217 bytes
+  69-call-GotoPoint.bin                       229 bytes
+  71-call-SetBallTroll.bin                    209 bytes
+  73-call-SetSpeedFraction.bin                205 bytes
+  74-call-SetMaxSpeed.bin                     205 bytes
+  76-call-SetBallRadius.bin                   205 bytes
+  77-call-SetBallMass.bin                     205 bytes
+  78-call-SetBallVelocity.bin                 205 bytes
+  79-call-SetBallPosition.bin                 205 bytes
+  80-call-SetBallFormation.bin                205 bytes
+
+How to use this, from docs/reference/destiny-reference-blob.md:
+  * 03-base-one-ball.bin is the value to put in `bag.state` for a
+    one-ball SetState, with ballID 0x0102030405060708.
+  * Every MATCH line above is a field offset you can write a Rust
+    serialiser against. Lines without a MATCH are the ones still
+    owed an explanation.
+  * The round-trip section proves the client parser accepts these
+    bytes. If it says REJECTED, nothing else here is trustworthy.

@@ -1,0 +1,11 @@
+path	name	why
+skins	SKINs	The cosmetic root. Permanent ship SKIN licences, by hull class.
+skins/frigate	Frigate SKINs	Frigate-class hulls (frigates, assault, interceptors, covert, bombers, shuttles).
+skins/destroyer	Destroyer SKINs	Destroyer-class hulls.
+skins/cruiser	Cruiser SKINs	Cruiser-class hulls, T2 cruisers, industrials and barges.
+skins/battlecruiser	Battlecruiser SKINs	Battlecruiser-class hulls and command ships.
+skins/battleship	Battleship SKINs	Battleship-class hulls, marauders and black ops.
+skins/capital	Capital SKINs	Carriers, dreadnoughts, titans, freighters and the other capital hulls.
+services	Services	What the store sells that is not a SKIN.
+services/skills	Skill Services	The skill extractor.
+services/character	Character Services	The bonus neural remap.

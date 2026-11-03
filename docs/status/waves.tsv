@@ -1,0 +1,14 @@
+# Counts come from var/regress-wave*/regress.tsv through `tools/status-page.py --waves`, which keeps date, sha, scope and note.
+# scope: full is a whole list run, partial stopped early or is still running, rerun holds chosen rows only.
+wave	date	sha	rows	green	red	no_verdict	scope	note
+1	2026-10-31		83	18	7	58	partial	Stopped at the mining drone row; later rows have no verdict
+2	2026-11-01		97	69	28	0	full	Found most of the first fixes
+3	2026-11-01	1fec773	119	79	40	0	full	The first full rerun, near this commit
+4	2026-11-01		29	28	1	0	rerun	
+5	2026-11-01	0785599	123	92	31	0	full	On a box also compiling; the first bot half really ran
+6	2026-11-01	37b8558	126	96	30	0	full	The first client verdict on the tracker §90 work
+7	2026-11-01	d247f86	32	14	18	0	rerun	Rows that were red
+8	2026-11-01	a013ad7	128	118	10	0	partial	Still running at this reading; started near this commit
+9			136	119	17	0	full	
+10			136	130	6	0	full	
+11			136	135	1	0	full	

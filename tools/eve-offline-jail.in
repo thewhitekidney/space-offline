@@ -1,0 +1,1108 @@
+#!/bin/bash
+# The jail, as a root-owned helper with a fixed verb set.
+#
+# INSTALLED COPY -- do not edit in place. The source of truth is
+# tools/eve-offline-jail.in in the repo; tools/install-jail-helper.sh
+# generates this file and writes it to /usr/local/sbin/eve-offline-jail.
+#
+#   eve-offline-jail up | down | verify | preflight | dns | client | status
+#   eve-offline-jail census-up | census-down | census-dump | census-verify
+#
+# Why this exists, and why it takes no arguments
+# ----------------------------------------------
+# Unattended client testing needs six privileged operations. Granting them
+# with a NOPASSWD list of the commands we actually run would not be narrow at
+# all: three of them are shell scripts in a user-writable directory, one is a
+# binary rebuilt from the repo on every run, and `ip netns exec` takes an
+# arbitrary command. Any one of those lets a process running as the invoking
+# user have root execute code of its choosing. See docs/unattended-root.md §3.
+#
+# So: one root-owned file the user cannot modify, verbs that take **no
+# arguments** (which is what makes the sudoers match exact), and two rules
+# this file keeps:
+#
+#   1. ROOT NEVER EXECUTES ANYTHING THE INVOKING USER CAN WRITE.
+#      `dns` runs the resolver as the user with CAP_NET_BIND_SERVICE and
+#      nothing else. `client` drops to the user before exec'ing anything out
+#      of the repo. Root's only acts are namespace and interface manipulation
+#      using code that lives in this file.
+#
+#   2. THE JAIL LOGIC IS A SNAPSHOT, NOT A REFERENCE.
+#      Nothing here sources, reads or execs tools/jail-*.sh. Changing the jail
+#      means regenerating this file deliberately -- which is the step where a
+#      human reads a diff. The repo's scripts remain the human-facing copies
+#      and the two are kept in step by hand, on purpose.
+#
+# What it still grants is written down in docs/unattended-root.md §5. The
+# short version: bring the jail up and down, bind one port on one address,
+# and launch the client inside a network that can reach nothing.
+set -euo pipefail
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+umask 022
+
+# --- snapshot constants, written by the installer ---------------------------
+REPO='@REPO@'
+NS='@NS@'
+HOST_IF=eve-host
+NS_IF=eve-ns
+HOST_IP='@HOST_IP@'
+NS_IP='@NS_IP@'
+PREFIX=30
+# 26000 machoNet, 5222 in-game chat (XMPP), 8443 the public gRPC gateway
+# (eve-server --gateway; without it the client waits 3 s per cosmetic or
+# mercenary-den request, UI-LAG); on HOST_IP only, like 53.
+GAME_PORTS='26000,5222,8443'
+SERVER_NAME='tranquility.servers.eveonline.com'
+DNS_BIN="$REPO/server/target/debug/eve-dns"
+# The phone-home audit (IP13, V6 F3). A fixed string in this root-owned file;
+# eve-dns opens it itself, after setpriv has dropped to the caller, so root
+# never touches a path the caller could swap for a symlink.
+DNS_LOG="$REPO/logs/eve-dns.log"
+CLIENT_SHIM="$REPO/tools/jail-client.sh"
+# Written by run-client.sh / client-ci.sh. Read here only AS THE CALLER, and
+# only for the paths the allowlist binds back (never sourced, never executed).
+ENV_FILE="$REPO/out/client-ci/launch-env"
+SELF=$(readlink -f "${BASH_SOURCE[0]}")
+
+say() { printf '%s\n' "$*"; }
+die() { printf 'eve-offline-jail: %s\n' "$*" >&2; exit 1; }
+
+# --- the trust chain --------------------------------------------------------
+# If this file or any directory above it is writable by anyone but root, the
+# grant it backs is worthless -- somebody could rewrite what root runs. Checked
+# on every invocation rather than at install time, because the install is not
+# the only moment this can become false.
+assert_trusted() {
+    local p="$(readlink -f "${BASH_SOURCE[0]}")"
+    while :; do
+        local mode owner
+        mode=$(stat -c '%a' "$p") || die "cannot stat $p"
+        owner=$(stat -c '%U' "$p") || die "cannot stat $p"
+        [[ $owner == root ]] || die "$p is owned by $owner, not root; refusing"
+        # group- or other-writable is the disqualifier; readable is fine.
+        (( (0$mode & 022) == 0 )) || die "$p is mode $mode (writable by non-root); refusing"
+        [[ $p == / ]] && break
+        p=$(dirname "$p")
+    done
+}
+
+# The user who invoked us. Taken from sudo's own record rather than guessed,
+# and required: this helper has no meaning outside a sudo invocation, and a
+# bare root call would run the client as root, which is exactly what rule 1
+# exists to prevent.
+caller_uid() { [[ -n ${SUDO_UID:-} ]] || die "no SUDO_UID; run me through sudo"; printf '%s' "$SUDO_UID"; }
+caller_gid() { [[ -n ${SUDO_GID:-} ]] || die "no SUDO_GID; run me through sudo"; printf '%s' "$SUDO_GID"; }
+
+ns_exists() { grep -qx "$NS" <<<"$(ip netns list | awk '{print $1}')"; }
+
+# --- verbs ------------------------------------------------------------------
+
+v_up() {
+    ns_exists || ip netns add "$NS"
+    if ! ip link show "$HOST_IF" >/dev/null 2>&1; then
+        ip link add "$HOST_IF" type veth peer name "$NS_IF"
+        ip link set "$NS_IF" netns "$NS"
+    fi
+    ip addr replace "$HOST_IP/$PREFIX" dev "$HOST_IF"
+    ip link set "$HOST_IF" up
+    ip -n "$NS" addr replace "$NS_IP/$PREFIX" dev "$NS_IF"
+    ip -n "$NS" link set "$NS_IF" up
+    ip -n "$NS" link set lo up
+    # No default route is ever added. Remove one if something else did.
+    ip -n "$NS" route del default 2>/dev/null || true
+
+    mkdir -p "/etc/netns/$NS"
+    printf 'nameserver %s\noptions timeout:1 attempts:1\n' "$HOST_IP" > "/etc/netns/$NS/resolv.conf"
+
+    # The host very likely has ip_forward=1 (docker, libvirt). Without this the
+    # namespace could route out THROUGH the host.
+    nft -f - <<NFT
+table inet eve_offline_jail {
+    chain forward {
+        type filter hook forward priority -300; policy accept;
+        ip  saddr ${HOST_IP%.*}.0/$PREFIX drop
+        ip  daddr ${HOST_IP%.*}.0/$PREFIX drop
+        iifname "$HOST_IF" drop
+        oifname "$HOST_IF" drop
+    }
+}
+NFT
+
+    # A host firewall filters INPUT to the host's own addresses, and the veth's
+    # host end is one of them -- so a default-deny firewall drops the jailed
+    # client's traffic before our own services ever see it. Punch exactly the
+    # hole the jail needs, on the veth only.
+    if systemctl is-active --quiet ufw 2>/dev/null && command -v ufw >/dev/null; then
+        ufw allow in on "$HOST_IF" >/dev/null && say "ufw allow in on $HOST_IF"
+    elif command -v nft >/dev/null && grep -qiE 'hook input' <<<"$(nft list chains 2>/dev/null)"; then
+        nft -f - <<NFT
+table inet eve_offline_hostin {
+    chain input {
+        type filter hook input priority -150; policy accept;
+        iifname "$HOST_IF" accept
+    }
+}
+NFT
+        say "nft accept iifname $HOST_IF (priority -150)"
+    fi
+
+    # Default-deny egress inside the jail. The trailing `counter` in each
+    # chain is what makes it auditable rather than merely trusted: anything
+    # reaching it has failed every allow rule, so it is the client trying to
+    # talk to something we never agreed to. It is not terminal. There is no
+    # `log` rule: nf_log is off in every netns but the init one
+    # (net.netfilter.nf_log_all_netns=0), so one would never fire (R-CENSUS
+    # §0). And a packet to any address but 10.137.0.0/30 dies at routing,
+    # before this hook; the census (census-up, below) is what sees those.
+    local rules
+    rules=$(mktemp) || die "mktemp failed"
+    # shellcheck disable=SC2064
+    trap "rm -f '$rules'" RETURN
+    cat > "$rules" <<NFT
+table inet eve_offline_out {
+    chain output {
+        type filter hook output priority 0; policy drop;
+        oifname "lo" accept
+        ip daddr $HOST_IP tcp dport { $GAME_PORTS } accept
+        ip daddr $HOST_IP udp dport 53 accept
+        ip daddr $HOST_IP tcp dport 53 accept
+        ip daddr $HOST_IP icmp type echo-request accept
+        ct state established,related accept
+        counter comment "egress the client was refused"
+    }
+    chain input {
+        type filter hook input priority 0; policy drop;
+        iifname "lo" accept
+        ip saddr $HOST_IP accept
+        ct state established,related accept
+        counter comment "ingress the client was refused"
+    }
+}
+NFT
+    # Check before applying: a syntax error applied incrementally can leave the
+    # jail half-built -- allow rules in, policy not yet set -- which is the one
+    # failure mode that fails OPEN.
+    ip netns exec "$NS" nft -c -f "$rules"
+    ip netns exec "$NS" nft -f "$rules"
+    say "jail '$NS' is up: client sees only $HOST_IP (tcp $GAME_PORTS, dns 53)"
+}
+
+v_down() {
+    # The census recorders first (their stop lines), then the resolver: both
+    # hold something in the namespace.
+    census_stop_recorders
+    pkill -f "^$DNS_BIN " 2>/dev/null || true
+    ip netns del "$NS" 2>/dev/null && say "removed namespace $NS" || say "no namespace $NS"
+    ip link del "$HOST_IF" 2>/dev/null || true
+    nft delete table inet eve_offline_jail 2>/dev/null || true
+    nft delete table inet eve_offline_hostin 2>/dev/null || true
+    if grep -q "$HOST_IF" <<<"$(command -v ufw >/dev/null && ufw status 2>/dev/null)"; then
+        ufw delete allow in on "$HOST_IF" >/dev/null 2>&1 || true
+    fi
+    rm -rf "/etc/netns/$NS"
+    say "jail '$NS' is down"
+}
+
+# --- the client's filesystem: an allowlist (ruling 4; RR1 C3, C4, H1) --------
+#
+# A network namespace isolates the network, not the filesystem, and a
+# pathname unix socket is a file: the session D-Bus, the SSH agent, Steam's
+# IPC, systemd-resolved, avahi, snapd, cups and the docker socket are all
+# reachable from a netns that can route nowhere (V6 F1, RR1 C4). A denylist of
+# them was incomplete the day it was written. So the client's mount namespace
+# is built the other way round:
+#
+#   1. every tree that holds sockets or the owner's files -- /run, /tmp,
+#      $HOME, the runtime dir and /dev/shm -- is replaced by an empty tmpfs;
+#   2. exactly the bind_back lines in build_view are put back, at the SAME
+#      path they had on the host, so the client's view is a subset of the
+#      host's and never a rearrangement of it;
+#   3. scan_view lists every socket the client can see and refuses to launch
+#      on any that is not one of those lines.
+#
+# Ruling 15 (IP29's three leaks, ported by IP14b) adds three more:
+#
+#   4. /media and /mnt are masked too: a write to a network share (the CIFS
+#      NAS automounts) is carried by the host kernel, outside any netns;
+#   5. every host socket, inventoried as root just before the view is built,
+#      that the masks left reachable (/var/snap holds live, connectable ones)
+#      gets an empty read-only file bound over it -- and the gate, as the
+#      caller, must FAIL TO CONNECT to every one, or the client does not start;
+#   6. the client gets a pid namespace and a /proc of its own, so it cannot
+#      walk into a less-masked process's mount namespace via /proc/PID/root.
+#
+# tools/test_jail.py holds the same bind_back set and fails on any difference,
+# so the allowlist grows only by a reviewed line in two files.
+#
+# What it does NOT do (ruling 5, H1): the client still runs as the caller, so
+# it can read whatever the caller can read OUTSIDE the masked trees, and it
+# still talks to the X server, which can inject input into other windows.
+
+# Never present inside the view, checked by name as well as by the scan.
+NEVER_VISIBLE=(/run/docker.sock /var/run/docker.sock /run/dbus/system_bus_socket
+               /run/systemd/resolve/io.systemd.Resolve /run/avahi-daemon/socket
+               /run/snapd.socket /run/cups/cups.sock /run/libvirt)
+# Groups that are root (or a hypervisor) by another name. The client must hold
+# none of them (ruling 3); setpriv --clear-groups drops them, and the gate
+# below checks from inside that it did.
+DENIED_GROUPS='docker libvirt sudo lxd'
+# Wine's URL hand-off (winebrowser -> xdg-open -> firefox ...) never starts.
+NO_BROWSER='winebrowser.exe=d'
+# Ruling 15. The filesystems whose sockets are inventoried before a launch,
+# and the network filesystems the client must never see (a write there
+# leaves the machine through the host kernel, outside the jail's netns).
+LOCAL_FS='ext2,ext3,ext4,xfs,btrfs,f2fs,zfs,vfat,tmpfs,devtmpfs,overlay'
+NETFS='cifs smb3 smbfs nfs nfs4 autofs 9p ceph glusterfs afs fuse.sshfs davfs fuse.rclone'
+# A private tmpfs that holds each bind-back while the trees above it are
+# replaced; it is unmounted and replaced by a fresh /dev/shm at the end.
+STAGE=/dev/shm
+# O19 (ruling 14): the Wine prefix of the owner's ONLINE EVE (Steam appid
+# 8500). The client runs in a copy of it (tools/offline-prefix.sh), and no
+# entry of the view may be that prefix, lie inside it, or hold it -- not even
+# read-only: a client that can write there can plant a DLL the online client
+# loads later, outside the jail. tools/test_jail.py holds this id equal in
+# tools/prefix-lib.sh, tools/jail-rootless.sh and tools/jail-client.sh.
+ONLINE_PREFIX_ID=8500
+
+caller_ids() {
+    [[ ${SUDO_UID:-} =~ ^[0-9]+$ && ${SUDO_GID:-} =~ ^[0-9]+$ ]] \
+        || die "no SUDO_UID/SUDO_GID; run me through sudo"
+    (( SUDO_UID != 0 )) || die "the caller is root; the client never runs as root"
+    UID_C=$SUDO_UID GID_C=$SUDO_GID
+}
+caller_home() { getent passwd "$UID_C" | cut -d: -f6; }
+# Reads the launch-env AS THE CALLER: a symlink to a file only root can read
+# yields nothing.
+as_caller() { setpriv --reuid="$UID_C" --regid="$GID_C" --clear-groups -- "$@"; }
+
+# The internal verbs below must run only where v_client / v_verify put them:
+# inside the jail's netns and in a private mount namespace. The sudoers entry
+# does not name them, and they refuse anywhere else.
+assert_in_jail() {
+    [[ $(ip netns identify "$$" 2>/dev/null) == "$NS" ]] \
+        || die "not inside namespace $NS (internal verb, not for direct use)"
+    [[ $(readlink /proc/self/ns/mnt) != "$(readlink /proc/1/ns/mnt)" ]] \
+        || die "not in a private mount namespace; refusing to mount anything"
+}
+
+declare -A LENV=()
+read_launch_env() {
+    local key value
+    LENV=()
+    while IFS='=' read -r key value; do
+        case $key in
+            XDG_RUNTIME_DIR|WAYLAND_DISPLAY|DISPLAY|XAUTHORITY|STEAM_COMPAT_DATA_PATH|EVE_CLIENT|PROTON)
+                LENV[$key]=$value ;;
+        esac
+    done < <(as_caller cat -- "$ENV_FILE" 2>/dev/null || true)
+}
+
+# vet OWNER KIND PATH: sets VETTED to PATH with every symlink resolved, when it
+# exists, is a KIND (dir|file|socket), is not /, and belongs to OWNER (user:
+# the caller; root; any). A socket must already be its own real path. Returns
+# 1 otherwise, and the caller skips it: a refusal only makes the view smaller.
+vet() {
+    local owner=$1 kind=$2 p=$3 r u
+    VETTED=''
+    [[ -n $p && $p == /* && $p != *[[:cntrl:]]* ]] || return 1
+    r=$(realpath -e -- "$p" 2>/dev/null) || return 1
+    [[ $r != / ]] || return 1
+    case $kind in
+        dir)    [[ -d $r ]] ;;
+        file)   [[ -f $r ]] ;;
+        socket) [[ -S $r && $r == "$p" ]] ;;
+        *)      false ;;
+    esac || return 1
+    u=$(stat -c %u -- "$r") || return 1
+    case $owner in
+        user) [[ $u == "$UID_C" ]] ;;
+        root) [[ $u == 0 ]] ;;
+        any)  true ;;
+        *)    false ;;
+    esac || return 1
+    VETTED=$r
+}
+
+# online_overlap PATH: PATH (resolved) is an online prefix in any Steam
+# library, lies inside one, or holds the caller's (ONLINE_R, set by
+# build_view).
+online_overlap() {
+    local p=$1
+    case $p in
+        */[sS]team[aA]pps/compatdata/"$ONLINE_PREFIX_ID" | */[sS]team[aA]pps/compatdata/"$ONLINE_PREFIX_ID"/*)
+            return 0 ;;
+    esac
+    [[ -n ${ONLINE_R:-} ]] || return 1
+    [[ $ONLINE_R == "$p" || $ONLINE_R == "$p"/* ]]
+}
+
+# bind_back MODE OWNER KIND LABEL SRC [TARGET]: one allowlist entry. SRC is
+# bound (now, before anything is masked) into the stage; place_all puts it at
+# TARGET (default: SRC's real path) once the masks are up. An entry inside a
+# directory already bound back is skipped as covered, unless it is read-only
+# inside a read-write one: then it goes on top (place_all binds in order), so
+# ResFiles stays read-only inside the read-write prefix (O19: that is what
+# makes a hard-linked ResFiles safe). An entry that touches the online prefix
+# refuses the launch (O19).
+bind_back() {
+    local mode=$1 owner=$2 kind=$3 label=$4 src=$5 target=${6:-} id n t i
+    if ! vet "$owner" "$kind" "$src"; then
+        say "skip  $label (absent, or not the caller's: ${src:-unset})"
+        return 0
+    fi
+    src=$VETTED
+    if online_overlap "$src"; then
+        die "$label ($src) is, is inside, or holds the online EVE prefix (compatdata/$ONLINE_PREFIX_ID); the client has its own (tools/offline-prefix.sh, O19); refusing"
+    fi
+    target=${target:-$src}
+    for i in "${!B_TARGET[@]}"; do
+        t=${B_TARGET[$i]}
+        [[ $target == "$t" || $target == "$t"/* ]] || continue
+        [[ $mode == ro && ${B_MODE[$i]} == rw && $target != "$t" ]] || return 0
+    done
+    id=$(stat -c %d:%i -- "$src")
+    n=${#B_TARGET[@]}
+    if [[ $kind == dir ]]; then mkdir -- "$STAGE/$n"; else : > "$STAGE/$n"; fi
+    mount --bind -- "$src" "$STAGE/$n"
+    # The path was resolved a moment ago by code that trusts nothing; if what
+    # got bound is not that inode, a component was swapped in between.
+    [[ $(stat -c %d:%i -- "$STAGE/$n") == "$id" ]] \
+        || die "$label changed while it was being bound back; refusing"
+    B_MODE+=("$mode") B_KIND+=("$kind") B_LABEL+=("$label") B_TARGET+=("$target")
+}
+
+# mask_tree LABEL PATH MODE UID GID: an empty tmpfs over PATH.
+mask_tree() {
+    local label=$1 path=$2 mode=$3 uid=$4 gid=$5
+    mkdir -p -- "$path"
+    mount -t tmpfs -o "nosuid,nodev,mode=$mode,uid=$uid,gid=$gid" "eve-jail-$label" "$path"
+}
+
+# Every staged entry goes back at its own path, nosuid and nodev, read-only
+# where it says ro. Directories created on the way are root's, 0755.
+place_all() {
+    local i t opts
+    for i in "${!B_TARGET[@]}"; do
+        t=${B_TARGET[$i]}
+        if [[ ${B_KIND[$i]} == dir ]]; then
+            mkdir -p -- "$t"
+        else
+            mkdir -p -- "$(dirname -- "$t")"
+            [[ -e $t ]] || : > "$t"
+        fi
+        mount --bind -- "$STAGE/$i" "$t"
+        opts=remount,bind,nosuid,nodev
+        [[ ${B_MODE[$i]} == ro ]] && opts+=,ro
+        mount -o "$opts" -- "$t"
+        umount -- "$STAGE/$i"
+    done
+}
+
+# Every socket the host has, taken as root just before the view is built (and
+# before the stage hides /dev/shm): each pathname socket on each local
+# filesystem, each abstract name in this netns and the host's (`@name`), and
+# NEVER_VISIBLE by name. mask_sockets covers the ones the masks leave
+# reachable; the gate must fail to connect to every one (ruling 15).
+inventory_sockets() {
+    local m
+    SOCKETS=()
+    command -v findmnt >/dev/null && command -v python3 >/dev/null \
+        || die "findmnt and python3 are needed for the socket gate; refusing"
+    mapfile -d '' -t SOCKETS < <(
+        {
+            findmnt -rn -o TARGET -t "$LOCAL_FS" | while IFS= read -r m; do
+                m=$(printf '%b' "$m")
+                find "$m" -xdev -type s -print0 2>/dev/null || true
+            done
+            awk 'FNR > 1 && $8 ~ /^@/ { print $8 }' /proc/net/unix /proc/1/net/unix 2>/dev/null \
+                | tr '\n' '\0' || true
+            printf '%s\0' "${NEVER_VISIBLE[@]}"
+        } | sort -zu)
+}
+
+# Ruling 15: a host socket the masks left reachable (/var/snap, /var/lib,
+# another disk) gets an empty read-only file bound over it, in this mount
+# namespace only, unless the allowlist put it there. Nothing but
+# $STAGE/empty is ever bound here, and only over a path that is a socket with
+# no symlink in it. What cannot be covered is left to the gate, which refuses
+# to launch if it connects.
+mask_sockets() {
+    local p t skip
+    : > "$STAGE/empty"
+    chmod 0444 "$STAGE/empty"
+    for p in "${SOCKETS[@]}"; do
+        [[ $p == /* && -S $p && $(realpath -e -- "$p" 2>/dev/null) == "$p" ]] || continue
+        skip=0
+        for t in "${B_TARGET[@]}"; do [[ $p == "$t" ]] && skip=1; done
+        (( skip )) && continue
+        { mount --bind -- "$STAGE/empty" "$p" && mount -o remount,bind,ro,nosuid,nodev -- "$p"; } 2>/dev/null \
+            || say "note  could not cover $p (the gate decides)"
+    done
+}
+
+build_view() {
+    local home wl
+    B_MODE=() B_KIND=() B_LABEL=() B_TARGET=()
+    [[ $(realpath -e /dev/shm) == /dev/shm ]] || die "/dev/shm is not a plain directory here; refusing"
+    read_launch_env
+    inventory_sockets
+    home=$(caller_home)
+    HOME_R=$(realpath -e -- "$home" 2>/dev/null) || die "cannot resolve the caller's home '$home'"
+    [[ $HOME_R != / ]] || die "the caller's home is /; refusing"
+    RUNTIME_R=''
+    if vet user dir "${LENV[XDG_RUNTIME_DIR]:-}"; then RUNTIME_R=$VETTED; fi
+    ONLINE_R=$(realpath -m -- "$HOME_R/.local/share/Steam/steamapps/compatdata/$ONLINE_PREFIX_ID")
+
+    mount -t tmpfs -o nosuid,nodev,mode=0700 eve-jail-stage "$STAGE"
+
+    # THE ALLOWLIST. tools/test_jail.py holds this exact set.
+    #   system: udev (input devices, read-only) and the jail's own resolv.conf,
+    #   which `ip netns exec` mounted at /etc/resolv.conf's target -- under /run
+    #   on a systemd-resolved host, so the /run mask would hide it.
+    bind_back ro root dir    udev       /run/udev
+    bind_back ro root file   resolver   "/etc/netns/$NS/resolv.conf" "$(realpath -m -- /etc/resolv.conf)"
+    #   audio for human play, and the display (Wayland, or X through Xwayland).
+    bind_back rw user socket pulse      "$RUNTIME_R/pulse/native"
+    bind_back rw user socket pipewire   "$RUNTIME_R/pipewire-0"
+    wl=${LENV[WAYLAND_DISPLAY]:-}
+    [[ $wl =~ ^wayland-[0-9]+$ ]] || wl=''
+    bind_back rw user socket wayland    "${wl:+$RUNTIME_R/$wl}"
+    bind_back ro user file   xauthority "${LENV[XAUTHORITY]:-}"
+    if [[ ${LENV[DISPLAY]:-} =~ ^(unix)?:([0-9]+)(\.[0-9]+)?$ ]]; then
+        bind_back rw any socket x11     "/tmp/.X11-unix/X${BASH_REMATCH[2]}"
+    fi
+    #   Proton (read-only), the prefix (the offline client's own copy, never
+    #   the online 8500: O19), the game and its ResFiles (read-only, on top of
+    #   the prefix; for the second client a symlink into the offline prefix).
+    #   Prefix first, so the game inside it is covered rather than bound twice.
+    bind_back ro user dir    proton     "$(dirname -- "${LENV[PROTON]:-/}")"
+    bind_back rw user dir    prefix     "${LENV[STEAM_COMPAT_DATA_PATH]:-}"
+    bind_back rw user dir    game       "${LENV[EVE_CLIENT]:-}"
+    bind_back ro user dir    resfiles   "${LENV[EVE_CLIENT]:+${LENV[EVE_CLIENT]}/../ResFiles}"
+    #   the shim and its settings, read-only: the client must never be able
+    #   to rewrite a script the owner later runs outside the jail.
+    bind_back ro user file   shim       "$CLIENT_SHIM"
+    bind_back ro user file   launch-env "$ENV_FILE"
+    #   the phone-home patcher and its manifests (PATCH-1): the shim runs
+    #   `eve_patch.py launch-env` inside the jail and refuses the launch if it
+    #   cannot, so without these every launch from a checkout under $HOME
+    #   refused (found by the friends lane, which fixed jail-rootless.sh).
+    bind_back ro user file   patcher    "$REPO/tools/eve_patch.py"
+    bind_back ro user dir    patches    "$REPO/tools/patches"
+    #   the census (CEN-3), only while census0 is in this namespace, which
+    #   only census-up makes: the browser stand-ins the shim puts first on
+    #   PATH and the canary script (read-only), and the two logs the client's
+    #   side appends to (read-write files, not their directory: the sink's
+    #   and the proxy's logs beside them stay out of the client's reach).
+    if census_here; then
+        bind_back ro user dir    census-bin    "$REPO/tools/census"
+        bind_back ro user file   census-canary "$REPO/tools/census_canary.py"
+        bind_back ro user file   census-wire   "$REPO/tools/census_wire.py"
+        bind_back rw user file   census-exec   "$CENSUS_LIVE/exec.log"
+        bind_back rw user file   census-marks  "$CENSUS_LIVE/canary.jsonl"
+    fi
+
+    mask_tree run   /run 0755 0 0
+    if [[ $(realpath -m -- /var/run) != /run ]]; then
+        mask_tree var-run /var/run 0755 0 0
+    fi
+    mask_tree tmp   /tmp 1777 0 0
+    mask_tree home  "$HOME_R" 0700 "$UID_C" "$GID_C"
+    if [[ -n $RUNTIME_R ]]; then
+        mask_tree runtime "$RUNTIME_R" 0700 "$UID_C" "$GID_C"
+    fi
+    #   network shares (ruling 15): the NAS automounts live under /media.
+    if [[ -d /media ]]; then mask_tree media /media 0755 0 0; fi
+    if [[ -d /mnt ]];   then mask_tree mnt   /mnt   0755 0 0; fi
+
+    place_all
+    mask_sockets
+    umount -- "$STAGE"
+    mount -t tmpfs -o nosuid,nodev,mode=1777 eve-jail-shm /dev/shm
+    say "view  bound back: ${B_LABEL[*]:-nothing}"
+}
+
+# Every socket the client can see must be one the allowlist bound back.
+# Directories bound back (Proton, prefix, game, ResFiles) and /run/udev are
+# pruned: they are the client's own files, or root's 0600 control socket.
+scan_view() {
+    local -a roots=(/run /tmp /dev/shm "$HOME_R") prune=() want=()
+    local i p w bad=0 hit
+    if [[ -n $RUNTIME_R ]]; then roots+=("$RUNTIME_R"); fi
+    for i in "${!B_TARGET[@]}"; do
+        case ${B_KIND[$i]} in
+            dir)    prune+=(-path "${B_TARGET[$i]}" -o) ;;
+            socket) want+=("${B_TARGET[$i]}") ;;
+        esac
+    done
+    while IFS= read -r -d '' p; do
+        hit=0
+        for w in "${want[@]}"; do [[ $p == "$w" ]] && hit=1; done
+        if (( ! hit )); then say "LEAK  socket $p is visible inside the jail"; bad=1; fi
+    done < <(find "${roots[@]}" \( "${prune[@]}" -false \) -prune -o -type s -print0 2>/dev/null)
+    for p in "${NEVER_VISIBLE[@]}"; do
+        if [[ -e $p || -L $p ]]; then say "LEAK  $p is visible inside the jail"; bad=1; fi
+    done
+    (( bad == 0 )) || return 1
+    say "ok    the only sockets inside the jail are the allowlist's: ${want[*]:-none}"
+}
+
+# Runs as the client user, after the drop and before the shim (ruling 3): the
+# check on groups is made by the process that would use them. Ruling 15: it
+# runs as pid 1 of the client's own pid namespace, and refuses unless /proc
+# is that namespace's, no network filesystem is visible, and a connect to
+# every inventoried host socket (fd 4) fails. With no shim it only checks
+# (verify). Otherwise it stays pid 1 until every process in the namespace has
+# gone: Proton returns once wineserver has the game, and the kernel kills a
+# pid namespace whose init exits.
+USER_GATE='shim=$1 netfs=$2 want=$3 connect=$4; shift 4
+refuse() { echo "eve-offline-jail: $*; refusing to launch" >&2; exit 1; }
+for g in $(id -G); do
+    for d in "$@"; do
+        if [[ $g == "$d" ]]; then refuse "the client still holds gid $g (docker, libvirt, sudo or lxd)"; fi
+    done
+done
+for s in /run/docker.sock /var/run/docker.sock; do
+    if [[ -e $s ]]; then refuse "$s is visible to the client"; fi
+done
+[[ $$ == 1 && /proc/self -ef /proc/1 ]] || refuse "not pid 1 of a pid namespace with its own /proc"
+mounts=$(findmnt -rn -o TARGET,FSTYPE) || refuse "cannot list the mounts"
+while read -r p t; do
+    [[ -n $p && " $netfs " == *" $t "* ]] || continue
+    p=$(printf %b "$p")
+    case $p in /proc|/proc/*|/sys|/sys/*) continue ;; esac
+    if [[ -e $p ]]; then refuse "network filesystem $t visible at $p"; fi
+done <<< "$mounts"
+python3 -I -c "$connect" $want <&4 || refuse "a host socket is reachable"
+exec 4<&-
+echo "ok    own pid namespace and /proc; no network filesystem visible"
+[[ -n $shim ]] || exit 0
+rc=0
+"$shim" || rc=$?
+while :; do
+    others=0
+    for p in /proc/[0-9]*; do [[ ${p#/proc/} == 1 ]] || { others=1; break; }; done
+    (( others )) || exit "$rc"
+    sleep 2
+done'
+
+# The connect gate (ruling 15), run by USER_GATE as the caller: every
+# inventoried path and abstract name, as stream, datagram and seqpacket. Any
+# connect that succeeds, or hangs on a full backlog, is a leak.
+CONNECT_GATE='
+import os, socket, sys
+want = set(sys.argv[1:])
+bad = n = 0
+for p in os.fdopen(4, "rb").read().split(b"\0"):
+    if not p or os.fsdecode(p) in want:
+        continue
+    n += 1
+    addr = b"\0" + p[1:] if p.startswith(b"@") else p
+    for kind in (socket.SOCK_STREAM, socket.SOCK_DGRAM, socket.SOCK_SEQPACKET):
+        s = socket.socket(socket.AF_UNIX, kind)
+        s.settimeout(2)
+        try:
+            s.connect(addr)
+            hit = True
+        except (socket.timeout, TimeoutError):
+            hit = True
+        except OSError:
+            hit = False
+        finally:
+            s.close()
+        if hit:
+            print("LEAK  connected to " + os.fsdecode(p))
+            bad = 1
+            break
+if not bad:
+    print("ok    failed to connect to every one of %d host sockets and names" % n)
+sys.exit(bad)'
+
+# The launch: a pid namespace and /proc of the client's own (ruling 15), the
+# drop to the caller with no groups and no_new_privs, then USER_GATE with the
+# inventory on fd 4. SHIM empty: check only.
+run_gate() {
+    local shim=$1 i g gid
+    local -a gids=() want=()
+    for i in "${!B_TARGET[@]}"; do
+        if [[ ${B_KIND[$i]} == socket ]]; then want+=("${B_TARGET[$i]}"); fi
+    done
+    for g in $DENIED_GROUPS; do
+        gid=$(getent group "$g" | cut -d: -f3) || continue
+        [[ -n $gid ]] && gids+=("$gid")
+    done
+    unshare --pid --fork --kill-child --mount-proc -- \
+        setpriv --reuid="$UID_C" --regid="$GID_C" --clear-groups --no-new-privs -- \
+        bash -c "$USER_GATE" eve-offline-jail-gate "$shim" "$NETFS" "${want[*]:-}" "$CONNECT_GATE" "${gids[@]}" \
+        4< <(printf '%s\0' "${SOCKETS[@]}")
+}
+
+v_in_jail_client() {
+    caller_ids
+    assert_in_jail
+    build_view
+    scan_view || die "a socket outside the allowlist is visible inside the jail; refusing to launch the client"
+    export WINEDLLOVERRIDES=$NO_BROWSER
+    run_gate "$CLIENT_SHIM"
+}
+
+# The half of `verify` that has to see what the client sees: name lookups go
+# through the masked view (so no host resolver socket can answer them), and
+# the socket scan runs on the very view v_in_jail_client builds.
+v_in_jail_verify() {
+    caller_ids
+    assert_in_jail
+    build_view
+    local failed=0 got name
+    for name in sentry.io clientresources.eveonline.com; do
+        if timeout 3 getent hosts "$name" >/dev/null 2>&1; then
+            say "LEAK  resolved $name"; failed=1
+        else
+            say "ok    cannot resolve $name"
+        fi
+    done
+    got=$(timeout 3 getent hosts "$SERVER_NAME" 2>/dev/null | awk '{print $1; exit}') || got=''
+    if [[ $got == "$HOST_IP" ]]; then
+        say "ok    $SERVER_NAME -> $got"
+    elif [[ -z $got ]]; then
+        say "--    $SERVER_NAME did not resolve (expected until the resolver runs)"
+    else
+        say "LEAK  $SERVER_NAME -> $got, expected $HOST_IP"; failed=1
+    fi
+    scan_view || failed=1
+    run_gate "" || failed=1
+    (( failed == 0 ))
+}
+
+# The egress probes. Deliberately a snapshot of tools/jail-verify.sh's shape
+# rather than a call into it: the whole point of this verb is an assurance
+# that does not depend on a file the caller can edit. Every target is on this
+# machine or this LAN, derived at run time (ruling 10: no third-party
+# address; `ip route get` on TEST-NET sends nothing).
+v_verify() {
+    ns_exists || die "namespace $NS does not exist"
+    local failed=0 gw self routes chain
+    leak() { say "LEAK  $*"; failed=1; }
+    probe() { # name, command...
+        local name=$1; shift
+        if ip netns exec "$NS" timeout 3 "$@" >/dev/null 2>&1; then
+            leak "$name"
+        else
+            say "ok    $name blocked"
+        fi
+    }
+    if nft list table inet eve_offline_jail >/dev/null 2>&1; then
+        say "ok    host table inet eve_offline_jail (no forwarding for the jail)"
+    else
+        leak "host table inet eve_offline_jail is missing: the host may forward for the jail"
+    fi
+    for chain in output input; do
+        if grep -q 'policy drop;' <<<"$(ip netns exec "$NS" nft list chain inet eve_offline_out "$chain" 2>/dev/null)"; then
+            say "ok    jail chain $chain has policy drop"
+        else
+            leak "jail chain inet eve_offline_out $chain is missing or not policy drop"
+        fi
+    done
+    routes=$(ip netns exec "$NS" ip -4 route show 2>/dev/null | awk 'NF {print $1}')
+    if [[ $routes == "${HOST_IP%.*}.0/$PREFIX" ]]; then
+        say "ok    the only route is ${HOST_IP%.*}.0/$PREFIX"
+    else
+        leak "routes in the jail are '$(echo $routes)', expected exactly ${HOST_IP%.*}.0/$PREFIX"
+    fi
+    if grep -q . <<<"$(ip netns exec "$NS" ip -6 route show default 2>/dev/null)"; then
+        leak "an IPv6 default route exists"
+    else
+        say "ok    no IPv6 default route"
+    fi
+    if grep -q inet6 <<<"$(ip netns exec "$NS" ip -6 addr show scope global 2>/dev/null)"; then
+        leak "a global IPv6 address exists"
+    else
+        say "ok    no global IPv6"
+    fi
+
+    gw=$(ip -4 route show default 2>/dev/null | awk '{print $3; exit}')
+    self=$(ip -4 route get 192.0.2.1 2>/dev/null \
+           | awk '{for (i = 1; i < NF; i++) if ($i == "src") { print $(i + 1); exit }}')
+    if [[ -n $gw ]]; then
+        probe "the LAN gateway $gw:53" bash -c "exec 3<>/dev/tcp/$gw/53"
+        probe "the LAN gateway $gw:80" bash -c "exec 3<>/dev/tcp/$gw/80"
+    else
+        say "--    the host has no default route; no gateway to probe"
+    fi
+    probe "docker0 on this host"     bash -c 'exec 3<>/dev/tcp/172.17.0.1/53'
+    probe "the libvirt bridge"       bash -c 'exec 3<>/dev/tcp/192.168.122.1/53'
+    if [[ -n $self && $self != "$HOST_IP" ]]; then
+        probe "the host's LAN address $self:22"    bash -c "exec 3<>/dev/tcp/$self/22"
+        probe "the host's LAN address $self:26000" bash -c "exec 3<>/dev/tcp/$self/26000"
+    fi
+    probe "udp $HOST_IP:123 (only 53 is allowed)" \
+        bash -c "exec 3<>/dev/udp/$HOST_IP/123 && printf x >&3"
+
+    ip netns exec "$NS" unshare --mount --propagation private -- "$SELF" in-jail-verify || failed=1
+    (( failed == 0 )) || die "JAIL LEAKS -- refusing to call this verified"
+    say "JAIL OK - no egress path found, the client sees only the allowlist, and no host socket answers it"
+}
+
+# The mirror image of `verify`: that one proves nothing gets OUT, this one
+# proves the one permitted path IN actually works, checked from inside the
+# namespace because that is the only place the answer means anything.
+#
+# **Why this cannot live in up.sh.** Entering a network namespace needs
+# CAP_SYS_ADMIN, so up.sh used to do it with `sudo ip netns exec`. On a
+# machine with the helper and no cached timestamp -- an unattended run, the
+# case the helper exists for -- that sudo fails, the probe returns nothing,
+# and up.sh reports "resolved to nothing" and tears the stack down. The
+# resolver was fine both times it happened; the check was broken, not the
+# thing it checked. A fixed probe set behind its own verb cannot fail that
+# way.
+#
+# Run this AFTER the resolver and the game server are up; it asserts they
+# answer, so it is meaningless before they exist.
+v_preflight() {
+    ns_exists || die "namespace $NS does not exist; run 'up' first"
+    local failed=0
+
+    # 1. the namespace's own resolv.conf -- a file WE wrote in `up`, so a
+    #    mismatch here means our own setup drifted, not the caller's.
+    local conf="/etc/netns/$NS/resolv.conf" ns_server=''
+    if [[ -r $conf ]]; then
+        ns_server=$(awk '$1=="nameserver"{print $2; exit}' "$conf")
+    fi
+    if [[ $ns_server == "$HOST_IP" ]]; then
+        say "ok    resolv.conf in the namespace points at $HOST_IP"
+    else
+        say "FAIL  $conf names '${ns_server:-nothing}', expected $HOST_IP"; failed=1
+    fi
+
+    # 2. the name the client looks up, resolved THROUGH that resolv.conf. A
+    #    fresh resolver can need a beat, so retry rather than flap.
+    local got='' i
+    for i in 1 2 3 4 5; do
+        got=$(ip netns exec "$NS" timeout 3 getent hosts "$SERVER_NAME" 2>/dev/null \
+              | awk '{print $1; exit}') || got=''
+        [[ -n $got ]] && break
+        sleep 0.5
+    done
+    if [[ $got == "$HOST_IP" ]]; then
+        say "ok    $SERVER_NAME -> $got"
+    else
+        say "FAIL  $SERVER_NAME resolved to '${got:-nothing}', expected $HOST_IP"; failed=1
+    fi
+
+    # 3. the game port, from inside. Proves routing and nftables together.
+    if ip netns exec "$NS" timeout 3 bash -c "exec 3<>/dev/tcp/$HOST_IP/26000" 2>/dev/null; then
+        say "ok    $HOST_IP:26000 accepts a connection from inside the jail"
+    else
+        say "FAIL  $HOST_IP:26000 is NOT reachable from inside the jail"; failed=1
+    fi
+
+    (( failed == 0 )) || die "PREFLIGHT FAILED -- the client would not find the server"
+    say "PREFLIGHT OK - the client can reach us"
+}
+
+# The stub resolver, which needs exactly one capability: binding a port below
+# 1024. It is OUR binary, rebuilt from the repo on every run, so root must not
+# execute it -- it runs as the invoking user with CAP_NET_BIND_SERVICE and
+# nothing else. If it were malicious it could bind a low port. That is all.
+v_dns() {
+    ns_exists || die "namespace $NS does not exist; run 'up' first"
+    [[ -x $DNS_BIN ]] || die "no resolver at $DNS_BIN (build it first)"
+    pkill -f "^$DNS_BIN " 2>/dev/null || true
+    # **Fully detached, and that is not tidiness.** A plain `&` leaves the
+    # child holding this process's stdout, so `sudo ... dns` never returns:
+    # any caller that reads our output waits for the resolver to exit, which
+    # is for ever. Found by the very first invocation of this verb.
+    #
+    # `/dev/null` rather than a log file on purpose. The redirect is performed
+    # by **root**, before `setpriv` drops, so aiming it at a path under the
+    # repo would be root opening a file the invoking user can replace with a
+    # symlink. The query log is `--log`, which eve-dns opens itself as the
+    # caller (and refuses to open as root), so it costs root nothing.
+    setsid setpriv --reuid="$(caller_uid)" --regid="$(caller_gid)" --clear-groups \
+            --inh-caps=+net_bind_service --ambient-caps=+net_bind_service \
+            "$DNS_BIN" --bind "$HOST_IP:53" --target "$HOST_IP" --log "$DNS_LOG" \
+            </dev/null >/dev/null 2>&1 &
+    say "resolver started as uid $(caller_uid) on $HOST_IP:53 (pid $!)"
+}
+
+# Enter the namespace, build the client's view, and only then stop being root.
+#
+# Root is needed to ENTER the namespace and to build the mount allowlist
+# (v_in_jail_client, code in this file); `setpriv` drops to the invoking user,
+# with no supplementary groups and no_new_privs, before exec'ing anything out
+# of the repo, so the shim -- user-writable -- never runs with privilege. The
+# client then holds strictly less than the session the user already has: no
+# route out, and a filesystem view that is a subset of theirs.
+v_client() {
+    ns_exists || die "namespace $NS does not exist; run 'up' first"
+    [[ -x $CLIENT_SHIM ]] || die "no client shim at $CLIENT_SHIM"
+    exec ip netns exec "$NS" unshare --mount --propagation private -- "$SELF" in-jail-client
+}
+
+v_status() {
+    if ns_exists; then say "namespace $NS: up"; else say "namespace $NS: down"; fi
+    ip link show "$HOST_IF" >/dev/null 2>&1 && say "veth $HOST_IF: up" || say "veth $HOST_IF: absent"
+    pgrep -f "^$DNS_BIN " >/dev/null 2>&1 && say "resolver: running" || say "resolver: not running"
+    if ns_exists && census_present; then say "census: up ($CENSUS_DEV)"; else say "census: down"; fi
+}
+
+# --- the census (CEN-2; docs/census.md, R-CENSUS §1) -------------------------
+#
+# The jail cannot see an attempt to an IP literal or to any IPv6 address: with
+# no route, connect() fails at routing, before every hook. The census gives
+# the namespace a default route (v4 and v6) into a TUN device, census0, that
+# tools/census_sink.py reads as the caller. A TUN device has no wire, so a
+# packet routed into it exists only as bytes in that reader's fd; nothing
+# can leave. The jail's own tables stay as they are, plus one accept rule for
+# census0, and the host's forward drop is untouched.
+#
+# Rule 1 holds: root runs only `ip`, `nft`, `sysctl`, `setpriv`, `ss` and
+# `kill`. The recorders are repo code, so they run as the caller (setpriv
+# --clear-groups --no-new-privs, the v_dns pattern) and open their own logs
+# under $CENSUS_LIVE. Root never opens a path the caller can write; the one
+# thing it reads there, the sink's mode, it reads as the caller.
+#
+#   census-up      census0 (caller-owned), routes, the R2 table, the accept
+#                  rule, port 9 unprivileged, Wine's ping allowed; then the
+#                  sink and the dead proxy, as the caller
+#   census-dump    `nft -j list table inet eve_census` (R2) on stdout
+#   census-down    SIGTERM to the recorders (each writes its stop line), then
+#                  undo census-up exactly; `verify` passes again afterwards
+#   census-verify  the census shape: links, routes, addresses, the recorders
+#
+# `verify` keeps asserting "the only route is 10.137.0.0/30", so it FAILS
+# while the census is up. Run it before census-up and after census-down.
+CENSUS_DEV=census0
+# RFC 2544's bench range and a ULA: neither is routable anywhere.
+CENSUS_V4=198.18.0.2/32
+CENSUS_V6=fd00:ce:5::2/64
+CENSUS_LIVE="$REPO/out/census/live"
+CENSUS_SINK="$REPO/tools/census_sink.py"
+CENSUS_PROXY="$REPO/tools/census_proxy.py"
+CENSUS_PROXY_PORT=9
+# Root-owned: the recorders' stderr. Never a path under the repo.
+CENSUS_STATE=/run/eve-offline-census
+# The netns defaults census-down restores (Linux's own).
+UNPRIV_PORT_DEFAULT=1024
+PING_GROUP_DEFAULT='1 0'
+CENSUS_RULE_COMMENT='census0 into the sink'
+
+# R2 (R-CENSUS §1.2): a per-flow counter for every output packet, at priority
+# -10, before the jail's drop (0), and it never drops anything. It sees what
+# R1 cannot: 10.137.0.1 on a port the jail drops, and loopback. tools/test_jail.py
+# checks this text with `nft -c` in a user namespace.
+census_nft() {
+    cat <<'NFT'
+table inet eve_census {
+    set tcp4 { type ipv4_addr . inet_service; flags dynamic; counter; size 65536; }
+    set udp4 { type ipv4_addr . inet_service; flags dynamic; counter; size 65536; }
+    set tcp6 { type ipv6_addr . inet_service; flags dynamic; counter; size 65536; }
+    set udp6 { type ipv6_addr . inet_service; flags dynamic; counter; size 65536; }
+    set oth4 { type ipv4_addr . inet_proto; flags dynamic; counter; size 4096; }
+    set oth6 { type ipv6_addr . inet_proto; flags dynamic; counter; size 4096; }
+    chain output {
+        type filter hook output priority -10; policy accept;
+        meta nfproto ipv4 tcp flags & (syn | ack) == syn update @tcp4 { ip daddr . tcp dport }
+        meta nfproto ipv6 tcp flags & (syn | ack) == syn update @tcp6 { ip6 daddr . tcp dport }
+        meta nfproto ipv4 meta l4proto udp update @udp4 { ip daddr . udp dport }
+        meta nfproto ipv6 meta l4proto udp update @udp6 { ip6 daddr . udp dport }
+        meta nfproto ipv4 meta l4proto != { tcp, udp } update @oth4 { ip daddr . meta l4proto }
+        meta nfproto ipv6 meta l4proto != { tcp, udp } update @oth6 { ip6 daddr . meta l4proto }
+    }
+}
+NFT
+}
+
+in_ns() { ip netns exec "$NS" "$@"; }
+# Inside the namespace already (build_view runs there): is the census up?
+census_here() { ip link show "$CENSUS_DEV" >/dev/null 2>&1; }
+census_present() { ip -n "$NS" link show "$CENSUS_DEV" >/dev/null 2>&1; }
+
+# The pids of one recorder: our exact command line, in this netns.
+census_pids() {   # SCRIPT
+    local pid
+    for pid in $(pgrep -f "^python3 -I $1 " 2>/dev/null || true); do
+        [[ $(ip netns identify "$pid" 2>/dev/null) == "$NS" ]] && printf '%s\n' "$pid"
+    done
+    return 0
+}
+
+# Start one recorder as the caller, in the netns, detached (v_dns's reasons).
+# Its stderr goes to a root-owned file in CENSUS_STATE, opened by root in a
+# root-owned directory, so census-up can show why one died.
+census_start() {   # NAME SCRIPT ARGS...
+    local name=$1; shift
+    ip netns exec "$NS" setsid setpriv --reuid="$UID_C" --regid="$GID_C" --clear-groups --no-new-privs -- \
+        python3 -I "$@" </dev/null >/dev/null 2>"$CENSUS_STATE/$name.err" &
+}
+
+# SIGTERM, then wait: each recorder writes its stop line on SIGTERM, and a
+# sink log with no stop line reads as "died" (INVALID) in the report.
+census_stop_recorders() {
+    local script pid i left
+    for script in "$CENSUS_SINK" "$CENSUS_PROXY"; do
+        for pid in $(census_pids "$script"); do kill -TERM "$pid" 2>/dev/null || true; done
+    done
+    for i in $(seq 1 50); do
+        left=$(census_pids "$CENSUS_SINK"; census_pids "$CENSUS_PROXY")
+        [[ -z $left ]] && return 0
+        sleep 0.2
+    done
+    say "WARN  a recorder ignored SIGTERM for 10 s; killed (its log has no stop line)"
+    for pid in $left; do kill -KILL "$pid" 2>/dev/null || true; done
+}
+
+# Build the census. Every step is checked (set -e does not hold inside a
+# function called from `||`); the caller rolls back on any failure.
+census_build() {
+    local mode=$1
+    ip -n "$NS" tuntap add dev "$CENSUS_DEV" mode tun user "$UID_C" group "$GID_C" || return 1
+    # Before the link is up, so the kernel never solicits a router on it.
+    in_ns sysctl -qw "net.ipv6.conf.$CENSUS_DEV.router_solicitations=0" || return 1
+    in_ns sysctl -qw "net.ipv6.conf.$CENSUS_DEV.accept_ra=0" || return 1
+    ip -n "$NS" addr add "$CENSUS_V4" dev "$CENSUS_DEV" || return 1
+    ip -n "$NS" -6 addr add "$CENSUS_V6" dev "$CENSUS_DEV" nodad || return 1
+    ip -n "$NS" link set "$CENSUS_DEV" up || return 1
+    ip -n "$NS" route add default dev "$CENSUS_DEV" || return 1
+    ip -n "$NS" -6 route add default dev "$CENSUS_DEV" || return 1
+    # Per-netns, both: Wine's IcmpSendEcho needs an unprivileged ping
+    # socket, and the caller's proxy binds 127.0.0.1:9.
+    in_ns sysctl -qw "net.ipv4.ping_group_range=0 2147483647" || return 1
+    in_ns sysctl -qw "net.ipv4.ip_unprivileged_port_start=$CENSUS_PROXY_PORT" || return 1
+    census_nft | in_ns nft -c -f - || return 1
+    census_nft | in_ns nft -f - || return 1
+    in_ns nft insert rule inet eve_offline_out output oifname "$CENSUS_DEV" accept comment "\"$CENSUS_RULE_COMMENT\"" || return 1
+    mkdir -p -m 0700 "$CENSUS_STATE" || return 1
+    census_start sink "$CENSUS_SINK" --dev "$CENSUS_DEV" --out "$CENSUS_LIVE/tun.jsonl" --mode "$mode"
+    census_start proxy "$CENSUS_PROXY" --out "$CENSUS_LIVE/proxy.jsonl" --port "$CENSUS_PROXY_PORT"
+    local i
+    for i in $(seq 1 50); do
+        if [[ -n $(census_pids "$CENSUS_SINK") ]] && ! grep -q NO-CARRIER <<<"$(ip -n "$NS" link show "$CENSUS_DEV")" \
+           && grep -q . <<<"$(in_ns ss -Hltn "sport = :$CENSUS_PROXY_PORT" 2>/dev/null)"; then
+            return 0
+        fi
+        sleep 0.2
+    done
+    say "FAIL  the recorders did not come up in 10 s"
+    local name
+    for name in sink proxy; do
+        [[ -s $CENSUS_STATE/$name.err ]] && sed "s/^/      $name: /" "$CENSUS_STATE/$name.err" | tail -n 5
+    done
+    return 1
+}
+
+# Undo census-up, every step, whether or not it got that far.
+census_teardown() {
+    local h
+    census_stop_recorders
+    for h in $(in_ns nft -a list chain inet eve_offline_out output 2>/dev/null \
+               | awk -v c="comment \"$CENSUS_RULE_COMMENT\"" 'index($0, c) { print $NF }'); do
+        [[ $h =~ ^[0-9]+$ ]] && in_ns nft delete rule inet eve_offline_out output handle "$h" 2>/dev/null
+    done
+    in_ns nft delete table inet eve_census 2>/dev/null || true
+    ip -n "$NS" route del default dev "$CENSUS_DEV" 2>/dev/null || true
+    ip -n "$NS" -6 route del default dev "$CENSUS_DEV" 2>/dev/null || true
+    ip -n "$NS" tuntap del dev "$CENSUS_DEV" mode tun 2>/dev/null || true
+    in_ns sysctl -qw "net.ipv4.ip_unprivileged_port_start=$UNPRIV_PORT_DEFAULT" 2>/dev/null || true
+    in_ns sysctl -qw "net.ipv4.ping_group_range=$PING_GROUP_DEFAULT" 2>/dev/null || true
+}
+
+v_census_up() {
+    ns_exists || die "namespace $NS does not exist; run 'up' first"
+    caller_ids
+    census_present && die "$CENSUS_DEV already exists in $NS; run census-down first"
+    # The live directory is the caller's, made by tools/client-ci.sh; checked
+    # as the caller, so a symlink to somewhere only root can write is refused.
+    as_caller bash -c '[[ -d $1 && ! -L $1 && -O $1 && -w $1 ]]' _ "$CENSUS_LIVE" \
+        || die "no directory $CENSUS_LIVE of the caller's (tools/client-ci.sh --census makes it)"
+    local mode
+    mode=$(as_caller cat -- "$CENSUS_LIVE/mode" 2>/dev/null || true)
+    case $mode in
+        '') mode=observe ;;
+        observe|handshake) ;;
+        *) die "$CENSUS_LIVE/mode says '$mode'; it must be observe or handshake" ;;
+    esac
+    if ! census_build "$mode"; then
+        census_teardown
+        die "census-up failed; everything it did is undone"
+    fi
+    say "census up in $NS: default routes (v4, v6) -> $CENSUS_DEV; sink ($mode) and proxy (127.0.0.1:$CENSUS_PROXY_PORT) as uid $UID_C"
+}
+
+v_census_down() {
+    ns_exists || { say "no namespace $NS; nothing to undo"; return 0; }
+    census_teardown
+    if census_present; then die "$CENSUS_DEV is still there after census-down"; fi
+    say "census down in $NS; run verify to see the jail as it was"
+}
+
+v_census_dump() {
+    ns_exists || die "namespace $NS does not exist"
+    in_ns nft -j list table inet eve_census
+}
+
+v_census_verify() {
+    ns_exists || die "namespace $NS does not exist"
+    caller_ids
+    local failed=0 links got want pid fd hit
+    leak() { say "FAIL  $*"; failed=1; }
+    ok() { say "ok    $*"; }
+    links=$(ip -n "$NS" -o link show | awk -F': ' '{ sub(/@.*/, "", $2); print $2 }' | sort | tr '\n' ' ')
+    want=$(printf '%s\n' lo "$NS_IF" "$CENSUS_DEV" | sort | tr '\n' ' ')
+    [[ $links == "$want" ]] && ok "links: $links" || leak "links are '$links', expected '$want'"
+    got=$(in_ns cat "/sys/class/net/$CENSUS_DEV/tun_flags" 2>/dev/null || true)
+    # IFF_PERSIST (0x800) rides along: `ip tuntap add` makes the device persistent.
+    [[ $got == 0x[0-9a-f]* ]] && (( (got & ~0x800) == 0x1001 )) && ok "$CENSUS_DEV is a TUN device (IFF_TUN|IFF_NO_PI)" || leak "$CENSUS_DEV tun_flags '$got', expected 0x1001"
+    got=$(in_ns cat "/sys/class/net/$CENSUS_DEV/owner" 2>/dev/null || true)
+    [[ $got == "$UID_C" ]] && ok "$CENSUS_DEV is owned by uid $UID_C" || leak "$CENSUS_DEV owner '$got', expected $UID_C"
+    got=$(ip -n "$NS" -4 route show | awk 'NF { r = $1; for (i = 1; i < NF; i++) if ($i == "dev") r = r " dev " $(i + 1); print r }' | sort | tr '\n' ';')
+    want="${HOST_IP%.*}.0/$PREFIX dev $NS_IF;default dev $CENSUS_DEV;"
+    [[ $got == "$want" ]] && ok "v4 routes: $got" || leak "v4 routes '$got', expected '$want'"
+    got=$(ip -n "$NS" -6 route show default | awk 'NF { for (i = 1; i < NF; i++) if ($i == "dev") print $(i + 1) }' | tr '\n' ' ')
+    [[ $got == "$CENSUS_DEV " ]] && ok "the v6 default route is $CENSUS_DEV" || leak "v6 default routes via '$got', expected exactly $CENSUS_DEV"
+    got=$(ip -n "$NS" -o addr show dev "$CENSUS_DEV" | awk '$3 ~ /^inet6?$/ && $4 !~ /^fe80:/ { print $4 }' | sort | tr '\n' ' ')
+    want=$(printf '%s\n' "$CENSUS_V4" "$CENSUS_V6" | sort | tr '\n' ' ')
+    [[ $got == "$want" ]] && ok "$CENSUS_DEV holds only $want(not routable anywhere)" || leak "$CENSUS_DEV addresses '$got', expected '$want'"
+    got=$(ip -n "$NS" -o addr show scope global | awk '$2 != "'"$CENSUS_DEV"'" && $3 == "inet6" { print $4 }')
+    [[ -z $got ]] && ok "no global IPv6 outside $CENSUS_DEV" || leak "global IPv6 elsewhere: $got"
+    nft list table inet eve_offline_jail >/dev/null 2>&1 && ok "host table inet eve_offline_jail" \
+        || leak "host table inet eve_offline_jail is missing: the host may forward for the jail"
+    grep -q 'policy drop;' <<<"$(in_ns nft list chain inet eve_offline_out output 2>/dev/null)" \
+        && ok "jail output chain still has policy drop" || leak "jail output chain is missing or not policy drop"
+    in_ns nft list table inet eve_census >/dev/null 2>&1 && ok "R2 table inet eve_census" || leak "no R2 table inet eve_census"
+    hit=0
+    for pid in $(census_pids "$CENSUS_SINK"); do
+        [[ $(stat -c %u "/proc/$pid") == "$UID_C" ]] || continue
+        for fd in /proc/"$pid"/fd/*; do [[ $(readlink "$fd" 2>/dev/null) == /dev/net/tun ]] && hit=1; done
+    done
+    (( hit )) && ok "the sink runs as uid $UID_C and holds the TUN fd" || leak "no sink of uid $UID_C holds /dev/net/tun"
+    hit=0
+    for pid in $(census_pids "$CENSUS_PROXY"); do [[ $(stat -c %u "/proc/$pid") == "$UID_C" ]] && hit=1; done
+    grep -q "127.0.0.1:$CENSUS_PROXY_PORT" <<<"$(in_ns ss -Hltn "sport = :$CENSUS_PROXY_PORT" 2>/dev/null)" || hit=0
+    (( hit )) && ok "the proxy runs as uid $UID_C on 127.0.0.1:$CENSUS_PROXY_PORT" || leak "no proxy of uid $UID_C listening on 127.0.0.1:$CENSUS_PROXY_PORT"
+    (( failed == 0 )) || die "CENSUS NOT IN PLACE -- refusing to call this a census"
+    say "CENSUS OK - every route ends in $CENSUS_DEV, and the recorders are running"
+}
+
+# Sourced (tools/test_jail.py builds the view in a user namespace): define,
+# never act.
+[[ ${BASH_SOURCE[0]} == "$0" ]] || return 0
+assert_trusted
+case "${1:-}" in
+    up)     v_up ;;
+    down)   v_down ;;
+    verify) v_verify ;;
+    preflight) v_preflight ;;
+    dns)    v_dns ;;
+    client) v_client ;;
+    status) v_status ;;
+    census-up)     v_census_up ;;
+    census-down)   v_census_down ;;
+    census-dump)   v_census_dump ;;
+    census-verify) v_census_verify ;;
+    # Internal: reached only through v_client / v_verify, which put them in
+    # the jail's netns and a private mount namespace. Not in sudoers.
+    in-jail-client) v_in_jail_client ;;
+    in-jail-verify) v_in_jail_verify ;;
+    *) die "usage: eve-offline-jail up|down|verify|preflight|dns|client|status|census-up|census-down|census-dump|census-verify" ;;
+esac

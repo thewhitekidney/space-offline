@@ -1,0 +1,169 @@
+# findings/content-C6-npc-matrix.tsv -- lane C6 (docs/content/C6-npc-content.md).
+# Pirate NPC entity groups parsed by the group-name grammar
+# "<context> <faction> <class>" over groups.fsdbinary (category 11), build 3619879.
+# Aggregates only: type counts, the bounty range (attr 481 entityKillBounty, ISK),
+# how many types carry a missile (attr 507 entityMissileTypeID) or an ewar/tackle
+# effect (warpScramble/web/TP/damp/ECM/neut/TD), and the commonest wreckTypeID's name.
+# No type rows: the extractor in C6 section 6 regenerates them into out/.
+faction	context	class	groupIDs	types	bounty_min	bounty_max	with_missile	with_ewar	top_wreck
+Angel Cartel	Asteroid	BattleCruiser	576	6	175000	225000	4	0	Angel Medium Wreck
+Angel Cartel	Asteroid	Battleship	552	10	500000	1850000	6	2	Angel Large Wreck
+Angel Cartel	Asteroid	Commander BattleCruiser	793	6	1312500	1687500	4	0	Angel Medium Commander Wreck
+Angel Cartel	Asteroid	Commander Battleship	848	10	3750000	13875000	6	2	Angel Large Commander Wreck
+Angel Cartel	Asteroid	Commander Cruiser	790	10	375000	881250	6	4	Angel Medium Commander Wreck
+Angel Cartel	Asteroid	Commander Destroyer	794	6	112500	168750	0	0	Angel Small Commander Wreck
+Angel Cartel	Asteroid	Commander Frigate	789	21	30000	97500	5	4	Angel Small Commander Wreck
+Angel Cartel	Asteroid	Cruiser	551	24	50000	1750000	16	8	Angel Medium Wreck
+Angel Cartel	Asteroid	Destroyer	575	6	15000	22500	0	0	Angel Small Wreck
+Angel Cartel	Asteroid	Dreadnought	1681	2	60000000	120000000	0	2	Angel Dreadnought Wreck
+Angel Cartel	Asteroid	Frigate	550	32	4000	37500	10	12	Angel Small Wreck
+Angel Cartel	Asteroid	Hauler	554	17	8500	2000000	0	0	Angel Medium Wreck
+Angel Cartel	Asteroid	Officer	553	4	17343750	33874512	0	4	Angel Officer Wreck
+Angel Cartel	Asteroid	Officer Cruiser	4795	1	10000000	10000000	1	1	Angel Officer Cruiser Wreck
+Angel Cartel	Asteroid	Officer Frigate	4796	1	5000000	5000000	1	1	Angel Officer Frigate Wreck
+Angel Cartel	Asteroid	Titan	1682	1	240000000	240000000	0	1	Angel Titan Wreck
+Angel Cartel	Deadspace	BattleCruiser	593	13	131250	550000	13	1	Angel Medium Wreck
+Angel Cartel	Deadspace	Battleship	594	25	0	10000000	25	4	Angel Large Wreck
+Angel Cartel	Deadspace	Cruiser	595	36	25000	281250	29	11	Angel Medium Wreck
+Angel Cartel	Deadspace	Destroyer	596	13	11250	36800	13	1	Angel Small Wreck
+Angel Cartel	Deadspace	Frigate	597	34	0	200000	13	11	Angel Small Wreck
+Angel Cartel	Ghost Sites	Cruiser	1252	4	0	0	4	2	Angel Medium Wreck
+Angel Cartel	Roaming	Battleship	1727	1	2500000	2500000	1	0	Angel Large Wreck
+Angel Cartel	Roaming	Cruiser	1728	1	250000	250000	0	0	Angel Medium Wreck
+Angel Cartel	Roaming	Frigate	1729	1	10000	10000	0	0	Angel Small Wreck
+Blood Raiders	Asteroid	BattleCruiser	578	6	175000	225000	0	0	Blood Medium Wreck
+Blood Raiders	Asteroid	Battleship	556	10	500000	1850000	0	2	Blood Large Wreck
+Blood Raiders	Asteroid	Commander BattleCruiser	795	6	1312500	1687500	0	0	Blood Medium Commander Wreck
+Blood Raiders	Asteroid	Commander Battleship	849	10	3750000	13875000	0	2	Blood Large Commander Wreck
+Blood Raiders	Asteroid	Commander Cruiser	791	10	375000	881250	0	4	Blood Medium Commander Wreck
+Blood Raiders	Asteroid	Commander Destroyer	796	6	112500	168750	0	0	Blood Small Commander Wreck
+Blood Raiders	Asteroid	Commander Frigate	792	16	30000	97500	0	4	Blood Small Commander Wreck
+Blood Raiders	Asteroid	Cruiser	555	25	50000	1750000	0	11	Blood Medium Wreck
+Blood Raiders	Asteroid	Destroyer	577	6	15000	22500	0	0	Blood Small Wreck
+Blood Raiders	Asteroid	Dreadnought	1683	2	60000000	120000000	0	2	Blood Dreadnought Wreck
+Blood Raiders	Asteroid	Frigate	557	26	4000	37500	0	10	Blood Small Wreck
+Blood Raiders	Asteroid	Hauler	558	16	8500	1000000	0	0	Blood Medium Wreck
+Blood Raiders	Asteroid	Officer	559	4	17343750	33874512	0	4	Blood Officer Wreck
+Blood Raiders	Asteroid	Officer Cruiser	4797	1	10000000	10000000	0	1	Blood Officer Cruiser Wreck
+Blood Raiders	Asteroid	Officer Frigate	4798	1	5000000	5000000	0	1	Blood Officer Frigate Wreck
+Blood Raiders	Asteroid	Titan	1684	1	240000000	240000000	0	1	Blood Titan Wreck
+Blood Raiders	Deadspace	BattleCruiser	602	14	131250	5000000	0	1	Blood Medium Wreck
+Blood Raiders	Deadspace	Battleship	603	22	375000	3200000	17	4	Blood Large Wreck
+Blood Raiders	Deadspace	Cruiser	604	36	25000	281250	0	12	Blood Medium Wreck
+Blood Raiders	Deadspace	Destroyer	605	13	11250	36800	0	1	Blood Small Wreck
+Blood Raiders	Deadspace	Frigate	606	33	3000	30000	0	12	Blood Small Wreck
+Blood Raiders	Ghost Sites	Cruiser	1255	4	0	0	0	2	Blood Medium Wreck
+Blood Raiders	Roaming	Battlecruiser	1736	1	250000	250000	0	0	Blood Medium Wreck
+Blood Raiders	Roaming	Battleship	1737	1	2500000	2500000	1	1	Blood Large Wreck
+Blood Raiders	Roaming	Cruiser	1735	1	120000	120000	0	0	Blood Medium Wreck
+Blood Raiders	Roaming	Frigate	1734	1	10000	10000	0	1	Blood Small Wreck
+Guristas	Asteroid	BattleCruiser	580	6	175000	225000	6	0	Guristas Medium Wreck
+Guristas	Asteroid	Battleship	560	10	500000	1850000	10	2	Guristas Large Wreck
+Guristas	Asteroid	Commander BattleCruiser	797	6	1312500	1687500	6	0	Guristas Medium Commander Wreck
+Guristas	Asteroid	Commander Battleship	850	10	3750000	13875000	10	2	Guristas Large Commander Wreck
+Guristas	Asteroid	Commander Cruiser	798	15	375000	881250	13	6	Guristas Medium Commander Wreck
+Guristas	Asteroid	Commander Destroyer	799	8	112500	168750	0	0	Guristas Small Commander Wreck
+Guristas	Asteroid	Commander Frigate	800	20	30000	97500	13	4	Guristas Small Commander Wreck
+Guristas	Asteroid	Cruiser	561	28	50000	1750000	24	12	Guristas Medium Wreck
+Guristas	Asteroid	Destroyer	579	8	15000	22500	0	0	Guristas Small Wreck
+Guristas	Asteroid	Dreadnought	1685	2	60000000	120000000	2	2	Guristas Dreadnought Wreck
+Guristas	Asteroid	Frigate	562	31	4000	37500	24	10	Guristas Small Wreck
+Guristas	Asteroid	Hauler	563	17	8500	1000000	0	0	Guristas Medium Wreck
+Guristas	Asteroid	Officer	564	4	17343750	33874512	4	4	Guristas Officer Wreck
+Guristas	Asteroid	Officer Cruiser	4799	1	10000000	10000000	1	1	Guristas Officer Cruiser Wreck
+Guristas	Asteroid	Officer Frigate	4800	1	5000000	5000000	1	1	Guristas Officer Frigate Wreck
+Guristas	Asteroid	Titan	1686	1	240000000	240000000	1	1	Guristas Titan Wreck
+Guristas	Deadspace	BattleCruiser	611	13	131250	550000	13	1	Guristas Medium Wreck
+Guristas	Deadspace	Battleship	612	23	0	3200000	23	4	Guristas Large Wreck
+Guristas	Deadspace	Cruiser	613	34	25000	281250	32	12	Guristas Medium Wreck
+Guristas	Deadspace	Destroyer	614	13	11250	36800	13	1	Guristas Small Wreck
+Guristas	Deadspace	Frigate	615	35	0	1000000	28	14	Guristas Small Wreck
+Guristas	Ghost Sites	Cruiser	1259	4	0	0	4	2	Guristas Medium Wreck
+Mordu's Legion	Asteroid	Commander Battleship	1287	1	0	0	1	1	Mordus Large Commander Wreck
+Mordu's Legion	Asteroid	Commander Cruiser	1286	1	0	0	1	1	Mordus Medium Commander Wreck
+Mordu's Legion	Asteroid	Commander Frigate	1285	1	0	0	1	1	Mordus Small Commander Wreck
+Mordu's Legion	Ghost Sites	Legion	1288	3	0	900000	3	2	Mordu Large Wreck,Mordu Medium Wreck
+Mordu's Legion	Insurgency	Battlecruiser	4655	6	0	0	5	1	None,Gallente Medium Wreck
+Mordu's Legion	Insurgency	Battleship	4656	10	0	0	10	10	None,Mordu Large Wreck
+Mordu's Legion	Insurgency	Cruiser	4654	13	0	0	13	9	None,Mordu Medium Wreck
+Mordu's Legion	Insurgency	Destroyer	4653	9	0	0	9	5	None
+Mordu's Legion	Insurgency	Frigate	4652	10	0	0	9	6	None,Gallente Small Wreck
+Mordu's Legion	Mission	Battlecruiser	702	0			0	0	
+Mordu's Legion	Mission	Battleship	703	5	300000	5000000	5	0	Mordu Large Wreck
+Mordu's Legion	Mission	Cruiser	701	7	0	650000	7	0	Mordu Medium Wreck
+Mordu's Legion	Mission	Destroyer	700	0			0	0	
+Mordu's Legion	Mission	Frigate	699	8	3500	250000	4	2	Mordu Small Wreck
+Mordu's Legion	Mission	Other	704	0			0	0	
+Rogue Drones	Asteroid	BattleCruiser	755	6	175000	225000	4	0	Rogue Medium Wreck
+Rogue Drones	Asteroid	Battleship	756	10	500000	1850000	6	0	Rogue Large Wreck
+Rogue Drones	Asteroid	Carrier	1691	2	60000000	120000000	0	2	Rogue Carrier Wreck
+Rogue Drones	Asteroid	Commander BattleCruiser	843	6	1312500	1687500	4	0	Rogue Medium Commander Wreck
+Rogue Drones	Asteroid	Commander Battleship	844	10	3750000	13875000	6	0	Rogue Large Commander Wreck
+Rogue Drones	Asteroid	Commander Cruiser	845	10	375000	881250	6	0	Rogue Medium Commander Wreck
+Rogue Drones	Asteroid	Commander Destroyer	846	6	112500	168750	0	0	Rogue Small Commander Wreck
+Rogue Drones	Asteroid	Commander Frigate	847	10	30000	97500	2	0	Rogue Small Commander Wreck
+Rogue Drones	Asteroid	Cruiser	757	20	50000	375000	12	0	Rogue Medium Wreck
+Rogue Drones	Asteroid	Destroyer	758	6	15000	22500	0	0	Rogue Small Wreck
+Rogue Drones	Asteroid	Frigate	759	20	4000	37500	7	4	Rogue Small Wreck
+Rogue Drones	Asteroid	Hauler	760	12	8500	1000000	0	0	Rogue Medium Wreck
+Rogue Drones	Asteroid	Officer	1174	4	17343750	33874512	0	4	Rogue Officer Wreck
+Rogue Drones	Asteroid	Supercarrier	1692	1	240000000	240000000	0	1	Rogue Supercarrier Wreck
+Rogue Drones	Asteroid	Swarm	761	12	0	0	0	0	Rogue Small Wreck
+Rogue Drones	Deadspace	BattleCruiser	801	8	30000	550000	5	1	Rogue Medium Wreck
+Rogue Drones	Deadspace	Battleship	802	20	0	3200000	8	1	Rogue Large Wreck,Rogue Swarm Overmind Wreck
+Rogue Drones	Deadspace	Cruiser	803	32	0	281250	13	0	Rogue Medium Wreck
+Rogue Drones	Deadspace	Destroyer	804	8	0	36800	0	1	Rogue Small Wreck
+Rogue Drones	Deadspace	Frigate	805	26	0	28125	7	9	Rogue Small Wreck
+Rogue Drones	Deadspace	Swarm	806	14	3000	9875	0	0	Rogue Small Wreck
+Sansha's Nation	Asteroid	BattleCruiser	582	6	175000	225000	3	0	Sanshas Medium Wreck
+Sansha's Nation	Asteroid	Battleship	565	11	500000	1850000	5	3	Sanshas Large Wreck
+Sansha's Nation	Asteroid	Commander BattleCruiser	807	6	1312500	1687500	3	0	Sanshas Medium Commander Wreck
+Sansha's Nation	Asteroid	Commander Battleship	851	10	3750000	13875000	4	2	Sanshas Large Commander Wreck
+Sansha's Nation	Asteroid	Commander Cruiser	808	10	375000	881250	4	4	Sanshas Medium Commander Wreck
+Sansha's Nation	Asteroid	Commander Destroyer	809	6	112500	168750	0	0	Sanshas Small Commander Wreck
+Sansha's Nation	Asteroid	Commander Frigate	810	10	30000	97500	4	2	Sanshas Small Commander Wreck
+Sansha's Nation	Asteroid	Cruiser	566	24	50000	1750000	12	10	Sanshas Medium Wreck
+Sansha's Nation	Asteroid	Destroyer	581	6	15000	22500	0	0	Sanshas Small Wreck
+Sansha's Nation	Asteroid	Dreadnought	1687	2	60000000	120000000	0	2	Sansha Dreadnought Wreck
+Sansha's Nation	Asteroid	Frigate	567	19	4000	37500	7	8	Sanshas Small Wreck
+Sansha's Nation	Asteroid	Hauler	568	12	8500	1000000	0	0	Sanshas Medium Wreck
+Sansha's Nation	Asteroid	Officer	569	4	17343750	33874512	0	4	Sanshas Officer Wreck
+Sansha's Nation	Asteroid	Officer Cruiser	4801	1	10000000	10000000	0	1	Sansha Officer Cruiser Wreck
+Sansha's Nation	Asteroid	Officer Frigate	4802	1	5000000	5000000	0	1	Sansha Officer Frigate Wreck
+Sansha's Nation	Asteroid	Supercarrier	1688	1	240000000	240000000	0	1	Sanshas Supercarrier Wreck
+Sansha's Nation	Deadspace	BattleCruiser	620	13	131250	550000	6	1	Sanshas Medium Wreck
+Sansha's Nation	Deadspace	Battleship	621	22	375000	3200000	21	4	Sanshas Large Wreck
+Sansha's Nation	Deadspace	Cruiser	622	34	25000	281250	12	12	Sanshas Medium Wreck
+Sansha's Nation	Deadspace	Destroyer	623	13	11250	36800	0	1	Sanshas Small Wreck
+Sansha's Nation	Deadspace	Frigate	624	34	1000	30000	12	12	Sanshas Small Wreck
+Sansha's Nation	Ghost Sites	Cruiser	1265	4	0	0	4	2	Sanshas Medium Wreck
+Sansha's Nation	Incursion	Battleship	1056	10	0	0	7	7	Sanshas Large Wreck
+Sansha's Nation	Incursion	Capital	1052	2	0	0	0	2	Sanshas Supercarrier Wreck
+Sansha's Nation	Incursion	Cruiser	1054	10	0	0	2	2	Sanshas Medium Wreck
+Sansha's Nation	Incursion	Frigate	1053	10	0	0	2	7	Sanshas Small Wreck
+Sansha's Nation	Incursion	Industrial	1051	0			0	0	
+Serpentis	Asteroid	BattleCruiser	584	6	175000	225000	0	0	Serpentis Medium Wreck
+Serpentis	Asteroid	Battleship	570	10	500000	1850000	0	2	Serpentis Large Wreck
+Serpentis	Asteroid	Commander BattleCruiser	811	6	1312500	1687500	0	0	Serpentis Medium Commander Wreck
+Serpentis	Asteroid	Commander Battleship	852	10	3750000	13875000	0	2	Serpentis Large Commander Wreck
+Serpentis	Asteroid	Commander Cruiser	812	10	375000	881250	0	4	Serpentis Medium Commander Wreck
+Serpentis	Asteroid	Commander Destroyer	813	6	112500	168750	0	0	Serpentis Small Commander Wreck
+Serpentis	Asteroid	Commander Frigate	814	18	30000	97500	0	4	Serpentis Small Commander Wreck
+Serpentis	Asteroid	Cruiser	571	25	0	1750000	0	10	Serpentis Medium Wreck
+Serpentis	Asteroid	Destroyer	583	6	15000	22500	0	0	Serpentis Small Wreck
+Serpentis	Asteroid	Dreadnought	1689	2	60000000	120000000	0	2	Serpentis Dreadnought Wreck
+Serpentis	Asteroid	Frigate	572	28	4000	37500	0	10	Serpentis Small Wreck
+Serpentis	Asteroid	Hauler	573	16	8500	1000000	0	0	Serpentis Medium Wreck
+Serpentis	Asteroid	Officer	574	4	17343750	33874512	0	4	Serpentis Officer Wreck
+Serpentis	Asteroid	Officer Cruiser	4803	1	10000000	10000000	0	1	Serpentis Officer Cruiser Wreck
+Serpentis	Asteroid	Officer Frigate	4804	1	5000000	5000000	0	1	Serpentis Officer Frigate Wreck
+Serpentis	Asteroid	Titan	1690	1	240000000	240000000	0	1	Serpentis Titan Wreck
+Serpentis	Deadspace	BattleCruiser	629	13	131250	550000	0	1	Serpentis Medium Wreck
+Serpentis	Deadspace	Battleship	630	21	375000	3200000	1	4	Serpentis Large Wreck
+Serpentis	Deadspace	Cruiser	631	34	25000	1000000	0	13	Serpentis Medium Wreck
+Serpentis	Deadspace	Destroyer	632	15	11250	36800	0	1	Serpentis Small Wreck
+Serpentis	Deadspace	Frigate	633	33	3000	30000	0	11	Serpentis Small Wreck
+Serpentis	Ghost Sites	Cruiser	1262	4	0	0	0	2	Serpentis Medium Wreck
+Serpentis	Roaming	Battleship	1720	1	2500000	2500000	0	0	Serpentis Large Wreck
+Serpentis	Roaming	Cruiser	1721	1	250000	250000	0	0	Serpentis Medium Wreck
+Serpentis	Roaming	Frigate	1722	1	10000	10000	0	1	Serpentis Small Wreck

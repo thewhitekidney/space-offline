@@ -1,0 +1,346 @@
+{
+ "schema": 1,
+ "build": 3662168,
+ "comment": "eve_patch manifest for EVE client build 3662168 (stand-in for the 11-09 freeze). Derived from 3619879.json: every site is at the same offset with the same stock window (tools/build-delta.py; findings/build-delta-3619879-3662168.tsv); only the whole-file hashes moved, because CCP re-signed the binaries. Hashes, offsets and OUR replacement bytes only: no original client bytes. Checked with tools/eve_patch_author.py check against the stock tq-3662168 install, read-only.",
+ "identify": {
+  "start_ini_build": "3662168"
+ },
+ "files": {
+  "bin64/blue.dll": {
+   "id": "B0",
+   "tier": "B",
+   "kind": "bytes",
+   "size": 12078768,
+   "sha256_stock": "bfc3c167d25a5bd2cfaf0ea8d60e25028e9f034380885746bcccfb73645fc94a",
+   "sha256_patched": "011504474e8edc4f24ebf908b19f0731e790cd6b7e30f05f58026e4df0392660",
+   "why": "neutralise the root:/manifest.dat self-check so the client accepts our other edits (mov rbx,[rax+0x10] -> xor rbx,rbx; nop)",
+   "mark": "V",
+   "sites": [
+    {
+     "offset": 2051478,
+     "after_hex": "4831db90",
+     "window": 16,
+     "window_sha256_stock": "f276b3d534e4cc869353586dd367ea38bb7f5f47178dcccd547942764bf6dd43",
+     "window_sha256_patched": "87b0b6416b1fae17e5f80a8c2db87081a988b8cd36e82cccea2d4580b73f7f95",
+     "note": "after the VerifyManifestFile call"
+    }
+   ]
+  },
+  "start.ini": {
+   "id": "P0",
+   "tier": "B",
+   "kind": "ini",
+   "size": 315,
+   "sha256_stock": "4f8216ef3873b779acdcf414d6a061c61545fb2a489bb3288ef0cfd95b9965f0",
+   "sha256_patched": "592b00b79a9c098d395029d99e98bb3b673acc6f037938b68d3818105585dc72",
+   "set": {
+    "main.cryptoPack": "Placebo"
+   },
+   "eol": "lf",
+   "why": "cryptoPack = Placebo: the stream to our server is plain (not phone-home; needed to talk to our server). eol lf reproduces the bytes tools/client-prepare.py has always written, so an install prepared by it reads as patched",
+   "mark": "V"
+  },
+  "bin64/exefile.exe": {
+   "id": "B1",
+   "tier": "B",
+   "kind": "bytes",
+   "size": 1003184,
+   "sha256_stock": "4c33ad1b4d95c80d2d314849ff6b577a27b6d2420d3ca52641ec3a354ea3d787",
+   "sha256_patched": "332e0a60bdefca2da111e2e7a5900dff23880d571d040e0ee227e88c3f526cc8",
+   "why": "Crashpad upload URL built with length 0 (imm32 of mov r8d,len before lea rdx,[sentry.io minidump URL]); Crashpad passes no --url and starts no upload thread [I]",
+   "mark": "I",
+   "sites": [
+    {
+     "offset": 43732,
+     "after_hex": "00000000",
+     "window": 16,
+     "window_sha256_stock": "c48a6da991fd9051236ca7b99c5951d102c6181f90ad86545194088f4289baf5",
+     "window_sha256_patched": "4f3c94e6bb84fbf00835d280cc827c7589fc17d68ba1824b4f66d5d69f289320",
+     "note": "sentry.io minidump URL length"
+    }
+   ]
+  },
+  "bin64/launchdarkly_stackless_client_sdk.pyd": {
+   "id": "B2",
+   "tier": "B",
+   "kind": "bytes",
+   "size": 11090096,
+   "sha256_stock": "f82c49f0b36a0da1ceb93cd611b9b8f273a67533d76c1e368c1e0e55c01cb16d",
+   "sha256_patched": "69286d0904cf5250a2b8a470a71efba6a8c40765188799b484d6247e678963f7",
+   "why": "LaunchDarkly has no offline switch in this client; rename its six hosts to the same-length reserved name lndarkly.invalid (RFC 6761), which never resolves",
+   "mark": "V",
+   "sites": [
+    {
+     "offset": 8300079,
+     "after_ascii": "lndarkly.invalid",
+     "window": 16,
+     "window_sha256_stock": "5a794030296da025e8bfb74dcf9aea046c131eb1f98d24f68a6b820c7bc7d1c5",
+     "window_sha256_patched": "dba68cf10f8d4f68bf34094afed11acc4c47aee5dba2da683ddf42e95eb1f6e9",
+     "note": "mobile.launchdarkly.com"
+    },
+    {
+     "offset": 8300117,
+     "after_ascii": "lndarkly.invalid",
+     "window": 16,
+     "window_sha256_stock": "9a5c351b936d4c1521bbd1a6ec4e3c18972da83b2474d533b64e2c9c2f462a45",
+     "window_sha256_patched": "6606727b9558dc0440a914e3ba977220319ec60c06e5ecea4d0b0675a5b58a0e",
+     "note": "clientstream.launchdarkly.com"
+    },
+    {
+     "offset": 8300154,
+     "after_ascii": "lndarkly.invalid",
+     "window": 16,
+     "window_sha256_stock": "882b43f8cfe5811bb78ba60ee5103aa9508fcaf6fe1c061277f10304b90b28e1",
+     "window_sha256_patched": "31f996d7466f82e7ef891dd59ba4f61f7e0799bdfb1b1f0805ad021e2d8a74f4",
+     "note": "clientsdk.launchdarkly.com"
+    },
+    {
+     "offset": 8300191,
+     "after_ascii": "lndarkly.invalid",
+     "window": 16,
+     "window_sha256_stock": "8b3274df36e7cc374a3d18415d41681410d859a1630d93f51897b32c53db0d2d",
+     "window_sha256_patched": "c2cda118ecc6efc1f2f64c4d3afec99e4dcfd9ab731c39e061d65a06abd3a855",
+     "note": "events.launchdarkly.com"
+    },
+    {
+     "offset": 8300223,
+     "after_ascii": "lndarkly.invalid",
+     "window": 16,
+     "window_sha256_stock": "9f0f63f051f9f5ebf4833a76706856940617550f1cc1620bf7cc368da5abf20d",
+     "window_sha256_patched": "cfb70f6ec278d532e48c9b61b28b0343f61224c9defc4716aaca24d402bbb132",
+     "note": "stream.launchdarkly.com"
+    },
+    {
+     "offset": 8300252,
+     "after_ascii": "lndarkly.invalid",
+     "window": 16,
+     "window_sha256_stock": "8224d2ede31ddd7e83766547164e0cd996a41bfbd660dfede434b3e2f3c15993",
+     "window_sha256_patched": "760091e9f587bdeeeccc76053d6fd207005c2f7a790d7789245e26419f7fa0d1",
+     "note": "sdk.launchdarkly.com"
+    }
+   ]
+  },
+  "code.ccp": {
+   "id": "C1",
+   "tier": "C",
+   "kind": "ccp",
+   "mark": "I",
+   "size": 31286988,
+   "sha256_stock": "37fb2af4fa0ec5c8fa320f34cd28c8b7dbf4917418336b38cba20a7860db0368",
+   "sha256_patched": "d4b61db85294dc3ef66363caa3e524eb55bc585bf45a7caf5c63b509e473f662",
+   "why": "dead-address constants for the Sentry DSN, the resource CDN (three of them), the public-IP lookup, Google Analytics, the bug-report service, VictoriaMetrics and the gateway discovery suffix, so the client reaches nothing even without the launcher's env [I: the boot gate proves the zip edit]",
+   "members": [
+    {
+     "name": "autoexec_client_core.pyj",
+     "slot": 4264,
+     "raw_sha256_stock": "3aa4cca0af00deaf33770a6b9dff00c950be35c882ec6ed47c2e9ac3a165d00d",
+     "raw_sha256_patched": "7da4087b8a2bf4fc152a8db36109c0e197fe4ad97773e19798e6ddca873ada81",
+     "sites": [
+      {
+       "offset": 556,
+       "old_len": 58,
+       "after_ascii": "http://0@127.0.0.1:9/0",
+       "note": "@sentry.io/"
+      },
+      {
+       "offset": 5970,
+       "old_len": 38,
+       "after_ascii": "http://127.0.0.1:9/",
+       "note": "clientresources."
+      }
+     ]
+    },
+    {
+     "name": "carbon/common/lib/autoexec_client_core.pyj",
+     "slot": 4264,
+     "raw_sha256_stock": "3aa4cca0af00deaf33770a6b9dff00c950be35c882ec6ed47c2e9ac3a165d00d",
+     "raw_sha256_patched": "7da4087b8a2bf4fc152a8db36109c0e197fe4ad97773e19798e6ddca873ada81",
+     "sites": [
+      {
+       "offset": 556,
+       "old_len": 58,
+       "after_ascii": "http://0@127.0.0.1:9/0",
+       "note": "@sentry.io/"
+      },
+      {
+       "offset": 5970,
+       "old_len": 38,
+       "after_ascii": "http://127.0.0.1:9/",
+       "note": "clientresources."
+      }
+     ]
+    },
+    {
+     "name": "remotefilecache/__init__.pyj",
+     "slot": 2678,
+     "raw_sha256_stock": "36205992c16e175d12ffef193b3651aec29aa6c6c64f57798954c88c2c3804af",
+     "raw_sha256_patched": "d8904a0f1d003c6ec424a0ef9c777b0c754dd55f3e806e65f7b48dbecc85079f",
+     "sites": [
+      {
+       "offset": 2663,
+       "old_len": 33,
+       "after_ascii": "http://127.0.0.1:9/",
+       "note": "res.eveprobe."
+      },
+      {
+       "offset": 2851,
+       "old_len": 38,
+       "after_ascii": "http://127.0.0.1:9/",
+       "note": "clientresources."
+      }
+     ]
+    },
+    {
+     "name": "monolithipify/__init__.pyj",
+     "slot": 578,
+     "raw_sha256_stock": "df2439ac4f3ae8bb7c57f916bab6af065290cdaa3d9e15ff3b0b6a70fdcfe761",
+     "raw_sha256_patched": "6d0f2710132aa14c7e527089372d9ec57dd48b68cb26cf46d59859eb83b9ee10",
+     "sites": [
+      {
+       "offset": 128,
+       "old_len": 21,
+       "after_ascii": "http://0.0.0.0:9/",
+       "note": "api.ipify.org"
+      }
+     ]
+    },
+    {
+     "name": "charactercreator/client/characterCreationMetrics.pyj",
+     "slot": 3058,
+     "raw_sha256_stock": "bb7b9b1d8756a995a09d2034b58617d21ab49473ae849b959b9c19df64ce1e88",
+     "raw_sha256_patched": "62f236302dc926622cbd5e1a40fd4b16a6e4e1619ed0c0e469a2a170e239efeb",
+     "sites": [
+      {
+       "offset": 7819,
+       "old_len": 40,
+       "after_ascii": "http://127.0.0.1:9/",
+       "note": "google-analytics.com/collect"
+      }
+     ]
+    },
+    {
+     "name": "eve/client/script/ui/services/bugReporting.pyj",
+     "slot": 21882,
+     "raw_sha256_stock": "9a2a149af0407bf02cef1c982ef0f962db211d791b192d271cc39fd069430670",
+     "raw_sha256_patched": "baa887a9687da1bb2581c29f753f44cd3fa4cc105d35f9d69e860890f63aa016",
+     "sites": [
+      {
+       "offset": 2080,
+       "old_len": 36,
+       "after_ascii": "http://127.0.0.1:9/v1",
+       "note": "ebr-service."
+      }
+     ]
+    },
+    {
+     "name": "victoriametrics/metrics_reporter.pyj",
+     "slot": 1843,
+     "raw_sha256_stock": "d8e937d42ec8d34d7567ad76cccb354fc0155f65fd86a70aa920cba97eadefe3",
+     "raw_sha256_patched": "779902c35cfdc5f64bbdfb5c420a12dfbda82adf38a0bd80f4d8e68bb6498b34",
+     "sites": [
+      {
+       "offset": 281,
+       "old_len": 52,
+       "after_ascii": "http://127.0.0.1:9/?",
+       "note": "vm-single."
+      }
+     ]
+    },
+    {
+     "name": "publicGateway/grpc/connectionConfig.pyj",
+     "slot": 993,
+     "raw_sha256_stock": "730ef195b3dd590af84fcd14bdabe94b8add703da2cf972a3e70e6d0e88f696e",
+     "raw_sha256_patched": "8d217085d8f2c721edf39249550267d4bc25328af41b598e1ef06a65e7f31fd1",
+     "sites": [
+      {
+       "offset": 975,
+       "old_len": 11,
+       "after_ascii": "gateway.invalid",
+       "note": "evetech.net"
+      },
+      {
+       "offset": 1374,
+       "old_len": 11,
+       "after_ascii": "gateway.invalid",
+       "note": "evetech.net"
+      }
+     ]
+    }
+   ]
+  },
+  "bin64/_trinity_dx12.dll": {
+   "id": "B3",
+   "tier": "B",
+   "kind": "bytes",
+   "size": 29396144,
+   "sha256_stock": "d5fdb4ab47e41cda1cead8568932ccc74d4d38a4877196ce355bd8806cbae87c",
+   "sha256_patched": "86dd4446652b15a809566a7bcc6bd7a93897d3351fc190ec5e102891e6758e88",
+   "why": "NVIDIA Streamline default Preferences.flags 0x49 -> 0x01 (before the or 0x84): no over-the-air updater (nvngx_update.exe) and no downloaded plugins; DLSS itself stays [I: flag names from the SDK header, from memory]",
+   "mark": "I",
+   "sites": [
+    {
+     "offset": 16656718,
+     "after_hex": "01",
+     "window": 16,
+     "window_sha256_stock": "fc5acc748a09b0bb051f98cea65d4fb71dd9c412f9619051fa2737ee4741df7f",
+     "window_sha256_patched": "3ccd6519239fab462a3a04d1fa604197705dfe4fea338022786259f3fa1f7540",
+     "note": "slInit Preferences.flags default, low byte"
+    }
+   ]
+  }
+ },
+ "requires": {
+  "B1": [
+   "B0"
+  ],
+  "B2": [
+   "B0"
+  ],
+  "P0": [
+   "B0"
+  ],
+  "C1": [
+   "B0"
+  ],
+  "B3": [
+   "B0"
+  ]
+ },
+ "prefs": {
+  "set": {
+   "breakpadUpload": "0",
+   "sentry_io_dsn": "http://0@127.0.0.1:9/0",
+   "chatserver_disable_tls": "1"
+  },
+  "forbid": [
+   "networkLogging",
+   "http",
+   "GOPYCHARM"
+  ]
+ },
+ "launch": {
+  "server_default": "10.137.0.1",
+  "env": {
+   "HTTP_PROXY": "http://127.0.0.1:9",
+   "HTTPS_PROXY": "http://127.0.0.1:9",
+   "NO_PROXY": "{server},localhost,127.0.0.1",
+   "EVE_PUBLIC_GATEWAY_ADDRESS": "{server}:8443",
+   "EVE_CLIENT_SENTRY_DSN": "http://0@127.0.0.1:9/0"
+  },
+  "args": [
+   "/noCrashReportUpload",
+   "/resfileserver=http://127.0.0.1:9/"
+  ],
+  "forbid_args": [
+   "/refreshToken",
+   "/enableTelemetry",
+   "/py",
+   "/tools=",
+   "/thinclient"
+  ]
+ },
+ "resfiles_check": [
+  "resfileindex.txt",
+  "resfileindex_Windows.txt"
+ ]
+}

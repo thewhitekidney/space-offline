@@ -1,0 +1,296 @@
+# The client-CI regression list: one scenario per line, run by
+# tools/client-ci-regress.sh. Format:
+#
+#   name[@label] [client-ci.sh flags] [-- eve-server flags]
+#
+# @label tells two runs of one scenario apart (log and result names). The
+# runner adds --rootless, --gateway and the scenario's own timeout
+# (EOCI_FCI_TIMEOUT_S), so only what a scenario NEEDS beyond that is here.
+# @SCHOOL@ becomes the first school id in out/content/agents/schools.tsv.
+#
+# Flags a scenario needs, and why:
+#   --dev            a dev world (client-ci.sh gives each one its own fresh world, for every
+#                    --dev run, so no scenario inherits a pilot left in space)
+#   --with-second    a second client (costs 2 of the runner's --jobs client budget); the
+#                    server roster must be two deep, so
+#                    `-- --character Alice --character Bob`
+#   school=N         the character must start at a school station
+#
+#   --with-bots      an `eve-bots --control` link beside the server, for the GM's `/bots`
+#                    (needs --dev: the server then runs in accounts mode, see client-ci.sh)
+#
+# The wing and fleet-mission scenarios have a bot half that needs that link;
+# without --with-bots it records a SKIP and the server half still runs.
+#
+#   --serial         the runner's own flag (client-ci.sh never sees it): with --jobs N > 1
+#                    this row waits until the parallel rows are done and then runs alone,
+#                    in the owner's prefix, as every row did before --jobs. Marked:
+#                    rows that assert a deadline of a few seconds or the world clock's
+#                    exactness (warp, undock, park, destiny coalescing, a re-skin within
+#                    3 s, a capsule gone within 5 s, a bubble or a disruptor's park within
+#                    10 s), the rows that scale the world's clock (--time-scale,
+#                    --training-scale), and every --with-bots row (a bot swarm's CPU is
+#                    load the other slots' clocks feel). Lift a mark once clock.tsv shows
+#                    the row green at the --jobs you run (docs/guides/client-ci.md).
+#                    With --jobs 1 the mark does nothing and the order is the list's.
+
+# the base six first: a red here means stop reading the rest
+ballpark_smoke
+fci_reads
+undock_distance --serial
+park_census --serial
+throttle_and_warp --serial
+warp_blob --serial
+fci_sun
+hud_health
+capacitor
+fci_api_probe
+
+fci_doc_0
+fci_engine_fix
+fci_ammo_count
+fci_belt_combat
+fci_npc_warpin
+fci_k_overheat
+fci_concord
+fci_combat_site
+fci_fighters
+fci_t3_e
+fci_bursts
+fci_doc_3
+fci_x_rig
+fci_t3_d
+fci_implants
+fci_mining_hold
+fci_drone_mining
+fci_prog_mine
+fci_secstatus
+fci_faction_police
+fci_sentry
+fci_ship_tree
+fci_ship_sheet
+fci_prog_pve2
+fci_prog_pve
+fci_contracts
+fci_lpstore
+fci_notifications
+fci_corp_alliance
+fci_corp_assets
+fci_corp_buy
+fci_corp_transactions
+fci_sov
+fci_sov_panel
+fci_c6b
+fci_rel_fix
+fci_review_fix
+fci_gaps2
+fci_new_items
+fci_mn_d
+fci_hacking_board
+fci_hacking_can
+fci_y_escal
+fci_y_wh
+fci_x_ice
+fci_x_econreport
+fci_x_econtape
+fci_t3_salvage
+fci_doc_6
+fci_r_rel_3
+fci_r_rel_4
+fci_prog_null
+fci_fleet_comp
+fci_wing_follow --with-bots --serial -- --dev
+fci_wing_offgrid --with-bots --serial -- --dev
+fci_wing_tags --with-bots --serial -- --dev
+fci_wing_words --with-bots --serial -- --dev
+fci_fleet_mission --with-bots --serial -- --dev
+fci_gw_notice_echo
+fci_settings_bulletins
+fci_skillgate
+fci_fitfix
+fci_fit_drag
+fci_nes_buy
+fci_plex_vault
+fci_skin_apply
+fci_logoff_space
+
+# a roster two deep
+fci_r_rel_5 --with-second -- --character Alice --character Bob
+
+# one character at a school station
+fci_school_books -- --character Alice,school=@SCHOOL@
+
+# two clients on one server
+fci_pa10_coalesce@on --with-second --serial -- --coalesce-destiny --character Alice --character Bob
+fci_pa10_coalesce@off --with-second --serial -- --no-coalesce-destiny --character Alice --character Bob
+fci_skin_viewer --with-second --serial -- --character Alice --character Bob
+lobby_guests --with-second -- --character Alice --character Bob
+
+# dev worlds (reset before each run)
+fci_dev_mode -- --dev
+fci_gang_summon --with-bots --serial -- --dev
+fci_mine_crit -- --dev
+fci_dock_range
+fci_wh_range
+fci_wh_mass
+fci_wh_effects
+fci_sys4
+fci_pvp_kill --with-second -- --character Alice --character Bob --no-concord
+fci_pvp_concord --with-second -- --character Alice --character Bob --concord
+
+# ci-gaps-a (issue #53): a skill queue that trains, an industry job through delivery, a refine, a two-pilot trade
+fci_skill_queue --serial -- --training-scale 600
+fci_industry_job --serial -- --time-scale 60
+fci_reprocess
+fci_market_trade --with-second -- --character Alice --character Bob
+# ci-gaps-b (#54)
+fci_chat_two --with-second -- --character Alice --character Bob
+# cloak-1 (#21): a cloak hides a ship from the second client, the 2 km rule decloaks it, the targeting delay; step 0 reads the client's DST*CLOAK modes
+fci_cloak --with-second -- --character Alice --character Bob --no-concord
+# cloak-2 (#8): a gate (or /tr) arrival is cloaked with the JumpCloak timer instead of the Invulnerable one; a movement order breaks it
+fci_gate_cloak --with-second -- --character Alice --character Bob --no-concord
+fci_probe_site
+fci_pi_colony
+fci_fw_enlist
+fci_upwell_profiles
+fci_upwell_anchor --with-second -- --character Alice --character Bob
+
+# ws-2-world (#70): the world module, so these need eve-offline-server (WS-0): a live /world training change, the free SP pool applied to a queue
+fci_world_training -- --dev
+fci_free_sp -- --dev --world-start-sp 500000
+fci_inject
+# containers-mtu (#57): assemble, fill, empty and password a cargo container
+fci_containers
+
+# s1-share-links (#81): the overview-profile, item-filter and broadcast share links, stored and fetched
+fci_share_links
+# boosters (#79): take an accelerator and a Synth pill, GetBoosters with a future expiry, the slot refusal; needs the bundle regenerated for B0
+fci_boosters -- --character Alice
+# mtu-depot (#82): containers launched whole, the Mobile Depot and the MTU, in space
+fci_mtu
+# needlejack (#88): a Needlejack filament to a random null-sec system of another region; the plain server (the types come from the bundle), and a second client for the fleet
+fci_needlejack
+fci_needlejack_fleet --with-second -- --character Alice --character Bob
+# l6a-geodes (#32): open a geode docked, fail in space; needs eve-offline-server and a bundle whose mining/geodes.tsv has a pick (content/econ/geode-picks.tsv)
+fci_geode_open
+# l6b-mining-events (#33): /motherlode begin announces to the pilot (OnServerMessage), status and end; needs eve-offline-server and a system with a belt
+fci_motherlode
+# fci-combat (#207): a second pilot tackled: scrambler (warp and MWD refused with the client's keys, status 104 up), point (warp refused, MWD runs), web (maxVelocity by the module's own factor), each released on deactivate; two clients
+fci_tackle --with-second -- --character Alice --character Bob --no-concord
+# fci-combat (#207): damp, painter and tracking disruptor move the target's own attribute sheet by the module's factor read from the client's dogma data and give it back; an ECM jams the target's lock (the `electronic` icon); two clients
+fci_ewar --with-second -- --character Alice --character Bob --no-concord
+# ewar-2bc (#106): tracking and guidance disruptors, remote sensor boosters and tracking computers on a second pilot's buff bar and attributes, and the ship and cargo scanner windows; unscripted modules; two clients
+fci_ewar_2 --with-second -- --character Alice --character Bob --no-concord
+# w21-neut-smart: a neutralizer drops a second pilot's capacitor by the module's own amount and a nosferatu moves its amount to the emptier source; the buff-bar slots ewEnergyNeut and ewEnergyVampire; two clients
+fci_neut --with-second -- --character Alice --character Bob --no-concord
+# w21-neut-smart: a smartbomb hurts a second pilot's ship and launched drones inside the field and neither outside it (park.GetDamageState); two clients
+fci_smartbomb --with-second -- --character Alice --character Bob --no-concord
+# abyss-0 (#91): /abyss enter 3 to an abyssal system (no celestials), one room and its exit gate, the abyss service's pushes, and AbyssalEndGateActivation home; the plain server
+fci_abyss_enter
+# abyss-1 (#92): a filament through the key window's call to three rooms (encounter gates, then the exit gate) and home; a refused co-op deploy; the plain server (needs a bundle with the abyssal filaments, rooms and typelists)
+fci_abyss_run
+# mjd-mass (#23): a battleship's Large Micro Jump Drive jumps ~100 km and keeps its speed; an MWD keeps the ego ball's mass equal to the ship item's; the plain server
+fci_mjd
+# bubbles-sb (#24): a sphere launcher in a null-sec system puts a probe ball in the park with warpDisruptionStartTime, a warp inside it raises WarpDisrupted, and the ball goes after its two minutes; the plain server (needs a bundle with the launcher and probe)
+fci_bubble --serial
+# nw-2 (#172): a Mobile Warp Disruptor is launched (free ball), anchored by the int-effect Activate (ball not free after anchoringDelay), refused a scoop, lifted and scooped; the plain server (needs a bundle regenerated with category 22)
+fci_anchor_small
+# nw-2 (#172): the same unit is no bubble while free or anchoring, raises WarpDisrupted once anchored with a force field at warpScrambleRange, and lets go on a lift; the plain server (needs the same bundle)
+fci_mobile_bubble
+# hic-script (#116): a Warp Disruption Field Generator runs with no script, and with a focused script loaded and no target the server refuses with DeniedActivateTargetNotPresent; the plain server (needs a bundle with the generator and script)
+fci_hic_script --serial
+# be-2 (#77): ship.Eject leaves the Merlin as an abandoned ball (not interactive, no charID), Board takes it back (capsule ball removed), a far Board is refused NotCloseEnoughToBoard, a dock puts the hull in the hangar; with a second client (#132) the lower-id pilot shoots the other's abandoned Merlin dead, its owner at a belt, and both combat logs list the mail; the plain server
+fci_board_eject --with-second --serial -- --no-concord --character Alice --character Bob
+# u4-upwell-dock (#64): /upwell spawn an Astrahus, Dock with the client's own route, the hangar lists the ship and answers as the structure, board a second hull and fit a module, Undock to space with the ego the ship, and once more; the plain server
+fci_upwell_dock
+# u6c (#115): take the controls of a structure (shipid becomes the structure, the tree gets the fuel and deed bays, an undock is refused), release them, and leave; the plain server
+fci_upwell_control
+# u4-upwell-dock (#64): Enter Structure (a live park whose ego is the structure), Undock from that view (no re-bind), then structure view -> hangar -> Undock (the re-bind inside the window); the plain server
+fci_upwell_view
+# u4-upwell-dock (#64): log off docked in a structure and select the character again (the docked login, the hangar, an Undock); the plain server. A server restart in between is the Rust test's
+fci_upwell_relog
+# u5-upwell-home (#65): in a spawned Astrahus the client's own repair service binds with the structure group, quotes the ship and RepairItems goes to RepairItemsInStructure; the plain server
+fci_upwell_repair
+# u5-upwell-home (#65): insurance through the structure bind (price, InsureShip, contract); the plain server
+fci_upwell_insure
+# u5-upwell-home (#65): InstallCloneInStation routed to InstallCloneInStructure, the clone listed at the structure, set_home_station(structure); the plain server
+fci_upwell_clone
+# u5-upwell-home (#65): home structure, /tr back to the start station, capsule, self_destruct_clone: wake in the structure with structureid keys and a new capsule; the plain server
+fci_upwell_revive
+
+# bp-3 (#120): a hostile hunter fitted with a smartbomb from its stock sets it off when two foes are in the field; one with a micro jump drive, tackled by a disruptor, jumps out (EVE_BOTS_KIT_DRILL grants the part in open mode, CI only)
+fci_bot_smartbomb --with-bots --bots-kit smartbomb --serial -- --dev
+fci_bot_mjd --with-bots --bots-kit mjd --serial -- --dev
+# bp-4 (#121): a hostile hunter's web and scrambler are aimed by kind and reach (ewar_aim), not fired as guns; the client's buff bar shows webify and warpScramblerMWD (open-mode hunter setup grants the modules)
+fci_bot_ewar_aim --with-bots --serial -- --dev
+# fci-combat (#207): a hostile hunter-kind bot finds the client in a low-sec belt, locks it (GetTargetedBy) and hurts its ship (the client's own shield/armor/hull sheet)
+fci_hunter_bot --with-bots --serial -- --dev
+# ESS-1 (#89): the ESS main bank's panel data in a null-sec system, and the bank rising over a rat kill; the plain server
+fci_ess_panel
+# ESS-2 (#90): two clients in a null-sec ESS system: warp to the beacon, A links, B is refused as occupied, A leaves and the link breaks, B links and the theft pays; safe logoff refused while linked; the plain server
+fci_ess_link --with-second -- --character Alice --character Bob
+# bp-camp (#125): a hostile dictor (`/bots 1 hostile dictor here`, open mode: the bot grants itself the launcher and probes) in a null-sec system launches a warp disrupt probe on the client within 20 km; the ball renders, a warp inside it is refused, and no second probe goes out while the first lives
+fci_bot_camp --with-bots --serial -- --dev
+# soc-answers (#158): the Randomize name button answers a valid free name for each race, and the corp finder, Recruitment tab and Shareholders panel get empty lists instead of None
+fci_social_answers
+# nw-1 (#156): a dreadnought's Siege Module burns its strontium at the click, the top speed reads 0, an early deactivation raises EffectStillActive and the module stays active, and a CmdDock is refused; the plain server (needs a bundle with the hull, the module and the fuel)
+fci_siege
+# soc-chan1 (#162): a player channel is created, found by name, joined, spoken in, given a MOTD and deleted by two clients
+fci_chat_channels --with-second -- --character Alice --character Bob
+
+# soc-chan2 (#173): a password the role path passes, a demotion, a mute that refuses a line and lifts, a timed ban that puts the pilot out, an invite that brings them back; two clients
+fci_chat_moderation --with-second -- --character Alice --character Bob
+
+# soc-chardel (#167): the select screen's delete flow over charUnboundMgr: ask, cancel, refused while online, delete
+fci_char_delete -- --character Alice --character Carol --world-delete-time 0
+# soc-medals (#166): a director creates a medal (a one-part medal is refused), awards a pilot twice, the pilot's rows stay private until published, the character-sheet and info-window entries build, and a deleted medal vanishes for others; two clients
+fci_medals --with-second -- --character Alice --character Bob
+# nw-4 (#177): a Mobile Cynosural Inhibitor is launched (free ball while it activates), a cyno generator still lights before it is active, and once its ball is not free the same generator is refused with CynosuralGenerationInhibited; the plain server (needs a bundle with category 22 and the inhibit_range row)
+fci_cyno_inhibit
+# s7 (#178): corp shares and dividends: the founding grant, a move with its OnShareChange, a refused over-move and over-draw, a payout by weight and one to members in whole cents with its type-23 notification; two clients
+fci_dividend --with-second -- --character Alice --character Bob
+# wave 14: a large turret loads the advanced ammo its sheet lists in chargeGroup2 (a T2 800mm gun takes Barrage L, a chargeGroup1 round still loads); fix d2abfed
+fci_advanced_ammo
+# wave 14: a lost target does not free the gun before its cycle ends, an Activate then is refused and no round is spent, then it fires again; fix aaf231d (#186)
+fci_gun_cycle
+# wave 14: the drone window asks for in-bay damage a few times, answered one entry per drone keyed by the drone id; fixes b07c1cb, d319775
+fci_drone_bay_damage
+# fci-travel (3.1): a real stargate jump out and back (warp to a gate of the park, menu.StargateJump, far-gate arrival, session/ship/park checks, CmdStop, jump back); the plain server
+fci_gate_jump
+# fci-travel (3.1): the client's own autopilot (SetWaypoint + autoPilot.SetOn) flies a 2-3 jump route, visiting each system in order and ending off at the destination; the plain server (needs the gates of the route loaded)
+fci_autopilot
+# fci-travel (3.1): a Black Ops hull jumps to a fleet mate's lit cyno in another null-sec system: refusal of a made-up beacon, session change, fuel spent, JumpActivation/JumpFatigue timers, landing near the field; two clients
+fci_jump_drive --with-second -- --character Alice --character Bob --no-concord
+# fci-travel (3.1): a Covert Jump Portal Generator opens a bridge to a fleet mate's cyno: the module alone does nothing, a made-up beacon is refused, both fleet services hold the bridge, fuel spent, ship held still, the portal closes by itself; no passenger step (needs a third pilot); two clients
+fci_jump_portal --with-second -- --character Alice --character Bob --no-concord
+
+# fci-services (master plan 3.1): the calendar: refusals (empty title, past, over 12 months, alliance with none), a personal event with an invitee and a corp event listed with owner and flag, details, responses both ways, a member refused edit, delete and corp events, edit and delete pushes; two clients
+fci_calendar --with-second -- --character Alice --character Bob
+
+# fci-services (master plan 3.1): mail: refusals, send, push, sync, read/unread, reply bit, trash, restore, delete, and a mailing list (create, join, list mail both ways, mute refused, leave refused, delete); two clients
+fci_mail --with-second -- --character Alice --character Bob
+
+# fci-services (master plan 3.1): player bounties: below-minimum, no-owner and over-wallet refusals, two contributions on a second pilot (wallet, pool, search, my-bounties, top page), the target's type-112 notifications; two clients; the kill payout is not here
+fci_bounty --with-second -- --character Alice --character Bob
+
+# fci-services (master plan 3.1): a player war: refused declarations, a declare from the war HQ with its fee, both sides list it and hear OnWarChanged, spool-up then the GM's time help gives the can-fight flag on both clients, a surrender offer accepted with exact ISK, a forced peace; two clients
+fci_war --with-second -- --character Alice --character Bob
+
+# fci-services (master plan 3.1): a reaction formula at an NPC station: listed as an original, the client's Job for activity 9 with its quote and no error codes, install (wallet, materials, a busy-formula refusal), the clock, delivery of an item stack in the quoted quantity, the formula kept; one client; fast job clock
+fci_reactions --serial -- --time-scale 60
+# w21-dd-inv: a GM titan fires the Lance at a second titan in null-sec: the empire refusal takes nothing, fuel and capacitor are paid, the immobility refuses A's warp and a second click, B sees OnSpecialFX effects.SWDamageBeam and takes damage; two clients
+fci_doomsday --with-second -- --character Alice --character Bob --no-concord
+# w21-dd-inv: a T1 blueprint copy is invented into a T2 blueprint with datacores: a copying job, an invention job, the delivery in the hangar and the industry window's blueprint list; time-scale 60 makes the jobs about two minutes
+fci_invention --serial -- --time-scale 60
+# w23-fit: the server refuses a module the hull cannot fit (wrong rack, no such slot, hull and size restriction, group limit, powergrid online refusal); the module stays in the hangar
+fci_fit_refuse
+# w23-fit: script-capable modules (sensor booster, tracking computer) run with no script, then take one
+fci_script_empty
+# w23-fit: an ECM burst breaks a second pilot's lock and the pilot can relock; two clients
+fci_ecm_burst --with-second -- --character Alice --character Bob --no-concord
+# w23-pve (#137): a Scorpion with a warp disruptor, a warp scrambler and a tracking disruptor on a belt rat: each runs and cycles, the rat stays on the grid, the pilot's own 104 is not moved, the rat stays no farther under the tracking disruptor; one client, needs belt rats
+fci_rat_point
+# w23-pve (#78): a pilot abandons a Merlin, another shoots it dead: one report for the hull on both sides (victim, final blow, ship types, system, the client's own drawing and hash lookup), the pod untouched; two clients
+fci_abandon_kill --with-second -- --character Alice --character Bob --no-concord
+# w23-pve (#75): a fleet of one logs off and back on inside the two-minute window and is still in the fleet (session.fleetid, the fleet service, the server's composition); one client
+fci_fleet_reconnect

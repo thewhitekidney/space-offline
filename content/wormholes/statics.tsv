@@ -1,0 +1,105 @@
+# Wormhole statics: which wormhole types a system of each class may hold.
+# Read by the server (`wormhole::TABLE`, CP54a); header frozen in
+# docs/content/schema.md §4. Edit and restart; no re-extract needed.
+# Spec: docs/content/R-WH.md §6 (the rule G-WH) and §6.3 (these rows).
+#
+# The client ships NO statics (R-WH §6.1 [V]): nothing maps a system to its
+# static. These rows are our rule, one per (source class, wormhole type):
+# - class: the home system's effective wormhole class (1-6 J-space, 7 high,
+#   8 low, 9 null [V constants]; a k-space system without a class takes its
+#   band's, `wormhole::effective_class` [A]).
+# - static_type_id: the wormhole type the slot may draw. Its lifetime and
+#   masses are the type's own dogma attributes, read at runtime; none is
+#   written here.
+# - dest_class: the class the far end is drawn from. It must equal the
+#   type's wormholeTargetSystemClass (1381); the loader drops a row whose
+#   type contradicts it, or is not a wormhole (group 988), once typedata
+#   carries the type.
+# Membership is [I]: the client's two-object archetype-38 dungeons come in
+# blocks of nine, one block per source class, each reaching classes 1-9 once
+# (R-WH §6.1). Drawing uniformly among a class's rows is [A]. How many
+# statics a class holds is a Rust const (`wormhole::statics_per_system`).
+# Thera, frigate, Drifter and Pochven holes are left out of v1 (R-WH §1.3);
+# adding one is a row here.
+class	static_type_id	dest_class	why
+1	30660	1	[I] the C1 source block of R-WH §6.1 reaches class 1 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+1	30661	2	[I] the C1 source block of R-WH §6.1 reaches class 2 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+1	30662	3	[I] the C1 source block of R-WH §6.1 reaches class 3 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+1	30663	4	[I] the C1 source block of R-WH §6.1 reaches class 4 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+1	30664	5	[I] the C1 source block of R-WH §6.1 reaches class 5 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+1	30665	6	[I] the C1 source block of R-WH §6.1 reaches class 6 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+1	30666	7	[I] the C1 source block of R-WH §6.1 reaches class 7 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+1	30667	8	[I] the C1 source block of R-WH §6.1 reaches class 8 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+1	30668	9	[I] the C1 source block of R-WH §6.1 reaches class 9 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+2	30671	1	[I] the C2 source block of R-WH §6.1 reaches class 1 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+2	30672	2	[I] the C2 source block of R-WH §6.1 reaches class 2 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+2	30673	3	[I] the C2 source block of R-WH §6.1 reaches class 3 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+2	30674	4	[I] the C2 source block of R-WH §6.1 reaches class 4 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+2	30675	5	[I] the C2 source block of R-WH §6.1 reaches class 5 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+2	30676	6	[I] the C2 source block of R-WH §6.1 reaches class 6 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+2	30677	7	[I] the C2 source block of R-WH §6.1 reaches class 7 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+2	30678	8	[I] the C2 source block of R-WH §6.1 reaches class 8 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+2	30679	9	[I] the C2 source block of R-WH §6.1 reaches class 9 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+3	30680	1	[I] the C3 source block of R-WH §6.1 reaches class 1 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+3	30681	2	[I] the C3 source block of R-WH §6.1 reaches class 2 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+3	30682	3	[I] the C3 source block of R-WH §6.1 reaches class 3 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+3	30683	4	[I] the C3 source block of R-WH §6.1 reaches class 4 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+3	30684	5	[I] the C3 source block of R-WH §6.1 reaches class 5 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+3	30685	6	[I] the C3 source block of R-WH §6.1 reaches class 6 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+3	30686	7	[I] the C3 source block of R-WH §6.1 reaches class 7 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+3	30687	8	[I] the C3 source block of R-WH §6.1 reaches class 8 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+3	30688	9	[I] the C3 source block of R-WH §6.1 reaches class 9 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+4	30689	1	[I] the C4 source block of R-WH §6.1 reaches class 1 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+4	30690	2	[I] the C4 source block of R-WH §6.1 reaches class 2 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+4	30691	3	[I] the C4 source block of R-WH §6.1 reaches class 3 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+4	30692	4	[I] the C4 source block of R-WH §6.1 reaches class 4 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+4	30693	5	[I] the C4 source block of R-WH §6.1 reaches class 5 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+4	30694	6	[I] the C4 source block of R-WH §6.1 reaches class 6 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+4	30695	7	[I] the C4 source block of R-WH §6.1 reaches class 7 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+4	30696	8	[I] the C4 source block of R-WH §6.1 reaches class 8 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+4	30697	9	[I] the C4 source block of R-WH §6.1 reaches class 9 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+5	30698	1	[I] the C5 source block of R-WH §6.1 reaches class 1 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+5	30699	2	[I] the C5 source block of R-WH §6.1 reaches class 2 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+5	30700	3	[I] the C5 source block of R-WH §6.1 reaches class 3 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+5	30701	4	[I] the C5 source block of R-WH §6.1 reaches class 4 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+5	30702	5	[I] the C5 source block of R-WH §6.1 reaches class 5 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+5	30703	6	[I] the C5 source block of R-WH §6.1 reaches class 6 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+5	30704	7	[I] the C5 source block of R-WH §6.1 reaches class 7 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+5	30705	8	[I] the C5 source block of R-WH §6.1 reaches class 8 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+5	30706	9	[I] the C5 source block of R-WH §6.1 reaches class 9 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+6	30707	1	[I] the C6 source block of R-WH §6.1 reaches class 1 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+6	30708	2	[I] the C6 source block of R-WH §6.1 reaches class 2 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+6	30709	3	[I] the C6 source block of R-WH §6.1 reaches class 3 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+6	30710	4	[I] the C6 source block of R-WH §6.1 reaches class 4 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+6	30711	5	[I] the C6 source block of R-WH §6.1 reaches class 5 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+6	30712	6	[I] the C6 source block of R-WH §6.1 reaches class 6 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+6	30713	7	[I] the C6 source block of R-WH §6.1 reaches class 7 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+6	30714	8	[I] the C6 source block of R-WH §6.1 reaches class 8 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+6	30715	9	[I] the C6 source block of R-WH §6.1 reaches class 9 once; uniform draw among the block [A]; falsified by a hole of this source class whose info names another destination
+7	30579	1	[I] the high-sec block of R-WH §6.1 reaches class 1 once; a k-space wanderer at statics_per_system [A]; falsified as above
+7	30583	2	[I] the high-sec block of R-WH §6.1 reaches class 2 once; a k-space wanderer at statics_per_system [A]; falsified as above
+7	30584	3	[I] the high-sec block of R-WH §6.1 reaches class 3 once; a k-space wanderer at statics_per_system [A]; falsified as above
+7	30642	4	[I] the high-sec block of R-WH §6.1 reaches class 4 once; a k-space wanderer at statics_per_system [A]; falsified as above
+7	30644	5	[I] the high-sec block of R-WH §6.1 reaches class 5 once; a k-space wanderer at statics_per_system [A]; falsified as above
+7	30645	6	[I] the high-sec block of R-WH §6.1 reaches class 6 once; a k-space wanderer at statics_per_system [A]; falsified as above
+7	30657	7	[I] the high-sec block of R-WH §6.1 reaches class 7 once; a k-space wanderer at statics_per_system [A]; falsified as above
+7	30658	8	[I] the high-sec block of R-WH §6.1 reaches class 8 once; a k-space wanderer at statics_per_system [A]; falsified as above
+7	30659	9	[I] the high-sec block of R-WH §6.1 reaches class 9 once; a k-space wanderer at statics_per_system [A]; falsified as above
+8	30579	1	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 1 once; a k-space wanderer [A]; falsified as above
+8	30583	2	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 2 once; a k-space wanderer [A]; falsified as above
+8	30584	3	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 3 once; a k-space wanderer [A]; falsified as above
+8	30642	4	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 4 once; a k-space wanderer [A]; falsified as above
+8	30643	5	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 5 once; a k-space wanderer [A]; falsified as above
+8	30646	6	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 6 once; a k-space wanderer [A]; falsified as above
+8	30647	7	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 7 once; a k-space wanderer [A]; falsified as above
+8	30648	8	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 8 once; a k-space wanderer [A]; falsified as above
+8	30649	9	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 9 once; a k-space wanderer [A]; falsified as above
+9	30579	1	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 1 once; a k-space wanderer [A]; falsified as above
+9	30583	2	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 2 once; a k-space wanderer [A]; falsified as above
+9	30584	3	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 3 once; a k-space wanderer [A]; falsified as above
+9	30642	4	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 4 once; a k-space wanderer [A]; falsified as above
+9	30643	5	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 5 once; a k-space wanderer [A]; falsified as above
+9	30646	6	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 6 once; a k-space wanderer [A]; falsified as above
+9	30647	7	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 7 once; a k-space wanderer [A]; falsified as above
+9	30648	8	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 8 once; a k-space wanderer [A]; falsified as above
+9	30649	9	[I] the low/null block of R-WH §6.1 (both copies hold the same types) reaches class 9 once; a k-space wanderer [A]; falsified as above

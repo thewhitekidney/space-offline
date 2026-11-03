@@ -1,0 +1,16 @@
+[package]
+name = "eve-mod-world"
+version.workspace = true
+edition.workspace = true
+license-file.workspace = true
+publish.workspace = true
+
+[dependencies]
+# The module reads and writes the world only through what `eve-server` exports
+# (`eve_server::module`, `eve_server::rules` and the `pub` modules it names).
+eve-server = { path = "../eve-server" }
+eve-marshal = { path = "../eve-marshal" }
+eve-proto = { path = "../eve-proto" }
+
+[lints]
+workspace = true

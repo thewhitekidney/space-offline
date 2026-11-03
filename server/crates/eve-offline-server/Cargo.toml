@@ -1,0 +1,14 @@
+[package]
+name = "eve-offline-server"
+version.workspace = true
+edition.workspace = true
+license-file.workspace = true
+publish.workspace = true
+
+[dependencies]
+eve-server = { path = "../eve-server" }
+eve-mod-econ = { path = "../eve-mod-econ" }
+eve-mod-world = { path = "../eve-mod-world" }
+
+[lints]
+workspace = true
