@@ -161,10 +161,10 @@ Upwell structures	Insure in a structure	client-proved	fci_upwell_insure W10
 Upwell structures	Jump clone and home station in a structure	client-proved	fci_upwell_clone W10			
 Upwell structures	Pod revive in a structure	client-proved	fci_upwell_revive W10			
 Upwell structures	Take and release structure controls	client-proved	fci_upwell_control W10			The review still lists this as missing
-Upwell structures	State machine, timers, upkeep rules	built-unproved	structure.rs unit tests; nothing shoots a structure yet	#40, #44, #47	3.4	
+Upwell structures	State machine, timers, upkeep rules	built-unproved	structure.rs unit tests; nothing shoots a structure yet; repair pauses on Env::under_fire (#43); nothing sets it until structure combat	#40, #44, #47	3.4	
 Upwell structures	Fuel and deed bays	partial	listed for the controller; nothing fills them	#42	3.4	
 Upwell structures	Service modules	missing	env still claims a module; research report r-upwell-war	#41	3.4	
-Upwell structures	Structure combat	missing	a structure has no hit points and cannot be locked	#40, #43, #44, #45, #46, #48	3.4	
+Upwell structures	Structure combat	missing	a structure has no hit points and cannot be locked; combat must pass Env::under_fire on hits and ticks (#43)	#40, #43, #44, #45, #46, #48	3.4	
 Upwell structures	Asset safety	partial	evacuate moves items at once with no fee or timer	#49, #50	3.4	
 Upwell structures	War headquarters	missing	no war HQ code	#51	3.4	
 Upwell structures	POS (old starbases)	missing	no posMgr arm		3.12	Not planned

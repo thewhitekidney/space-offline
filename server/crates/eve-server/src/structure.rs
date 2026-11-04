@@ -449,13 +449,20 @@ pub struct Env {
     pub jitter_roll: u64,
     /// Stands for `randint(ABANDONING_TIME_MIN, MAX)`.
     pub abandon_roll: u64,
-    /// The structure is being shot right now: the rolling DPS on its current
-    /// layer is above the pause-repair threshold. `[I]` the client's
-    /// `Update` pauses the repair timer on this, not on the layer merely
-    /// being damaged (a damaged layer is what repair exists to clear). The
-    /// caller owns the window; its length is `[A]`, falsified by a client
-    /// capture of a structure's repair timer after the last hit. Default
-    /// false: nothing shoots structures yet.
+    /// The structure is being shot right now. Stands for the server's
+    /// `ShouldRepairPause` hook.
+    /// `[V]` the client's shared base `structures/structure.py`
+    /// `ShouldRepairPause` returns `lastAggressed`, which its own
+    /// `UpdateAggression` keeps set while the layer is damaged, so it is a
+    /// hook for the server subclass (not in the client); our old code ported
+    /// that default. `[V]` dogma attributes 3354-3356
+    /// (Pause{Shield,Armor,Hull}RepairDpsThreshold) exist. `[I]` the server
+    /// override compares rolling DPS on the current layer with these.
+    /// `[A]` the window length, owned by the caller; falsified by a client
+    /// capture of a structure's repair timer after the last hit.
+    /// Requirement on future structure combat: the hit's `set_damage` and
+    /// every tick within the window must pass it, or each hit unpauses the
+    /// timer. Default false: nothing shoots structures yet.
     pub under_fire: bool,
 }
 
@@ -962,7 +969,7 @@ impl Structure {
             }
             self.set_repairing(Some(true));
         } else if env.under_fire {
-            // Not `last_aggressed.is_some()`: that stays set while a layer is
+            // `ShouldRepairPause`. Not `last_aggressed.is_some()`: that stays set while a layer is
             // damaged, so the repair would pause for as long as it is needed.
             if self.timer.pause(now) {
                 self.events.push(Event::TimerChanged);
@@ -1719,7 +1726,7 @@ mod tests {
     }
 
     #[test]
-    fn repair_pauses_while_aggressed_and_resumes() {
+    fn repair_pauses_while_under_fire() {
         let e = env(at(0));
         let mut s = fresh(&e);
         s.set_state(State::ShieldVulnerable, &e);
@@ -1740,7 +1747,7 @@ mod tests {
         s.set_damage(0.4, 1.0, 1.0, &e1);
         assert_eq!(s.repairing, Some(false));
         assert!(s.timer.is_paused());
-        // Same-state update with aggression still set keeps it paused.
+        // An update still under fire keeps it paused.
         s.update(&e1);
         assert!(s.timer.is_paused());
     }
@@ -1779,7 +1786,15 @@ mod tests {
             assert_eq!(s.repairing, Some(false));
             assert!(s.timer.is_paused());
         }
-        assert_eq!(s.damage, Some((0.5, 1.0, 1.0)));
+        // A hit made under fire keeps it paused too.
+        let hit = Env {
+            under_fire: true,
+            ..env(at(DEFAULT_REPAIR_TIMER + 150))
+        };
+        s.set_damage(0.45, 1.0, 1.0, &hit);
+        assert_eq!(s.repairing, Some(false));
+        assert!(s.timer.is_paused());
+        assert_eq!(s.damage, Some((0.45, 1.0, 1.0)));
         assert!(!s.events.contains(&Event::RepairCompleted));
         // The fire stops: the timer resumes and the layer is made whole.
         let quiet = at(DEFAULT_REPAIR_TIMER + 200);
