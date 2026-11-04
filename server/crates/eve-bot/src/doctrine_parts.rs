@@ -385,8 +385,8 @@ pub fn copies_of(content: &eve_server::content::Content) -> BTreeSet<i64> {
 }
 
 /// **The types NPCs drop**: exactly what the server's own loot draw can
-/// put in a wreck ([`eve_server::npc::droppable`], the same row rules
-/// `loot_from` filters by), reachable in the item store. Not every row of
+/// put in a wreck ([`eve_server::npc::droppable`], whose tests hold it equal
+/// to the draws' output), reachable in the item store. Not every row of
 /// `npc/loot.tsv`: a row over its tier's meta cap is never drawn.
 pub fn dropped_of(content: &eve_server::content::Content) -> BTreeSet<i64> {
     content

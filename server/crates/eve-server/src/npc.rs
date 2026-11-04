@@ -49,7 +49,7 @@ mod loot;
 pub use bounty::{REF_BOUNTY_PRIZE, pay_bounty};
 use brain::apply;
 pub use brain::{Behaviour, Candidate, Intent, Mind, View, decide};
-pub use loot::{Drop, droppable, loot, loot_from, loot_in, row_is_drawn};
+pub use loot::{Drop, droppable, loot, loot_from, loot_in};
 
 /// The `OnSpecialFX` start of `npc`'s gun while it fires (`to` empty), for a
 /// late arrival's replay ([`crate::modules::active_fx`]).

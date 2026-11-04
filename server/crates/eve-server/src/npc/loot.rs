@@ -65,9 +65,10 @@ pub const TAG_TIERS: usize = 5;
 /// The equipment pools (R7's T1/meta kinds).
 pub const EQUIPMENT_KINDS: &[&str] = &["weapon", "tank", "prop", "ewar"];
 
-/// **Whether `loot_from` can ever draw this pool row.** The one place the
-/// row-side rules live; [`loot_from`] filters every pool by it and
-/// [`droppable`] is the set of rows that pass.
+/// **Whether `loot_from`'s pools can ever draw this row**, ignoring size
+/// (see [`droppable`]). It mirrors the pool draws' kind, tier and cap
+/// arguments; the tests hold the two together (every type `droppable`
+/// lists is emitted by some draw, and every draw's type is listed).
 ///
 /// - equipment kinds: the row's meta level at most the cap of the highest
 ///   tier that may draw the row (a base row is drawn by every tier, so its cap
@@ -78,7 +79,7 @@ pub const EQUIPMENT_KINDS: &[&str] = &["weapon", "tank", "prop", "ewar"];
 /// - any other kind (`tag`, `clone-tag`, an unknown one) is not drawn from
 ///   the pools: the tag draws read the faction's `tags` and the `clone-tag`
 ///   rows by their own paths ([`tag`], [`clone_tag`]).
-pub fn row_is_drawn(l: &Loot) -> bool {
+fn row_is_drawn(l: &Loot) -> bool {
     let k = l.kind.as_str();
     if EQUIPMENT_KINDS.contains(&k) {
         let cap = match l.tier {
@@ -98,20 +99,52 @@ pub fn row_is_drawn(l: &Loot) -> bool {
 }
 
 /// **Every type `loot_from` can put in a wreck** over `data`, reachable
-/// (`grantable`): the pool rows [`row_is_drawn`] passes, every faction's
-/// tags ([`tag`]) and every clone-tag row ([`clone_tag`]). The bots count
-/// exactly this as "dropped" (nothing from nowhere), so a part they count
-/// can be looted in game. `[A]` an NPC of the right faction, tier, size and
-/// context exists for each row; falsified by a row no spawn can draw (a
-/// size no class of its faction has).
+/// (`grantable`): the pool rows [`row_is_drawn`] passes (a deadspace row
+/// only at size 3, or at any size when its faction has no reachable size-3
+/// deadspace row, the fallback of `sized`), the first [`TAG_TIERS`] tags of
+/// each faction ([`tag`]) and, per Clone Soldier type, the one tag
+/// [`clone_tag`] picks. The bots count exactly this as "dropped" (nothing
+/// from nowhere), so a part they count can be looted in game. `[A]` an NPC
+/// of the right faction, tier, size and context exists for each row;
+/// falsified by a row no spawn can draw (a size no class of its faction
+/// has).
 pub fn droppable(data: &Table, grantable: impl Fn(i64) -> bool) -> std::collections::BTreeSet<i64> {
-    let rows = data
+    let size3_deadspace = |faction: i64| {
+        data.loot.iter().any(|l| {
+            l.faction_id == faction
+                && l.kind == "deadspace"
+                && l.tier == Tier::Deadspace
+                && l.size == 3
+                && grantable(l.type_id)
+        })
+    };
+    let mut out: std::collections::BTreeSet<i64> = data
         .loot
         .iter()
-        .filter(|l| l.kind == CLONE_TAG_KIND || row_is_drawn(l))
-        .map(|l| l.type_id);
-    let tags = data.factions.values().flat_map(|f| f.tags.iter().copied());
-    rows.chain(tags).filter(|t| grantable(*t)).collect()
+        .filter(|l| l.kind != CLONE_TAG_KIND && row_is_drawn(l))
+        .filter(|l| l.kind != "deadspace" || l.size == 3 || !size3_deadspace(l.faction_id))
+        .map(|l| l.type_id)
+        .filter(|t| grantable(*t))
+        .collect();
+    out.extend(
+        data.factions
+            .values()
+            .flat_map(|f| f.tags.iter().take(TAG_TIERS).copied())
+            .filter(|t| grantable(*t)),
+    );
+    // `faction_id` of a clone-tag row is the NPC type: one tag each.
+    let npc_types: std::collections::BTreeSet<i64> = data
+        .loot
+        .iter()
+        .filter(|l| l.kind == CLONE_TAG_KIND)
+        .map(|l| l.faction_id)
+        .collect();
+    out.extend(
+        npc_types
+            .into_iter()
+            .filter_map(|n| clone_tag(data, n, &grantable)),
+    );
+    out
 }
 
 /// One NPC's R7 inputs.
@@ -169,7 +202,6 @@ pub fn loot_from(
                     && tiers.contains(&l.tier)
                     && (!sized || l.size == size)
                     && cap.is_none_or(|c| l.meta_level.unwrap_or(0) <= c)
-                    && row_is_drawn(l)
                     && grantable(l.type_id)
             })
             .map(|l| l.type_id)
@@ -574,6 +606,125 @@ mod tests {
         }
         let set = droppable(&t, grantable);
         assert!(!set.contains(&ok[0]) && set.contains(&ok[1]));
+    }
+
+    /// The converse: every type `droppable` lists is emitted by some NPC
+    /// (over the shared fixture), so a bot's "dropped" part can be looted.
+    #[test]
+    fn every_droppable_type_is_emitted_by_some_npc() {
+        let (t, _) = fixture();
+        let emitted: std::collections::BTreeSet<i64> = drops()
+            .flat_map(|(_, _, got)| got.into_iter().map(|(ty, _)| ty))
+            .collect();
+        for ty in droppable(&t, grantable) {
+            assert!(emitted.contains(&ty), "{ty} is listed but never dropped");
+        }
+    }
+
+    /// The branches the shared fixture does not cover: a base row at meta
+    /// 2-4 (drawn by commanders only), an elite row over the elite cap, an
+    /// unknown kind, deadspace at size 1 beside size 3 (and alone), clone
+    /// tags (one per NPC type, the least reachable id), tags past the
+    /// tier count.
+    #[test]
+    fn droppable_matches_the_draws_on_the_edge_rows() {
+        let ok = reachable();
+        let row = |faction_id, size, kind: &str, tier, type_id, meta| Loot {
+            faction_id,
+            size,
+            kind: kind.to_owned(),
+            tier,
+            type_id,
+            meta_level: Some(meta),
+        };
+        let (base_meta3, mystery, ds_small, ds_big, over_cap) = (ok[0], ok[1], ok[2], ok[3], ok[4]);
+        let (clone_lo, clone_hi) = (ok[5].min(ok[6]), ok[5].max(ok[6]));
+        let (late_tag, other_ds) = (ok[7], ok[8]);
+        const OTHER: i64 = 599_072;
+        let mut t = Table::default();
+        for size in 1..=3 {
+            t.loot
+                .push(row(PIRATE, size, "weapon", Tier::Base, base_meta3, 3));
+            t.loot
+                .push(row(PIRATE, size, "weapon", Tier::Elite, over_cap, 4));
+        }
+        t.loot
+            .push(row(PIRATE, 1, "mystery", Tier::Base, mystery, 0));
+        t.loot
+            .push(row(PIRATE, 1, "deadspace", Tier::Deadspace, ds_small, 0));
+        t.loot
+            .push(row(PIRATE, 3, "deadspace", Tier::Deadspace, ds_big, 0));
+        // A faction with deadspace rows at size 1 only: the fallback.
+        t.loot
+            .push(row(OTHER, 1, "deadspace", Tier::Deadspace, other_ds, 0));
+        let rows = [
+            type_row(990_710_001, "Asteroid", "Frigate", Tier::Base),
+            type_row(
+                990_710_003,
+                "Asteroid",
+                "Commander Battleship",
+                Tier::Commander,
+            ),
+            type_row(990_710_005, "Deadspace", "Battleship", Tier::Deadspace),
+        ];
+        for tag in [clone_hi, clone_lo] {
+            t.loot
+                .push(row(rows[0].type_id, 0, CLONE_TAG_KIND, Tier::Base, tag, 0));
+        }
+        // Six tags: `tag` never reads past the fifth.
+        let mut tags = vec![ok[9]; TAG_TIERS];
+        tags.push(late_tag);
+        t.factions.insert(
+            PIRATE,
+            Faction {
+                faction_id: PIRATE,
+                tags,
+                ..Faction::default()
+            },
+        );
+        let set = droppable(&t, grantable);
+        for yes in [base_meta3, ds_big, other_ds, clone_lo, ok[9]] {
+            assert!(set.contains(&yes), "{yes} should be droppable");
+        }
+        for no in [mystery, ds_small, over_cap, clone_hi, late_tag] {
+            assert!(!set.contains(&no), "{no} should not be droppable");
+        }
+        // And what the draws emit is inside it, each listed one emitted
+        // (the other faction has no NPC here: its row is the fallback case).
+        let mut emitted = std::collections::BTreeSet::new();
+        for r in &rows {
+            for id in 0..600i64 {
+                let d = Drop {
+                    row: r,
+                    equipment: (1, 3),
+                    sec: 0.2,
+                };
+                emitted.extend(
+                    loot_from(&t, d, 17, MIN_NPC_ID + id, grantable)
+                        .into_iter()
+                        .map(|(ty, _)| ty),
+                );
+            }
+        }
+        for ty in &emitted {
+            assert!(set.contains(ty), "{ty} emitted but not listed");
+        }
+        for ty in &set {
+            assert!(
+                emitted.contains(ty) || *ty == other_ds,
+                "{ty} listed but never emitted"
+            );
+        }
+        // The base meta-3 row came from the commander, never the base rat.
+        let base_rat = Drop {
+            row: &rows[0],
+            equipment: (1, 3),
+            sec: 0.2,
+        };
+        for id in 0..600i64 {
+            let got = loot_from(&t, base_rat, 17, MIN_NPC_ID + id, grantable);
+            assert!(got.iter().all(|(ty, _)| *ty != base_meta3));
+        }
     }
 
     #[test]
