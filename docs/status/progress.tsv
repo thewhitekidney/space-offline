@@ -232,7 +232,7 @@ Tools and the friends path	No-jail route for Windows friends	missing	the always-
 Tools and the friends path	Human check card brought up to date	partial	results stop at 2026-10-25		3.8	
 Tools and the friends path	PyValue::Long, a pinned integer tag	built-unproved	commit 868864d; unit tests	#19	3.1	
 Tools and the friends path	Args reader for service arms	missing	no Args reader; arms parse by hand	#104	3.10	
-Tools and the friends path	Hand-kept extracted values moved to the bundle	partial	CONCORD done in lane concord-ids; others remain	#105	3.10	
+Tools and the friends path	Hand-kept extracted values moved to the bundle	partial	CONCORD done in lane concord-ids; others remain; inventory: tools/hand-data.py (tools/test_hand_data.py)	#105	3.10	
 Tools and the friends path	Admin web page: status, pilots, systems, map; bot, broadcast and save actions (token, off by default)	built-unproved	admin_web.rs tests; deployed on the test server 11-03; no scenario or human check yet	#14	3.1	
 Tools and the friends path	Public release	parked	owner paused		3.11	
 Tools and the friends path	Fleet clean-room rewrite	done	b4150be (fleet.rs), aea9611 (service/fleet.rs); fleet and wing scenarios green (regress-fleet 2026-11-03)			
