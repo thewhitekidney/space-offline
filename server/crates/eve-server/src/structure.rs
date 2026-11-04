@@ -449,6 +449,14 @@ pub struct Env {
     pub jitter_roll: u64,
     /// Stands for `randint(ABANDONING_TIME_MIN, MAX)`.
     pub abandon_roll: u64,
+    /// The structure is being shot right now: the rolling DPS on its current
+    /// layer is above the pause-repair threshold. `[I]` the client's
+    /// `Update` pauses the repair timer on this, not on the layer merely
+    /// being damaged (a damaged layer is what repair exists to clear). The
+    /// caller owns the window; its length is `[A]`, falsified by a client
+    /// capture of a structure's repair timer after the last hit. Default
+    /// false: nothing shoots structures yet.
+    pub under_fire: bool,
 }
 
 impl Env {
@@ -463,6 +471,7 @@ impl Env {
             reinforce_hull_secs: REINFORCE_DURATION_HULL_DEFAULT,
             jitter_roll: 0,
             abandon_roll: 0,
+            under_fire: false,
         }
     }
 }
@@ -952,7 +961,9 @@ impl Structure {
                 self.events.push(Event::TimerChanged);
             }
             self.set_repairing(Some(true));
-        } else if self.last_aggressed.is_some() {
+        } else if env.under_fire {
+            // Not `last_aggressed.is_some()`: that stays set while a layer is
+            // damaged, so the repair would pause for as long as it is needed.
             if self.timer.pause(now) {
                 self.events.push(Event::TimerChanged);
             }
@@ -1720,7 +1731,12 @@ mod tests {
         assert!(s.events.contains(&Event::FirstAggressed));
         assert_eq!(s.repairing, Some(true));
         // Another hit while the clock is aggressed pauses the timer.
-        let e1 = env(at(100));
+        // (Pausing reads `Env::under_fire`; a merely damaged layer does not
+        // pause: see `a_structure_shot_once_and_left_alone_finishes_repairing`.)
+        let e1 = Env {
+            under_fire: true,
+            ..env(at(100))
+        };
         s.set_damage(0.4, 1.0, 1.0, &e1);
         assert_eq!(s.repairing, Some(false));
         assert!(s.timer.is_paused());
@@ -1730,16 +1746,58 @@ mod tests {
     }
 
     #[test]
+    fn a_structure_shot_once_and_left_alone_finishes_repairing() {
+        let e = env(at(0));
+        let mut s = fresh(&e);
+        s.set_state(State::ShieldVulnerable, &e);
+        s.set_damage(0.5, 1.0, 1.0, &e);
+        // Ticks while nobody shoots: aggression is still set (the layer is
+        // damaged) but the timer must run.
+        for secs in [10, 100, 500] {
+            s.update(&env(at(secs)));
+            assert_eq!(s.repairing, Some(true));
+            assert!(!s.timer.is_paused());
+        }
+        assert!(s.last_aggressed.is_some());
+        s.update(&env(at(DEFAULT_REPAIR_TIMER + 1)));
+        assert_eq!(s.damage, Some((1.0, 1.0, 1.0)));
+        assert!(s.events.contains(&Event::RepairCompleted));
+    }
+
+    #[test]
+    fn a_structure_still_under_fire_does_not_repair() {
+        let e = env(at(0));
+        let mut s = fresh(&e);
+        s.set_state(State::ShieldVulnerable, &e);
+        s.set_damage(0.5, 1.0, 1.0, &e);
+        for secs in [10, 500, DEFAULT_REPAIR_TIMER + 100] {
+            let f = Env {
+                under_fire: true,
+                ..env(at(secs))
+            };
+            s.update(&f);
+            assert_eq!(s.repairing, Some(false));
+            assert!(s.timer.is_paused());
+        }
+        assert_eq!(s.damage, Some((0.5, 1.0, 1.0)));
+        assert!(!s.events.contains(&Event::RepairCompleted));
+        // The fire stops: the timer resumes and the layer is made whole.
+        let quiet = at(DEFAULT_REPAIR_TIMER + 200);
+        s.update(&env(quiet));
+        assert_eq!(s.repairing, Some(true));
+        s.update(&env(quiet + (DEFAULT_REPAIR_TIMER + 1) * SECOND));
+        assert_eq!(s.damage, Some((1.0, 1.0, 1.0)));
+    }
+
+    #[test]
     fn repair_completion_heals_fully() {
         let e = env(at(0));
         let mut s = fresh(&e);
         s.set_state(State::ShieldVulnerable, &e);
         s.set_damage(0.5, 1.0, 1.0, &e);
         s.take_events();
-        // Aggression clears its flag only via a state change; clear it as
-        // the client's quiet period would.
-        s.first_aggressed = None;
-        s.last_aggressed = None;
+        // Aggression stays set while the layer is damaged; repair does not
+        // wait on it, only on `under_fire`.
         let e1 = env(at(DEFAULT_REPAIR_TIMER + 1));
         s.update(&e1);
         assert_eq!(s.damage, Some((1.0, 1.0, 1.0)));
