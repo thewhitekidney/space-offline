@@ -49,6 +49,14 @@ mkdir -p "$target_dir"
 #
 # One knob, EVE_MAX_JOBS, because three that can disagree is worse than one.
 : "${EVE_MAX_JOBS:=16}"
+# EVE_MAX_JOBS is a ceiling, never a demand: Docker refuses `--cpus` above the
+# machine's count (a 2-CPU CI runner given 4 fails before anything runs), so a
+# smaller machine gets what it has, and says so once.
+host_cpus=$(nproc 2>/dev/null || echo 1)
+if ((EVE_MAX_JOBS > host_cpus)); then
+    echo "dev.sh: EVE_MAX_JOBS=$EVE_MAX_JOBS, but this machine has $host_cpus CPU(s); using $host_cpus" >&2
+    EVE_MAX_JOBS=$host_cpus
+fi
 
 # **Wait for memory before starting.** The box has no swap; parallel lanes,
 # the gate, benches and the owner's client together ran it out of RAM

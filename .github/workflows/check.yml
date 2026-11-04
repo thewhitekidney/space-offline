@@ -1,5 +1,6 @@
 # Checks for a pull request. Trigger is `pull_request` ONLY, never
 # `pull_request_target`: an outside PR runs here with a read-only token and no secrets.
+# A light check: fmt, clippy and the lints; the tests run in the maintainer gate.
 # The Rust steps run in the repo's own image through tools/dev.sh (no network, no
 # capabilities, repo mounted read-only), like the local gate.
 # Labelling is a separate workflow (label.yml); this one never writes anything.
@@ -16,7 +17,7 @@ jobs:
     timeout-minutes: 60
     env:
       EVE_MIN_FREE_GB: "0"
-      EVE_MAX_JOBS: "4"
+      EVE_MAX_JOBS: "2"   # the runner's CPUs; tools/dev.sh caps at the machine anyway
     steps:
       # actions/checkout v4.2.2 (SHA checked against the tag 2026-11-03)
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -29,8 +30,9 @@ jobs:
         run: tools/dev.sh cargo fmt --all -- --check
       - name: clippy
         run: tools/dev.sh cargo clippy --locked --workspace --all-targets -- -D warnings
-      - name: tests
-        run: tools/dev.sh cargo test --locked --workspace
+      # No `cargo test` here (maintainer decision 2026-11-04, #111): a full workspace test
+      # on a 2-CPU runner per PR costs too many Actions minutes. The full suite runs in
+      # the maintainer gate (tools/land.sh) that every imported PR passes before it lands.
       - name: docs lint
         run: python3 -I tools/test_docs.py
       - name: progress table moves with the code
