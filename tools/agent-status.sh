@@ -26,7 +26,9 @@ branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo none)
 echo "branch=${branch:-none}"
 if [ -n "$(git status --porcelain 2>/dev/null)" ]; then dirty=yes; else dirty=no; fi
 echo "dirty=$dirty"
-ahead=$(git rev-list --count origin/master..HEAD 2>/dev/null || echo unknown)
+base=$(git rev-parse -q --verify origin/HEAD || git rev-parse -q --verify origin/main \
+    || git rev-parse -q --verify origin/master) || base=""
+ahead=$( [ -n "$base" ] && git rev-list --count "$base..HEAD" 2>/dev/null || echo unknown)
 echo "ahead=$ahead"
 
 who=$(python3 -I tools/claims.py whoami 2>"${TMPDIR:-/tmp}/agent-status.$$"); rc=$?

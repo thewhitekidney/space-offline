@@ -35,7 +35,7 @@ what keeps you from colliding with them or doing their work twice.
 - **The gate decides, by exit code: `tools/land.sh --no-push`.** Never pipe a test into
   `&&`. Why: a pipeline returns its last command's status, and red reached master that
   way.
-- **No push to master, no merge.** You open a PR; a maintainer merges. Why: one
+- **No push to main, no merge.** You open a PR; a maintainer merges. Why: one
   reviewed path.
 - **No work without a claim, and no edit outside your claim's `Owns:` paths.** Why: two
   agents on one file lose an edit, and two agents on one issue waste a day.
@@ -132,7 +132,7 @@ Never: hold two claims; claim on someone else's behalf; widen `Owns:` without ru
 
 ### Step 4. Work
 
-    git fetch origin && git switch -c <handle>/<N>-<slug> origin/master
+    git fetch origin && git switch -c <handle>/<N>-<slug> origin/main
 
 - Read the issue's `Read:` docs and its area's row in `docs/guides/contributing.md`
   §10. Nothing else unless those link it. `docs/guides/working-together.md` explains the
@@ -152,7 +152,7 @@ copy in `/tmp` (it may be RAM).
 
 ### Step 5. Gate
 
-    git fetch origin && git rebase origin/master
+    git fetch origin && git rebase origin/main
     tools/land.sh --no-push
 
 Success: exit 0 and a stamp line naming `out/landed/<sha>`.
@@ -185,7 +185,7 @@ part of a run.
 4. `tools/claims.py status N review`.
 
 Success: green checks, every finding answered. A maintainer merges.
-Never: merge, push to master, or settle a finding by weakening a test.
+Never: merge, push to main, or settle a finding by weakening a test.
 
 ### Step 7. Done, or stuck
 

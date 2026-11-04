@@ -91,16 +91,16 @@ tools/land.sh --no-push     # the full gate on your branch; nothing is pushed
 Never run `tools/gate.sh 2>&1 | tail && git push`: a pipeline's status is its
 last command's, so that pushes on red.
 
-## 7. How a change reaches master
+## 7. How a change reaches main
 
 Master takes pull requests. The owner merges.
 
 1. **Claim**: `AGENTS.md` step 3. How several people's agents share the tree:
    `docs/guides/working-together.md`.
-2. **Branch** from master, one issue per branch. Work in your own build copy.
+2. **Branch** from main, one issue per branch. Work in your own build copy.
 3. **Gate locally**: `tools/land.sh --no-push` must pass. Put the last lines
    of its log (the stamp, `out/landed/<sha>`) in the PR.
-4. **Open a PR** against master and tick the sign-off box: you accept the
+4. **Open a PR** against main and tick the sign-off box: you accept the
    Contributor Terms (`CONTRIBUTING-terms.md`) under the project licence
    (`LICENSE.md`). A PR without it is not imported. Say what changed and
    why, the files owned, the tests added (as `new: name`), the marks (`[V]`,

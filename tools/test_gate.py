@@ -177,6 +177,26 @@ class LandingTools(unittest.TestCase):
         self.assertEqual(r.returncode, 0, r.stderr)
         self.assertEqual(self.remote_master(), self.rev("HEAD"))
 
+    def test_a_remote_whose_branch_is_main_is_the_base(self) -> None:
+        # The public repo's branch is main: the docs-only path still finds its base,
+        # first through origin/main alone, then through origin/HEAD.
+        self.cargo_test("test result: FAILED. 0 passed; 1 failed\n", 101)
+        self.docs_commit("notes.md")
+        main_remote = os.path.join(self.tmp, "main.git")
+        self.git("init", "-q", "--bare", "-b", "main", main_remote, cwd=self.tmp)
+        self.git("push", "-q", "--no-verify", main_remote, f"{self.rev('HEAD~1')}:refs/heads/main")
+        self.git("remote", "set-url", "origin", main_remote)
+        self.git("fetch", "-q", "origin")
+        self.git("update-ref", "-d", "refs/remotes/origin/master")
+        g = self.run_tool("gate.sh")
+        self.assertEqual(g.returncode, 0, g.stderr)
+        self.assertIn("== docs only", g.stdout)
+        self.git("remote", "set-head", "origin", "main")
+        self.git("update-ref", "-d", "refs/remotes/origin/main")
+        self.git("update-ref", "refs/remotes/origin/main", self.rev("HEAD~1"))
+        g = self.run_tool("gate.sh")
+        self.assertIn("== docs only", g.stdout)
+
     def test_the_docs_path_runs_all_five_docs_tests_and_a_failure_in_any_stops_it(self) -> None:
         self.docs_commit("notes.md")
         r = self.run_tool("gate.sh")

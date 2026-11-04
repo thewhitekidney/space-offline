@@ -22,6 +22,29 @@ sg = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(sg)
 
 
+class DefaultBase(unittest.TestCase):
+    def test_prefers_origin_head_then_main_then_master(self):
+        with tempfile.TemporaryDirectory() as d:
+            env = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@test.invalid",
+                       GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@test.invalid")
+            g = lambda *a: subprocess.run(["git", *a], cwd=d, env=env, check=True,
+                                          capture_output=True, text=True).stdout.strip()
+            g("init", "-q", "-b", "work")
+            g("commit", "-q", "--allow-empty", "-m", "x")
+            sha = g("rev-parse", "HEAD")
+            old = os.getcwd()
+            os.chdir(d)
+            try:
+                g("update-ref", "refs/remotes/origin/master", sha)
+                self.assertEqual(sg.default_base(), "origin/master")
+                g("update-ref", "refs/remotes/origin/main", sha)
+                self.assertEqual(sg.default_base(), "origin/main")
+                g("symbolic-ref", "refs/remotes/origin/HEAD", "refs/remotes/origin/main")
+                self.assertEqual(sg.default_base(), "origin/HEAD")
+            finally:
+                os.chdir(old)
+
+
 class Decide(unittest.TestCase):
     def test_docs_only_passes(self):
         self.assertTrue(sg.decide(["docs" + "/guides/x.md"], [""])[0])
