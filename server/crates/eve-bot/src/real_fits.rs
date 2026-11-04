@@ -9,13 +9,14 @@
 //! count share_of_hull hi med lo rig sub charges drones hull_name`, where a
 //! slot column is comma-separated type ids (a module repeated per copy) and
 //! `charges` is `weapon:charge` pairs and `drones` is `type x count` pairs
-//! (`2203x2,2454x1`), the drones the pilot carried. The `hull_name` column
+//! (`300x2,301x1`), the drones the pilot carried. The `hull_name` column
 //! is not read; a table of ten columns (no `drones`) still loads.
 //!
 //! **Nothing from nowhere**: [`RealFits::usable`] keeps a fit only when the
 //! hull, every module and every charge pass the caller's `has` (the
 //! catalog's `Makeable`), so a fit with a part no builder makes is never
-//! offered; the caller still gates the fit on the paper evaluation
+//! offered; a drone no builder makes is left out of the flight when the fit
+//! is built (`doctrine_real`), never flown; the caller still gates the fit on the paper evaluation
 //! (`doctrine_fit::profile_of`, `Profile::ok`).
 
 use std::collections::BTreeMap;
@@ -52,19 +53,22 @@ pub struct RealFits {
     pub by_hull: BTreeMap<i64, Vec<RealFit>>,
 }
 
-/// The `drones` column: `type x count` pairs, comma-separated.
-fn drone_pairs(col: &str) -> Result<Vec<(i64, u8)>, String> {
+/// The `drones` column: `type x count` pairs, comma-separated. A malformed
+/// pair is skipped, not an error: the drones are a hint, and one bad pair
+/// must not fail the whole table.
+fn drone_pairs(col: &str) -> Vec<(i64, u8)> {
     let mut out: BTreeMap<i64, u8> = BTreeMap::new();
     for pair in col.split(',').filter(|s| !s.is_empty()) {
-        let (t, n) = pair
+        let Some((Ok(t), Ok(n))) = pair
             .split_once('x')
-            .ok_or_else(|| format!("drone pair {pair:?}"))?;
-        let t = t.parse::<i64>().map_err(|e| format!("drone {t:?}: {e}"))?;
-        let n = n.parse::<u32>().map_err(|e| format!("drones {n:?}: {e}"))?;
+            .map(|(t, n)| (t.parse::<i64>(), n.parse::<u32>()))
+        else {
+            continue;
+        };
         let e = out.entry(t).or_insert(0);
         *e = u8::try_from(u32::from(*e) + n).unwrap_or(u8::MAX);
     }
-    Ok(out.into_iter().filter(|d| d.1 > 0).collect())
+    out.into_iter().filter(|d| d.1 > 0).collect()
 }
 
 fn ids(col: &str) -> Result<Vec<i64>, String> {
@@ -105,10 +109,7 @@ pub fn parse(text: &str) -> Result<RealFits, String> {
                     .map_err(|e| format!("charge {ch:?}: {e}"))?;
                 charges.push((w, ch));
             }
-            let drones = match c.get(10) {
-                Some(col) => drone_pairs(col)?,
-                None => Vec::new(),
-            };
+            let drones = c.get(10).map_or_else(Vec::new, |col| drone_pairs(col));
             Ok(RealFit {
                 hull: num(0)? as i64,
                 hash: c[1].to_owned(),
@@ -142,7 +143,9 @@ pub fn load(path: &Path) -> Result<Option<RealFits>, String> {
 
 impl RealFits {
     /// The hull's fits that carry at least one module or drone and whose
-    /// hull, modules, charges and drones all pass `has`, most common first.
+    /// hull, modules and charges pass `has`, most common first. An
+    /// unmakeable drone does not drop the row: the builder leaves it out of
+    /// the flight.
     pub fn usable<'a>(
         &'a self,
         hull: i64,
@@ -157,7 +160,6 @@ impl RealFits {
                     && !(f.modules.is_empty() && f.drones.is_empty())
                     && f.modules.iter().all(|m| has(m.0))
                     && f.charges.iter().all(|c| has(c.1))
-                    && f.drones.iter().all(|d| has(d.0))
             })
     }
 
@@ -256,14 +258,14 @@ mod tests {
         let f = &t.by_hull[&9001];
         assert_eq!(f[0].drones, vec![(300, 3), (301, 1)]);
         assert!(f[1].drones.is_empty() && f[2].drones.is_empty());
-        // A drone-only fit is usable; an unmakeable drone drops it.
+        // A drone-only fit is usable; an unmakeable drone does not drop it.
         let all = |_: i64| true;
         assert_eq!(t.usable(9001, &all).count(), 3);
         let no_300 = |x: i64| x != 300;
-        let got: Vec<&str> = t.usable(9001, &no_300).map(|f| f.hash.as_str()).collect();
-        assert_eq!(got, ["d2", "d3"]);
-        let e = parse("9001\tx\t1\t0.1\t\t\t\t\t\t\t300\tH\n").unwrap_err();
-        assert!(e.contains("drone pair"), "{e}");
+        assert_eq!(t.usable(9001, &no_300).count(), 3);
+        // A malformed pair is skipped; the good ones and the table load.
+        let t = parse("9001\tx\t1\t0.1\t100\t\t\t\t\t\t300,y x2,302x1,303xq\tH\n").unwrap();
+        assert_eq!(t.by_hull[&9001][0].drones, vec![(302, 1)]);
     }
 
     #[test]

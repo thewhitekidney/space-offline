@@ -458,9 +458,12 @@ fn aim_hits(table: &Table, aim: Aim, gun: i64) -> bool {
 const GROUP_ROCKET: i64 = 387;
 
 /// **The size of a launcher [`classify`] leaves out**: the rocket launcher
-/// (group [`GROUP_ROCKET`], small) and the T2 and faction launchers that list
+/// (group [`GROUP_ROCKET`], small) and, in principle, launchers that list
 /// another charge group before the missile one (`classify` reads only the
-/// first), sized by the first missile group they name. `None` for a module
+/// first), sized by the first missile group they name. **Today only the
+/// rocket launcher reaches `extra_guns` in production**: `Library::build`
+/// drops a module above `Limits::meta_max` (1.0 by default) first, so the T2
+/// and faction launchers do not seed until that limit admits them. `None` for a module
 /// with no launcher hardpoint or no such group. [`Library`] keeps these in
 /// `extra_guns`, not in `parts`, so the greedy fill never picks them and the
 /// catalog's own fits do not move; only a real fit that carries one counts
@@ -1281,6 +1284,16 @@ pub fn skills_for(table: &Table, types: &[i64], level: i64) -> Vec<(i64, i64)> {
 
 // ---- the paper evaluation -------------------------------------------------
 
+/// Whether the round `charge` is in a charge group `gun` names.
+fn takes_round(table: &Table, gun: i64, charge: i64) -> bool {
+    let (Some(g), Some(c)) = (table.get(gun), table.get(charge)) else {
+        return false;
+    };
+    A_CHARGE_GROUPS
+        .filter_map(|a| g.attribute(a))
+        .any(|v| v as i64 == c.group_id)
+}
+
 /// Module inputs for a fit: item ids 1.. in order; guns online, everything
 /// with a default effect running (a kite lives on its propulsion).
 fn module_inputs(
@@ -1311,7 +1324,13 @@ fn module_inputs(
                     } else {
                         State::Online
                     },
-                    charge_type: if gun { charge } else { None },
+                    // A gun takes the round only if its charge groups name the
+                    // round's group: a utility launcher on a turret fit stays empty.
+                    charge_type: if gun {
+                        charge.filter(|c| takes_round(table, ty, *c))
+                    } else {
+                        None
+                    },
                 },
                 kind,
             ));
@@ -1417,6 +1436,9 @@ pub fn profile_with_drones(
         let range = mod_attr(&sheet, table, m, A_RANGE);
         let off = |a| table.attribute(m.type_id, a);
         match *kind {
+            // A gun with no round (a utility launcher on a turret fit) deals
+            // nothing and sets no flight or reach.
+            Kind::Gun(..) if m.charge_type.is_none() => {}
             Kind::Gun(family, _) => {
                 let mult = if family == Family::Missile {
                     sheet.character(A_MISSILE_MULT)
@@ -3312,8 +3334,11 @@ mod tests {
     const RAPID_LAUNCHER: i64 = 970_006_042;
     const ROCKET_LAUNCHER: i64 = 970_006_043;
     const T2_TORP_LAUNCHER: i64 = 970_006_044;
+    const HAM_ROUND: i64 = 970_006_050;
+    const TORP_ROUND: i64 = 970_006_051;
     const ROCKET_ROUND: i64 = 970_006_052;
     const LIGHT_ROUND: i64 = 970_006_053;
+    const UNREAD_LAUNCHER: i64 = 970_006_045;
     const MISSILE_HULL: i64 = 970_006_100;
     const DRONE_HULL: i64 = 970_006_101;
     const TORP_HULL: i64 = 970_006_102;
@@ -3443,9 +3468,14 @@ mod tests {
                  6=0.0;30=10.0;50=20.0;51=3000.0;182={GUNNERY};277=1.0;{groups};633=0.0\t{name}"
             ));
         }
+        // a meta-5 launcher: above the library's limit, so unclassified
+        line(format!(
+            "type\t{UNREAD_LAUNCHER}\t507\t7\t1\t1\t5.0\t0.4\t500.0\t25.0\t101\t12,16,40,101\t\
+             6=0.0;30=10.0;50=20.0;51=3000.0;182={GUNNERY};277=1.0;604=772;633=5.0\tUnread launcher"
+        ));
         line(format!(
             "type\t{ROCKET_ROUND}\t387\t8\t1\t100\t0.01\t0.0\t0.01\t1.0\t0\t\t117=100.0;37=3000.0;\
-             281=6000.0;653=100.0;654=200.0;1353=0.5;633=0.0\tRocket"
+             281=6000.0;653=100.0;654=200.0;1353=0.5;633=0.3\tRocket"
         ));
         line(format!(
             "type\t{LIGHT_ROUND}\t384\t8\t1\t100\t0.01\t0.0\t0.01\t1.0\t0\t\t117=50.0;37=3000.0;\
@@ -3458,7 +3488,7 @@ mod tests {
             line(format!(
                 "type\t{}\t{group}\t8\t1\t100\t0.01\t0.0\t0.01\t1.0\t0\t\t{dmg};37=3000.0;\
                  281=6000.0;653=100.0;654=200.0;1353=0.5;633=0.0\tAssault round {i}",
-                970_006_050 + i as i64
+                HAM_ROUND + i as i64
             ));
         }
         // hulls: a missile cruiser, a drone cruiser (a bay, three turrets), a
@@ -4270,7 +4300,7 @@ mod tests {
         assert_eq!(lib.kind_of(DC), Some(Kind::DamageControl));
         for (name, launcher, round) in [
             ("rocket", ROCKET_LAUNCHER, ROCKET_ROUND),
-            ("t2 torp", T2_TORP_LAUNCHER, 970_006_051),
+            ("t2 torp", T2_TORP_LAUNCHER, TORP_ROUND),
             ("rapid", RAPID_LAUNCHER, LIGHT_ROUND),
         ] {
             let row = launcher_row(
@@ -4324,7 +4354,7 @@ mod tests {
             DRONE_HULL,
             "both",
             &[gun],
-            Some((gun, 970_006_050)),
+            Some((gun, HAM_ROUND)),
             &[(DRONE_BIG, 3)],
         );
         // (the drone hull has no launcher hardpoints: it still builds, the engine does not count them)
@@ -4351,6 +4381,111 @@ mod tests {
         let row = launcher_row(970_999_999, "h", &[ROCKET_LAUNCHER], None, &[]);
         assert_eq!(built(&lib, &row).unwrap_err(), Dropped::NoProfile);
         assert!(!Dropped::Fails.name().is_empty());
+        // A rocket launcher whose only round is above the meta limit (0.3 >
+        // 0.2), with no round in the row.
+        let strict = lib_with(
+            &inst,
+            Limits {
+                meta_max: 0.2,
+                ..Limits::default()
+            },
+        );
+        let row = launcher_row(MISSILE_HULL, "nr", &[ROCKET_LAUNCHER], None, &[]);
+        assert_eq!(built(&strict, &row).unwrap_err(), Dropped::NoRound);
+        // Twenty torpedo launchers exceed the hull's power grid.
+        let many = vec![TORP_LAUNCHER; 20];
+        let row = launcher_row(
+            MISSILE_HULL,
+            "f",
+            &many,
+            Some((TORP_LAUNCHER, TORP_ROUND)),
+            &[],
+        );
+        assert_eq!(built(&lib, &row).unwrap_err(), Dropped::Fails);
+    }
+
+    #[test]
+    fn drones_beside_a_weapon_the_library_cannot_read_are_not_a_drone_boat() {
+        use crate::doctrine_real::Dropped;
+        let inst = kinds_world();
+        let lib = lib_with(&inst, Limits::default());
+        assert_eq!(lib.kind_of(UNREAD_LAUNCHER), None, "above the meta limit");
+        let row = launcher_row(
+            DRONE_HULL,
+            "u",
+            &[UNREAD_LAUNCHER, DDA],
+            None,
+            &[(DRONE_BIG, 3)],
+        );
+        assert_eq!(built(&lib, &row).unwrap_err(), Dropped::UnknownWeapon);
+        // Without the launcher the same drones are a drone boat.
+        let row = launcher_row(DRONE_HULL, "ok", &[DDA], None, &[(DRONE_BIG, 3)]);
+        assert_eq!(built(&lib, &row).unwrap().0, Family::Drone);
+    }
+
+    #[test]
+    fn a_utility_rocket_launcher_beside_turrets_changes_nothing() {
+        use crate::doctrine::Delivery;
+        let inst = kinds_world();
+        let lib = lib_with(&inst, Limits::default());
+        let turret = lib
+            .parts
+            .iter()
+            .find(|p| matches!(p.kind, Kind::Gun(Family::Hybrid, _)))
+            .unwrap()
+            .type_id;
+        let round = crate::doctrine_fit::choose_rounds(&lib, turret).unwrap().0;
+        let plain = launcher_row(
+            DRONE_HULL,
+            "t",
+            &[turret, turret],
+            Some((turret, round)),
+            &[],
+        );
+        let mixed = launcher_row(
+            DRONE_HULL,
+            "m",
+            &[turret, ROCKET_LAUNCHER, turret],
+            Some((turret, round)),
+            &[],
+        );
+        let (f1, a) = built(&lib, &plain).unwrap();
+        let (f2, b) = built(&lib, &mixed).unwrap();
+        assert_eq!((f1, f2), (Family::Hybrid, Family::Hybrid));
+        assert!(matches!(b.profile.delivery, Delivery::Turret(_)));
+        assert_eq!(a.profile.total_dps(), b.profile.total_dps());
+        assert_eq!(
+            a.charges[0], b.charges[0],
+            "two turrets' rounds, not three guns'"
+        );
+        // The rocket launcher in the lead (lowest id) does not name the family.
+        let lead = launcher_row(
+            DRONE_HULL,
+            "l",
+            &[ROCKET_LAUNCHER, turret, turret],
+            Some((turret, round)),
+            &[],
+        );
+        assert_eq!(built(&lib, &lead).unwrap().0, Family::Hybrid);
+    }
+
+    #[test]
+    fn the_drone_flight_counts_drones_flown_not_candidates() {
+        use crate::doctrine_real::flight;
+        let inst = kinds_world();
+        let lib = lib_with(&inst, Limits::default());
+        let mut hull = *hull_of(&lib, DRONE_HULL);
+        hull.drone_bay = 500.0;
+        // Eight small drones, bandwidth for all: five fly.
+        hull.bandwidth = 500.0;
+        assert_eq!(flight(&lib, &hull, &[(DRONE_SMALL, 8)]), [(DRONE_SMALL, 5)]);
+        // Bandwidth 40: one heavy (25), the others do not fit, then three
+        // lights (15) fill it.
+        hull.bandwidth = 40.0;
+        assert_eq!(
+            flight(&lib, &hull, &[(DRONE_SMALL, 5), (DRONE_BIG, 5)]),
+            [(DRONE_SMALL, 3), (DRONE_BIG, 1)]
+        );
     }
 
     #[test]

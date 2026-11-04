@@ -84,8 +84,7 @@ pub enum Family {
     Hybrid,
     Laser,
     Missile,
-    /// Named for the axis; the catalog does not build drone fits yet
-    /// (needs a drone profile; DOC-1 Not done).
+    /// A drone boat's damage is its drones'; the catalog builds drone lines and real drone fits seed (DOC-REAL-LAUNCHERS).
     Drone,
 }
 

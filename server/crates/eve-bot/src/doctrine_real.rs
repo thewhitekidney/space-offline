@@ -68,6 +68,10 @@ pub enum Dropped {
     NoWeapon,
     /// A weapon with no round in the row and none the greedy choice finds.
     NoRound,
+    /// A module on a weapon hardpoint the library cannot read (a T2 or
+    /// faction weapon above the meta limit, an unclassified family) beside
+    /// drones: the drones are not the fit's damage.
+    UnknownWeapon,
     /// The engine does not hold the fit.
     NoProfile,
     /// The fit fails CPU, power or capacitor.
@@ -79,6 +83,7 @@ impl Dropped {
         match self {
             Dropped::NoWeapon => "no weapon or combat drone",
             Dropped::NoRound => "no round for the weapon",
+            Dropped::UnknownWeapon => "a weapon the library cannot read",
             Dropped::NoProfile => "the engine does not hold it",
             Dropped::Fails => "fails cpu, power or capacitor",
         }
@@ -89,7 +94,7 @@ impl Dropped {
 /// as combat drones, the most damaging first, as many as the hull's
 /// bandwidth and [`DRONES_ACTIVE`] allow, grouped by type. Empty for a hull
 /// with no bay or bandwidth, or no combat drone among them.
-fn flight(lib: &Library<'_>, hull: &HullRow, carried: &[(i64, u8)]) -> Vec<(i64, u8)> {
+pub(crate) fn flight(lib: &Library<'_>, hull: &HullRow, carried: &[(i64, u8)]) -> Vec<(i64, u8)> {
     if hull.drone_bay <= 0.0 || hull.bandwidth <= 0.0 {
         return Vec::new();
     }
@@ -111,12 +116,17 @@ fn flight(lib: &Library<'_>, hull: &HullRow, carried: &[(i64, u8)]) -> Vec<(i64,
     });
     let (mut bandwidth, mut volume) = (0.0, 0.0);
     let mut out: BTreeMap<i64, u8> = BTreeMap::new();
-    for p in units.into_iter().take(DRONES_ACTIVE) {
+    let mut flown = 0;
+    for p in units {
+        if flown == DRONES_ACTIVE {
+            break;
+        }
         if bandwidth + p.bandwidth > hull.bandwidth || volume + p.volume > hull.drone_bay {
             continue;
         }
         bandwidth += p.bandwidth;
         volume += p.volume;
+        flown += 1;
         *out.entry(p.type_id).or_insert(0) += 1;
     }
     out.into_iter().collect()
@@ -132,7 +142,14 @@ fn flight(lib: &Library<'_>, hull: &HullRow, carried: &[(i64, u8)]) -> Vec<(i64,
 /// power or capacitor.
 pub fn try_build(lib: &Library<'_>, real: &RealFit) -> Result<(Family, RoleFit), Dropped> {
     let is_gun = |w: i64| matches!(lib.kind_of(w), Some(Kind::Gun(..)));
-    let gun = real.modules.iter().map(|m| m.0).find(|t| is_gun(*t));
+    // The main weapon is the gun with the most copies (the lowest id at a
+    // tie): a utility launcher beside the turrets does not name the family.
+    let gun = real
+        .modules
+        .iter()
+        .filter(|m| is_gun(m.0))
+        .max_by(|a, b| a.1.cmp(&b.1).then(b.0.cmp(&a.0)))
+        .map(|m| m.0);
     // The hull row gives the bay and the bandwidth; a hull the library does
     // not list flies no drones (a gun fit of it still builds).
     let drones = lib
@@ -140,15 +157,26 @@ pub fn try_build(lib: &Library<'_>, real: &RealFit) -> Result<(Family, RoleFit),
         .iter()
         .find(|h| h.type_id == real.hull)
         .map_or_else(Vec::new, |h| flight(lib, h, &real.drones));
+    // A module on a weapon hardpoint the library cannot classify is a weapon
+    // we cannot read: the fit is not a drone boat.
+    let hidden = real.modules.iter().any(|m| {
+        !is_gun(m.0)
+            && lib.inst.module(m.0).is_some_and(|x| x.hardpoint.is_some())
+            && lib.kind_of(m.0) != Some(Kind::Sphere)
+    });
     let family = match gun.and_then(|g| lib.kind_of(g)) {
         Some(Kind::Gun(family, _)) => family,
-        _ if !drones.is_empty() => Family::Drone,
-        _ => return Err(Dropped::NoWeapon),
+        _ if drones.is_empty() => return Err(Dropped::NoWeapon),
+        _ if hidden => return Err(Dropped::UnknownWeapon),
+        _ => Family::Drone,
     };
     let (primary, alt) = match gun {
         Some(g) => {
             let (greedy, alt) = choose_rounds(lib, g).map_or((None, None), |(p, a)| (Some(p), a));
-            let primary = real.charge_for(is_gun).or(greedy).ok_or(Dropped::NoRound)?;
+            let primary = real
+                .charge_for(|w| w == g)
+                .or(greedy)
+                .ok_or(Dropped::NoRound)?;
             (
                 Some(primary),
                 alt.filter(|a| *a != primary && lib.makeable.has(*a)),
@@ -171,7 +199,7 @@ pub fn try_build(lib: &Library<'_>, real: &RealFit) -> Result<(Family, RoleFit),
     let guns: u32 = real
         .modules
         .iter()
-        .filter(|m| is_gun(m.0))
+        .filter(|m| matches!(lib.kind_of(m.0), Some(Kind::Gun(f, _)) if f == family))
         .map(|m| u32::from(m.1))
         .sum();
     let mut charges = Vec::new();
@@ -214,7 +242,7 @@ pub fn build(lib: &Library<'_>, real: &RealFit) -> Option<(Family, RoleFit)> {
 
 /// **The seeds of a library**: for each DPS hull up to
 /// [`SEED_FITS_PER_HULL`] usable real fits ([`RealFits::usable`] over the
-/// library's `Makeable`), built and kept when they pass. Empty without a
+/// library's `Makeable`) that build and pass. Empty without a
 /// table in `lib.real_fits`.
 pub fn seeds(lib: &Library<'_>) -> RealSeeds {
     let mut out = RealSeeds::default();
@@ -223,10 +251,16 @@ pub fn seeds(lib: &Library<'_>) -> RealSeeds {
     };
     let has = |t: i64| lib.makeable.has(t);
     for h in lib.hulls_for(crate::doctrine::Role::Dps) {
-        for real in table.usable(h.type_id, &has).take(SEED_FITS_PER_HULL) {
+        // The first fits that build, so a row with no weapon takes no slot.
+        let mut kept = 0;
+        for real in table.usable(h.type_id, &has) {
+            if kept == SEED_FITS_PER_HULL {
+                break;
+            }
             let Some((family, fit)) = build(lib, real) else {
                 continue;
             };
+            kept += 1;
             let layer = layer_of(&fit.profile.defence);
             let e = out.groups.entry((h.type_id, family, layer)).or_default();
             e.0.by_hull.entry(h.type_id).or_default().push(real.clone());
