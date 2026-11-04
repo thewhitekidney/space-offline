@@ -387,6 +387,9 @@ pub struct Library<'a> {
     pub hulls: Vec<HullRow>,
     pub limits: Limits,
     prices: BTreeMap<i64, f64>,
+    /// Launchers [`classify`] leaves out ([`extra_launcher_size`]), by type:
+    /// known to [`Library::kind_of`] for a real fit, absent from `parts`.
+    extra_guns: BTreeMap<i64, Kind>,
     /// What the world can make: gates the real fits ([`crate::doctrine_real`]).
     pub makeable: Makeable,
     /// What players fly; `None` seeds nothing.
@@ -447,6 +450,33 @@ fn aim_hits(table: &Table, aim: Aim, gun: i64) -> bool {
         Aim::Skill(s) => required(g).iter().any(|r| r.0 == s),
         Aim::Group(gr) => g.group_id == gr,
     }
+}
+
+/// The charge group of rockets, the round the rocket launcher takes
+/// **[V-data]** (`chargeGroup1` of every `Rocket Launcher`; the T2 and faction
+/// ones add a second group after it).
+const GROUP_ROCKET: i64 = 387;
+
+/// **The size of a launcher [`classify`] leaves out**: the rocket launcher
+/// (group [`GROUP_ROCKET`], small) and the T2 and faction launchers that list
+/// another charge group before the missile one (`classify` reads only the
+/// first), sized by the first missile group they name. `None` for a module
+/// with no launcher hardpoint or no such group. [`Library`] keeps these in
+/// `extra_guns`, not in `parts`, so the greedy fill never picks them and the
+/// catalog's own fits do not move; only a real fit that carries one counts
+/// its damage.
+fn extra_launcher_size(inst: &Installed, t: &TypeRow) -> Option<u8> {
+    if inst.module(t.type_id)?.hardpoint != Some(Hardpoint::Launcher) {
+        return None;
+    }
+    A_CHARGE_GROUPS
+        .filter_map(|a| t.attribute(a))
+        .find_map(|v| match v as i64 {
+            GROUP_ROCKET | fit_plan::GROUP_LIGHT_MISSILE => Some(1),
+            fit_plan::GROUP_HEAVY_MISSILE | fit_plan::GROUP_HEAVY_ASSAULT_MISSILE => Some(2),
+            fit_plan::GROUP_CRUISE_MISSILE | fit_plan::GROUP_TORPEDO => Some(3),
+            _ => None,
+        })
 }
 
 /// What kind of part a module row is, and how much of it (`None`: not one
@@ -756,6 +786,7 @@ impl<'a> Library<'a> {
         let mut parts = Vec::new();
         let mut hulls = Vec::new();
         let mut prices = BTreeMap::new();
+        let mut extra_guns = BTreeMap::new();
         for t in table.types().filter(|t| t.published) {
             if !makeable.has(t.type_id) {
                 continue;
@@ -767,6 +798,10 @@ impl<'a> Library<'a> {
                         continue;
                     }
                     let Some((kind, magnitude)) = classify(inst, t) else {
+                        if let Some(size) = extra_launcher_size(inst, t) {
+                            extra_guns.insert(t.type_id, Kind::Gun(Family::Missile, size));
+                            prices.insert(t.type_id, price(t.type_id));
+                        }
                         continue;
                     };
                     let rig = matches!(kind, Kind::Rig(_));
@@ -858,6 +893,7 @@ impl<'a> Library<'a> {
             hulls,
             limits,
             prices,
+            extra_guns,
             makeable: makeable.clone(),
             real_fits: None,
         }
@@ -888,6 +924,7 @@ impl<'a> Library<'a> {
             .iter()
             .find(|p| p.type_id == type_id)
             .map(|p| p.kind)
+            .or_else(|| self.extra_guns.get(&type_id).copied())
     }
 
     /// Whether `part` may be fitted to `hull`: a module that names hull
@@ -3273,6 +3310,10 @@ mod tests {
     const HAM_LAUNCHER: i64 = 970_006_040;
     const TORP_LAUNCHER: i64 = 970_006_041;
     const RAPID_LAUNCHER: i64 = 970_006_042;
+    const ROCKET_LAUNCHER: i64 = 970_006_043;
+    const T2_TORP_LAUNCHER: i64 = 970_006_044;
+    const ROCKET_ROUND: i64 = 970_006_052;
+    const LIGHT_ROUND: i64 = 970_006_053;
     const MISSILE_HULL: i64 = 970_006_100;
     const DRONE_HULL: i64 = 970_006_101;
     const TORP_HULL: i64 = 970_006_102;
@@ -3387,6 +3428,29 @@ mod tests {
                  6=0.0;30={pg};50={cpu};51={rate};182={GUNNERY};277=1.0;604={group};633=0.0\t{name}"
             ));
         }
+        // the rocket launcher names group 387 (not one of the five); the T2
+        // torpedo launcher lists another group first, then the torpedo group
+        for (id, name, groups) in [
+            (ROCKET_LAUNCHER, "Rocket launcher", "604=387.0"),
+            (
+                T2_TORP_LAUNCHER,
+                "T2 torpedo launcher",
+                "604=657.0;606=89.0",
+            ),
+        ] {
+            line(format!(
+                "type\t{id}\t507\t7\t1\t1\t5.0\t0.4\t500.0\t25.0\t101\t12,16,40,101\t\
+                 6=0.0;30=10.0;50=20.0;51=3000.0;182={GUNNERY};277=1.0;{groups};633=0.0\t{name}"
+            ));
+        }
+        line(format!(
+            "type\t{ROCKET_ROUND}\t387\t8\t1\t100\t0.01\t0.0\t0.01\t1.0\t0\t\t117=100.0;37=3000.0;\
+             281=6000.0;653=100.0;654=200.0;1353=0.5;633=0.0\tRocket"
+        ));
+        line(format!(
+            "type\t{LIGHT_ROUND}\t384\t8\t1\t100\t0.01\t0.0\t0.01\t1.0\t0\t\t117=50.0;37=3000.0;\
+             281=6000.0;653=100.0;654=200.0;1353=0.5;633=0.0\tLight round"
+        ));
         for (i, (group, dmg)) in [(772, "117=300.0"), (89, "117=900.0")]
             .into_iter()
             .enumerate()
@@ -4157,6 +4221,154 @@ mod tests {
                 .iter()
                 .all(|b| (0.0..1.0).contains(&f64::from_bits(*b)))
         );
+    }
+
+    // ---- DOC-REAL-LAUNCHERS: missile and drone fits seed too ---------------
+
+    /// One real row of `hull`: `hi` modules, `drones` as `type x count`.
+    fn launcher_row(
+        hull: i64,
+        hash: &str,
+        hi: &[i64],
+        charge: Option<(i64, i64)>,
+        drones: &[(i64, u8)],
+    ) -> String {
+        let ch = charge.map_or(String::new(), |c| format!("{}:{}", c.0, c.1));
+        let dr: Vec<String> = drones.iter().map(|d| format!("{}x{}", d.0, d.1)).collect();
+        let hi: Vec<String> = hi.iter().map(|t| t.to_string()).collect();
+        format!(
+            "{hull}\t{hash}\t10\t0.5\t{}\t\t\t\t\t{ch}\t{}\tInvented\n",
+            hi.join(","),
+            dr.join(",")
+        )
+    }
+
+    fn built(
+        lib: &Library<'_>,
+        text: &str,
+    ) -> Result<(Family, RoleFit), crate::doctrine_real::Dropped> {
+        let table = crate::real_fits::parse(text).unwrap();
+        let hull = *table.by_hull.keys().next().unwrap();
+        crate::doctrine_real::try_build(lib, &table.by_hull[&hull][0])
+    }
+
+    #[test]
+    fn rocket_rapid_and_t2_launcher_fits_build_as_missile_fits() {
+        let inst = kinds_world();
+        let lib = lib_with(&inst, Limits::default());
+        // The classifier leaves the rocket and the T2 launcher out; the
+        // library knows them as guns for a real fit but keeps them out of
+        // the greedy parts.
+        for (t, size) in [(ROCKET_LAUNCHER, 1), (T2_TORP_LAUNCHER, 3)] {
+            assert_eq!(lib.kind_of(t), Some(Kind::Gun(Family::Missile, size)));
+            assert!(lib.parts.iter().all(|p| p.type_id != t), "not a part");
+        }
+        assert_eq!(
+            lib.kind_of(RAPID_LAUNCHER),
+            Some(Kind::Gun(Family::Missile, 1))
+        );
+        assert_eq!(lib.kind_of(DC), Some(Kind::DamageControl));
+        for (name, launcher, round) in [
+            ("rocket", ROCKET_LAUNCHER, ROCKET_ROUND),
+            ("t2 torp", T2_TORP_LAUNCHER, 970_006_051),
+            ("rapid", RAPID_LAUNCHER, LIGHT_ROUND),
+        ] {
+            let row = launcher_row(
+                MISSILE_HULL,
+                name,
+                &[launcher, launcher, launcher],
+                Some((launcher, round)),
+                &[],
+            );
+            let (family, fit) = built(&lib, &row).unwrap_or_else(|e| panic!("{name}: {e:?}"));
+            assert_eq!(family, Family::Missile, "{name}");
+            assert_eq!(fit.charges[0].0, round, "{name}: the row's round is first");
+            assert_eq!(fit.charges[0].1, ROUNDS_PRIMARY * 3, "{name}");
+            assert!(fit.profile.total_dps() > 0.0, "{name}");
+        }
+        // With no charge in the row the greedy choice names one.
+        let row = launcher_row(MISSILE_HULL, "bare", &[ROCKET_LAUNCHER], None, &[]);
+        let (_, fit) = built(&lib, &row).unwrap();
+        assert_eq!(fit.charges[0].0, ROCKET_ROUND);
+    }
+
+    #[test]
+    fn a_drone_only_fit_builds_on_the_drone_profile() {
+        let inst = kinds_world();
+        let lib = lib_with(&inst, Limits::default());
+        // Bandwidth 75 flies three big drones of the five carried; the
+        // amplifier counts through the engine.
+        let row = launcher_row(
+            DRONE_HULL,
+            "dr",
+            &[DDA],
+            None,
+            &[(DRONE_SMALL, 2), (DRONE_BIG, 5)],
+        );
+        let (family, fit) = built(&lib, &row).unwrap();
+        assert_eq!(family, Family::Drone);
+        assert_eq!(fit.charges, vec![(DRONE_BIG, 3)], "the flight, not the bay");
+        assert!(fit.skills.iter().any(|s| s.0 == 3436), "drone skill");
+        let bare = launcher_row(DRONE_HULL, "bare", &[REACTOR], None, &[(DRONE_BIG, 3)]);
+        let (_, plain) = built(&lib, &bare).unwrap();
+        assert!(fit.profile.total_dps() > plain.profile.total_dps());
+        assert!(fit.profile.total_dps() > 3.0 * 90.0 / 5.0);
+        // A gun fit that also carries drones keeps the gun's family and flies them.
+        let gun = lib
+            .parts
+            .iter()
+            .find(|p| matches!(p.kind, Kind::Gun(Family::Missile, _)))
+            .unwrap()
+            .type_id;
+        let both = launcher_row(
+            DRONE_HULL,
+            "both",
+            &[gun],
+            Some((gun, 970_006_050)),
+            &[(DRONE_BIG, 3)],
+        );
+        // (the drone hull has no launcher hardpoints: it still builds, the engine does not count them)
+        let (family, fit) = built(&lib, &both).unwrap();
+        assert_eq!(family, Family::Missile);
+        assert!(fit.charges.contains(&(DRONE_BIG, 3)), "{:?}", fit.charges);
+    }
+
+    #[test]
+    fn a_fit_with_no_weapon_is_dropped_with_a_named_reason() {
+        use crate::doctrine_real::Dropped;
+        let inst = kinds_world();
+        let lib = lib_with(&inst, Limits::default());
+        // A plate-less utility fit: no gun, no drones.
+        let row = launcher_row(MISSILE_HULL, "u", &[DC, NANO], None, &[]);
+        assert_eq!(built(&lib, &row).unwrap_err(), Dropped::NoWeapon);
+        // Drones on a hull with no bay fly none.
+        let row = launcher_row(MISSILE_HULL, "d", &[DC], None, &[(DRONE_BIG, 3)]);
+        assert_eq!(built(&lib, &row).unwrap_err(), Dropped::NoWeapon);
+        // A mining drone is no combat drone.
+        let row = launcher_row(DRONE_HULL, "m", &[DC], None, &[(DRONE_MINER, 5)]);
+        assert_eq!(built(&lib, &row).unwrap_err(), Dropped::NoWeapon);
+        // A hull the engine does not hold.
+        let row = launcher_row(970_999_999, "h", &[ROCKET_LAUNCHER], None, &[]);
+        assert_eq!(built(&lib, &row).unwrap_err(), Dropped::NoProfile);
+        assert!(!Dropped::Fails.name().is_empty());
+    }
+
+    #[test]
+    fn missile_and_drone_rows_reach_the_seeds() {
+        let inst = kinds_world();
+        let mut lib = lib_with(&inst, Limits::default());
+        let text = launcher_row(
+            MISSILE_HULL,
+            "r",
+            &[ROCKET_LAUNCHER, ROCKET_LAUNCHER],
+            Some((ROCKET_LAUNCHER, ROCKET_ROUND)),
+            &[],
+        ) + &launcher_row(DRONE_HULL, "d", &[DDA], None, &[(DRONE_BIG, 3)]);
+        let table = crate::real_fits::parse(&text).unwrap();
+        lib.real_fits = Some(&table);
+        let seeds = crate::doctrine_real::seeds(&lib);
+        let fams: BTreeSet<Family> = seeds.iter().map(|s| s.0).collect();
+        assert_eq!(fams, BTreeSet::from([Family::Missile, Family::Drone]));
     }
 
     #[test]
