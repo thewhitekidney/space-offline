@@ -2088,29 +2088,24 @@ fn npc_class(w: &Registry, type_id: i64) -> String {
     }
 }
 
-/// The candidates of one loaded type table, computed once per table: a
-/// world's content never changes while it runs, so a kill is a lookup
-/// ([`crate::filament_drops::candidates`] walks every type). Keyed by the
-/// type table's address, which a process holds for its life; `[A]` a test
-/// that drops one content and builds another at the same address would read
-/// the first's list, so tests of the draw itself pass candidates to
-/// [`filament_in`] directly.
-fn filament_candidates(w: &Registry) -> std::sync::Arc<Vec<crate::filament_drops::Candidate>> {
-    use std::sync::{Arc, Mutex, OnceLock};
-    type Cache = Mutex<Vec<(usize, Arc<Vec<crate::filament_drops::Candidate>>)>>;
-    static CACHE: OnceLock<Cache> = OnceLock::new();
-    let key = std::ptr::from_ref(crate::typedata::installed_in(w.content())) as usize;
-    let mut cache = CACHE
-        .get_or_init(Cache::default)
-        .lock()
-        .unwrap_or_else(std::sync::PoisonError::into_inner);
-    if let Some((_, c)) = cache.iter().find(|(k, _)| *k == key) {
-        return Arc::clone(c);
-    }
-    let c = Arc::new(crate::filament_drops::candidates(w.content()));
-    cache.push((key, Arc::clone(&c)));
-    c
-}
+/// The filament types of a world, built once from its type data
+/// ([`crate::filament_drops::candidates`] walks every type); a world's
+/// content never changes while it runs, so a kill is a lookup.
+pub struct FilamentCandidates(Vec<crate::filament_drops::Candidate>);
+
+/// The slot, for `world_ext::SLOTS` (coordinator).
+pub const FILAMENT_SLOT: crate::world_ext::SlotSpec = crate::world_ext::SlotSpec {
+    name: "filament_candidates",
+    // A content with no type data (a bare test world) has no filaments.
+    make: |content| {
+        let none = content.try_get::<crate::typedata::Installed>().is_none();
+        Box::new(FilamentCandidates(if none {
+            Vec::new()
+        } else {
+            crate::filament_drops::candidates(content)
+        }))
+    },
+};
 
 /// **The filament draw, pure** (FIL-WIRE): one roll per kill or can, from
 /// the world `seed` and the NPC's or the can's `id`. `None` when the table is
@@ -2144,8 +2139,15 @@ pub(crate) fn roll_filament(
     if !table.enabled {
         return None;
     }
-    let cands = filament_candidates(w);
-    let got = filament_in(table, &cands, w.world().seed, source, id, name, band)?;
+    let got = filament_in(
+        table,
+        &w.ext::<FilamentCandidates>().0,
+        w.world().seed,
+        source,
+        id,
+        name,
+        band,
+    )?;
     crate::item::find_in(w.content(), got).map(|_| got)
 }
 

@@ -147,6 +147,8 @@ pub const SLOTS: &[SlotSpec] = &[
     crate::gateway_out::SLOT,
     // #77 BE-2: ships left in space with no pilot.
     crate::pilotless::SLOT,
+    // FIL-WIRE: the filament candidates, built once per world.
+    crate::combat::FILAMENT_SLOT,
 ];
 
 /// The slots' state, keyed by type.
