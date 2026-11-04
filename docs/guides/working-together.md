@@ -34,7 +34,7 @@ colliding or doing the same work twice. The step-by-step procedure an agent runs
 
 ## Branches, PRs and the gate
 
-- Each claim is one branch, `<handle>/<issue>-<slug>`, and one PR against master
+- Each claim is one branch, `<handle>/<issue>-<slug>`, and one PR against main
   that says `Closes #N`. Open it as a draft early, so others see your files.
 - Everyone runs the same gate on their branch, `tools/land.sh --no-push`. It decides
   by exit code; never pipe a test into `&&`.

@@ -8,7 +8,7 @@
 #   tools/gate.sh --only CRATE        # scope fmt/clippy/test to one package
 #   tools/gate.sh --without C1,C2     # run in a COPY with those crates removed
 #
-# **A docs-only push skips the build.** When everything since origin/master is
+# **A docs-only push skips the build.** When everything since the base branch is
 # Markdown outside tools/, server/ and content/, only the docs tests run:
 # test_docs, test_status_page, test_plan_owners, test_friend_kit and
 # test_fci_scenarios (rule 17 of docs/lanes/README.md: a hand edit of the
@@ -122,15 +122,26 @@ run_python_tests() {
 # docs/status/progress.tsv, or say `Status: none (<reason>)` in the head commit
 # message; `--audit` then fails on a row the newest regress verdicts contradict,
 # and on a scenario no row cites. Without var/ the audit skips with a note.
+# The branch a change is measured from: the remote's default (origin/HEAD), else
+# main, else master. A clone of the public repo has main; the maintainer tree has
+# master; both have origin/HEAD.
+default_base() {
+    local r
+    for r in refs/remotes/origin/HEAD refs/remotes/origin/main refs/remotes/origin/master; do
+        git rev-parse -q --verify "$r" && return 0
+    done
+    return 1
+}
+
 status_checks() {
     echo "== feature status"
     # Each check runs only where its tool exists (a tree without them, such as
     # the gate's own test fixture, has nothing to check).
     if [[ -e tools/status-guard.py ]]; then
-        if base=$(git rev-parse -q --verify refs/remotes/origin/master); then
+        if base=$(default_base); then
             python3 -I tools/status-guard.py --base "$base"
         else
-            echo "   status-guard skipped: no origin/master to measure from"
+            echo "   status-guard skipped: no origin/HEAD, main or master to measure from"
         fi
     fi
     [[ -e tools/status-page.py ]] && python3 -I tools/status-page.py --audit --no-stamp
@@ -154,7 +165,7 @@ else
 fi
 took
 
-if ((!dirty)) && base=$(git rev-parse -q --verify refs/remotes/origin/master); then
+if ((!dirty)) && base=$(default_base); then
     mapfile -t changed < <(git diff --name-only --no-renames "$base" HEAD)
     docs_only=$((${#changed[@]} > 0))
     for f in "${changed[@]}"; do
