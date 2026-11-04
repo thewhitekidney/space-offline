@@ -110,7 +110,7 @@ Industry and mining	Ancient salvage	client-proved	fci_t3_salvage W10
 Industry and mining	Motherlode announced to the pilot	client-proved	fci_motherlode W10			
 Industry and mining	Installing an industry job	client-proved	fci_industry_job W10			Red in wave 8
 Industry and mining	A planetary colony	client-proved	fci_pi_colony W10			
-Industry and mining	Invention	built-unproved	industry.rs; scenario fci_invention written 2026-11-03 (w21-dd-inv; copy job, invention job with datacores, delivery in the hangar and the blueprint list), not yet run on a client	#25	3.1	
+Industry and mining	Invention	client-proved	fci_invention 2026-11-04 (40 checks, 8 runs at 60x: the job carries the requested runs, T2 copies with the quoted ME, TE and runs, the source copy used up, a second CompleteJob refused); unit tests	#25		
 Industry and mining	Reactions	client-proved	fci_reactions 11-03			
 Industry and mining	Moon drills	missing	no moonExtractions service	#52, #53, #54	3.4	
 Industry and mining	Metenox moon mining	missing	no autoMoonMining service	#55	3.4	

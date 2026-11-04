@@ -82,12 +82,12 @@ text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}
 <text x="407.0" y="481.0" class="in-part sm" text-anchor="middle">1</text>
 <text x="444.3" y="481.0" class="in-missing sm" text-anchor="middle">1</text>
 <text x="16.0" y="512" class="t">Industry and mining</text>
-<text x="464.0" y="512" class="s sm" text-anchor="end">12 of 19 proved</text>
+<text x="464.0" y="512" class="s sm" text-anchor="end">13 of 19 proved</text>
 <rect x="16.0" y="520" width="448.0" height="20" rx="4" class="track"/>
-<rect x="16.0" y="520" width="280.9" height="20" rx="4" class="proved"/>
-<text x="156.5" y="535.0" class="in-proved sm" text-anchor="middle">12</text>
-<rect x="298.9" y="520" width="92.3" height="20" rx="4" class="built"/>
-<text x="345.1" y="535.0" class="in-built sm" text-anchor="middle">4</text>
+<rect x="16.0" y="520" width="304.5" height="20" rx="4" class="proved"/>
+<text x="168.3" y="535.0" class="in-proved sm" text-anchor="middle">13</text>
+<rect x="322.5" y="520" width="68.7" height="20" rx="4" class="built"/>
+<text x="356.9" y="535.0" class="in-built sm" text-anchor="middle">3</text>
 <text x="427.6" y="535.0" class="in-missing sm" text-anchor="middle">3</text>
 <text x="16.0" y="566" class="t">Upwell structures</text>
 <text x="464.0" y="566" class="s sm" text-anchor="end">9 of 16 proved</text>
