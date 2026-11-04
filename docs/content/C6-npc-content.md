@@ -505,11 +505,18 @@ pool(type)  =
   gives; `prop` for the propulsion group at the size of its `<n>MN`
   (1 and 5 small, 10 and 50 medium, 100 and 500 large); `ewar` for the module
   groups its NPCs' `needs` name (SCRAM, WEB and NEUT one group each; EWAR the
-  painter, ECM, damper and disruptor groups; a size-free module is in all three
-  sizes). A module whose name gives no size is in no tank or prop pool.
-  `[A]` the size words and plate mm ranges (`module_size`) and the EWAR
-  choice; falsified by a hull class holding a module of another class, or a
-  faction whose rats never use a group listed. No seller is added.
+  painter, ECM, damper and disruptor groups). A module with no size word is
+  in all three sizes only in a group that is size-free by nature (scrambler,
+  web, painter, ECM, damper, disruptor); a tank, prop or neutralizer module
+  with none is in no pool, and a capital module (word `Capital`, or `Heavy`
+  outside the neutralizer group) is in no pool at all. No seller is added.
+  `[A]` the size words and plate mm ranges (`module_size`); the EWAR choice;
+  and that `needs` are pooled across every NPC tier of a faction (a few elite
+  rats neut, so T1 neuts enter the base pool). Falsified by a hull class
+  holding a module of another class, a faction whose rats never use a group
+  listed, or a base-tier rat that drops a module only elites use.
+  `tools/content.py --check` needs a bundle re-extracted after #123: an older
+  bundle has no tank, prop or ewar rows and fails it.
 - Item-store reach: every pool type must be grantable; categories 7, 8 are
   in `--typedata` today, **17 (tags) is not** [V, code].
 

@@ -55,8 +55,8 @@ ATTR_CHARGE_SIZE = 128
 ATTR_CHARGE_GROUPS = (604, 605, 606)
 SIZES = (1, 2, 3)
 
-#: C6 R7 equipment groups [V: `dogma` group ids, the type names of each group
-#: in `typedata.tsv`]. Propulsion is one group; a faction's tank is the booster
+#: C6 R7 equipment groups [V: the group ids of `types/market.tsv`, matched to
+#: the type names of each group in `types/typedata.tsv`]. Propulsion is one group; a faction's tank is the booster
 #: and extender groups (shield) or the repairer and plate groups (armor);
 #: the ewar a faction carries is read from its NPCs' `needs`
 #: (`npc/types.tsv`): SCRAM/WEB/NEUT name one module group each, and the
@@ -67,7 +67,9 @@ GROUP_PROP, GROUP_PLATE = 46, 329
 TANK_GROUPS = {"shield": (40, 38), "armor": (62, GROUP_PLATE)}
 EWAR_GROUPS = {"SCRAM": (52,), "WEB": (65,), "NEUT": (71,),
                "EWAR": (379, 201, 208, 291)}
-_WORD_SIZE = {"Micro": 1, "Heavy": 3, "Small": 1, "Medium": 2, "Large": 3, "X-Large": 3}
+#: `module_size`'s answer for a module in no pool (capital, heavy-interdictor).
+EXCLUDED = 0
+_WORD_SIZE = {"Micro": 1, "Small": 1, "Medium": 2, "Large": 3, "X-Large": 3}
 _MN = re.compile(r"(?:^|\s)(\d+)MN(?:\s|$)")
 _MM = re.compile(r"(?:^|\s)(\d+)mm(?:\s|$)")
 
@@ -262,7 +264,9 @@ def trade_rows(corps):
 
 def module_size(group, nm):
     """The hull size (1-3) a tank, propulsion or sized-ewar module is made
-    for, from its name; `None` when the name says none (a size-free module,
+    for, from its name; `EXCLUDED` for a capital module (word `Capital`, or
+    `Heavy` outside the neutralizer group: a heavy interdictor's scrambler is
+    no battleship's); `None` when the name says none (a size-free module,
     or one this does not know, which the caller treats as it must).
 
     - propulsion: `<n>MN`, 1 and 5 small, 10 and 50 medium, 100 and 500 large;
@@ -274,6 +278,9 @@ def module_size(group, nm):
       [A: Large is a battleship size for repairers and boosters alike.
       Falsifier: a cruiser or battlecruiser fit holding a Large one]."""
     nm = nm or ""
+    words = nm.split()
+    if "Capital" in words or ("Heavy" in words and group not in EWAR_GROUPS["NEUT"]):
+        return EXCLUDED
     if group == GROUP_PROP:
         m = _MN.search(nm)
         return {1: 1, 5: 1, 10: 2, 50: 2, 100: 3, 500: 3}.get(int(m.group(1))) if m else None
@@ -283,16 +290,20 @@ def module_size(group, nm):
             return None
         mm = int(m.group(1))
         return 1 if mm <= 200 else 2 if mm <= 800 else 3 if mm <= 1600 else None
-    for word in nm.split():
+    for word in words:
         if word in _WORD_SIZE:
             return _WORD_SIZE[word]
+        if word == "Heavy":  # a Heavy Neutralizer is the battleship one
+            return 3
     return None
 
 
 def _equipment_pools(f, group, nm, needs):
     """`(kind, size)` pools of one Tech I module of `group` in faction `f`:
     its tank (a tank module of its size, size known), propulsion (size known)
-    and ewar groups (a size-free module serves every size)."""
+    and ewar groups. A module with no size word is size-free, in all three
+    sizes, only in a group that is so by nature (scrambler, web, painter, ECM,
+    damper, disruptor); a neutralizer or tank module with none gets no row."""
     size = module_size(group, nm)
     out = []
     if group == GROUP_PROP:
@@ -301,7 +312,10 @@ def _equipment_pools(f, group, nm, needs):
         out.append(("tank", size))
     if any(group in EWAR_GROUPS[n] for n in needs if n in EWAR_GROUPS):
         out.append(("ewar", size))
-    return [(k, s) for k, sz in out for s in ([sz] if sz else SIZES if k == "ewar" else [])]
+    free = {g for n in ("SCRAM", "WEB", "EWAR") for g in EWAR_GROUPS[n]}
+    return [(k, s) for k, sz in out
+            for s in ([] if sz == EXCLUDED else [sz] if sz
+                      else SIZES if k == "ewar" and group in free else [])]
 
 
 def loot_rows(factions, types, sizes, name, needs=None):
@@ -524,6 +538,14 @@ def clone_tag_problems(types, rows):
     return bad
 
 
+def equipment_problems(kinds):
+    """The check on `npc/loot.tsv`'s `kinds` (`{kind: row count}`): each of
+    C6 R7's equipment kinds has rows. An old bundle (extracted before #123)
+    has no tank, prop or ewar rows and must be re-extracted."""
+    return ["npc/loot.tsv: no %s rows (C6 R7's equipment pool; re-extract the bundle)" % k
+            for k in ("weapon", "tank", "prop", "ewar") if not kinds.get(k)]
+
+
 def check_clone_tags(ctx):
     """Read `types/typedata.tsv` (the `type` rows: id, group, category ... name)."""
     path = ctx.path("types/typedata.tsv")
@@ -588,8 +610,7 @@ def check(ctx):
     kinds = collections.Counter(r[2] for r in content.read_rows(ctx.path("npc/loot.tsv")))
     ctx.note("npc/loot.tsv: rows by kind %s" % dict(sorted(kinds.items())))
     if os.path.isfile(path):
-        bad += ["npc/loot.tsv: no %s rows (C6 R7's equipment pool)" % k
-                for k in ("weapon", "tank", "prop", "ewar") if not kinds.get(k)]
+        bad += equipment_problems(kinds)
     ctx.note("npc/trades.tsv: %d rows; npc/loot.tsv: %d rows" % tuple(
         sum(1 for _ in content.read_rows(ctx.path(p))) for p in ("npc/trades.tsv", "npc/loot.tsv")))
     return bad

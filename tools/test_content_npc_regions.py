@@ -227,6 +227,9 @@ class Loot(unittest.TestCase):
         })
 
 
+NOT_TECH1 = 990  # an invented meta group id that is not META_TECH1
+
+
 class Equipment(unittest.TestCase):
     """C6 R7's tank, prop and ewar pools (#123), on invented ids, groups and names."""
 
@@ -256,7 +259,7 @@ class Equipment(unittest.TestCase):
                  990603: self.mod(98001), 990604: self.mod(98001),
                  990605: self.mod(98001, meta=npr.META_FACTION, level=8),
                  990606: self.mod(98001)}
-        names = {990601: "1MN Afterburner I", 990602: "50MN Compact Microwarpdrive",
+        names = {990601: "1MN Example Afterburner I", 990602: "50MN Compact Microwarpdrive",
                  990603: "100MN Enduring Afterburner", 990604: "20000MN Afterburner I",
                  990605: "Dread 5MN Microwarpdrive", 990606: "Afterburner"}
         self.assertEqual(self.rows(None, [], types, names), {
@@ -295,11 +298,53 @@ class Equipment(unittest.TestCase):
         self.assertEqual(self.rows(None, ["TURRET"], types, names), set())
 
     def test_only_tech1_modules_and_no_charge_or_seller(self):
-        types = {990631: self.mod(98001, meta=2, level=5),
+        types = {990631: self.mod(98001, meta=NOT_TECH1, level=5),
                  990632: {"category": npr.CATEGORY_CHARGE, "metaGroupID": npr.META_TECH1,
                           "groupID": 98001}}
-        names = {990631: "1MN Afterburner II", 990632: "1MN Afterburner I"}
+        names = {990631: "1MN Example Afterburner II", 990632: "1MN Example Afterburner I"}
         self.assertEqual(self.rows("shield", ["SCRAM"], types, names), set())
+
+    def test_capital_heavy_and_unsized_neuts_are_in_no_pool(self):
+        types = {i: self.mod(g) for i, g in ((990651, 98032), (990652, 98032), (990653, 98032),
+                                              (990654, 98030), (990655, 98031), (990656, 98010),
+                                              (990657, 98001))}
+        names = {990651: "Capital Example Neut I", 990652: "Example Neut I",
+                 990653: "Small Example Neut I", 990654: "Heavy Example Scram",
+                 990655: "Capital Example Web", 990656: "Capital Example Booster",
+                 990657: "Capital Example Afterburner"}
+        got = self.rows("shield", ["NEUT", "SCRAM", "WEB"], types, names)
+        self.assertEqual(got, {(1, "ewar", 990653, 1)})
+
+    def test_the_size_word_ladder(self):
+        types = {i: self.mod(98010) for i in range(990661, 990666)}
+        names = dict(zip(types, ("Micro Example Booster", "Small Example Booster",
+                                 "Medium Example Booster", "Large Example Booster",
+                                 "X-Large Example Booster")))
+        self.assertEqual(self.rows("shield", [], types, names), {
+            (1, "tank", 990661, 1), (1, "tank", 990662, 1), (2, "tank", 990663, 1),
+            (3, "tank", 990664, 1), (3, "tank", 990665, 1)})
+
+    def test_the_check_names_each_empty_equipment_kind(self):
+        self.assertEqual(npr.equipment_problems(
+            {"weapon": 3, "tank": 1, "prop": 1, "ewar": 1, "ammo": 9}), [])
+        bad = npr.equipment_problems({"weapon": 3, "tank": 1, "prop": 1, "ammo": 9})
+        self.assertEqual(len(bad), 1, bad)
+        self.assertIn("no ewar rows", bad[0])
+        self.assertIn("re-extract", bad[0])
+        self.assertEqual(len(npr.equipment_problems({})), 4)
+
+    def test_an_empty_tank_column_is_no_tank(self):
+        row = ("599001\t1999001\t\t39000001\t1\t1999002\t99101\t\t\t1=99201\t\t"
+               "\t\t\t\t\t\t\tExample Cartel")
+        with tempfile.NamedTemporaryFile("w", suffix=".tsv", delete=False,
+                                         encoding="utf-8") as fh:
+            path = fh.name
+            fh.write("#h\n" + row + "\n")
+        try:
+            got = npr.read_factions_tsv(path)
+        finally:
+            os.remove(path)
+        self.assertIsNone(got[599001]["tank"])
 
     def test_the_needs_file_is_per_faction(self):
         with tempfile.NamedTemporaryFile("w", suffix=".tsv", delete=False,
