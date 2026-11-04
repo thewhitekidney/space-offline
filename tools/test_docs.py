@@ -708,6 +708,8 @@ def check_entry_docs(root, files):
 
 class PlanSync(unittest.TestCase):
     def test_i_plan_and_progress_agree(self):
+        if not os.path.exists(os.path.join(ROOT, PLAN)):
+            self.skipTest(f"{PLAN} is private and absent from this tree")
         self.assertEqual(check_plan_sync(ROOT), [])
 
     def test_j_entry_docs_link_owners(self):

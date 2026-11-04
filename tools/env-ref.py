@@ -163,6 +163,25 @@ def doc_names(doc_text):
     return env, flags
 
 
+def rows_citing_absent(doc_text, root):
+    """Env names whose row cites source files (backticked paths in its second cell)
+    none of which exist under root: a clone of the public repo lacks the files the
+    export drops (deploy/), so such a row can't be judged stale there."""
+    out = set()
+    for line in doc_text.splitlines():
+        m = ROW_RE.match(line)
+        if not m:
+            continue
+        cells = line.strip().strip("|").split("|")
+        first = cells[0].strip().strip("`").split()
+        if not first or not ENV_RE.fullmatch(first[0]) or len(cells) < 2:
+            continue
+        paths = [t for t in re.findall(r"`([^`]+)`", cells[1]) if "/" in t]
+        if paths and not any(os.path.exists(os.path.join(root, t)) for t in paths):
+            out.add(first[0])
+    return out
+
+
 def all_mentions(doc_text):
     """Every EVE_* token and flag the doc mentions in backticks."""
     ticks = re.findall(r"`([^`]+)`", doc_text)
@@ -182,8 +201,9 @@ def check(root=ROOT, doc_path=None):
     row_env, row_flags = doc_names(text)
     code_env = scan_env(root)
     # A name read only by a private file (the export drops it) may have a
-    # row, and need not.
-    private_env = scan_env(root, private_only=True)
+    # row, and need not. Without the private list (a public clone), a row whose
+    # cited source file is absent from the tree is the same case.
+    private_env = set(scan_env(root, private_only=True)) | rows_citing_absent(text, root)
     code_flags = scan_flags(root)
     all_code_flags = code_flags["eve-server"] | code_flags["eve-bots"]
     problems = []

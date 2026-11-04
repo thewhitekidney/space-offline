@@ -88,6 +88,18 @@ class EnvRefTest(unittest.TestCase):
         self.put("docs/reference/launch-and-env.md", DOC + "| `EVE_DEPLOY_ONLY` | x |\n")
         self.assertEqual(env_ref.check(self.root), [])  # and not stale
 
+    def test_row_citing_an_absent_file_is_not_stale(self):
+        # A public clone: no private list, and the row's source file is not in the tree.
+        self.put("docs/reference/launch-and-env.md",
+                 DOC + "| `EVE_DROPPED` | `deploy/entry.sh` | x |\n")
+        self.assertEqual(env_ref.check(self.root), [])
+        # Once the cited file exists and does not read the name, the row is stale again.
+        self.put("deploy/entry.sh", "echo nothing\n")
+        self.assertIn("stale: EVE_DROPPED is in the doc but not in the code", env_ref.check(self.root))
+        # A row citing no path is judged as before.
+        self.put("docs/reference/launch-and-env.md", DOC + "| `EVE_NOPATH` | none | x |\n")
+        self.assertIn("stale: EVE_NOPATH is in the doc but not in the code", env_ref.check(self.root))
+
     def test_missing_doc(self):
         os.remove(os.path.join(self.root, "docs/reference/launch-and-env.md"))
         self.assertEqual(len(env_ref.check(self.root)), 1)
