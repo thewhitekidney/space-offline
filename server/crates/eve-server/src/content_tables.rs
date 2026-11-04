@@ -20,6 +20,7 @@ pub const TABLES: &[TableSpec] = &[
     crate::epic_arc::TABLE,
     crate::facwar::WARZONES,
     crate::fighters_data::TABLE,
+    crate::filament_drops::TABLE,
     crate::hacking_loot::TABLE,
     crate::industry::TABLE,
     crate::loyalty::TABLE,

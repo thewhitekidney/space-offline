@@ -1196,6 +1196,22 @@ pub fn summary_fields(corps: usize, alliances: usize, blue: usize, red: usize) -
     format!("corps {corps} alliances {alliances} blue {blue} red {red}")
 }
 
+/// The `[soc]` summary's clock: ` day N`, the hall's game-day count, appended
+/// to [`summary_fields`] so `tools/society-report.py` can time the stance
+/// flips of gate GC.
+pub fn day_field(game_day: u64) -> String {
+    format!(" day {game_day}")
+}
+
+/// The `[soc]` line for a loss that moved (or did not move) a relation:
+/// `victim`'s view of `killer` before and after. `tools/society-report.py`
+/// reads it for gate GC's "a loss moves a relation".
+pub fn loss_line(victim: Group, killer: Group, before: f64, after: f64) -> String {
+    format!(
+        "[soc] relation loss victim={victim} killer={killer} before={before:.2} after={after:.2}"
+    )
+}
+
 #[cfg(test)]
 mod tests {
 
@@ -1796,5 +1812,17 @@ mod help_event_tests {
         // for a rescue.
         let hard = relations::event_deltas(&events[1], &Temper::HARD)[0].d;
         assert!(hard <= -K_ABANDON);
+    }
+
+    #[test]
+    fn the_report_lines_carry_what_the_judge_reads() {
+        assert_eq!(day_field(7), " day 7");
+        let line = loss_line(1, 2, 3.0, 1.5);
+        assert_eq!(
+            line,
+            "[soc] relation loss victim=1 killer=2 before=3.00 after=1.50"
+        );
+        let sum = format!("{}{}", summary_fields(3, 2, 1, 1), day_field(4));
+        assert_eq!(sum, "corps 3 alliances 2 blue 1 red 1 day 4");
     }
 }

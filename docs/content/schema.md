@@ -2112,6 +2112,7 @@ Rules: §1.1's authored form. Every row that carries an `[A]` value states its f
 | `content/bots/difficulty.tsv` | DOC-8 | DOC-8 |
 | `content/econ/geode-picks.tsv` | L6A | `content_geodes.py` |
 | `content/econ/geode-loot.tsv` | L6A | L6A (`eve-mod-econ` `geode::TABLE`) |
+| `content/pve/filament-drops.tsv` | #61 FIL-DROP | `filament_drops::TABLE` (the roll is called from NPC and site loot by #121) |
 
 ### `content/population.tsv`
 
@@ -2191,6 +2192,27 @@ Invented example row:
 ```
 99	599001	599002	39000001	39000002	[A] invented example row
 ```
+
+### `content/pve/filament-drops.tsv`
+
+- **Owner (writer):** #61 FIL-DROP.
+- **Readers:** `filament_drops::TABLE` (`filament_drops::Table`). A row `off` in `source` turns drops off (the world switch).
+- **Key:** none: rows roll in file order, the first hit wins.
+- **Stable ids and delta keys (ruling 4):** none.
+
+```
+source	name	kind	band	chance_ppm	weather	why
+```
+
+| column | type | meaning |
+|---|---|---|
+| `source` | `enum(npc\|site\|off\|on)` | a killed NPC, a hacked relic or data can, or the world switch |
+| `name` | `str` | the NPC class (as `npc/types.tsv` `class`) or the site archetype (`relic`, `data`); `*` any |
+| `kind` | `enum(abyss\|jump)` | an abyssal key (tier by band) or a random-jump filament |
+| `band` | `str` | letters `h` `l` `n` `w`, or `*` |
+| `chance_ppm` | `i64` | chance per kill or can, parts per million [A] |
+| `weather` | `str` | `any`, or a word in the abyssal key's name |
+| `why` | `str` | the reason and the [A]'s falsifier |
 
 ### `content/agents/rewards.tsv`
 

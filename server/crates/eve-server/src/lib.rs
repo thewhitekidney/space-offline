@@ -161,6 +161,7 @@ pub mod wing_words;
 pub(crate) mod global_config;
 // The source scan that keeps `Character::solar_system_id` reads honest.
 pub mod crate_hooks;
+pub mod filament_drops;
 pub mod grid;
 pub mod group_contacts;
 pub mod hacking;

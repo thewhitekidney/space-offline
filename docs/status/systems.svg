@@ -62,23 +62,23 @@ text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}
 <rect x="389.3" y="358" width="35.3" height="20" rx="4" class="part"/>
 <text x="407.0" y="373.0" class="in-part sm" text-anchor="middle">1</text>
 <text x="444.3" y="373.0" class="in-missing sm" text-anchor="middle">1</text>
-<text x="16.0" y="404" class="t">Missions and exploration</text>
-<text x="464.0" y="404" class="s sm" text-anchor="end">17 of 21 proved</text>
+<text x="16.0" y="404" class="t">Fleet</text>
+<text x="464.0" y="404" class="s sm" text-anchor="end">7 of 9 proved</text>
 <rect x="16.0" y="412" width="448.0" height="20" rx="4" class="track"/>
-<rect x="16.0" y="412" width="360.7" height="20" rx="4" class="proved"/>
-<text x="196.3" y="427.0" class="in-proved sm" text-anchor="middle">17</text>
-<rect x="378.7" y="412" width="19.3" height="20" rx="4" class="built"/>
+<rect x="16.0" y="412" width="346.4" height="20" rx="4" class="proved"/>
+<text x="189.2" y="427.0" class="in-proved sm" text-anchor="middle">7</text>
+<rect x="364.4" y="412" width="47.8" height="20" rx="4" class="built"/>
 <text x="388.3" y="427.0" class="in-built sm" text-anchor="middle">1</text>
-<text x="431.0" y="427.0" class="in-missing sm" text-anchor="middle">3</text>
-<text x="16.0" y="458" class="t">Fleet</text>
-<text x="464.0" y="458" class="s sm" text-anchor="end">7 of 9 proved</text>
+<rect x="414.2" y="412" width="47.8" height="20" rx="4" class="unknown"/>
+<text x="438.1" y="427.0" class="in-unknown sm" text-anchor="middle">1</text>
+<text x="16.0" y="458" class="t">Missions and exploration</text>
+<text x="464.0" y="458" class="s sm" text-anchor="end">17 of 22 proved</text>
 <rect x="16.0" y="466" width="448.0" height="20" rx="4" class="track"/>
-<rect x="16.0" y="466" width="346.4" height="20" rx="4" class="proved"/>
-<text x="189.2" y="481.0" class="in-proved sm" text-anchor="middle">7</text>
-<rect x="364.4" y="466" width="47.8" height="20" rx="4" class="built"/>
-<text x="388.3" y="481.0" class="in-built sm" text-anchor="middle">1</text>
-<rect x="414.2" y="466" width="47.8" height="20" rx="4" class="unknown"/>
-<text x="438.1" y="481.0" class="in-unknown sm" text-anchor="middle">1</text>
+<rect x="16.0" y="466" width="344.2" height="20" rx="4" class="proved"/>
+<text x="188.1" y="481.0" class="in-proved sm" text-anchor="middle">17</text>
+<rect x="362.2" y="466" width="38.7" height="20" rx="4" class="built"/>
+<text x="381.5" y="481.0" class="in-built sm" text-anchor="middle">2</text>
+<text x="432.5" y="481.0" class="in-missing sm" text-anchor="middle">3</text>
 <text x="16.0" y="512" class="t">Industry and mining</text>
 <text x="464.0" y="512" class="s sm" text-anchor="end">13 of 19 proved</text>
 <rect x="16.0" y="520" width="448.0" height="20" rx="4" class="track"/>

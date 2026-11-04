@@ -212,12 +212,13 @@ Bots	One difficulty setting	built-unproved	difficulty.rs; unit tests only	#93	3.
 Bots	Bot economy: haul, geodes, PLEX, SKINs, injectors, industry, PI	built-unproved	bot soaks only	#2	3.7	
 Bots	Bots use ESS	missing	no ESS code in the bot crate	#20, #60	3.5	
 Bots	Bots use filaments	built-unproved	commit 7bbc445; unit tests	#20	3.1	
+Missions and exploration	Filament drops: abyssal and random-jump filaments from NPC kills and hacked sites	built-unproved	filament_drops.rs, content/pve/filament-drops.tsv; unit tests; not yet called from NPC or site loot (#121)	#61, #121	3.1	
 Bots	Doctrine fits seeded from real killmails; fitter budget and part kinds	built-unproved	commits 1429a91, 9eb39fa, 01f0d6a; unit tests	#21	3.7	
 Bots	Miners leave dry belts; offline mining spreads; rare-ore value per system	built-unproved	commits 4e57d0d, f6f7924; unit tests	#23	3.7	
 Bots	Capitals fight	missing	capital.rs only ferries; lane NW-10	#34, #35, #36, #37, #38	3.3	
 Bots	Hunter bots find and engage	client-proved	fci_hunter_bot 2026-11-03 (regress-w20b): the hunter finds and engages; hunt.rs, travel.rs			Hunters only
 Bots	Low-status bots avoid the police	built-unproved	unit tests (hunt.rs, travel.rs); no client scenario	#29	3.1	Hunters only
-Bots	Society gates GC and GD and doctrine gates G1 to G10 pass in a soak	unknown	no record found; tools/doctrine-report.py exists	#89, #90, #93	3.7	
+Bots	Society gates GC and GD and doctrine gates G1 to G10 pass in a soak	unknown	no soak record yet; judges: tools/society-report.py (GC, GD; tools/test_society_report.py), tools/doctrine-report.py (G1-G10)	#89, #90, #93	3.7	
 Bots	Bots feel like players	unknown	no record found; only people can judge this		3.7	
 Tools and the friends path	The gate: lint, tests, clippy, push only on pass	done	tools/land.sh, tools/gate.sh			
 Tools and the friends path	The client regression runner, three clients at once	done	tools/client-ci-regress.sh			
@@ -232,7 +233,7 @@ Tools and the friends path	No-jail route for Windows friends	missing	the always-
 Tools and the friends path	Human check card brought up to date	partial	results stop at 2026-10-25		3.8	
 Tools and the friends path	PyValue::Long, a pinned integer tag	built-unproved	commit 868864d; unit tests	#19	3.1	
 Tools and the friends path	Args reader for service arms	missing	no Args reader; arms parse by hand	#104	3.10	
-Tools and the friends path	Hand-kept extracted values moved to the bundle	partial	CONCORD done in lane concord-ids; others remain	#105	3.10	
+Tools and the friends path	Hand-kept extracted values moved to the bundle	partial	CONCORD done in lane concord-ids; others remain; inventory: tools/hand-data.py (tools/test_hand_data.py)	#105	3.10	
 Tools and the friends path	Admin web page: status, pilots, systems, map; bot, broadcast and save actions (token, off by default)	built-unproved	admin_web.rs tests; deployed on the test server 11-03; no scenario or human check yet	#14	3.1	
 Tools and the friends path	Public release	parked	owner paused		3.11	
 Tools and the friends path	Fleet clean-room rewrite	done	b4150be (fleet.rs), aea9611 (service/fleet.rs); fleet and wing scenarios green (regress-fleet 2026-11-03)			
