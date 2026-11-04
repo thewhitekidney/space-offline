@@ -64,7 +64,7 @@ Fitting and ships	Skill gates on boarding, fitting and onlining	client-proved	fc
 Fitting and ships	Eject and board; an abandoned ship stays in space	client-proved	fci_board_eject W10			
 Fitting and ships	Rename a ship, notes, jettison	client-proved	fci_gaps2 W10			
 Fitting and ships	Multi-fit window: fit N ships from the hangar or a container	client-proved	fci_fitfix 11-02			
-Fitting and ships	The server refuses a module the hull cannot fit	built-unproved	unit tests; scenario fci_fit_refuse written 2026-11-03 (w23-fit), not yet run	#24	3.1	
+Fitting and ships	The server refuses a module the hull cannot fit	client-proved	fci_fit_refuse 2026-11-04 (43 checks: a second Damage Control refused with CantFitTooManyByGroup and left in the hangar; a power-hungry module fits offline and its online is refused with NotEnoughPower); unit tests	#24		
 Fitting and ships	Mutaplasmids	missing	item.rs only names them; research comes after ABYSS-3	#68, #69, #70, #71	3.5	
 Fitting and ships	Dragging a module onto a slot redraws the window	partial	fci_fit_drag 11-03 (regress-w14b) proves the fit lands; the owner's play test 11-03 saw no redraw	#13	3.10	
 Modules	Webs, scramblers and points	client-proved	fci_tackle 2026-11-03 (regress-w20b); tackle.rs			

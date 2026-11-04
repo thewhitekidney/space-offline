@@ -20,17 +20,17 @@ text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}
 <text x="248.0" y="56" class="t big">84%</text>
 <text x="248.0" y="78" class="s sm">built, proved or not</text>
 <rect x="16.0" y="96" width="448.0" height="32" rx="4" class="track"/>
-<rect x="16.0" y="96" width="314.7" height="32" rx="4" class="proved"/>
-<text x="173.3" y="117.0" class="in-proved sm" text-anchor="middle">164</text>
-<rect x="332.7" y="96" width="55.9" height="32" rx="4" class="built"/>
-<text x="360.7" y="117.0" class="in-built sm" text-anchor="middle">30</text>
+<rect x="16.0" y="96" width="316.6" height="32" rx="4" class="proved"/>
+<text x="174.3" y="117.0" class="in-proved sm" text-anchor="middle">165</text>
+<rect x="334.6" y="96" width="54.0" height="32" rx="4" class="built"/>
+<text x="361.6" y="117.0" class="in-built sm" text-anchor="middle">29</text>
 <rect x="390.6" y="96" width="19.2" height="32" rx="4" class="part"/>
 <text x="434.0" y="117.0" class="in-missing sm" text-anchor="middle">24</text>
 <rect x="458.2" y="96" width="3.8" height="32" class="unknown"/>
 <rect x="16.0" y="141" width="12.0" height="12" rx="2" class="proved"/>
-<text x="34.0" y="152" class="s sm">Proved: 164</text>
+<text x="34.0" y="152" class="s sm">Proved: 165</text>
 <rect x="240.0" y="141" width="12.0" height="12" rx="2" class="built"/>
-<text x="258.0" y="152" class="s sm">Built, not proved: 30</text>
+<text x="258.0" y="152" class="s sm">Built, not proved: 29</text>
 <rect x="16.0" y="163" width="12.0" height="12" rx="2" class="part"/>
 <text x="34.0" y="174" class="s sm">Part built: 11</text>
 <rect x="240.0" y="163" width="12.0" height="12" rx="2" class="missing"/>
