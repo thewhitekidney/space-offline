@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 220" role="img" aria-label="72 percent proved, 84 percent built, of 232 features">
-<title>72 percent proved, 84 percent built, of 232 features</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 220" role="img" aria-label="71 percent proved, 84 percent built, of 233 features">
+<title>71 percent proved, 84 percent built, of 233 features</title>
 <style>
 .bg{fill:#fcfcfb}.t{fill:#0b0b0b}.s{fill:#52514e}.track{fill:#e1e0d9}
 .proved{fill:#184f95}.built{fill:#3987e5}.part{fill:#86b6ef}.missing{fill:#e1e0d9}.unknown{fill:#eb6834}
@@ -15,22 +15,22 @@ text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}
 .big{font-size:40px;font-weight:600}.b{font-weight:600}.sm{font-size:13px}
 </style>
 <rect width="480" height="220" rx="8" class="bg"/>
-<text x="16.0" y="56" class="t big">72%</text>
+<text x="16.0" y="56" class="t big">71%</text>
 <text x="16.0" y="78" class="s sm">proved</text>
 <text x="248.0" y="56" class="t big">84%</text>
 <text x="248.0" y="78" class="s sm">built, proved or not</text>
 <rect x="16.0" y="96" width="448.0" height="32" rx="4" class="track"/>
-<rect x="16.0" y="96" width="318.6" height="32" rx="4" class="proved"/>
-<text x="175.3" y="117.0" class="in-proved sm" text-anchor="middle">166</text>
-<rect x="336.6" y="96" width="52.1" height="32" rx="4" class="built"/>
-<text x="362.6" y="117.0" class="in-built sm" text-anchor="middle">28</text>
-<rect x="390.6" y="96" width="19.2" height="32" rx="4" class="part"/>
-<text x="434.0" y="117.0" class="in-missing sm" text-anchor="middle">24</text>
+<rect x="16.0" y="96" width="317.2" height="32" rx="4" class="proved"/>
+<text x="174.6" y="117.0" class="in-proved sm" text-anchor="middle">166</text>
+<rect x="335.2" y="96" width="53.8" height="32" rx="4" class="built"/>
+<text x="362.1" y="117.0" class="in-built sm" text-anchor="middle">29</text>
+<rect x="390.9" y="96" width="19.2" height="32" rx="4" class="part"/>
+<text x="434.2" y="117.0" class="in-missing sm" text-anchor="middle">24</text>
 <rect x="458.2" y="96" width="3.8" height="32" class="unknown"/>
 <rect x="16.0" y="141" width="12.0" height="12" rx="2" class="proved"/>
 <text x="34.0" y="152" class="s sm">Proved: 166</text>
 <rect x="240.0" y="141" width="12.0" height="12" rx="2" class="built"/>
-<text x="258.0" y="152" class="s sm">Built, not proved: 28</text>
+<text x="258.0" y="152" class="s sm">Built, not proved: 29</text>
 <rect x="16.0" y="163" width="12.0" height="12" rx="2" class="part"/>
 <text x="34.0" y="174" class="s sm">Part built: 11</text>
 <rect x="240.0" y="163" width="12.0" height="12" rx="2" class="missing"/>

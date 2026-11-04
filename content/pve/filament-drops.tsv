@@ -1,0 +1,32 @@
+# Filament drops (#61, FIL-DROP): what chance an NPC kill or a hacked site
+# has of putting one filament into the world. Header in docs/content/schema.md.
+# Authored: names and groups only, never a type id. Restart to reload.
+#
+# source: npc (a killed NPC; name = its class, as npc/types.tsv `class`) or
+#   site (a hacked relic or data can; name = the site's archetype name:
+#   relic, data). Case-insensitive. `*` as name matches any.
+# kind: abyss (an abyssal key; its tier follows the system's security band,
+#   filament_drops::tier_for_band) or jump (a random-jump filament).
+# band: which space the row rolls in: letters h (high) l (low) n (null)
+#   w (wormhole), or `*` for all.
+# chance_ppm: parts per million per kill or per hacked can; one independent
+#   draw per matching row, the first that hits gives one filament.
+# weather: any, or a word the key's type name must contain (dark, electrical,
+#   exotic, firestorm, gamma). Ignored for kind jump.
+# why: the falsifier. Every rate here is [A] until the owner decides the
+#   filament sources; a row of an unknown source or kind is skipped with a
+#   line. A row `off` in `source` turns every drop off (the world switch):
+#   delete it, or set `on`, to turn them back on.
+source	name	kind	band	chance_ppm	weather	why
+on	*	-	*	0	-	the world switch: replace `on` by `off` and nothing drops
+npc	frigate	jump	hln	300	any	[A] a frigate rarely carries one; falsified by a player killing 3000 frigates in a week and seeing none, or ten
+npc	destroyer	jump	hln	600	any	[A] as frigate, doubled
+npc	cruiser	abyss	hln	1500	any	[A] a cruiser sometimes holds an abyssal key; falsified by a rat-farmer finding fewer than one a day or more than ten
+npc	cruiser	jump	hln	1200	any	[A] as the frigate row, scaled by size
+npc	battlecruiser	abyss	hln	3000	any	[A] larger rats, better odds
+npc	battleship	abyss	hln	6000	any	[A] larger rats, better odds
+npc	battleship	jump	hln	3000	any	[A] larger rats, better odds
+npc	commander	abyss	hln	20000	any	[A] a commander is the usual source of a key: 1 in 50
+npc	*	abyss	w	1000	any	[A] wormhole rats of any class hold a key, as they have no other drop
+site	relic	jump	hlnw	40000	any	[A] 1 in 25 relic cans; falsified by a week of hacking where more than one can in ten pays one
+site	data	abyss	hlnw	40000	any	[A] 1 in 25 data cans; falsified as the relic row

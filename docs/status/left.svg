@@ -16,69 +16,69 @@ text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}
 </style>
 <rect width="480" height="620" rx="8" class="bg"/>
 <text x="16.0" y="26" class="t">3.1 Prove what landed</text>
-<text x="464.0" y="26" class="s sm" text-anchor="end">15 left</text>
+<text x="464.0" y="26" class="s sm" text-anchor="end">16 left</text>
 <rect x="16.0" y="34" width="446.0" height="16" rx="4" class="built"/>
-<text x="239.0" y="47" class="in-built sm" text-anchor="middle">15</text>
+<text x="239.0" y="47" class="in-built sm" text-anchor="middle">16</text>
 <text x="16.0" y="76" class="t">3.2 The 11-09 port</text>
 <text x="464.0" y="76" class="s sm" text-anchor="end">1 left</text>
-<rect x="16.0" y="84" width="27.9" height="16" rx="4" class="missing"/>
-<text x="29.9" y="97" class="in-missing sm" text-anchor="middle">1</text>
+<rect x="16.0" y="84" width="26.0" height="16" rx="4" class="missing"/>
+<text x="29.0" y="97" class="in-missing sm" text-anchor="middle">1</text>
 <text x="16.0" y="126" class="t">3.3 PvP</text>
 <text x="464.0" y="126" class="s sm" text-anchor="end">6 left</text>
-<rect x="16.0" y="134" width="87.6" height="16" rx="4" class="built"/>
-<text x="59.8" y="147" class="in-built sm" text-anchor="middle">3</text>
-<rect x="105.6" y="134" width="57.7" height="16" rx="4" class="missing"/>
-<text x="134.5" y="147" class="in-missing sm" text-anchor="middle">2</text>
-<rect x="165.3" y="134" width="27.9" height="16" rx="4" class="unknown"/>
-<text x="179.3" y="147" class="in-unknown sm" text-anchor="middle">1</text>
+<rect x="16.0" y="134" width="82.0" height="16" rx="4" class="built"/>
+<text x="57.0" y="147" class="in-built sm" text-anchor="middle">3</text>
+<rect x="100.0" y="134" width="54.0" height="16" rx="4" class="missing"/>
+<text x="127.0" y="147" class="in-missing sm" text-anchor="middle">2</text>
+<rect x="156.0" y="134" width="26.0" height="16" rx="4" class="unknown"/>
+<text x="169.0" y="147" class="in-unknown sm" text-anchor="middle">1</text>
 <text x="16.0" y="176" class="t">3.4 Upwell</text>
 <text x="464.0" y="176" class="s sm" text-anchor="end">9 left</text>
-<rect x="16.0" y="184" width="27.9" height="16" rx="4" class="built"/>
-<text x="29.9" y="197" class="in-built sm" text-anchor="middle">1</text>
-<rect x="45.9" y="184" width="57.7" height="16" rx="4" class="part"/>
-<text x="74.7" y="197" class="in-part sm" text-anchor="middle">2</text>
-<rect x="105.6" y="184" width="177.2" height="16" rx="4" class="missing"/>
-<text x="194.2" y="197" class="in-missing sm" text-anchor="middle">6</text>
+<rect x="16.0" y="184" width="26.0" height="16" rx="4" class="built"/>
+<text x="29.0" y="197" class="in-built sm" text-anchor="middle">1</text>
+<rect x="44.0" y="184" width="54.0" height="16" rx="4" class="part"/>
+<text x="71.0" y="197" class="in-part sm" text-anchor="middle">2</text>
+<rect x="100.0" y="184" width="166.0" height="16" rx="4" class="missing"/>
+<text x="183.0" y="197" class="in-missing sm" text-anchor="middle">6</text>
 <text x="16.0" y="226" class="t">3.5 PvE</text>
 <text x="464.0" y="226" class="s sm" text-anchor="end">5 left</text>
-<rect x="16.0" y="234" width="147.3" height="16" rx="4" class="missing"/>
-<text x="89.7" y="247" class="in-missing sm" text-anchor="middle">5</text>
+<rect x="16.0" y="234" width="138.0" height="16" rx="4" class="missing"/>
+<text x="85.0" y="247" class="in-missing sm" text-anchor="middle">5</text>
 <text x="16.0" y="276" class="t">3.6 Factional warfare and sov</text>
 <text x="464.0" y="276" class="s sm" text-anchor="end">8 left</text>
-<rect x="16.0" y="284" width="87.6" height="16" rx="4" class="part"/>
-<text x="59.8" y="297" class="in-part sm" text-anchor="middle">3</text>
-<rect x="105.6" y="284" width="147.3" height="16" rx="4" class="missing"/>
-<text x="179.3" y="297" class="in-missing sm" text-anchor="middle">5</text>
+<rect x="16.0" y="284" width="82.0" height="16" rx="4" class="part"/>
+<text x="57.0" y="297" class="in-part sm" text-anchor="middle">3</text>
+<rect x="100.0" y="284" width="138.0" height="16" rx="4" class="missing"/>
+<text x="169.0" y="297" class="in-missing sm" text-anchor="middle">5</text>
 <text x="16.0" y="326" class="t">3.7 Society, economy and bots</text>
 <text x="464.0" y="326" class="s sm" text-anchor="end">11 left</text>
-<rect x="16.0" y="334" width="236.9" height="16" rx="4" class="built"/>
-<text x="134.5" y="347" class="in-built sm" text-anchor="middle">8</text>
-<rect x="254.9" y="334" width="27.9" height="16" rx="4" class="part"/>
-<text x="268.9" y="347" class="in-part sm" text-anchor="middle">1</text>
-<rect x="284.8" y="334" width="57.7" height="16" rx="4" class="unknown"/>
-<text x="313.7" y="347" class="in-unknown sm" text-anchor="middle">2</text>
+<rect x="16.0" y="334" width="222.0" height="16" rx="4" class="built"/>
+<text x="127.0" y="347" class="in-built sm" text-anchor="middle">8</text>
+<rect x="240.0" y="334" width="26.0" height="16" rx="4" class="part"/>
+<text x="253.0" y="347" class="in-part sm" text-anchor="middle">1</text>
+<rect x="268.0" y="334" width="54.0" height="16" rx="4" class="unknown"/>
+<text x="295.0" y="347" class="in-unknown sm" text-anchor="middle">2</text>
 <text x="16.0" y="376" class="t">3.8 The friends path</text>
 <text x="464.0" y="376" class="s sm" text-anchor="end">4 left</text>
-<rect x="16.0" y="384" width="27.9" height="16" rx="4" class="built"/>
-<text x="29.9" y="397" class="in-built sm" text-anchor="middle">1</text>
-<rect x="45.9" y="384" width="27.9" height="16" rx="4" class="part"/>
-<text x="59.8" y="397" class="in-part sm" text-anchor="middle">1</text>
-<rect x="75.7" y="384" width="57.7" height="16" rx="4" class="missing"/>
-<text x="104.6" y="397" class="in-missing sm" text-anchor="middle">2</text>
+<rect x="16.0" y="384" width="26.0" height="16" rx="4" class="built"/>
+<text x="29.0" y="397" class="in-built sm" text-anchor="middle">1</text>
+<rect x="44.0" y="384" width="26.0" height="16" rx="4" class="part"/>
+<text x="57.0" y="397" class="in-part sm" text-anchor="middle">1</text>
+<rect x="72.0" y="384" width="54.0" height="16" rx="4" class="missing"/>
+<text x="99.0" y="397" class="in-missing sm" text-anchor="middle">2</text>
 <text x="16.0" y="426" class="t">3.9 Corp and social depth</text>
 <text x="464.0" y="426" class="s sm" text-anchor="end">2 left</text>
-<rect x="16.0" y="434" width="57.7" height="16" rx="4" class="part"/>
-<text x="44.9" y="447" class="in-part sm" text-anchor="middle">2</text>
+<rect x="16.0" y="434" width="54.0" height="16" rx="4" class="part"/>
+<text x="43.0" y="447" class="in-part sm" text-anchor="middle">2</text>
 <text x="16.0" y="476" class="t">3.10 Structure and debt</text>
 <text x="464.0" y="476" class="s sm" text-anchor="end">3 left</text>
-<rect x="16.0" y="484" width="57.7" height="16" rx="4" class="part"/>
-<text x="44.9" y="497" class="in-part sm" text-anchor="middle">2</text>
-<rect x="75.7" y="484" width="27.9" height="16" rx="4" class="missing"/>
-<text x="89.7" y="497" class="in-missing sm" text-anchor="middle">1</text>
+<rect x="16.0" y="484" width="54.0" height="16" rx="4" class="part"/>
+<text x="43.0" y="497" class="in-part sm" text-anchor="middle">2</text>
+<rect x="72.0" y="484" width="26.0" height="16" rx="4" class="missing"/>
+<text x="85.0" y="497" class="in-missing sm" text-anchor="middle">1</text>
 <text x="16.0" y="526" class="t">3.12 Not planned</text>
 <text x="464.0" y="526" class="s sm" text-anchor="end">2 left</text>
-<rect x="16.0" y="534" width="57.7" height="16" rx="4" class="missing"/>
-<text x="44.9" y="547" class="in-missing sm" text-anchor="middle">2</text>
+<rect x="16.0" y="534" width="54.0" height="16" rx="4" class="missing"/>
+<text x="43.0" y="547" class="in-missing sm" text-anchor="middle">2</text>
 <rect x="16.0" y="563" width="12.0" height="12" rx="2" class="built"/>
 <text x="34.0" y="574" class="s sm">Built, not proved</text>
 <rect x="240.0" y="563" width="12.0" height="12" rx="2" class="part"/>
