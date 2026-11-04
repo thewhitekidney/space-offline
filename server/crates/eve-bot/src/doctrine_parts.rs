@@ -384,12 +384,27 @@ pub fn copies_of(content: &eve_server::content::Content) -> BTreeSet<i64> {
         .unwrap_or_default()
 }
 
-/// **The types NPCs drop** (`npc/loot.tsv`'s pools).
+/// **The types NPCs drop**: exactly what the server's own loot draw can
+/// put in a wreck ([`eve_server::npc::droppable`], the same row rules
+/// `loot_from` filters by), reachable in the item store. Not every row of
+/// `npc/loot.tsv`: a row over its tier's meta cap is never drawn.
 pub fn dropped_of(content: &eve_server::content::Content) -> BTreeSet<i64> {
     content
         .try_get::<eve_server::npc_data::Table>()
-        .map(|t| t.loot.iter().map(|l| l.type_id).collect())
+        .map(|t| {
+            dropped_in(t, |id| {
+                eve_server::item::find_type_in(content, &id.to_string()).is_some()
+            })
+        })
         .unwrap_or_default()
+}
+
+/// [`dropped_of`] over a table and a reach test (`grantable`).
+pub fn dropped_in(
+    table: &eve_server::npc_data::Table,
+    grantable: impl Fn(i64) -> bool,
+) -> BTreeSet<i64> {
+    eve_server::npc::droppable(table, grantable)
 }
 
 /// The log line for parts with no source.
@@ -474,6 +489,43 @@ mod tests {
             sourcing: None,
         };
         assert!(makeable(&open).has(GHOST));
+    }
+
+    /// DOC-DROPS (#97): a fit whose only non-buildable part is a module
+    /// that only NPCs drop is usable, and a module the loot draw can never
+    /// emit (over its tier's meta cap) does not make a fit usable.
+    #[test]
+    fn a_fit_with_one_drop_only_module_is_usable() {
+        use eve_server::npc_data::{Loot, Table, Tier};
+        const NAMED_MWD: i64 = 991_200_201;
+        const TOO_META: i64 = 991_200_202;
+        let row = |type_id, tier, meta| Loot {
+            faction_id: 500_001,
+            size: 1,
+            kind: "prop".to_owned(),
+            tier,
+            type_id,
+            meta_level: Some(meta),
+        };
+        let mut t = Table::default();
+        t.loot.push(row(NAMED_MWD, Tier::Base, 2));
+        t.loot.push(row(TOO_META, Tier::Elite, 9));
+        let dropped = dropped_in(&t, |_| true);
+        assert!(dropped.contains(&NAMED_MWD));
+        assert!(!dropped.contains(&TOO_META), "never drawn: over the cap");
+        // Only a part the store can hold counts.
+        assert!(!dropped_in(&t, |id| id != NAMED_MWD).contains(&NAMED_MWD));
+
+        // The fit: a plate and a gun the builders make, and the named MWD.
+        let recipes = table(&[PLATE, GUN]);
+        let sold = BTreeSet::from([bp(PLATE), bp(GUN)]);
+        let fit = [PLATE, GUN, NAMED_MWD];
+        let none = BTreeSet::new();
+        let m = makeable(&src(&recipes, &sold, &none));
+        assert!(!fit.iter().all(|&p| m.has(p)), "blocked before");
+        let m = makeable(&src(&recipes, &sold, &dropped));
+        assert!(fit.iter().all(|&p| m.has(p)), "usable once it drops");
+        assert!(!m.has(TOO_META));
     }
 
     #[test]

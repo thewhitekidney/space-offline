@@ -10,7 +10,7 @@
 //! a type the loaded rows do not list (no bundle).
 
 use super::{NpcType, pick, roll};
-use crate::npc_data::{NpcTypeRow, Table, Tier};
+use crate::npc_data::{Loot, NpcTypeRow, Table, Tier};
 use crate::seed::{Kind, Stream, stream};
 
 /// `[A]` R7's meta cap on equipment by tier: Base 0-1, Elite 0-3,
@@ -64,6 +64,55 @@ pub const TAG_TIERS: usize = 5;
 
 /// The equipment pools (R7's T1/meta kinds).
 pub const EQUIPMENT_KINDS: &[&str] = &["weapon", "tank", "prop", "ewar"];
+
+/// **Whether `loot_from` can ever draw this pool row.** The one place the
+/// row-side rules live; [`loot_from`] filters every pool by it and
+/// [`droppable`] is the set of rows that pass.
+///
+/// - equipment kinds: the row's meta level at most the cap of the highest
+///   tier that may draw the row (a base row is drawn by every tier, so its cap
+///   is the top one; an elite row's is [`tier_cap`] of elite, and so on);
+/// - `ammo`: any tier (a base row, or the NPC's own tier);
+/// - `faction` only at commander tier, `officer` at officer, `deadspace` at
+///   deadspace (the draws name those tiers);
+/// - any other kind (`tag`, `clone-tag`, an unknown one) is not drawn from
+///   the pools: the tag draws read the faction's `tags` and the `clone-tag`
+///   rows by their own paths ([`tag`], [`clone_tag`]).
+pub fn row_is_drawn(l: &Loot) -> bool {
+    let k = l.kind.as_str();
+    if EQUIPMENT_KINDS.contains(&k) {
+        let cap = match l.tier {
+            Tier::Base => tier_cap(Tier::Commander),
+            t => tier_cap(t),
+        };
+        l.meta_level.unwrap_or(0) <= cap
+    } else {
+        match k {
+            "ammo" => true,
+            "faction" => l.tier == Tier::Commander,
+            "officer" => l.tier == Tier::Officer,
+            "deadspace" => l.tier == Tier::Deadspace,
+            _ => false,
+        }
+    }
+}
+
+/// **Every type `loot_from` can put in a wreck** over `data`, reachable
+/// (`grantable`): the pool rows [`row_is_drawn`] passes, every faction's
+/// tags ([`tag`]) and every clone-tag row ([`clone_tag`]). The bots count
+/// exactly this as "dropped" (nothing from nowhere), so a part they count
+/// can be looted in game. `[A]` an NPC of the right faction, tier, size and
+/// context exists for each row; falsified by a row no spawn can draw (a
+/// size no class of its faction has).
+pub fn droppable(data: &Table, grantable: impl Fn(i64) -> bool) -> std::collections::BTreeSet<i64> {
+    let rows = data
+        .loot
+        .iter()
+        .filter(|l| l.kind == CLONE_TAG_KIND || row_is_drawn(l))
+        .map(|l| l.type_id);
+    let tags = data.factions.values().flat_map(|f| f.tags.iter().copied());
+    rows.chain(tags).filter(|t| grantable(*t)).collect()
+}
 
 /// One NPC's R7 inputs.
 #[derive(Debug, Clone, Copy)]
@@ -120,6 +169,7 @@ pub fn loot_from(
                     && tiers.contains(&l.tier)
                     && (!sized || l.size == size)
                     && cap.is_none_or(|c| l.meta_level.unwrap_or(0) <= c)
+                    && row_is_drawn(l)
                     && grantable(l.type_id)
             })
             .map(|l| l.type_id)
@@ -491,6 +541,39 @@ mod tests {
                 (r.clone(), id, got)
             })
         })
+    }
+
+    /// DOC-DROPS (#97): what `loot_from` ever emits is in `droppable`, and
+    /// `droppable` holds nothing a row's tier cap forbids.
+    #[test]
+    fn what_loot_from_emits_is_in_the_droppable_set() {
+        let (t, _) = fixture();
+        let set = droppable(&t, grantable);
+        assert!(!set.is_empty());
+        for (r, id, got) in drops() {
+            for (ty, _) in &got {
+                assert!(set.contains(ty), "{ty} dropped by {} #{id}", r.type_id);
+            }
+        }
+        // An elite equipment row over the elite cap is never drawn, so it
+        // is not droppable even though the pool lists it.
+        let mut t = Table::default();
+        let ok = reachable();
+        for (i, (tier, meta)) in [(Tier::Elite, tier_cap(Tier::Elite) + 1), (Tier::Elite, 1)]
+            .into_iter()
+            .enumerate()
+        {
+            t.loot.push(Loot {
+                faction_id: PIRATE,
+                size: 1,
+                kind: "prop".to_owned(),
+                tier,
+                type_id: ok[i],
+                meta_level: Some(meta),
+            });
+        }
+        let set = droppable(&t, grantable);
+        assert!(!set.contains(&ok[0]) && set.contains(&ok[1]));
     }
 
     #[test]
