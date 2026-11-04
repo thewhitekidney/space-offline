@@ -39,6 +39,9 @@ docker image inspect "$IMAGE" >/dev/null 2>&1 \
 # on disk for its gates); default the tree's own server/target.
 target_dir=${EVE_TARGET_DIR:-$REPO/server/target}
 mkdir -p "$target_dir"
+# The mount point inside the read-only repo mount must exist too: a fresh clone
+# has no server/target (it is gitignored), and Docker cannot create it there.
+mkdir -p "$REPO/server/target"
 
 # **Half the machine, not all of it.** Cargo defaults to one job per core and
 # the test harness to one thread per core, which on a 32-thread box makes an
