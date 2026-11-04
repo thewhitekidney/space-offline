@@ -110,6 +110,7 @@ findings/                 generated censuses (TSV and text), cited by the docs
 | `docs/content/C3-population.md` | RECORD | stale-in-part | Research lane C3: the world population generator (cites `server/content/*.tsv`, now `content/`). |
 | `docs/content/C4-agents-missions.md` | RECORD | current | Research lane C4: agents, missions, arcs and the Agency. |
 | `docs/content/C5-economy.md` | RECORD | stale-in-part | Research lane C5: economy content (names `tools/econ.py`, built as `tools/content_econ.py`). |
+| `docs/content/server-only.md` | REFERENCE | current | What only the server holds (placement, pointed-at tables, money numbers), each item classed derivable, design or capture-only. |
 | `docs/content/C6-npc-content.md` | RECORD | stale-in-part | Research lane C6: NPCs as content (names `tools/npc_content.py`, built as `tools/content_npc.py`). |
 | `docs/content/C7-liveness.md` | RECORD | current | Research lane C7: liveness and operations. |
 | `docs/content/R-FW.md` | RECORD | current | Spec: factional warfare. |
