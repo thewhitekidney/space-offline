@@ -1495,6 +1495,12 @@ def eoci_main(EOCI_NAME):
         ok, job = try_call(svc.CreateJob, bp, activity, getattr_safe(bp, 'facilityID'), runs)
         if not ok:
             return None, 'CreateJob raised %s' % text(job)
+        # [V] the client's CreateJob(bp, activity, facility, runs) sets job.runs, then its
+        # _ApplyJobSettings overwrites it with the Industry window's saved runs for this
+        # blueprint type and activity, default 1 (industrySvc.CreateJob / _ApplyJobSettings,
+        # pinned build).  The runs argument alone gives a 1-run job, so set the runs the way
+        # the window's runs field does.  The client's getter clamps them to 1..maxRuns.
+        safe(lambda: setattr(job, 'runs', runs))
         if licensed is not None:
             safe(lambda: setattr(job, 'licensedRuns', licensed))
         located, _w = wait_for(lambda: getattr_safe(job, 'inputLocation') is not None
@@ -1534,6 +1540,9 @@ def eoci_main(EOCI_NAME):
         if job is None:
             check('%s: the Job is rebuilt once the hangar is stocked' % label, False, why)
             return None
+        check('%s: the client\'s Job carries the requested runs (%d)' % (label, runs),
+              getattr_safe(job, 'runs') == runs,
+              'job.runs %s, maxRuns %s' % (text(getattr_safe(job, 'runs')), text(getattr_safe(job, 'maxRuns'))))
         quote = getattr_safe(job, 'total_cost')
         check('%s: the client quotes a cost' % label, quote is not None, text(quote))
 
