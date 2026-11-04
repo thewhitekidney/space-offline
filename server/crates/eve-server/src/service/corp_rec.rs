@@ -1,5 +1,5 @@
 //! `corpRecProxy`: the corporation recruitment adverts, **empty** (S1 of
-//! `soc-answers`, #158).
+//! `soc-answers`, #102).
 //!
 //! No advert exists here yet, but the Recruitment tab and the corp finder
 //! iterate what these calls return (`bco_recruitment.

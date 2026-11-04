@@ -309,27 +309,42 @@ def overlaps(a, b):
     return b2.startswith(a2 + "/") or a2.startswith(b2 + "/")
 
 
+SERVER_SRC = "server/crates/eve-server/"
+
+
 def hot_files(path=CONTRIBUTING):
-    """First backticked cell of each table row under `## 10.` (its hot-files part)."""
+    """Every backticked path in the first cell of the hot-files table of `## 10.`.
+
+    The table follows a `### ...hot...` heading or a `**Hot files.**` paragraph; the area
+    table before it is not read, and reading stops where the table ends. Its `src/...`
+    paths are under `server/crates/eve-server/` (the doc says so), so they are returned as
+    repo paths, the form claims use. The "registration tables" row names no path in its
+    first cell on purpose: only one line of those files is maintainer-only, not the file.
+    None when the doc or the table cannot be found, so a claim fails closed.
+    """
     try:
         with open(path, encoding="utf-8") as f:
             text = f.read()
     except OSError:
-        return []
+        return None
     m = re.search(r"^## 10\.[^\n]*$(.*?)(?=^## |\Z)", text, re.M | re.S)
     if not m:
-        return []
-    sec = m.group(1)
-    h = re.search(r"^#{3,}[^\n]*hot[^\n]*$(.*?)(?=^#{2,} |\Z)", sec, re.M | re.S | re.I)
-    sec = h.group(1) if h else sec
-    out = []
-    for line in sec.split("\n"):
-        if line.startswith("|"):
-            first = line.strip("|").split("|", 1)[0]
-            t = re.search(r"`([^`]+)`", first)
-            if t:
-                out.append(t.group(1))
-    return out
+        return None
+    h = re.search(r"^(?:#{3,}[^\n]*\bhot\b|\*\*hot files)[^\n]*$(.*?)(?=^#{2,} |\Z)",
+                  m.group(1), re.M | re.S | re.I)
+    if not h:
+        return None
+    out, started = [], False
+    for line in h.group(1).split("\n"):
+        if not line.startswith("|"):
+            if started:
+                break
+            continue
+        started = True
+        first = line.strip("|").split("|", 1)[0]
+        for t in re.findall(r"`([^`]+)`", first):
+            out.append(SERVER_SRC + t if t.startswith("src/") else t)
+    return out if started else None
 
 
 def pr_issue_refs(pr):
@@ -488,6 +503,10 @@ def cmd_claim(tr, a, out, hot=None):
         print(f"#{a.n}: closed, assigned, claimed or needs-owner; pick another", file=out)
         return 4
     hot = hot_files() if hot is None else hot
+    if hot is None:
+        print("could not read the hot-file table in docs/guides/contributing.md §10; "
+              "a maintainer must fix the doc or tools/claims.py", file=out)
+        return 5
     hit = [(p, h) for p in owns for h in hot if overlaps(p, h)]
     if hit and "hot-ok" not in labels:
         for p, h in hit:

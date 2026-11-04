@@ -224,6 +224,7 @@ are the whole index; each points to the others.
 |---|---|
 | is a feature built or proved | `docs/status/progress.tsv`, one row per feature (page: `docs/status/README.md`) |
 | what to do next, in what order; who has what | the issue tracker: `tools/next-task.sh`, `tools/claims.py list` |
+| what is left overall, theme by theme | `docs/status/README.md` "What is left, by theme"; each theme's issues carry the label `theme/3.N` |
 | how sharing the tree works | `docs/guides/working-together.md` |
 | labels, areas, hot files, setup with a client | `docs/guides/contributing.md` |
 | build, content, run the server and the client | `docs/guides/getting-started.md` |

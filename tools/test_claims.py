@@ -315,7 +315,65 @@ class HotFiles(unittest.TestCase):
                 f.write(text)
             self.assertEqual(claims.hot_files(p),
                              ["tools/land.sh", "server/crates/eve-server/src/service.rs"])
-            self.assertEqual(claims.hot_files(os.path.join(d, "absent.md")), [])
+            self.assertIsNone(claims.hot_files(os.path.join(d, "absent.md")))
+
+    def test_parse_bold_paragraph_and_every_path(self):
+        # The live doc's form: area table, then a **Hot files.** paragraph, src/ paths
+        # relative to the server crate, several paths in one cell.
+        import tempfile
+        text = ("## 10. Areas and hot files\n| area | read | roots |\n|---|---|---|\n"
+                "| `combat` | `notes/a.md` | `combat.rs` |\n| `tools` | `notes/b.md` | `tools/` |\n\n"
+                "**Hot files.** A claim may not own these.\n\n| file | why |\n|---|---|\n"
+                "| `src/combat.rs` | pvp |\n| `src/conn.rs`, `src/session.rs` | conn |\n"
+                "| the registration tables | `service.rs` `DOMAINS` |\n"
+                "| `AGENTS.md`, `tools/land.sh` | gate |\n## 11. End\n")
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "c.md")
+            with open(p, "w", encoding="utf-8") as f:
+                f.write(text)
+            hot = claims.hot_files(p)
+        self.assertEqual(hot, ["server/crates/eve-server/src/combat.rs",
+                               "server/crates/eve-server/src/conn.rs",
+                               "server/crates/eve-server/src/session.rs",
+                               "AGENTS.md", "tools/land.sh"])
+        self.assertNotIn("combat", hot)
+        self.assertNotIn("tools", hot)
+        for h in hot:
+            self.assertTrue(os.path.exists(os.path.join(claims.ROOT, h)), h)
+
+    def test_no_table_fails_closed(self):
+        # A reworded doc (no heading, no bold paragraph) must refuse claims, not allow all;
+        # a second table after the hot table is not read.
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "c.md")
+            with open(p, "w", encoding="utf-8") as f:
+                f.write("## 10. Areas\n**Hot paths.**\n| `tools/land.sh` | x |\n## 11. End\n")
+            self.assertIsNone(claims.hot_files(p))
+            with open(p, "w", encoding="utf-8") as f:
+                f.write("## 10. Areas\n**Hot files.**\n| `AGENTS.md` | x |\n\n"
+                        "**Shared files.**\n| `tools/up.sh` | y |\n## 11. End\n")
+            self.assertEqual(claims.hot_files(p), ["AGENTS.md"])
+        tr, fake = tracker()
+        out = io.StringIO()
+        with mock.patch.object(claims, "hot_files", lambda: None):
+            code = claims.main(["claim", "1", "--owns", "server/q.rs"], tracker=tr, out=out,
+                               err=io.StringIO())
+        self.assertEqual(code, 5)
+        self.assertIn("hot-file table", out.getvalue())
+        self.assertEqual(fake.writes, [])
+
+    def test_live_contributing_doc(self):
+        # The real §10: the gate is hot, the server hot files are repo paths, and an
+        # ordinary scenario or area slug is not.
+        hot = claims.hot_files()
+        flagged = lambda p: any(claims.overlaps(p, h) for h in hot)
+        self.assertTrue(flagged("tools/land.sh"))
+        self.assertTrue(flagged("server/crates/eve-server/src/combat.rs"))
+        self.assertTrue(flagged("server/crates/eve-server/src/session.rs"))
+        self.assertFalse(flagged("tools/client-ci/scenarios/fci_example.py"))
+        self.assertFalse(flagged("server/crates/eve-server/src/pilotless.rs"))
+        self.assertNotIn("tools", hot)
 
 
 if __name__ == "__main__":
