@@ -12,6 +12,7 @@ the `[A]` constants below and the sparse override file, never a row.
 
 import collections
 import os
+import re
 import sys
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -53,6 +54,22 @@ META_TECH1, META_FACTION, META_OFFICER, META_DEADSPACE = 1, 4, 5, 6
 ATTR_CHARGE_SIZE = 128
 ATTR_CHARGE_GROUPS = (604, 605, 606)
 SIZES = (1, 2, 3)
+
+#: C6 R7 equipment groups [V: `dogma` group ids, the type names of each group
+#: in `typedata.tsv`]. Propulsion is one group; a faction's tank is the booster
+#: and extender groups (shield) or the repairer and plate groups (armor);
+#: the ewar a faction carries is read from its NPCs' `needs`
+#: (`npc/types.tsv`): SCRAM/WEB/NEUT name one module group each, and the
+#: generic EWAR need is every other ewar group [A: the data holds no per-faction
+#: choice among TP/ECM/damp/TD. Falsifier: a faction's rats on TQ that jam and
+#: never paint].
+GROUP_PROP, GROUP_PLATE = 46, 329
+TANK_GROUPS = {"shield": (40, 38), "armor": (62, GROUP_PLATE)}
+EWAR_GROUPS = {"SCRAM": (52,), "WEB": (65,), "NEUT": (71,),
+               "EWAR": (379, 201, 208, 291)}
+_WORD_SIZE = {"Micro": 1, "Heavy": 3, "Small": 1, "Medium": 2, "Large": 3, "X-Large": 3}
+_MN = re.compile(r"(?:^|\s)(\d+)MN(?:\s|$)")
+_MM = re.compile(r"(?:^|\s)(\d+)mm(?:\s|$)")
 
 
 # --- R3 inputs: pirates and home pirates ------------------------------------------
@@ -243,7 +260,51 @@ def trade_rows(corps):
                                 (corps[c].get("corporationTrades") or {}).items()))]
 
 
-def loot_rows(factions, types, sizes, name):
+def module_size(group, nm):
+    """The hull size (1-3) a tank, propulsion or sized-ewar module is made
+    for, from its name; `None` when the name says none (a size-free module,
+    or one this does not know, which the caller treats as it must).
+
+    - propulsion: `<n>MN`, 1 and 5 small, 10 and 50 medium, 100 and 500 large;
+      the capital 10000 and 50000 are no pool's [V names; I the pairing];
+    - plates: `<n>mm`, up to 200 small, 400 and 800 medium, 1600 large [A:
+      plate sizes are not in the data. Falsifier: a plate that fits a hull
+      class other than the one this puts it in];
+    - everything else: the word `Micro`/`Small`, `Medium`, `Large`/`X-Large`
+      [A: Large is a battleship size for repairers and boosters alike.
+      Falsifier: a cruiser or battlecruiser fit holding a Large one]."""
+    nm = nm or ""
+    if group == GROUP_PROP:
+        m = _MN.search(nm)
+        return {1: 1, 5: 1, 10: 2, 50: 2, 100: 3, 500: 3}.get(int(m.group(1))) if m else None
+    if group == GROUP_PLATE:
+        m = _MM.search(nm)
+        if not m:
+            return None
+        mm = int(m.group(1))
+        return 1 if mm <= 200 else 2 if mm <= 800 else 3 if mm <= 1600 else None
+    for word in nm.split():
+        if word in _WORD_SIZE:
+            return _WORD_SIZE[word]
+    return None
+
+
+def _equipment_pools(f, group, nm, needs):
+    """`(kind, size)` pools of one Tech I module of `group` in faction `f`:
+    its tank (a tank module of its size, size known), propulsion (size known)
+    and ewar groups (a size-free module serves every size)."""
+    size = module_size(group, nm)
+    out = []
+    if group == GROUP_PROP:
+        out.append(("prop", size))
+    if group in TANK_GROUPS.get(f.get("tank"), ()):
+        out.append(("tank", size))
+    if any(group in EWAR_GROUPS[n] for n in needs if n in EWAR_GROUPS):
+        out.append(("ewar", size))
+    return [(k, s) for k, sz in out for s in ([sz] if sz else SIZES if k == "ewar" else [])]
+
+
+def loot_rows(factions, types, sizes, name, needs=None):
     """C6 R7's pools from CP11a's `factions.tsv` rows (`{faction_id: {column:
     value}}`, decoded) and the types (`{id: {category, metaGroupID,
     metaLevel, groupID}}` of published types), `sizes` (`{type: chargeSize}`),
@@ -251,7 +312,13 @@ def loot_rows(factions, types, sizes, name):
     (counts, chances, meta caps by tier) is code in CP22, not rows.
 
     - weapon/base: a Tech I module (meta level kept for the tier cap) firing
-      the faction's ammo group at that size; ammo/base: a charge of that
+      the faction's ammo group at that size; tank/prop/ewar/base: a Tech I
+      module of the faction's tank groups, of propulsion, or of the ewar
+      groups its NPCs need (`needs`, `{faction_id: {need}}` from
+      `npc/types.tsv`), at the size [`module_size`] its name gives (a size-free
+      ewar module at all three); named and compact modules are metaGroup 1
+      with a higher meta level [V: the market table], so they drop up to the
+      tier cap; ammo/base: a charge of that
       group and size, not meta 2-6;
     - faction/commander, officer/officer, deadspace/deadspace: published types
       of meta group 4/5/6 named `<commander prefix> `, `<officer>'s `,
@@ -273,6 +340,8 @@ def loot_rows(factions, types, sizes, name):
             fits = [size] if size in SIZES else list(SIZES)
             pools = []
             if t["category"] == CATEGORY_MODULE and t.get("metaGroupID") == META_TECH1:
+                pools += [(s, k, "base") for k, s in _equipment_pools(
+                    f, t.get("groupID"), name(tid), (needs or {}).get(fid, ()))]
                 pools += [(s, "weapon", "base") for s in fits
                           if ammo.get(s) is not None and ammo[s] in t.get("charge_groups", ())]
             if t["category"] == CATEGORY_CHARGE and t.get("metaGroupID") in (None, META_TECH1):
@@ -323,12 +392,24 @@ def read_factions_tsv(path):
             continue
         out[int(f[0])] = {
             "ammo_groups": content.decode_map(f[9], int, int),
+            "tank": f[10] or None,
             "tags": content.decode_list(f[11]),
             "commander_prefix": f[14] or None,
             "deadspace_stems": content.decode_list(f[15], str),
             "officers": content.decode_list(f[16], str),
         }
     return out
+
+
+def read_faction_needs(path):
+    """`{faction_id: {need}}` from CP11a's `npc/types.tsv` (`faction_id` col 2,
+    `needs` col 8): what each faction's NPCs carry. No file, no needs, so no
+    ewar rows."""
+    out = collections.defaultdict(set)
+    if os.path.isfile(path):
+        for f in content.read_rows(path):
+            out[int(f[2])] |= set(content.decode_list(f[8], str))
+    return dict(out)
 
 
 # --- reading the client -----------------------------------------------------------
@@ -404,7 +485,8 @@ def _loot(ctx):
             sizes[tid] = int(a[ATTR_CHARGE_SIZE])
         types[tid]["charge_groups"] = tuple(int(a[k]) for k in ATTR_CHARGE_GROUPS if a.get(k))
     names = {tid: ctx.text(t.get("typeNameID")) for tid, t in types.items()}
-    return loot_rows(factions, types, sizes, names.get) + clone_tag_rows(types, names.get)
+    needs = read_faction_needs(ctx.path("npc/types.tsv"))
+    return loot_rows(factions, types, sizes, names.get, needs) + clone_tag_rows(types, names.get)
 
 
 def section(ctx):
@@ -503,6 +585,11 @@ def check(ctx):
             bad.append("npc_regions: pirates with no belt groups in factions.tsv: %s"
                        % sorted(pset - parsed))
     bad += check_clone_tags(ctx)
+    kinds = collections.Counter(r[2] for r in content.read_rows(ctx.path("npc/loot.tsv")))
+    ctx.note("npc/loot.tsv: rows by kind %s" % dict(sorted(kinds.items())))
+    if os.path.isfile(path):
+        bad += ["npc/loot.tsv: no %s rows (C6 R7's equipment pool)" % k
+                for k in ("weapon", "tank", "prop", "ewar") if not kinds.get(k)]
     ctx.note("npc/trades.tsv: %d rows; npc/loot.tsv: %d rows" % tuple(
         sum(1 for _ in content.read_rows(ctx.path(p))) for p in ("npc/trades.tsv", "npc/loot.tsv")))
     return bad

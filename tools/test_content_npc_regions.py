@@ -183,7 +183,7 @@ class Files(unittest.TestCase):
         finally:
             os.remove(path)
         self.assertEqual(got, {599001: {
-            "ammo_groups": {1: 99201, 2: 99202}, "tags": [990090, 990091],
+            "ammo_groups": {1: 99201, 2: 99202}, "tank": "shield", "tags": [990090, 990091],
             "commander_prefix": "Dread Example",
             "deadspace_stems": ["Exi", "Exior", "Exum", "Exatis", "Ex"], "officers": ["Exa"]}})
 
@@ -225,6 +225,95 @@ class Loot(unittest.TestCase):
             ("deadspace", "deadspace"): all3(990007),
             ("tag", "base"): all3(990009),
         })
+
+
+class Equipment(unittest.TestCase):
+    """C6 R7's tank, prop and ewar pools (#123), on invented ids, groups and names."""
+
+    def setUp(self):
+        # Invented group ids stand in for the client's, which the module
+        # constants name; the tests patch them so no real id is pinned.
+        self.patches = (npr.GROUP_PROP, npr.GROUP_PLATE, npr.TANK_GROUPS, npr.EWAR_GROUPS)
+        npr.GROUP_PROP, npr.GROUP_PLATE = 98001, 98021
+        npr.TANK_GROUPS = {"shield": (98010, 98011), "armor": (98020, 98021)}
+        npr.EWAR_GROUPS = {"SCRAM": (98030,), "WEB": (98031,), "NEUT": (98032,),
+                           "EWAR": (98033, 98034)}
+
+    def tearDown(self):
+        npr.GROUP_PROP, npr.GROUP_PLATE, npr.TANK_GROUPS, npr.EWAR_GROUPS = self.patches
+
+    def rows(self, tank, needs, types, names):
+        f = {P1: {"tank": tank, "ammo_groups": {}, "tags": []}}
+        return {(s, k, t, m) for _f, s, k, tier, t, m in npr.loot_rows(
+            f, types, {}, lambda t: names.get(t, ""), {P1: set(needs)}) if tier == "base"}
+
+    def mod(self, group, meta=npr.META_TECH1, level=1):
+        return {"category": npr.CATEGORY_MODULE, "metaGroupID": meta, "metaLevel": level,
+                "groupID": group}
+
+    def test_prop_goes_to_the_size_of_its_mn_with_the_meta_level_kept(self):
+        types = {990601: self.mod(98001, level=0), 990602: self.mod(98001),
+                 990603: self.mod(98001), 990604: self.mod(98001),
+                 990605: self.mod(98001, meta=npr.META_FACTION, level=8),
+                 990606: self.mod(98001)}
+        names = {990601: "1MN Afterburner I", 990602: "50MN Compact Microwarpdrive",
+                 990603: "100MN Enduring Afterburner", 990604: "20000MN Afterburner I",
+                 990605: "Dread 5MN Microwarpdrive", 990606: "Afterburner"}
+        self.assertEqual(self.rows(None, [], types, names), {
+            (1, "prop", 990601, 0), (2, "prop", 990602, 1), (3, "prop", 990603, 1)})
+
+    def test_tank_is_the_factions_own_groups_by_size_word_or_plate_mm(self):
+        types = {990611: self.mod(98010), 990612: self.mod(98011), 990613: self.mod(98020),
+                 990614: self.mod(98020), 990615: self.mod(98010), 990616: self.mod(98010)}
+        names = {990611: "Small Example Booster I", 990612: "Medium Example Extender I",
+                 990613: "X-Large Example Repairer II", 990614: "Example Repairer",
+                 990615: "Large Example Booster", 990616: "Example Booster"}
+        self.assertEqual(self.rows("shield", [], types, names), {
+            (1, "tank", 990611, 1), (2, "tank", 990612, 1), (3, "tank", 990615, 1)})
+        self.assertEqual(self.rows("armor", [], types, names), {(3, "tank", 990613, 1)})
+        self.assertEqual(self.rows(None, [], types, names), set())
+
+    def test_plates_are_sized_by_their_mm(self):
+        types = {i: self.mod(98021) for i in range(990641, 990646)}
+        names = dict(zip(types, ("100mm Example Plates I", "400mm Example Plates I",
+                                 "1600mm Example Plates I", "9000mm Example Plates",
+                                 "Example Plates")))
+        self.assertEqual(self.rows("armor", [], types, names), {
+            (1, "tank", 990641, 1), (2, "tank", 990642, 1), (3, "tank", 990643, 1)})
+
+    def test_ewar_follows_what_the_factions_npcs_need(self):
+        types = {990621: self.mod(98030), 990622: self.mod(98031), 990623: self.mod(98032),
+                 990624: self.mod(98033), 990625: self.mod(98034), 990626: self.mod(98030)}
+        names = {990621: "Scram I", 990622: "Web I", 990623: "Heavy Neut I",
+                 990624: "Painter I", 990625: "Jammer I", 990626: "Medium Scram I"}
+        all3 = lambda t: {(s, "ewar", t, 1) for s in npr.SIZES}  # noqa: E731
+        self.assertEqual(self.rows(None, ["SCRAM"], types, names),
+                         all3(990621) | {(2, "ewar", 990626, 1)})
+        self.assertEqual(self.rows(None, ["WEB", "NEUT"], types, names),
+                         all3(990622) | {(3, "ewar", 990623, 1)})
+        self.assertEqual(self.rows(None, ["EWAR"], types, names), all3(990624) | all3(990625))
+        self.assertEqual(self.rows(None, ["TURRET"], types, names), set())
+
+    def test_only_tech1_modules_and_no_charge_or_seller(self):
+        types = {990631: self.mod(98001, meta=2, level=5),
+                 990632: {"category": npr.CATEGORY_CHARGE, "metaGroupID": npr.META_TECH1,
+                          "groupID": 98001}}
+        names = {990631: "1MN Afterburner II", 990632: "1MN Afterburner I"}
+        self.assertEqual(self.rows("shield", ["SCRAM"], types, names), set())
+
+    def test_the_needs_file_is_per_faction(self):
+        with tempfile.NamedTemporaryFile("w", suffix=".tsv", delete=False,
+                                         encoding="utf-8") as fh:
+            path = fh.name
+            fh.write("#h\n1\t2\t599001\tgroup\tRoaming\tFrigate\tbase\t\tTURRET,SCRAM\tDPS\n"
+                     "3\t2\t599001\tgroup\tRoaming\tFrigate\tbase\t\tWEB\tDPS\n"
+                     "4\t2\t599002\tgroup\tRoaming\tFrigate\tbase\t\t\tDPS\n")
+        try:
+            got = npr.read_faction_needs(path)
+        finally:
+            os.remove(path)
+        self.assertEqual(got, {599001: {"TURRET", "SCRAM", "WEB"}, 599002: set()})
+        self.assertEqual(npr.read_faction_needs(path), {})
 
 
 class CloneTags(unittest.TestCase):

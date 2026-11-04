@@ -496,6 +496,20 @@ pool(type)  =
 - **Deterministic per NPC**, as `npc::loot` is today: `roll(npc_id, salt)`.
 - The pools are extracted once (§6) as `(faction, size, kind, tier) →
   [typeID]`; the policy numbers above live in code.
+- **What the generator writes for the equipment kinds** (#123,
+  `content_npc_regions.py` `loot_rows`): every published module of metaGroup 1
+  (named, compact and enduring modules are metaGroup 1 with a meta level above
+  0 [V: the market table], so they drop up to the tier cap) as `base` rows:
+  `weapon` as above; `tank` for the faction's `tank` (shield: booster and
+  extender groups; armor: repairer and plate groups) at the size its name
+  gives; `prop` for the propulsion group at the size of its `<n>MN`
+  (1 and 5 small, 10 and 50 medium, 100 and 500 large); `ewar` for the module
+  groups its NPCs' `needs` name (SCRAM, WEB and NEUT one group each; EWAR the
+  painter, ECM, damper and disruptor groups; a size-free module is in all three
+  sizes). A module whose name gives no size is in no tank or prop pool.
+  `[A]` the size words and plate mm ranges (`module_size`) and the EWAR
+  choice; falsified by a hull class holding a module of another class, or a
+  faction whose rats never use a group listed. No seller is added.
 - Item-store reach: every pool type must be grantable; categories 7, 8 are
   in `--typedata` today, **17 (tags) is not** [V, code].
 
