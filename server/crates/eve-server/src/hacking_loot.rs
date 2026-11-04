@@ -550,7 +550,7 @@ pub fn on_won(w: &mut Registry, can_id: i64, hacker: i64) {
         .ext::<crate::site::Sites>()
         .of_item(can_id)
         .map_or(0, |i| i.dungeon_id);
-    let stacks = match w.content().try_get::<Table>() {
+    let mut stacks = match w.content().try_get::<Table>() {
         Some(t) => {
             let known = |id| crate::item::find_in(w.content(), id).is_some();
             let mut stacks = roll(t, &facts, &mut s, known);
@@ -568,6 +568,25 @@ pub fn on_won(w: &mut Registry, can_id: i64, hacker: i64) {
         None => Vec::new(),
     };
     crate::ancient_rate::won(w, facts.kind, &stacks);
+    // FIL-WIRE (#121): one filament draw per can, after the rate counters
+    // (a filament is not a site's table loot).
+    let archetype = match facts.kind {
+        Kind::Relic | Kind::Ancient => "relic",
+        Kind::Data => "data",
+    };
+    if let Some(f) = crate::combat::roll_filament(
+        w,
+        crate::filament_drops::Source::Site,
+        can_id,
+        archetype,
+        facts.band,
+    ) {
+        stacks.push(Stack {
+            type_id: f,
+            quantity: 1,
+            runs: None,
+        });
+    }
     let to = Slot::new(hacker, can_id, FLAG_IN_CAN);
     let plain: Vec<Edit> = stacks
         .iter()
@@ -762,6 +781,7 @@ mod tests {
     const UNKNOWN: i64 = 990_705;
     const HULL: i64 = 990_706;
     const CAN_TYPE: i64 = 990_707;
+    const FILAMENT: i64 = 990_708;
 
     fn table() -> Table {
         Table::parse(&[
@@ -926,15 +946,18 @@ mod tests {
     /// `typedata::FIXTURE` plus invented types: two loot types, a
     /// blueprint, a hull with a hold and the can (relic loot by its
     /// `can` row, equipment 2..2, tier 1).
-    fn content(loot: Table) -> crate::content::Content {
+    fn content(loot: Table, filaments: Option<&str>) -> crate::content::Content {
         let rows = format!(
             "type\t{CORE}\t990333\t17\t1\t1\t0.1\t0.0\t0.0\t1.0\t0\t\t\tFixture Core\n\
              type\t{CORE_DEAR}\t990333\t17\t1\t1\t0.1\t0.0\t0.0\t1.0\t0\t\t\tFixture Dear Core\n\
              type\t{BPC}\t990105\t9\t1\t1\t0.01\t0.0\t0.0\t1.0\t0\t\t\tFixture Blueprint\n\
              type\t{SALVAGE}\t990754\t4\t1\t1\t0.01\t0.0\t0.0\t1.0\t0\t\t\tFixture Salvage\n\
              type\t{HULL}\t990025\t6\t1\t1\t1000.0\t500.0\t1000000.0\t30.0\t0\t\t\tFixture Hull\n\
-             type\t{CAN_TYPE}\t990001\t2\t1\t1\t1.0\t0.0\t0.0\t{CAN_RADIUS}\t0\t\t182={}.0;456=2.0;457=2.0;1919=1.0;1927=1.0\tFixture Data Can\n",
-            crate::hacking::SKILL_ARCHAEOLOGY + 1
+             type\t{CAN_TYPE}\t990001\t2\t1\t1\t1.0\t0.0\t0.0\t{CAN_RADIUS}\t0\t\t182={}.0;456=2.0;457=2.0;1919=1.0;1927=1.0\tFixture Data Can\n\
+             type\t{FILAMENT}\t{}\t17\t1\t1\t0.1\t0.0\t0.0\t1.0\t0\t\t{}=1.0\tFixture Filament\n",
+            crate::hacking::SKILL_ARCHAEOLOGY + 1,
+            crate::random_jump::GROUP_RANDOM_JUMP_KEYS,
+            crate::random_jump::ATTR_MAX_SHIPS,
         );
         let text = format!("{}{rows}", crate::typedata::FIXTURE);
         let table = crate::typedata::Table::parse(&text).expect("the test rows parse");
@@ -963,6 +986,12 @@ mod tests {
         );
         c.insert("dungeon_data", dungeons);
         c.insert("hacking_loot", loot);
+        if let Some(text) = filaments {
+            c.insert(
+                crate::filament_drops::TABLE.name,
+                crate::filament_drops::Table::parse(text).expect("the test rows parse"),
+            );
+        }
         c
     }
 
@@ -980,6 +1009,11 @@ mod tests {
 
     /// [`world`] with another loot table.
     fn world_with(loot: Table) -> World {
+        world_full(loot, None)
+    }
+
+    /// [`world_with`], and a filament drop table of the given text.
+    fn world_full(loot: Table, filaments: Option<&str>) -> World {
         let pilot = |id: i64, ship: i64| crate::model::Character {
             character_id: id,
             name: format!("pilot {id}"),
@@ -991,7 +1025,7 @@ mod tests {
             characters: vec![pilot(ALICE, ALICE_SHIP), pilot(BOB, BOB_SHIP)],
             ..crate::model::SandboxConfig::default()
         })
-        .with_content(std::sync::Arc::new(content(loot)));
+        .with_content(std::sync::Arc::new(content(loot, filaments)));
         let declared = crate::crimewatch::declared_null_systems(&reg);
         let system = reg
             .content()
@@ -1099,6 +1133,28 @@ mod tests {
             crate::crimewatch::Timer::Criminal,
             crate::pyutil::filetime_now(),
         ) != crate::crimewatch::Phase::Idle
+    }
+
+    const FIL_ROWS: &str = "source\tname\tkind\tband\tchance_ppm\tweather\twhy\n\
+        site\tdata\tjump\t*\t1000000\tany\tinvented\n";
+
+    /// **A hacked data can can hold a filament** (FIL-WIRE): a `data` row
+    /// that always hits puts one in the can, a `relic` row does not match a
+    /// data can, and the world switch stops it.
+    #[test]
+    fn a_hacked_can_can_hold_a_filament() {
+        let w = world_full(table(), Some(FIL_ROWS));
+        let held: Vec<(i64, i64)> = inside(&w.reg, w.can)
+            .iter()
+            .map(|i| (i.type_id, i.quantity))
+            .collect();
+        assert!(held.contains(&(FILAMENT, 1)), "{held:?}");
+        let relic = FIL_ROWS.replace("site\tdata", "site\trelic");
+        let off = format!("{FIL_ROWS}off\t*\t-\t*\t0\t-\tinvented\n");
+        for text in [relic, off] {
+            let w = world_full(table(), Some(&text));
+            assert!(inside(&w.reg, w.can).iter().all(|i| i.type_id != FILAMENT));
+        }
     }
 
     /// The can's `can` row makes it a data can, tier 1, two entries in

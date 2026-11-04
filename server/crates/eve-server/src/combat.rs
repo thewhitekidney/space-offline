@@ -2043,7 +2043,16 @@ fn npc_wreck(
             return None;
         }
     };
-    let loot: Vec<Edit> = crate::npc::loot_in(w, n.kind, n.id, solar_system_id)
+    let mut stacks = crate::npc::loot_in(w, n.kind, n.id, solar_system_id);
+    let class = npc_class(w, n.kind.type_id);
+    let band = w
+        .content()
+        .try_get::<crate::celestial::Universe>()
+        .and_then(|u| u.band(solar_system_id));
+    if let Some(f) = roll_filament(w, crate::filament_drops::Source::Npc, n.id, &class, band) {
+        stacks.push((f, 1));
+    }
+    let loot: Vec<Edit> = stacks
         .into_iter()
         .map(|(type_id, quantity)| Edit::Create {
             type_id,
@@ -2057,6 +2066,87 @@ fn npc_wreck(
         crate::outln!("[combat] the loot of NPC {} was refused: {e:?}", n.id);
     }
     Some(wreck_id)
+}
+
+/// The class name the filament table's `npc` rows are keyed by (FIL-WIRE,
+/// #121): `npc/types.tsv`'s `class`, lower-cased, with every `Commander
+/// <hull>` class folded into `commander` (the table has one commander row
+/// per kind, not one per hull). `[V-data]` the class strings are `Frigate`,
+/// `Destroyer`, `Cruiser`, `BattleCruiser`, `Battleship` and the
+/// `Commander ...` forms; a type the rows do not list has no class (`""`,
+/// which only a `*` row matches).
+fn npc_class(w: &Registry, type_id: i64) -> String {
+    let class = w
+        .content()
+        .try_get::<crate::npc_data::Table>()
+        .and_then(|t| t.types.get(&type_id))
+        .map_or(String::new(), |r| r.class.to_lowercase());
+    if class.starts_with("commander") {
+        "commander".to_owned()
+    } else {
+        class
+    }
+}
+
+/// The candidates of one loaded type table, computed once per table: a
+/// world's content never changes while it runs, so a kill is a lookup
+/// ([`crate::filament_drops::candidates`] walks every type). Keyed by the
+/// type table's address, which a process holds for its life; `[A]` a test
+/// that drops one content and builds another at the same address would read
+/// the first's list, so tests of the draw itself pass candidates to
+/// [`filament_in`] directly.
+fn filament_candidates(w: &Registry) -> std::sync::Arc<Vec<crate::filament_drops::Candidate>> {
+    use std::sync::{Arc, Mutex, OnceLock};
+    type Cache = Mutex<Vec<(usize, Arc<Vec<crate::filament_drops::Candidate>>)>>;
+    static CACHE: OnceLock<Cache> = OnceLock::new();
+    let key = std::ptr::from_ref(crate::typedata::installed_in(w.content())) as usize;
+    let mut cache = CACHE
+        .get_or_init(Cache::default)
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner);
+    if let Some((_, c)) = cache.iter().find(|(k, _)| *k == key) {
+        return Arc::clone(c);
+    }
+    let c = Arc::new(crate::filament_drops::candidates(w.content()));
+    cache.push((key, Arc::clone(&c)));
+    c
+}
+
+/// **The filament draw, pure** (FIL-WIRE): one roll per kill or can, from
+/// the world `seed` and the NPC's or the can's `id`. `None` when the table is
+/// off, the band is unknown, or nothing hit.
+pub(crate) fn filament_in(
+    table: &crate::filament_drops::Table,
+    candidates: &[crate::filament_drops::Candidate],
+    seed: u64,
+    source: crate::filament_drops::Source,
+    id: i64,
+    name: &str,
+    band: Option<crate::celestial::Band>,
+) -> Option<i64> {
+    let band = band?;
+    let mut s = crate::filament_drops::stream(seed, source, id);
+    crate::filament_drops::roll(table, source, name, band, candidates, &mut s)
+}
+
+/// The filament a kill or a hacked can leaves, if any: [`filament_in`] on
+/// the world's table (a world without one drops nothing), cached candidates
+/// and a type the store knows. `name` is the NPC's class
+/// ([`npc_class`]) or the site's archetype (`relic`, `data`).
+pub(crate) fn roll_filament(
+    w: &Registry,
+    source: crate::filament_drops::Source,
+    id: i64,
+    name: &str,
+    band: Option<crate::celestial::Band>,
+) -> Option<i64> {
+    let table = w.content().try_get::<crate::filament_drops::Table>()?;
+    if !table.enabled {
+        return None;
+    }
+    let cands = filament_candidates(w);
+    let got = filament_in(table, &cands, w.world().seed, source, id, name, band)?;
+    crate::item::find_in(w.content(), got).map(|_| got)
 }
 
 /// **A loot cache in space** (Y-COMBAT, `combat_site::drop_cache`): a wreck
@@ -5076,6 +5166,97 @@ pub(crate) mod tests {
             .copied()
             .expect("its wreck");
         (npc, wr)
+    }
+
+    const FIL_TEST_TYPE: i64 = 990_811;
+
+    /// A world whose table always drops one invented jump filament from any
+    /// NPC (`always`) or never (`off`), with that one filament in its types.
+    fn filament_world(table: &str) -> Registry {
+        let mut content = crate::content::Content::fixture();
+        content.insert(
+            crate::typedata::TABLE.name,
+            crate::typedata::Installed::build(
+                crate::typedata::Table::parse(&format!(
+                    "type\t{FIL_TEST_TYPE}\t{}\t17\t1\t1\t0.1\t0.0\t0.0\t1.0\t0\t\t{}=1.0\tInvented Filament\n",
+                    crate::random_jump::GROUP_RANDOM_JUMP_KEYS,
+                    crate::random_jump::ATTR_MAX_SHIPS,
+                ))
+                .expect("parses"),
+            ),
+        );
+        content.insert(
+            "universe",
+            crate::celestial::Universe::parse(
+                &[format!(
+                    "{SYSTEM}\t19000001\t20880001\t\t\t0.85\t\t0\t0\t0\t0\t0\t0\t\t0\t\t\tInvented High"
+                )],
+                &[],
+                &[],
+            )
+            .expect("parses"),
+        );
+        content.insert(
+            crate::filament_drops::TABLE.name,
+            crate::filament_drops::Table::parse(table).expect("parses"),
+        );
+        locked_on(&[], Some(std::sync::Arc::new(content)))
+    }
+
+    const ALWAYS: &str = "source\tname\tkind\tband\tchance_ppm\tweather\twhy\n\
+        npc\t*\tjump\t*\t1000000\tany\tinvented\n";
+
+    /// **A kill rolls one filament into the wreck** when the table says so,
+    /// and the world switch turns it off.
+    #[test]
+    fn a_kill_can_leave_a_filament_and_the_switch_stops_it() {
+        let mut reg = filament_world(ALWAYS);
+        let (_, wr) = alice_kills_a_rat(&mut reg, 3_000.0);
+        let got: Vec<(i64, i64)> = reg
+            .store()
+            .contents_of(wr.wreck_id)
+            .map(|i| (i.type_id, i.quantity))
+            .collect();
+        assert!(got.contains(&(FIL_TEST_TYPE, 1)), "{got:?}");
+        let off = format!("{ALWAYS}off\t*\t-\t*\t0\t-\tinvented\n");
+        let mut reg = filament_world(&off);
+        let (_, wr) = alice_kills_a_rat(&mut reg, 3_000.0);
+        assert!(
+            reg.store()
+                .contents_of(wr.wreck_id)
+                .all(|i| i.type_id != FIL_TEST_TYPE)
+        );
+    }
+
+    /// The draw is the NPC's own: the same id, seed and class draw the same,
+    /// an unknown band or a disabled table draw nothing.
+    #[test]
+    fn the_filament_draw_is_seeded_by_the_npc_and_needs_a_band() {
+        use crate::filament_drops::{Candidate, Kind as K, Source, Table};
+        let t = Table::parse(
+            "source\tname\tkind\tband\tchance_ppm\tweather\twhy\n\
+             npc\tgizmo\tjump\t*\t500000\tany\tinvented\n",
+        )
+        .expect("parses");
+        let cands = [Candidate {
+            type_id: 990_812,
+            kind: K::Jump,
+            tier: 0,
+            name: "invented".into(),
+        }];
+        let band = Some(crate::celestial::Band::High);
+        let draw = |id| filament_in(&t, &cands, 7, Source::Npc, id, "gizmo", band);
+        let hits: Vec<i64> = (0..64).filter(|id| draw(*id).is_some()).collect();
+        assert!(!hits.is_empty() && hits.len() < 64, "half hit: {hits:?}");
+        assert_eq!(draw(hits[0]), draw(hits[0]), "a replay draws the same");
+        assert_eq!(
+            filament_in(&t, &cands, 7, Source::Npc, hits[0], "gizmo", None),
+            None
+        );
+        assert_eq!(
+            filament_in(&t, &cands, 7, Source::Npc, hits[0], "other", band),
+            None
+        );
     }
 
     /// **An NPC's wreck is a store item holding what it rolled**, owned by
