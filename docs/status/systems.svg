@@ -25,28 +25,28 @@ text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}
 <rect x="16.0" y="88" width="448.0" height="20" rx="4" class="track"/>
 <rect x="16.0" y="88" width="446.0" height="20" rx="4" class="proved"/>
 <text x="239.0" y="103.0" class="in-proved sm" text-anchor="middle">16</text>
-<text x="16.0" y="134" class="t">Corp and social</text>
-<text x="464.0" y="134" class="s sm" text-anchor="end">18 of 20 proved</text>
+<text x="16.0" y="134" class="t">Combat</text>
+<text x="464.0" y="134" class="s sm" text-anchor="end">26 of 29 proved</text>
 <rect x="16.0" y="142" width="448.0" height="20" rx="4" class="track"/>
-<rect x="16.0" y="142" width="401.2" height="20" rx="4" class="proved"/>
-<text x="216.6" y="157.0" class="in-proved sm" text-anchor="middle">18</text>
-<rect x="419.2" y="142" width="42.8" height="20" rx="4" class="part"/>
-<text x="440.6" y="157.0" class="in-part sm" text-anchor="middle">2</text>
-<text x="16.0" y="188" class="t">Space and movement</text>
-<text x="464.0" y="188" class="s sm" text-anchor="end">13 of 15 proved</text>
+<rect x="16.0" y="142" width="399.7" height="20" rx="4" class="proved"/>
+<text x="215.8" y="157.0" class="in-proved sm" text-anchor="middle">26</text>
+<rect x="417.7" y="142" width="44.3" height="20" rx="4" class="built"/>
+<text x="439.8" y="157.0" class="in-built sm" text-anchor="middle">3</text>
+<text x="16.0" y="188" class="t">Corp and social</text>
+<text x="464.0" y="188" class="s sm" text-anchor="end">18 of 20 proved</text>
 <rect x="16.0" y="196" width="448.0" height="20" rx="4" class="track"/>
-<rect x="16.0" y="196" width="386.3" height="20" rx="4" class="proved"/>
-<text x="209.1" y="211.0" class="in-proved sm" text-anchor="middle">13</text>
-<rect x="404.3" y="196" width="27.9" height="20" rx="4" class="built"/>
-<text x="418.2" y="211.0" class="in-built sm" text-anchor="middle">1</text>
-<text x="448.1" y="211.0" class="in-missing sm" text-anchor="middle">1</text>
-<text x="16.0" y="242" class="t">Combat</text>
-<text x="464.0" y="242" class="s sm" text-anchor="end">25 of 29 proved</text>
+<rect x="16.0" y="196" width="401.2" height="20" rx="4" class="proved"/>
+<text x="216.6" y="211.0" class="in-proved sm" text-anchor="middle">18</text>
+<rect x="419.2" y="196" width="42.8" height="20" rx="4" class="part"/>
+<text x="440.6" y="211.0" class="in-part sm" text-anchor="middle">2</text>
+<text x="16.0" y="242" class="t">Space and movement</text>
+<text x="464.0" y="242" class="s sm" text-anchor="end">13 of 15 proved</text>
 <rect x="16.0" y="250" width="448.0" height="20" rx="4" class="track"/>
-<rect x="16.0" y="250" width="384.2" height="20" rx="4" class="proved"/>
-<text x="208.1" y="265.0" class="in-proved sm" text-anchor="middle">25</text>
-<rect x="402.2" y="250" width="59.8" height="20" rx="4" class="built"/>
-<text x="432.1" y="265.0" class="in-built sm" text-anchor="middle">4</text>
+<rect x="16.0" y="250" width="386.3" height="20" rx="4" class="proved"/>
+<text x="209.1" y="265.0" class="in-proved sm" text-anchor="middle">13</text>
+<rect x="404.3" y="250" width="27.9" height="20" rx="4" class="built"/>
+<text x="418.2" y="265.0" class="in-built sm" text-anchor="middle">1</text>
+<text x="448.1" y="265.0" class="in-missing sm" text-anchor="middle">1</text>
 <text x="16.0" y="296" class="t">Modules</text>
 <text x="464.0" y="296" class="s sm" text-anchor="end">11 of 13 proved</text>
 <rect x="16.0" y="304" width="448.0" height="20" rx="4" class="track"/>
