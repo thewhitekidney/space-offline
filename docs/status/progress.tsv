@@ -45,7 +45,7 @@ Combat	Security status and the outlaw's dock refusal	client-proved	fci_secstatus
 Combat	Cloaking modules	client-proved	fci_cloak W10			Cloak mode values are still assumptions
 Combat	Insuring a ship	client-proved	fci_notifications W10			
 Combat	Base payout and split on a stolen hull	built-unproved	unit tests only	#26	3.1	
-Combat	Killmail for a shot abandoned ship	built-unproved	fci_abandon_kill written (w23-pve; the Merlin shot dead by a second pilot: one report on both sides with victim, final blow, ship types and system, the client's own drawing and hash lookup, the pod untouched), not yet run on a client; unit tests	#3	3.1	
+Combat	Killmail for a shot abandoned ship	client-proved	fci_abandon_kill 2026-11-04 (two clients, 37 and 24 checks: one report on both sides with victim, final blow, ship types and system, the client's own drawing and hash lookup, the pod untouched); unit tests	#3		
 Combat	The drone window shows each drone's health in the bay	client-proved	fci_drone_bay_damage 11-03 (regress-w14)			
 Combat	Smartbombs hit ships and drones	built-unproved	fci_smartbomb written (w21-neut-smart; ship and drones hurt in the field, none outside); regress-w23a: B's drones hurt by A's volley, A's drone wait fixed to categoryDrone (Mining Drone I is group 101, w23-srv-reds), rerun pending; unit tests; rules are assumptions	#31	3.3	
 Combat	Faction police squads for outlaws	client-proved	fci_faction_police W10			Landed after wave 8 started
