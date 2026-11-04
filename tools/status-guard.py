@@ -55,13 +55,15 @@ def git(*args: str) -> str:
     return subprocess.run(["git", *args], capture_output=True, text=True, check=True).stdout
 
 
-def default_base() -> str:
-    """The remote's default branch: origin/HEAD, else origin/main, else origin/master."""
-    for ref in ("origin/HEAD", "origin/main", "origin/master"):
+def default_base() -> str | None:
+    """The remote's default branch: origin/HEAD, else origin/main, else origin/master
+    (full ref names, so a local branch called `origin/main` can't shadow them)."""
+    for ref in ("refs/remotes/origin/HEAD", "refs/remotes/origin/main",
+                "refs/remotes/origin/master"):
         if subprocess.run(["git", "rev-parse", "-q", "--verify", ref],
                           capture_output=True, text=True).returncode == 0:
             return ref
-    return "origin/main"
+    return None
 
 
 def changed_paths(base: str, worktree: bool) -> list[str]:
@@ -82,8 +84,13 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--worktree", action="store_true", help="also count uncommitted and untracked files")
     p.add_argument("--body-file", help="a file holding the PR body")
     args = p.parse_args(argv)
+    base = args.base or default_base()
+    if base is None:
+        print("status-guard: no origin/HEAD, origin/main or origin/master; pass --base",
+              file=sys.stderr)
+        return 2
     try:
-        paths = changed_paths(args.base or default_base(), args.worktree)
+        paths = changed_paths(base, args.worktree)
         texts = [git("log", "-1", "--format=%B")]
     except (OSError, subprocess.CalledProcessError) as e:
         err = getattr(e, "stderr", "") or str(e)

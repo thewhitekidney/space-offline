@@ -93,7 +93,7 @@ last command's, so that pushes on red.
 
 ## 7. How a change reaches main
 
-Master takes pull requests. The owner merges.
+Main takes pull requests. The owner merges.
 
 1. **Claim**: `AGENTS.md` step 3. How several people's agents share the tree:
    `docs/guides/working-together.md`.

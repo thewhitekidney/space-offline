@@ -191,10 +191,12 @@ class LandingTools(unittest.TestCase):
         g = self.run_tool("gate.sh")
         self.assertEqual(g.returncode, 0, g.stderr)
         self.assertIn("== docs only", g.stdout)
-        self.git("remote", "set-head", "origin", "main")
+        # origin/HEAD alone: it names a branch that is neither main nor master.
+        self.git("update-ref", "refs/remotes/origin/trunk", self.rev("HEAD~1"))
+        self.git("symbolic-ref", "refs/remotes/origin/HEAD", "refs/remotes/origin/trunk")
         self.git("update-ref", "-d", "refs/remotes/origin/main")
-        self.git("update-ref", "refs/remotes/origin/main", self.rev("HEAD~1"))
         g = self.run_tool("gate.sh")
+        self.assertEqual(g.returncode, 0, g.stdout + g.stderr)
         self.assertIn("== docs only", g.stdout)
 
     def test_the_docs_path_runs_all_five_docs_tests_and_a_failure_in_any_stops_it(self) -> None:

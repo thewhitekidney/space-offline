@@ -26,8 +26,8 @@ branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo none)
 echo "branch=${branch:-none}"
 if [ -n "$(git status --porcelain 2>/dev/null)" ]; then dirty=yes; else dirty=no; fi
 echo "dirty=$dirty"
-base=$(git rev-parse -q --verify origin/HEAD || git rev-parse -q --verify origin/main \
-    || git rev-parse -q --verify origin/master) || base=""
+base=$(git rev-parse -q --verify refs/remotes/origin/HEAD || git rev-parse -q --verify refs/remotes/origin/main \
+    || git rev-parse -q --verify refs/remotes/origin/master) || base=""
 ahead=$( [ -n "$base" ] && git rev-list --count "$base..HEAD" 2>/dev/null || echo unknown)
 echo "ahead=$ahead"
 

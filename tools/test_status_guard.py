@@ -35,12 +35,14 @@ class DefaultBase(unittest.TestCase):
             old = os.getcwd()
             os.chdir(d)
             try:
+                self.assertIsNone(sg.default_base())
+                self.assertEqual(sg.main([]), 2)  # no base: fails closed
                 g("update-ref", "refs/remotes/origin/master", sha)
-                self.assertEqual(sg.default_base(), "origin/master")
+                self.assertEqual(sg.default_base(), "refs/remotes/origin/master")
                 g("update-ref", "refs/remotes/origin/main", sha)
-                self.assertEqual(sg.default_base(), "origin/main")
+                self.assertEqual(sg.default_base(), "refs/remotes/origin/main")
                 g("symbolic-ref", "refs/remotes/origin/HEAD", "refs/remotes/origin/main")
-                self.assertEqual(sg.default_base(), "origin/HEAD")
+                self.assertEqual(sg.default_base(), "refs/remotes/origin/HEAD")
             finally:
                 os.chdir(old)
 
