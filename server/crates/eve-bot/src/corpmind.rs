@@ -570,11 +570,35 @@ impl HallState {
     /// **Fold a kill report in, once** (SOC-C5): `false`, and nothing
     /// changes, when report `id` already moved the matrix.
     pub fn record_kill(&mut self, id: i64, e: &Event) -> bool {
-        if !self.recorded.insert(id) {
-            return false;
+        match self.record_kill_line(id, e) {
+            None => false,
+            Some(line) => {
+                // SOC-WIRE: the line `tools/society-report.py` reads.
+                if let Some(line) = line {
+                    println!("{line}");
+                }
+                true
+            }
         }
+    }
+
+    /// [`HallState::record_kill`] without the printing: `None` when report
+    /// `id` was already folded in; else the [`society::loss_line`] of the
+    /// victim group's view of the killer before and after (`None` inside
+    /// when the event is not a kill).
+    pub fn record_kill_line(&mut self, id: i64, e: &Event) -> Option<Option<String>> {
+        if !self.recorded.insert(id) {
+            return None;
+        }
+        let Event::Kill { victim, killer, .. } = *e else {
+            self.record(e);
+            return Some(None);
+        };
+        let t = self.target(killer);
+        let before = self.alliance_relation(victim, t);
         self.record(e);
-        true
+        let after = self.alliance_relation(victim, t);
+        Some(Some(society::loss_line(victim, t, before, after)))
     }
 
     /// The mean loyalty of a corp's bots (0.5 when none).
@@ -1420,7 +1444,15 @@ impl HallState {
             alliances.len(),
             self.stances.count(Stance::Blue),
             self.stances.count(Stance::Red),
-        )
+        ) + &society::day_field(self.game_day())
+    }
+
+    /// SOC-WIRE: the game day the matrix was last advanced to (`0` before
+    /// its first tick). [I] `Relations::at` is the unix second the bots'
+    /// `tick` passed; falsified by a `day` field that does not advance once
+    /// a soak runs past a game day.
+    pub fn game_day(&self) -> u64 {
+        self.relations.at.map_or(0, |t| t / self.day.max(1))
     }
 
     /// [`society::hostile_to`] over the books the bots read.
@@ -3846,6 +3878,41 @@ mod tests {
         // A stale executor does not answer on its own say-so.
         let ann = st.plan(ANN, old, Some(0.0), &BTreeMap::new());
         assert!(!ann.contains(&Plan::AnswerAlliance(AL)), "{ann:?}");
+    }
+
+    // ---- SOC-WIRE ----------------------------------------------------------
+
+    #[test]
+    fn a_kill_prints_the_victims_view_before_and_after() {
+        let mut st = two_corps();
+        let e = Event::Kill {
+            victim: C1,
+            killer: MAL,
+            isk: 25_000_000.0,
+        };
+        let line = st.record_kill_line(7, &e).unwrap().unwrap();
+        let after = st.relations.get(C1, MAL);
+        assert!(after < 0.0, "{after}");
+        assert_eq!(
+            line,
+            format!("[soc] relation loss victim={C1} killer={MAL} before=0.00 after={after:.2}")
+        );
+        // The same report again prints nothing and moves nothing.
+        assert_eq!(st.record_kill_line(7, &e), None);
+        assert_eq!(st.relations.get(C1, MAL), after);
+    }
+
+    #[test]
+    fn the_summary_ends_with_the_game_day() {
+        let mut st = two_corps();
+        assert!(st.summary().ends_with(" day 0"), "{}", st.summary());
+        st.tick(3 * st.day + 5);
+        assert!(st.summary().ends_with(" day 3"), "{}", st.summary());
+        assert!(
+            st.summary().starts_with("corps 2 alliances"),
+            "{}",
+            st.summary()
+        );
     }
 
     // ---- R-REL-3 -----------------------------------------------------------

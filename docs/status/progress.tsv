@@ -218,7 +218,7 @@ Bots	Miners leave dry belts; offline mining spreads; rare-ore value per system	b
 Bots	Capitals fight	missing	capital.rs only ferries; lane NW-10	#34, #35, #36, #37, #38	3.3	
 Bots	Hunter bots find and engage	client-proved	fci_hunter_bot 2026-11-03 (regress-w20b): the hunter finds and engages; hunt.rs, travel.rs			Hunters only
 Bots	Low-status bots avoid the police	built-unproved	unit tests (hunt.rs, travel.rs); no client scenario	#29	3.1	Hunters only
-Bots	Society gates GC and GD and doctrine gates G1 to G10 pass in a soak	unknown	no soak record yet; judges: tools/society-report.py (GC, GD; tools/test_society_report.py), tools/doctrine-report.py (G1-G10)	#89, #90, #93	3.7	
+Bots	Society gates GC and GD and doctrine gates G1 to G10 pass in a soak	unknown	no soak record yet; judges: tools/society-report.py (GC, GD; tools/test_society_report.py), tools/doctrine-report.py (G1-G10); SOC-WIRE: HallState::record_kill_line prints society::loss_line, summary ends with society::day_field (unit tests in corpmind.rs)	#89, #90, #93, #119	3.7	
 Bots	Bots feel like players	unknown	no record found; only people can judge this		3.7	
 Tools and the friends path	The gate: lint, tests, clippy, push only on pass	done	tools/land.sh, tools/gate.sh			
 Tools and the friends path	The client regression runner, three clients at once	done	tools/client-ci-regress.sh			
