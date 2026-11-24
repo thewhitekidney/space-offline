@@ -41,6 +41,13 @@
 //! The ESS call this was meant to silence is now answered with `None` in
 //! `service::space`, which is the value the client's own code returns on that
 //! path. §41.10.
+//!
+//! **A route that is open (#205):** `machoNet.OnGlobalConfigUpdated(key,
+//! value)` is in machoNet's `__notifyevents__` and sets one key **[V
+//! decompiled `machoNet.pyc`]**, so a *notification* (not a call) reaches
+//! `globalConfig`. `crate::images` uses it for `imageserverurl`, sent with
+//! the session's initial state under `--image-server`; verified by hand on
+//! 3707965 (19NOV2026).
 
 use crate::pyutil::{bstr, pypairs};
 use eve_marshal::{MachoNetMsg, PyValue};

@@ -394,6 +394,18 @@ pub const SANCTIONED: &[(&str, &str, usize, &str)] = &[
         "kept real: a socket connect limit",
     ),
     (
+        "images.rs",
+        "set_read_timeout(",
+        1,
+        "kept real: the portrait image server's HTTP socket read budget",
+    ),
+    (
+        "images.rs",
+        "set_write_timeout(",
+        1,
+        "kept real: the portrait image server's HTTP socket write budget",
+    ),
+    (
         "shutdown.rs",
         "connect_timeout(",
         1,

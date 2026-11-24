@@ -1102,11 +1102,19 @@ pub(crate) fn dispatch(reg: &mut Registry, req: &Request<'_>) -> Result<PyValue,
             _ => Err(reg.no_method(req)),
         },
         "paperDollServer" => match req.method {
-            "GetPaperDollDataBatch" => Ok(PyValue::Dict(vec![])),
-            // Reached from `GetPortraitSettings`, which unpacks two
-            // values and swallows any exception. **[I]** -- inferred from
-            // `ccSvc`'s `data, _ = ...GetPaperDollPortraitDataFor(charID)`.
-            "GetPaperDollPortraitDataFor" => Ok(PyValue::Tuple(vec![PyValue::None, PyValue::None])),
+            // The scene portrait's DNA (`crate::paperdoll`): every asked
+            // id with a kept doll. Always a real dict
+            // (`_FetchBatchData` calls `iteritems`).
+            "GetPaperDollDataBatch" => {
+                let ids = args::Args::new(req).int_list(0);
+                Ok(crate::paperdoll::batch_value(reg, &ids))
+            }
+            // `ccSvc.GetPortraitData`: `data, _ = ...(charID)`, then
+            // `data[0]` when `len(data)`, else `None` **[V decompiled]**.
+            "GetPaperDollPortraitDataFor" => {
+                let ch = args::Args::new(req).int(0).unwrap_or(0);
+                Ok(crate::paperdoll::portrait_value(reg, ch))
+            }
             // The avatar on the character sheet. `avatarHeaderPreview`
             // calls this **synchronously**:
             //
@@ -1115,15 +1123,12 @@ pub(crate) fn dispatch(reg: &mut Registry, req: &Request<'_>) -> Result<PyValue,
             //
             // `None` means no DNA, which means no avatar is rendered --
             // the window survives, because `PreviewCharacter` runs under
-            // `uthread.new`, but the panel is blank. That is the honest
-            // answer for now: a paperdoll DNA is a real structure we do
-            // not model, and inventing one would be a different kind of
-            // wrong from leaving it empty.
-            //
-            // **[I]** The shape when we do model it: `_FetchBatchData`'s
-            // guard is `if not charInfo or not dna: continue`, so falsy is
-            // a supported state throughout.
-            "GetPaperDollData" => Ok(PyValue::None),
+            // `uthread.new`, but the panel is blank. A character whose
+            // creator doll was kept gets it back (`crate::paperdoll`).
+            "GetPaperDollData" => {
+                let ch = args::Args::new(req).int(0).unwrap_or(0);
+                Ok(crate::paperdoll::dna(reg, ch).unwrap_or(PyValue::None))
+            }
             _ => Err(reg.no_method(req)),
         },
         // Player-owned structures. Both methods take the solar system id

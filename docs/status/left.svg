@@ -164,9 +164,11 @@ text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:12px}
 <rect x="262.0" y="141.5" width="3" height="3" class="built"/>
 <rect x="266.0" y="141.5" width="3" height="3" class="built"/>
 <rect x="270.0" y="141.5" width="3" height="3" class="built"/>
-<rect x="274.5" y="142.0" width="2" height="2" fill="none" class="part-o"/><rect x="274.0" y="143.0" width="3" height="1.5" class="part-f"/>
-<rect x="278.5" y="142.0" width="2" height="2" fill="none" class="missing"/>
-<text x="286.0" y="146.0" class="s xs">9</text>
+<rect x="274.0" y="141.5" width="3" height="3" class="built"/>
+<rect x="278.0" y="141.5" width="3" height="3" class="built"/>
+<rect x="282.5" y="142.0" width="2" height="2" fill="none" class="part-o"/><rect x="282.0" y="143.0" width="3" height="1.5" class="part-f"/>
+<rect x="286.5" y="142.0" width="2" height="2" fill="none" class="missing"/>
+<text x="294.0" y="146.0" class="s xs">11</text>
 <text x="16.0" y="162.0" class="t">3.9 Corp and social depth</text>
 <rect x="246.5" y="158.0" width="2" height="2" fill="none" class="part-o"/><rect x="246.0" y="159.0" width="3" height="1.5" class="part-f"/>
 <rect x="250.5" y="158.0" width="2" height="2" fill="none" class="part-o"/><rect x="250.0" y="159.0" width="3" height="1.5" class="part-f"/>

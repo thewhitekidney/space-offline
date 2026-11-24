@@ -256,6 +256,12 @@ usage: eve-server [options]
   --max-accounts N   with --world-accounts: a human sign-up is refused once
                      the world holds N human accounts (default 500; 0 is
                      unlimited). Listeners with botnames=on are exempt.
+  --image-server ADDR  a portrait image server on ADDR (e.g. 0.0.0.0:26080;
+                     off by default), advertised to every client at login
+                     as its imageserverurl.
+  --image-url URL    the URL clients are told (default http://ADDR/).
+  --portraits DIR    the image server's pictures, <charID>_<size>.jpg
+                     (default: portraits/ beside the world file).
   --concord          CONCORD answers a high-sec crime: a squad, a warp
   --no-concord       refusal, a dock and gate refusal (the default), or
                      none of it (--no-concord, a CONCORD-free world).
@@ -433,6 +439,9 @@ pub const CORE_FLAGS: &[&str] = &[
     "--admin",
     "--signups-per-hour",
     "--max-accounts",
+    "--image-server",
+    "--image-url",
+    "--portraits",
     "--concord",
     "--no-concord",
     "--no-undock-invuln",
@@ -659,6 +668,9 @@ fn build(plan: &Assembled, args: Vec<String>) -> Result<Built, String> {
         crate::account_book::SIGNUPS_PER_HOUR,
         crate::account_book::MAX_ACCOUNTS,
     );
+    let mut image_server: Option<std::net::SocketAddr> = None;
+    let mut image_url: Option<String> = None;
+    let mut portraits: Option<PathBuf> = None;
     let mut concord = true;
     let mut undock_invuln = true;
     let mut dev = false;
@@ -763,6 +775,15 @@ fn build(plan: &Assembled, args: Vec<String>) -> Result<Built, String> {
                 let v = value("--max-accounts")?;
                 signup_limits.1 = v.parse().map_err(|e| format!("--max-accounts {v}: {e}"))?;
             }
+            "--image-server" => {
+                let v = value("--image-server")?;
+                image_server = Some(
+                    v.parse()
+                        .map_err(|e| format!("--image-server {v}: not an address ({e})"))?,
+                );
+            }
+            "--image-url" => image_url = Some(value("--image-url")?),
+            "--portraits" => portraits = Some(PathBuf::from(value("--portraits")?)),
             "--concord" => concord = true,
             "--no-concord" => concord = false,
             "--no-undock-invuln" => undock_invuln = false,
@@ -1095,6 +1116,9 @@ fn build(plan: &Assembled, args: Vec<String>) -> Result<Built, String> {
         crate::econ_scale::EconScale::from_cli([0, 1, 2, 3, 4].map(|i| econ_flags[i].as_deref()))?;
     config.bot_control = crate::bot_control::dir_for(bot_control, config.world_file.as_deref());
     config.admin = admin;
+    config.image_server = image_server;
+    config.image_url = image_url;
+    config.portraits = portraits;
     // **Validated here, and a bad name is fatal.**
     //
     // The temptation is to fall back to the ordinary blob on a name we

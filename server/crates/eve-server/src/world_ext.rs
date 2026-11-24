@@ -33,6 +33,8 @@ pub const SLOTS: &[SlotSpec] = &[
     crate::bot_control::SLOT,
     // admin-web: the listener the clock hands snapshots to.
     crate::admin_web::SLOT,
+    // #205: the image server URL dispatch advertises at login.
+    crate::images::SLOT,
     // #57: which container passwords each pilot has entered this run.
     crate::containers::SLOT,
     // JAM-1: what each system's cyno jammer was last told as.

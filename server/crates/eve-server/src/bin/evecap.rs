@@ -42,6 +42,8 @@ usage: evecap FILE [options]
   --before MS        only frames before this time
   --max-bytes N      bytes to show per hex dump (default 64)
   --tags             summarise the type codes that failed to decode
+  --arg F:I OUT      write argument I of the call in frame F (as --calls numbers
+                     it) to OUT as one marshal stream (`wire::dumps`)
   -h, --help         this text
 ";
 
@@ -68,6 +70,7 @@ fn run() -> Result<(), String> {
     let mut rel: Option<i64> = None;
     let mut after = 0.0f64;
     let mut before = f64::MAX;
+    let mut arg_out: Option<(usize, usize, PathBuf)> = None;
 
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
@@ -99,6 +102,16 @@ fn run() -> Result<(), String> {
             "--before" => {
                 let v = args.next().ok_or("--before needs ms")?;
                 before = v.parse().map_err(|e| format!("--before {v}: {e}"))?;
+            }
+            "--arg" => {
+                let v = args.next().ok_or("--arg needs FRAME:INDEX OUT")?;
+                let out = args.next().ok_or("--arg needs FRAME:INDEX OUT")?;
+                let (f, i) = v.split_once(':').ok_or("--arg FRAME:INDEX")?;
+                arg_out = Some((
+                    f.parse().map_err(|e| format!("--arg frame {f}: {e}"))?,
+                    i.parse().map_err(|e| format!("--arg index {i}: {e}"))?,
+                    PathBuf::from(out),
+                ));
             }
             "--max-bytes" => {
                 let v = args.next().ok_or("--max-bytes needs a value")?;
@@ -132,6 +145,9 @@ fn run() -> Result<(), String> {
     if alerts {
         print_alerts(&records);
         return Ok(());
+    }
+    if let Some((frame, index, out)) = arg_out {
+        return write_arg(&records, frame, index, &out);
     }
     if calls {
         print_calls(&records);
@@ -172,6 +188,30 @@ fn run() -> Result<(), String> {
             }
         }
     }
+    Ok(())
+}
+
+/// `--arg`: argument `index` of the service or bound-object call in frame
+/// `frame`, written to `out` as one complete marshal stream.
+fn write_arg(
+    records: &[Record],
+    frame: usize,
+    index: usize,
+    out: &std::path::Path,
+) -> Result<(), String> {
+    let r = records.get(frame).ok_or(format!("no frame {frame}"))?;
+    let value = loads(&r.bytes).map_err(|e| format!("frame {frame}: {e:?}"))?;
+    let packet = MachoPacket::from_value(&value).map_err(|e| format!("frame {frame}: {e:?}"))?;
+    let args = match packet.body.first().map(CallPayload::from_payload) {
+        Some(Ok(CallPayload::Service { args, .. } | CallPayload::BoundObject { args, .. })) => args,
+        _ => return Err(format!("frame {frame} is not a call")),
+    };
+    let a = args
+        .get(index)
+        .ok_or(format!("frame {frame} has {} arguments", args.len()))?;
+    std::fs::write(out, eve_server::wire::dumps(a))
+        .map_err(|e| format!("{}: {e}", out.display()))?;
+    println!("frame {frame} argument {index} -> {}", out.display());
     Ok(())
 }
 

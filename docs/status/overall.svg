@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="480" height="116" viewBox="0 0 480 116" role="img" aria-label="63 percent proved, 95 percent built, of 371 features">
-<title>63 percent proved, 95 percent built, of 371 features</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="116" viewBox="0 0 480 116" role="img" aria-label="62 percent proved, 95 percent built, of 373 features">
+<title>62 percent proved, 95 percent built, of 373 features</title>
 <style>
 .bg{fill:#fcfcfb}.t{fill:#0b0b0b}.s{fill:#52514e}.rule{fill:#e1e0d9}
 .proved{fill:#184f95}.built{fill:#3987e5}.unknown{fill:#eb6834}
@@ -17,11 +17,11 @@ text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:12px}
 .big{font-size:26px;font-weight:600}.b{font-weight:600}.xs{font-size:11px}
 </style>
 <rect width="480" height="116" rx="6" class="bg"/>
-<text x="16.0" y="34.0" class="t big">63%</text>
+<text x="16.0" y="34.0" class="t big">62%</text>
 <text x="75.0" y="34.0" class="s">proved</text>
 <text x="166.0" y="34.0" class="t big">95%</text>
 <text x="225.0" y="34.0" class="s">built</text>
-<text x="464.0" y="34.0" class="s" text-anchor="end">of 371 features</text>
+<text x="464.0" y="34.0" class="s" text-anchor="end">of 373 features</text>
 <rect x="16.0" y="46.0" width="6" height="6" class="proved"/>
 <rect x="16.0" y="53.0" width="6" height="6" class="proved"/>
 <rect x="16.0" y="60.0" width="6" height="6" class="proved"/>
@@ -376,8 +376,8 @@ text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:12px}
 <rect x="422.0" y="67.0" width="6" height="6" class="built"/>
 <rect x="422.0" y="74.0" width="6" height="6" class="built"/>
 <rect x="422.0" y="81.0" width="6" height="6" class="built"/>
-<rect x="429.5" y="46.5" width="5" height="5" fill="none" class="part-o"/><rect x="429.0" y="49.0" width="6" height="3.0" class="part-f"/>
-<rect x="429.5" y="53.5" width="5" height="5" fill="none" class="part-o"/><rect x="429.0" y="56.0" width="6" height="3.0" class="part-f"/>
+<rect x="429.0" y="46.0" width="6" height="6" class="built"/>
+<rect x="429.0" y="53.0" width="6" height="6" class="built"/>
 <rect x="429.5" y="60.5" width="5" height="5" fill="none" class="part-o"/><rect x="429.0" y="63.0" width="6" height="3.0" class="part-f"/>
 <rect x="429.5" y="67.5" width="5" height="5" fill="none" class="part-o"/><rect x="429.0" y="70.0" width="6" height="3.0" class="part-f"/>
 <rect x="429.5" y="74.5" width="5" height="5" fill="none" class="part-o"/><rect x="429.0" y="77.0" width="6" height="3.0" class="part-f"/>
@@ -386,17 +386,19 @@ text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:12px}
 <rect x="436.5" y="53.5" width="5" height="5" fill="none" class="part-o"/><rect x="436.0" y="56.0" width="6" height="3.0" class="part-f"/>
 <rect x="436.5" y="60.5" width="5" height="5" fill="none" class="part-o"/><rect x="436.0" y="63.0" width="6" height="3.0" class="part-f"/>
 <rect x="436.5" y="67.5" width="5" height="5" fill="none" class="part-o"/><rect x="436.0" y="70.0" width="6" height="3.0" class="part-f"/>
-<rect x="436.5" y="74.5" width="5" height="5" fill="none" class="missing"/>
-<rect x="436.5" y="81.5" width="5" height="5" fill="none" class="missing"/>
+<rect x="436.5" y="74.5" width="5" height="5" fill="none" class="part-o"/><rect x="436.0" y="77.0" width="6" height="3.0" class="part-f"/>
+<rect x="436.5" y="81.5" width="5" height="5" fill="none" class="part-o"/><rect x="436.0" y="84.0" width="6" height="3.0" class="part-f"/>
 <rect x="443.5" y="46.5" width="5" height="5" fill="none" class="missing"/>
 <rect x="443.5" y="53.5" width="5" height="5" fill="none" class="missing"/>
 <rect x="443.5" y="60.5" width="5" height="5" fill="none" class="missing"/>
-<rect x="443.0" y="67.0" width="6" height="6" class="unknown"/>
-<rect x="443.0" y="74.0" width="6" height="6" class="unknown"/>
+<rect x="443.5" y="67.5" width="5" height="5" fill="none" class="missing"/>
+<rect x="443.5" y="74.5" width="5" height="5" fill="none" class="missing"/>
+<rect x="443.0" y="81.0" width="6" height="6" class="unknown"/>
+<rect x="450.0" y="46.0" width="6" height="6" class="unknown"/>
 <rect x="16.0" y="98.0" width="9" height="9" class="proved"/>
 <text x="30.0" y="106.0" class="s xs">Proved 232</text>
 <rect x="103.8" y="98.0" width="9" height="9" class="built"/>
-<text x="117.8" y="106.0" class="s xs">Built 122</text>
+<text x="117.8" y="106.0" class="s xs">Built 124</text>
 <rect x="185.7" y="98.5" width="8" height="8" fill="none" class="part-o"/><rect x="185.2" y="102.5" width="9" height="4.5" class="part-f"/>
 <text x="199.2" y="106.0" class="s xs">Part built 10</text>
 <rect x="292.7" y="98.5" width="8" height="8" fill="none" class="missing"/>

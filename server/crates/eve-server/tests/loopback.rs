@@ -625,6 +625,57 @@ fn the_session_carries_a_role_mask_with_the_gm_bits_set() {
     handle.join().expect("join");
 }
 
+/// #205: with `--image-server`, the frame after the session's initial state
+/// is `OnGlobalConfigUpdated("imageserverurl", url)`, and that URL serves the
+/// portrait from `--portraits`. A port of 0 is told as the port it got.
+#[test]
+fn the_image_server_url_follows_the_session_and_serves_the_portrait() {
+    let dir = capture_dir("portraits");
+    std::fs::create_dir_all(&dir).expect("portraits dir");
+    std::fs::write(dir.join("90000001_512.jpg"), b"JPEGBYTES").expect("portrait");
+    let mut config = Config::new("127.0.0.1:0".parse().expect("literal"));
+    config.mode = Mode::Gps;
+    config.image_server = Some("127.0.0.1:0".parse().expect("literal"));
+    config.portraits = Some(dir.clone());
+    let server = Server::bind(config).expect("bind");
+    let addr = server.local_addr().expect("local addr");
+    let handle = std::thread::spawn(move || server.run_once().expect("serve"));
+    let mut client = MockClient::connect(addr);
+    full_handshake(&mut client);
+    read_session(&mut client);
+
+    let (event, args) = expect_notification(&client.recv());
+    assert_eq!(event, "OnGlobalConfigUpdated");
+    assert_eq!(args.len(), 2, "machoNet.OnGlobalConfigUpdated(key, value)");
+    assert_eq!(args[0], bstr("imageserverurl"));
+    let PyValue::Bytes(url) = &args[1] else {
+        panic!("the URL is a byte string: {:?}", args[1])
+    };
+    let url = String::from_utf8(url.clone()).expect("ascii");
+    let host = url
+        .strip_prefix("http://")
+        .and_then(|u| u.strip_suffix('/'))
+        .unwrap_or_else(|| panic!("not http://host:port/: {url}"));
+    let image_addr: SocketAddr = host.parse().expect("host:port");
+    assert_ne!(image_addr.port(), 0, "the bound port, not the asked-for 0");
+
+    let mut http = TcpStream::connect(image_addr).expect("connect to the image server");
+    write!(
+        http,
+        "GET /Character/90000001_128.jpg HTTP/1.1\r\nHost: x\r\n\r\n"
+    )
+    .expect("send");
+    let mut out = Vec::new();
+    http.read_to_end(&mut out).expect("read");
+    let out = String::from_utf8_lossy(&out);
+    assert!(out.starts_with("HTTP/1.1 200"), "{out}");
+    assert!(out.ends_with("JPEGBYTES"), "{out}");
+
+    client.stream.shutdown(Shutdown::Both).expect("shutdown");
+    handle.join().expect("join");
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
 /// Build a `CallReq` the way `ServiceCallGPCS` does.
 fn call_req(service: &str, method: &str, call_id: i64) -> PyValue {
     call_req_args(service, method, call_id, vec![])

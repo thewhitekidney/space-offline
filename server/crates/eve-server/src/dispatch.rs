@@ -2726,6 +2726,20 @@ impl GpsSession {
                 }
             }
             payloads.push(self.session_init_packet()?);
+            // #205: with `--image-server`, the client's `imageserverurl`,
+            // through `machoNet.OnGlobalConfigUpdated(key, value)` (in its
+            // `__notifyevents__`) [V decompiled machoNet.pyc]. Here, before the
+            // select screen's first portrait: `InitializePortraits` reads the
+            // URL once. Off by default, so the login frames are unchanged.
+            if let Some(url) = w.ext::<crate::images::Config>().url.clone() {
+                payloads.push(self.notify(
+                    "OnGlobalConfigUpdated",
+                    vec![
+                        PyValue::Bytes(crate::images::URL_KEY.as_bytes().to_vec()),
+                        PyValue::Bytes(url.into_bytes()),
+                    ],
+                )?);
+            }
             // **`global_config_packet` is NOT sent here yet, and the reason is
             // measured rather than cautious.** Adding it to this flush failed
             // **38** tests: every `loopback.rs` fixture reads the post-login

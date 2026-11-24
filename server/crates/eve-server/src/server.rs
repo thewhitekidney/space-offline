@@ -432,6 +432,15 @@ pub struct Config {
     /// `None` (default): no listener. Its token file goes in the
     /// `bot_control` directory, so it needs one.
     pub admin: Option<std::net::SocketAddr>,
+    /// `--image-server ADDR` (#205): the portrait image server's address.
+    /// `None` (default): no listener, and no `imageserverurl` at login.
+    pub image_server: Option<std::net::SocketAddr>,
+    /// `--image-url URL`: what the client is told to fetch from; default
+    /// `http://<image_server>/`, with `127.0.0.1` for an unspecified address.
+    pub image_url: Option<String>,
+    /// `--portraits DIR`: where the image server's pictures are; default
+    /// `portraits/` beside the world file.
+    pub portraits: Option<PathBuf>,
 }
 
 /// See `Config::test_dispatch`.
@@ -517,6 +526,9 @@ impl Config {
             dev: false,
             bot_control: None,
             admin: None,
+            image_server: None,
+            image_url: None,
+            portraits: None,
         }
     }
 }
@@ -840,6 +852,30 @@ impl Server {
             );
             shared.set_writers(Arc::clone(&writers));
             crate::admin_web::attach(&mut registry, shared);
+        }
+        if let Some(addr) = config.image_server {
+            let dir = config.portraits.clone().unwrap_or_else(|| {
+                config
+                    .world_file
+                    .as_deref()
+                    .and_then(Path::parent)
+                    .map_or_else(|| PathBuf::from("portraits"), |d| d.join("portraits"))
+            });
+            // The bound address, so a port of 0 is told as the one it got.
+            let bound = crate::images::open(addr, dir.clone())?;
+            let url = config.image_url.clone().unwrap_or_else(|| {
+                let host = if bound.ip().is_unspecified() {
+                    std::net::IpAddr::from([127, 0, 0, 1])
+                } else {
+                    bound.ip()
+                };
+                format!("http://{}/", SocketAddr::new(host, bound.port()))
+            });
+            println!(
+                "[images] portraits on http://{bound}/ from {}; clients told {url}",
+                dir.display()
+            );
+            registry.ext_mut::<crate::images::Config>().url = Some(url);
         }
         let mult = registry.config().rules.training_mult;
         if config.time_scale.training() > 1 || mult != 1.0 {
