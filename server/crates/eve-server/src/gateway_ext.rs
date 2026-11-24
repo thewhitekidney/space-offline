@@ -27,6 +27,8 @@ pub const CHAIN: &[Arm] = &[
     crate::emblem::gateway,
     // DG-2 (#202): the daily goals (`eve_public.dailygoal.api`).
     crate::daily_goals::gateway,
+    // #205: the NPE career achievements (`eve_public.achievement`).
+    crate::achievements::gateway,
     // SOV-FUEL (#218): the hub's reagent bay, `hub.fuel.api` Get and Add.
     crate::sov_hub_fuel::gateway,
     // SOV-RES (#78): the hub's power and workforce, planet and star definitions.

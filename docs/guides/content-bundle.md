@@ -138,6 +138,7 @@ bundle being built.
 | `types` | `tools/typedata.py`, `tools/skills.py` | `types/typedata.tsv`, `types/skills.tsv` |
 | `planets` | `tools/pi_statics.py` | `planets/pi-statics.tsv` |
 | `agents` | `tools/content_agents.py` | `agents/*` |
+| `achievements` | `tools/content_achievements.py` (definitions from `EVE_ACHIEVEMENTS_BIN` or `out/cdn/achievements/`, not the install) | `achievements/agent-missions.tsv` |
 | `dbuffs` | `tools/content_dbuffs.py` | `dbuffs/*` |
 | `deploy` | `tools/content_deploy.py` | `deploy/*` |
 | `dungeons` | `tools/content_dungeons.py` | `dungeons/*` |
@@ -145,6 +146,7 @@ bundle being built.
 | `fighters` | `tools/content_fighters.py` | `fighters/*` |
 | `geodes` | `tools/content_geodes.py` | `mining/*` |
 | `moon` | `tools/content_moon.py` | `moon/*` |
+| `nodegraphs` | `tools/content_nodegraphs.py` | `nodegraphs/*` |
 | `npc` | `tools/content_npc.py` | `npc/{factions,corporations,types,components,reactive-spawn,bounty}.tsv` |
 | `npc_regions` | `tools/content_npc_regions.py` | `npc/{regions,home-pirate,trades,loot}.tsv` |
 | `police` | `tools/content_police.py` | `npc/{police,concord}.tsv` |

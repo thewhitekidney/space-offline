@@ -473,9 +473,15 @@ pub const DUNGEON_CLASSES: &[&str] = &[
 /// `[A]` the tiers a dungeon spawn draws from.
 pub const DUNGEON_TIERS: &[Tier] = &[Tier::Base, Tier::Elite, Tier::Deadspace];
 
-/// **R5: a squad per spawn entity** of the dungeon, from its faction and
-/// context, with [`dungeon_budget`] split evenly over its spawns and
-/// [`DUNGEON_SQUAD_SIZE`] ships. Each spawn draws from
+/// **R5: a squad per spawn entity** of the dungeon. A spawn row whose
+/// `npc_grouping` a live server was seen to fly (`Table::groupings`,
+/// `content/npc/groupings.tsv`) flies one of
+/// those fleets **[V-TQ]**: in the TQ recording 20261117_122753 (17NOV2026,
+/// build 3707965, Enforcer career mission 1 right after AIR scene 2.5),
+/// dungeon 2055 put out one 16877 on arrival, then two, then one,
+/// its three rows' groupings. Any other row is drawn from the dungeon's
+/// faction and context, with [`dungeon_budget`] split evenly over its spawns
+/// and [`DUNGEON_SQUAD_SIZE`] ships. Each spawn draws from
 /// `stream(seed, Spawn, parts ++ [dungeon, index])`. `[A]` a `Deadspace`
 /// dungeon whose faction has no deadspace pool draws `Asteroid`. Empty for a
 /// dungeon with no faction. Positions, triggers and respawn are the spawn
@@ -528,14 +534,26 @@ pub fn dungeon_squads(
             let mut all = parts.to_vec();
             all.extend_from_slice(&[d.id as u64, i as u64]);
             let mut s = stream(seed, Kind::Spawn, &all);
+            let observed = sp.npc_grouping.and_then(|g| data.groupings.get(&g));
+            let squad = match observed {
+                Some(fleets) if !fleets.is_empty() => {
+                    let fleet = &fleets[s.range(0, fleets.len() as u64) as usize];
+                    Squad {
+                        faction_id: Some(faction),
+                        members: fleet.clone(),
+                        bounty: fleet.iter().map(|t| bounty_of(data, *t)).sum(),
+                    }
+                }
+                _ => squad(
+                    Some(faction),
+                    fill(&cands, &cands, each, DUNGEON_SQUAD_SIZE, &mut s),
+                ),
+            };
             SlotSquad {
                 room: sp.room,
                 object: sp.object,
                 spawn: i,
-                squad: squad(
-                    Some(faction),
-                    fill(&cands, &cands, each, DUNGEON_SQUAD_SIZE, &mut s),
-                ),
+                squad,
             }
         })
         .collect()
@@ -782,6 +800,59 @@ mod tests {
             spawns: vec![spawn(11), spawn(12), spawn(13)],
             ..Default::default()
         }
+    }
+
+    /// The shipped groupings file is well formed: its header is the frozen
+    /// one and no row is skipped (its values are not asserted, plan §1.4).
+    #[test]
+    fn the_shipped_groupings_file_is_well_formed() {
+        let file = crate::authored::Dir::compiled_only()
+            .load(
+                crate::npc_data::GROUPINGS_FILE,
+                include_str!("../../../../content/npc/groupings.tsv"),
+                crate::npc_data::GROUPINGS_HEADER,
+            )
+            .expect("header");
+        let (rows, skipped) = file.parse_rows_logged(|r| Ok(r.field(0).to_owned()));
+        assert!(!rows.is_empty());
+        assert!(skipped.is_empty(), "{skipped:?}");
+    }
+
+    /// A spawn row with an observed grouping flies one of its fleets; the
+    /// others keep the budgeted fill. Invented groupings and types.
+    #[test]
+    fn a_spawn_with_an_observed_grouping_flies_its_fleet() {
+        let mut t = fixture();
+        t.groupings.insert(990_001, vec![vec![990_101]]);
+        t.groupings.insert(
+            990_002,
+            vec![vec![990_101, 990_101], vec![990_102, 990_101]],
+        );
+        let mut d = dungeon();
+        d.spawns[0].npc_grouping = Some(990_001);
+        d.spawns[1].npc_grouping = Some(990_002);
+        let mut seen = std::collections::BTreeSet::new();
+        for seed in 0..40 {
+            let got = dungeon_squads(&d, &t, seed, &[5]);
+            assert_eq!(got[0].squad.members, vec![990_101]);
+            assert!(t.groupings[&990_002].contains(&got[1].squad.members));
+            seen.insert(got[1].squad.members.clone());
+            assert_eq!(got[0].squad.faction_id, Some(PIRATE));
+            assert_eq!(got[2], dungeon_squads(&dungeon(), &t, seed, &[5])[2]);
+        }
+        assert_eq!(seen.len(), 2, "both fleets are drawn over 40 seeds");
+    }
+
+    /// A malformed groupings row is skipped, not fatal.
+    #[test]
+    fn a_malformed_groupings_row_is_skipped() {
+        let text = "npc_grouping_id\tships\tseen\n1\t990101 990102\tinvented\n2\tx\tinvented\n";
+        let file = crate::authored::Dir::compiled_only()
+            .load("npc/groupings.tsv", text, crate::npc_data::GROUPINGS_HEADER)
+            .expect("header");
+        let g = crate::npc_data::groupings_from(&file);
+        assert_eq!(g.len(), 1);
+        assert_eq!(g[&1], vec![vec![990_101, 990_102]]);
     }
 
     #[test]

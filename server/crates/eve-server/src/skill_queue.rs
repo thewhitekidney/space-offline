@@ -438,7 +438,7 @@ fn settle_training(reg: &mut Registry, character_id: i64, now: i64) -> Vec<i64> 
 
 /// `OnServerSkillsChanged` for these skills of this character, or `None`
 /// when there is nothing to say.
-fn skills_changed_push(
+pub(crate) fn skills_changed_push(
     reg: &Registry,
     character_id: i64,
     type_ids: &[i64],

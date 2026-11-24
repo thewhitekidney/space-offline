@@ -673,7 +673,7 @@ impl GpsSession {
         // Selecting a character is not a service method either: its *effect*
         // is a session change, and the return value is discarded.
         if service == "charUnboundMgr" && method == "SelectCharacterID" {
-            return self.handle_select_character(w, &packet, args);
+            return self.handle_select_character(w, &packet, args, kwargs);
         }
         // Logging a character off is a session change too: the character's
         // keys go, and the connection goes back to the select screen.
@@ -1796,6 +1796,7 @@ impl GpsSession {
         w: &mut Registry,
         packet: &MachoPacket,
         args: &[PyValue],
+        kwargs: &[(PyValue, PyValue)],
     ) -> Result<Reply, DispatchError> {
         // Both failures below mean we cannot build a session change. Answer
         // the call anyway. `PerformSessionChange` discards the return value,
@@ -1815,7 +1816,14 @@ impl GpsSession {
                 close: false,
             })
         };
-        let character_id = match args.first() {
+        // Positional from the select screen; a keyword after character
+        // creation, `PerformSessionChange(..., charID=..., secondChoiceID=...,
+        // skipTutorial=...)` **[V]** (`ccSvc._LoadGame`) **[V-TQ]** (`args`
+        // empty, `charID` in the keywords).
+        let character_id = match args
+            .first()
+            .or_else(|| crate::space_state::kwarg(kwargs, "charID"))
+        {
             Some(PyValue::Int(id)) => *id,
             other => {
                 let what = format!("charUnboundMgr.SelectCharacterID: charID {other:?}");
@@ -1828,6 +1836,14 @@ impl GpsSession {
             .is_some_and(|c| w.may_play(self.caller(), c))
         {
             w.heal_ceo_roles_at_login(character_id);
+            // A new character entering from creation with the tutorial wanted
+            // (`skipTutorial=False`) starts the AIR tutorial in its void
+            // pocket, and this login's change already lands there
+            // (`crate::air_npe::on_character_selected`), so it is decided
+            // before the change below is built.
+            let skip_tutorial = crate::space_state::kwarg(kwargs, "skipTutorial")
+                .map(|v| crate::air_npe::from_py(v).truthy());
+            crate::air_npe::on_character_selected(w, character_id, skip_tutorial);
         }
         // Only a character this session may play (account-spec §4.6); any
         // other takes the same no-character answer.

@@ -116,7 +116,16 @@ fn send_handoff(reg: &mut Registry, system: i64, entries: Vec<HandoffEntry>) {
 
 /// `ship.Eject()`.
 pub(super) fn eject(reg: &mut Registry, req: &Request<'_>) -> Result<PyValue, ServiceError> {
-    let Some(c) = req.actor.and_then(|id| reg.character(id)).cloned() else {
+    let Some(actor) = req.actor else {
+        return Err(custom_notify("No character is selected."));
+    };
+    eject_actor(reg, actor)
+}
+
+/// [`eject`] for `actor`, from the server's side as well as the client's (the
+/// AIR tutorial puts a pilot who logs back in to scene 1.1 in the capsule).
+pub(super) fn eject_actor(reg: &mut Registry, actor: i64) -> Result<PyValue, ServiceError> {
+    let Some(c) = reg.character(actor).cloned() else {
         return Err(custom_notify("No character is selected."));
     };
     let actor = c.character_id;
@@ -440,6 +449,8 @@ pub(super) fn board_in_space(
             reg.schedule(POD_REMOVE_DELAY, gone);
         }
     }
+    // The AIR tutorial's `Ship Boarded` event (scene 1.1's Astero).
+    crate::air_npe::on_ship_boarded(reg, actor, ship.type_id, ship.group_id, system);
     Ok(ship_state(reg, ship_id))
 }
 

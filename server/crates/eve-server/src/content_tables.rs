@@ -14,6 +14,8 @@ pub const TABLES: &[TableSpec] = &[
     crate::celestial::CENTERS_TABLE,
     crate::combat::WRECK_TABLE,
     crate::daily_goals::TABLE,
+    // #205: the Career Program achievements that count agent missions.
+    crate::achievements::TABLE,
     crate::docking::LOCATORS,
     crate::dbuff_data::TABLE,
     crate::dungeon_data::TABLE,

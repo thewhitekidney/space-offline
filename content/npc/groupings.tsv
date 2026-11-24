@@ -1,0 +1,53 @@
+# NPC groupings seen on a live server: the fleet a spawn row's `npc_grouping_id`
+# put out, one row per observed fleet [V-TQ]. Recorded Tranquility data (owner
+# ruling 2026-11-24): ids and numbers only.
+#
+# `npcGroupingID` names a server-side fleet template that is not in the client's
+# corpus (docs/re/dungeon-model.md section 5). The rows are read off the AddBalls2
+# slims of three TQ recordings: 20261117_122753 (17NOV2026, build 3707965) and
+# 20261118_074641 and 20261118_090207 (18NOV2026, build 3714173). Each NPC
+# carries its spawn row's `entityGroupID`, which spawns.tsv maps to the
+# grouping.
+#
+# npc_grouping_id: the spawns.tsv column. ships: the fleet's type ids,
+# space-separated, sorted by type. seen: the dungeon and entity it was
+# recorded in (ids only; the fleet's type ids are in ships).
+#
+# A spawn row whose grouping has rows draws one of its fleets
+# (`npc_gen::dungeon_squads`); one without keeps the budgeted fill [A].
+# Read by `npc_data::TABLE` through `authored.rs` (schema.md section 4).
+npc_grouping_id	ships	seen
+1144	16877	dungeon 14205 entity 152701
+1145	16883	dungeon 14205 entity 152700
+2869	16877 16886 16886	dungeon 14205 entity 152699
+2871	16883 16888	dungeon 14205 entity 152698
+27624	16883 16888	dungeon 2082 entity 80834
+27624	16888 16888	dungeon 2082 entity 80836
+27624	16883 16883	dungeon 2094 entity 109377
+27624	16883 16883	dungeon 2094 entity 109387
+27624	16888 16888	dungeon 2094 entity 109388
+27692	16877	dungeon 2055 entity 147133
+27692	16877	dungeon 4179 entity 124611
+28308	2052 2052	dungeon 4192 entity 124647
+28602	16883	dungeon 3522 entity 121370
+28894	33806	dungeon 9418 entity 144156
+28979	16877 16886 16886	dungeon 2082 entity 80837
+29329	2012	dungeon 4192 entity 124646
+29432	32471	dungeon 4174 entity 124581
+29623	16877 16877 16877	dungeon 2065 entity 80811
+30296	16877 16877 16877 16877 16877	dungeon 2065 entity 80812
+30657	25181 25181 25181 25181 25182 25182 25182 25182 25182 25182	dungeon 9413 entity 144138
+30942	16877	dungeon 2082 entity 80835
+30942	16886	dungeon 3522 entity 121365
+30942	16886	dungeon 3522 entity 121368
+31177	30369 30369	dungeon 3522 entity 121364
+31177	30369 30369	dungeon 3522 entity 121367
+31177	30369 30369	dungeon 3522 entity 121369
+31549	16877 16877	dungeon 2055 entity 103967
+31549	16877 16877	dungeon 2060 entity 103259
+31549	16877 16877	dungeon 2065 entity 80813
+31641	16874 16874 16885	dungeon 2090 entity 82235
+31860	27287	dungeon 2094 entity 109397
+31870	16211 16211 16211	dungeon 9413 entity 144139
+31872	27295	dungeon 2077 entity 103292
+32864	64404	dungeon 4181 entity 144162

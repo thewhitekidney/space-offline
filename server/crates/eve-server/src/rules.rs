@@ -83,6 +83,14 @@ pub struct Rules {
     /// goo glut asks for another default. Read when an extraction starts: one
     /// already running keeps the value it started with.
     pub moon_yield_mult: f64,
+    /// Whether the AIR new-player experience runs (`crate::air_npe`, set by
+    /// its module's `--air-npe` flag): the tutorial offered at character
+    /// creation and run from the bundle's node graphs, and the Career
+    /// Program achievements it waits on (`crate::achievements`: the gateway
+    /// arm, the mission hook and their ISK and item rewards). **Off by
+    /// default**, so a server answers as it did before: no tutorial, no
+    /// achievement state, no rewards.
+    pub air_npe: bool,
 }
 
 /// The default [`Rules::moon_yield_mult`]: retail's yield (#53).
@@ -135,6 +143,7 @@ impl Default for Rules {
             structure_core_required: true,
             structure_fuel_burn: false,
             moon_yield_mult: DEFAULT_MOON_YIELD_MULT,
+            air_npe: false,
         }
     }
 }
@@ -303,6 +312,8 @@ mod tests {
             };
             assert!(r.validate().is_err(), "{bad}");
         }
+        // New in #205: the AIR tutorial and its achievements are off.
+        assert!(!r.air_npe);
         assert_eq!(crate::model::SandboxConfig::default().rules, r);
         assert_eq!(r.validate(), Ok(()));
     }

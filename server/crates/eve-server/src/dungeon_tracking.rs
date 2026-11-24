@@ -149,7 +149,23 @@ pub fn in_warp(m: &Motion) -> bool {
 /// Inside an instance anchored at `anchor`: within [`ARRIVAL_RANGE`] and
 /// not in an activated warp (the caller has checked the system).
 pub fn is_inside(m: &Motion, anchor: [f64; 3]) -> bool {
-    !in_warp(m) && crate::space_state::distance(m.position, anchor) <= ARRIVAL_RANGE
+    is_inside_within(m, anchor, ARRIVAL_RANGE)
+}
+
+/// [`is_inside`] with the range given.
+fn is_inside_within(m: &Motion, anchor: [f64; 3], range: f64) -> bool {
+    !in_warp(m) && crate::space_state::distance(m.position, anchor) <= range
+}
+
+/// How near a site's room origin a pilot must be to be inside it: the AIR
+/// tutorial's sites are wider rooms (`crate::air_npe::ROOM_RANGE`), every
+/// other site [`ARRIVAL_RANGE`].
+fn range_of(site_id: i64) -> f64 {
+    if crate::air_npe::is_npe_site(site_id) {
+        crate::air_npe::ROOM_RANGE
+    } else {
+        ARRIVAL_RANGE
+    }
 }
 
 /// **Completion** (for CP28b, before `site::vacate`): mark the live
@@ -256,9 +272,9 @@ pub fn tick(w: &mut Registry, now: Instant, _ft: BlueTime) {
             if w.character(p.character_id).is_none() {
                 continue;
             }
-            let hit = instances
-                .iter()
-                .find(|(v, anchor)| v.system == system && is_inside(&p.motion, *anchor));
+            let hit = instances.iter().find(|(v, anchor)| {
+                v.system == system && is_inside_within(&p.motion, *anchor, range_of(v.site_id))
+            });
             if let Some((v, _)) = hit {
                 want.insert(p.character_id, *v);
             }

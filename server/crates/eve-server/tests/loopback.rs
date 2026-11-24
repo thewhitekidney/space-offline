@@ -4968,3 +4968,57 @@ fn an_attribute_implant_is_plugged_over_the_socket_and_its_bonus_shows() {
     client.stream.shutdown(Shutdown::Both).expect("shutdown");
     handle.join().expect("join");
 }
+
+/// **Character creation selects by keyword.** `ccSvc._LoadGame` calls
+/// `PerformSessionChange(..., func=SelectCharacterID, charID=..., secondChoiceID=None,
+/// skipTutorial=...)`, so the call arrives with no positional arguments and
+/// `charID` among the keywords **[V]**, as a live client's did after creating
+/// a character **[V-TQ]**. It changes the session exactly as the select
+/// screen's positional call does.
+#[test]
+fn selecting_a_character_by_keyword_from_creation_changes_the_session() {
+    let (addr, handle) = start(Mode::Gps, None);
+    let mut client = MockClient::connect(addr);
+    full_handshake(&mut client);
+    let _session_init = client.recv();
+
+    let key = |k: &str| PyValue::Bytes(k.as_bytes().to_vec());
+    let payload = eve_proto::CallPayload::Service {
+        method: "SelectCharacterID".to_owned(),
+        args: vec![],
+        // A marshalled dict's entries are `(value, key)`.
+        kwargs: vec![
+            (PyValue::Int(FIXTURE_CHARACTER), key("charID")),
+            (PyValue::None, key("secondChoiceID")),
+            (PyValue::Bool(true), key("skipTutorial")),
+        ],
+    };
+    let packet = eve_proto::MachoPacket::new(
+        eve_marshal::MachoNetMsg::CallReq,
+        eve_proto::MachoAddress::Client {
+            client_id: 1,
+            call_id: Some(1),
+            service: None,
+        },
+        eve_proto::MachoAddress::Any {
+            service: Some("charUnboundMgr".to_owned()),
+            call_id: Some(1),
+        },
+        vec![payload.to_payload()],
+    );
+    client.send(&packet.to_value().expect("a CallReq value"));
+
+    let notification = client.recv();
+    let PyValue::Instance { class, .. } = &notification else {
+        panic!("expected a packet, got {notification:?}")
+    };
+    assert_eq!(
+        String::from_utf8_lossy(class),
+        "carbon.common.script.net.machoNetPacket.SessionChangeNotification",
+        "a keyword charID selects the character like a positional one"
+    );
+    assert_eq!(expect_call_rsp(&client.recv()), PyValue::None);
+
+    client.stream.shutdown(Shutdown::Both).expect("shutdown");
+    handle.join().expect("join");
+}

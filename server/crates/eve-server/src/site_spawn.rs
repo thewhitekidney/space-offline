@@ -604,7 +604,11 @@ fn step(w: &mut Registry, site_id: i64, ft: BlueTime) {
             })
         })
     });
-    if near {
+    // **An AIR tutorial site is `crate::air_npe`'s to vacate**, as `site`'s
+    // own sweep already leaves it: its tasks keep the pilot 130-270 km from
+    // the anchor (scene 2.1's rocks and wreck), far past ARRIVAL_RANGE, and
+    // this despawn tore the site down under a pilot mid-task.
+    if near || crate::air_npe::is_npe_site(site_id) {
         p.vacant_since = None;
     } else if !crate::mission::is_mission_site(site_id)
         && ft.saturating_sub(*p.vacant_since.get_or_insert(ft)) >= SITE_VACANT
@@ -1489,6 +1493,33 @@ mod tests {
         assert!(reg.ext::<SiteSpawns>().get(SITE_ID).is_none());
         assert!(reg.ext::<Sites>().get(SITE_ID).is_none());
         assert!(reg.ext::<SiteSpawns>().by_npc.is_empty());
+    }
+
+    /// An AIR tutorial site left for [`SITE_VACANT`] stays: `air_npe` vacates
+    /// it, and its tasks keep the pilot far from the anchor.
+    #[test]
+    fn an_air_tutorial_site_is_not_despawned_as_vacant() {
+        let npe = crate::air_npe::NPE_SITE_BASE + 1;
+        let mut reg = world();
+        assert!(site::instantiate(
+            &mut reg,
+            &Site {
+                site_id: npe,
+                ..site()
+            }
+        ));
+        let t0 = 1_000 * BLUE_PER_SECOND;
+        tick(&mut reg, Instant::now(), t0);
+        reg.roster_mut().get_mut(ALICE).expect("alice").motion =
+            Motion::arrived([0.0; 3], [0.0; 3]);
+        tick(&mut reg, Instant::now(), t0 + CHECK_EVERY);
+        tick(&mut reg, Instant::now(), t0 + CHECK_EVERY + SITE_VACANT);
+        tick(
+            &mut reg,
+            Instant::now(),
+            t0 + 2 * CHECK_EVERY + 2 * SITE_VACANT,
+        );
+        assert!(reg.ext::<Sites>().get(npe).is_some(), "still there");
     }
 
     /// **End to end**: a population site is reached and placed, its squads

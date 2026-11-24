@@ -294,6 +294,8 @@ mod live_misc;
 mod mail;
 mod market;
 mod mining_ui;
+// The AIR tutorial's node-graph service; registered by `air_npe::MODULE`.
+pub(crate) mod node_graph;
 // NOTIF-1: `notificationMgr` and the corp-side notification producers.
 pub(crate) mod crate_svc;
 pub(crate) mod dynamic_item;
@@ -363,6 +365,26 @@ pub use world::Bookmarks;
 /// warp `pub(super)`, so it leaves this module through here.
 pub(crate) fn emergency_warp(reg: &mut Registry, actor: i64, now: crate::damage::BlueTime) {
     space::emergency_warp(reg, actor, now);
+}
+
+/// A warp the pilot did not ask for, to a point (the AIR tutorial's `Warp
+/// Character To Position`, `crate::air_npe`): `space` keeps the warp
+/// `pub(super)`, so it leaves through here, like [`emergency_warp`].
+pub(crate) fn warp_character_to(reg: &mut Registry, actor: i64, aim: [f64; 3]) {
+    space::warp_character_to(reg, actor, aim);
+}
+
+/// A docked character into their capsule (the AIR tutorial's ship
+/// replacement, `crate::air_npe`); `inventory` is private, so it leaves
+/// through here.
+pub(crate) fn into_capsule_docked(reg: &mut Registry, character_id: i64) -> bool {
+    inventory::into_capsule_docked(reg, character_id)
+}
+
+/// A character in space out of their ship into the capsule (`ship.Eject`),
+/// for the AIR tutorial; through here for the same reason.
+pub(crate) fn eject_character(reg: &mut Registry, character_id: i64) -> bool {
+    inventory::eject_character(reg, character_id)
 }
 
 /// Every subsystem module, paired with the services it answers for.
@@ -1168,6 +1190,13 @@ impl Registry {
         self.ext
             .get_mut()
             .unwrap_or_else(|| crate::world_ext::unregistered::<T>())
+    }
+
+    /// The slot of type `T` if its module is in this build, for a core path
+    /// that tells an optional module something (`crate::air_npe`'s
+    /// `Ship Boarded`): `None` instead of the panic.
+    pub fn try_ext_mut<T: std::any::Any>(&mut self) -> Option<&mut T> {
+        self.ext.get_mut()
     }
 
     /// The world's delta rows (`crate::delta`).

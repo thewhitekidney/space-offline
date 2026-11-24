@@ -294,6 +294,7 @@ class Ctx:
         self.inputs = {}
         self._client = None
         self._cache = {}
+        self._cdn = {}
 
     @property
     def client(self):
@@ -312,7 +313,18 @@ class Ctx:
     def path(self, relpath):
         return os.path.join(self.out_dir, relpath)
 
+    def cdn(self, key, path):
+        """Register a file the client downloaded from CCP's CDN (not part of the
+        install; e.g. the achievement definitions in the user cache) as source
+        `cdn:<key>`, so the manifest records its digest and a new download
+        re-extracts."""
+        self._cdn["cdn:" + key] = path
+        return "cdn:" + key
+
     def md5(self, res):
+        if res.startswith("cdn:"):
+            with open(self._cdn[res], "rb") as fh:
+                return hashlib.md5(fh.read()).hexdigest()
         if res.startswith("pyc:"):  # unpacked client code, not a client file
             root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "out", "pyc")
             with open(os.path.join(root, res[len("pyc:"):]), "rb") as fh:

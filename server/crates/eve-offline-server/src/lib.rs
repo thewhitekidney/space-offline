@@ -5,4 +5,8 @@
 use eve_server::module::Module;
 
 /// The modules this distribution adds to the core server, in plan order.
-pub const MODULES: &[&Module] = &[&eve_mod_econ::MODULE, &eve_mod_world::MODULE];
+pub const MODULES: &[&Module] = &[
+    &eve_mod_econ::MODULE,
+    &eve_mod_world::MODULE,
+    &eve_server::air_npe::MODULE,
+];

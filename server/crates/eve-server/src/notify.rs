@@ -456,6 +456,34 @@ impl Push for InvalidateLocations {
     }
 }
 
+/// `OnShipDeath()` / `OnPodDeath()` to the pilot whose ship or capsule was
+/// just destroyed: a charid broadcast with **no arguments** **[V-TQ]** (a
+/// recorded AIR scene 1.2: the ship's, then the pod's ~9 s later). The
+/// client's node-graph events `ShipDeath` (237) and `PodDeath` (238) hear
+/// nothing else -- nothing in the client scatters them -- and the tutorial's
+/// task 1.2.08 waits on the second.
+#[derive(Debug, Clone, PartialEq)]
+pub struct Death {
+    pub to: i64,
+    /// `true`: the capsule; `false`: the ship.
+    pub pod: bool,
+}
+
+impl Push for Death {
+    fn to_push(&self) -> (&'static str, Vec<PyValue>) {
+        let name = if self.pod {
+            "OnPodDeath"
+        } else {
+            "OnShipDeath"
+        };
+        (name, vec![])
+    }
+
+    fn audience(&self) -> Option<Vec<i64>> {
+        Some(vec![self.to])
+    }
+}
+
 /// `OnIndustryJob(jobID, ownerID, blueprintID, installerID, status,
 /// successfulRuns)` -- **six positional arguments**, no dict.
 ///

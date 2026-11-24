@@ -516,6 +516,11 @@ pub fn lock(
     if in_active_warp(w, target_ship) {
         return Err(silently());
     }
+    // A site object held back or marked untargetable by a node graph
+    // (`site::lock_refused`): the silent key, as for a target not there.
+    if crate::site::lock_refused(w, target_ship) {
+        return Err(silently());
+    }
     let lockable = w
         .roster()
         .by_ship(target_ship)

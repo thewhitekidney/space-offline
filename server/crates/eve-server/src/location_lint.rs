@@ -44,6 +44,9 @@ const ALLOW: &[(&str, usize)] = &[
     ("service/wallet.rs", 1),
     ("service/world.rs", 1),
     ("war.rs", 1),
+    // the AIR tutorial's `birth_system_id` is the home station's system,
+    // paired with `birth_station_id`, not where the pilot is
+    ("air_npe.rs", 1),
 ];
 
 fn sources(dir: &Path, out: &mut Vec<PathBuf>) {

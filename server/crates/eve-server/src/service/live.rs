@@ -87,24 +87,26 @@ pub(crate) fn dispatch(reg: &mut Registry, req: &Request<'_>) -> Result<PyValue,
         },
         // The new-player experience. `is_air_npe_enabled()` is used as a
         // plain boolean, and the branch it guards chooses between the
-        // tutorial and `ActivateView('charsel')`. False is both the
-        // honest answer -- we ship no NPE content -- and the one that
-        // leads to character selection.
+        // tutorial and `ActivateView('charsel')`. False leads to character
+        // selection, and it is the answer of a server without `--air-npe`.
+        // With `--air-npe` and the bundle's node graphs (`crate::air_npe`)
+        // it is True, so character creation offers the tutorial; a character
+        // with an active tutorial (kept at creation, or a GM's `/airnpe
+        // start`) gets state 1 and everyone else the None below.
         "air_npe" => match req.method {
-            "is_air_npe_enabled" => Ok(PyValue::Bool(false)),
+            "is_air_npe_enabled" => Ok(PyValue::Bool(crate::air_npe::enabled(reg, req.actor))),
             // A **scalar state id**, never a container, and cached per
             // character so this is one call per session. The vocabulary
             // is `AirNpeState.ACTIVE = 1 / COMPLETED = 2 / SKIPPED = 3`,
             // and every consumer either compares it for equality or tests
             // `in (..)`. So anything outside {1,2,3} reads as "no NPE
-            // state", and None is the honest version of that: we ship no
-            // NPE content, so the character has neither completed nor
-            // skipped it.
+            // state", and None is the honest version of that for a
+            // character who has neither completed nor skipped it.
             //
-            // `1` is the one genuinely harmful answer -- it would make
-            // `is_air_npe_active()` true, suppress the job-board window
-            // and pull in the `node_graph` service.
-            "get_air_npe_state" => Ok(PyValue::None),
+            // `1` makes `is_air_npe_active()` true, suppresses the
+            // job-board window and pulls in the `node_graph` service, so
+            // it is only for a character whose tutorial runs.
+            "get_air_npe_state" => Ok(crate::air_npe::state(reg, req.actor)),
             _ => Err(reg.no_method(req)),
         },
         // The tutorial ("operations"). Used in boolean context only, and

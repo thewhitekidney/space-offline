@@ -2348,6 +2348,43 @@ fn board(reg: &mut Registry, req: &Request<'_>) -> Result<PyValue, ServiceError>
     Ok(ship_state(reg, ship_id))
 }
 
+/// Eject a character in space from their ship, which stays there pilotless
+/// (`ship.Eject`'s whole effect). `false` when the eject is refused (docked,
+/// already in the capsule, in warp, a timer).
+pub(crate) fn eject_character(reg: &mut Registry, character_id: i64) -> bool {
+    board_eject::eject_actor(reg, character_id).is_ok()
+}
+
+/// Put a docked character into their capsule, the ship staying in the hangar:
+/// what [`leave_ship`] does, for a server-side caller (the AIR tutorial's
+/// `Move Player To Location` with `replace_ship` and no ship type). `false`
+/// when the character is not docked, has no capsule or is already in it.
+pub(crate) fn into_capsule_docked(reg: &mut Registry, character_id: i64) -> bool {
+    let Some(c) = reg.character(character_id).cloned() else {
+        return false;
+    };
+    let Some(station) = reg.docked_station(character_id) else {
+        return false;
+    };
+    let Some(pod) = crate::fitting::capsule_of(reg.store(), &c).cloned() else {
+        return false;
+    };
+    if pod.item_id == c.ship_id {
+        return false;
+    }
+    if reg
+        .apply_items(&[crate::item::Edit::Move {
+            item_id: pod.item_id,
+            to: crate::item::Slot::new(character_id, station, crate::model::FLAG_HANGAR),
+        }])
+        .is_err()
+    {
+        return false;
+    }
+    switch_ship(reg, character_id, pod.item_id, pod.type_id);
+    true
+}
+
 /// `ship.LeaveShip(shipID)` (spec §1.4): back into the capsule, which goes
 /// back to the hangar. Returns the capsule's id.
 fn leave_ship(reg: &mut Registry, req: &Request<'_>) -> Result<PyValue, ServiceError> {

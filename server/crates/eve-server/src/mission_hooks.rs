@@ -31,6 +31,8 @@ pub const HOOKS: &[(Change, Hook)] = &[
     (Change::Completed, crate::loyalty::on_complete),
     (Change::Completed, crate::storyline::on_complete),
     (Change::Completed, crate::epic_arc::on_complete),
+    // #205: a career agent's mission counts toward its NPE career achievement.
+    (Change::Completed, crate::achievements::on_complete),
 ];
 
 /// Run every hook in `hooks` whose change is `ev.change`, in table order.

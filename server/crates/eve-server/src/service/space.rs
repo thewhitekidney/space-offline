@@ -1312,6 +1312,28 @@ pub(super) fn emergency_warp(reg: &mut Registry, actor: i64, now: crate::damage:
     );
 }
 
+/// A server-commanded warp of `actor`'s ship to `aim` (no standoff), under
+/// the same movement guards as the pilot's own: a scrammed ship stays. On the
+/// clock, as [`emergency_warp`]'s: no payload turn of the pilot's carries it.
+pub(super) fn warp_character_to(reg: &mut Registry, actor: i64, aim: [f64; 3]) {
+    reg.advance_character(actor);
+    let Some(here) = reg.roster().get(actor).copied() else {
+        return;
+    };
+    if crate::movement_guard::check(&crate::module::plan().warp_guards, reg, actor).is_some() {
+        return;
+    }
+    crate::invuln::break_for(reg, actor);
+    warp_to_point(
+        reg,
+        actor,
+        here,
+        aim,
+        0.0,
+        crate::targeting::Delivery::OnTheClock,
+    );
+}
+
 /// Whether a scheduled push is the arrival reconciliation of `ship`'s warp:
 /// one `DoDestinyUpdate` holding exactly `SetBallPosition`,
 /// `SetBallVelocity`, `Stop` for that ball (the observers' batch

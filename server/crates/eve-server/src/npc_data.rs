@@ -32,9 +32,41 @@ pub const TABLE: TableSpec = TableSpec {
     fixture: || Box::new(Table::fixture()) as Boxed,
 };
 
-/// The bundle's rows, or the fixture with no bundle (client data, class B).
+/// The authored groupings file (`schema.md` section 4): the fleets a live
+/// server was seen to put out for a spawn row's `npc_grouping_id` **[V-TQ]**.
+pub const GROUPINGS_FILE: &str = "npc/groupings.tsv";
+/// Its header, as `schema.md` freezes it.
+pub const GROUPINGS_HEADER: &str = "npc_grouping_id\tships\tseen";
+const SHIPPED_GROUPINGS: &str = include_str!("../../../../content/npc/groupings.tsv");
+
+/// `npc_grouping_id -> its observed fleets`, in file order: each row is one
+/// fleet, its ships a space-separated type id list. A row that does not
+/// parse is skipped and logged by the reader.
+pub fn groupings_from(file: &crate::authored::File) -> BTreeMap<i64, Vec<Vec<i64>>> {
+    let mut out: BTreeMap<i64, Vec<Vec<i64>>> = BTreeMap::new();
+    let rows = file.parse_rows(|r| {
+        let ships = r
+            .field(1)
+            .split(' ')
+            .map(|t| {
+                t.parse::<i64>()
+                    .map_err(|_| format!("ship {t:?} is not a type id"))
+            })
+            .collect::<Result<Vec<i64>, String>>()?;
+        Ok((r.i64(0)?, ships))
+    });
+    for (grouping, ships) in rows {
+        out.entry(grouping).or_default().push(ships);
+    }
+    out
+}
+
+/// The bundle's rows, or the fixture with no bundle (client data, class B),
+/// plus the authored groupings either way.
 fn load_table(src: &Sources) -> Result<Boxed, String> {
-    Ok(Box::new(match src.bundle {
+    let groupings =
+        groupings_from(&src.authored(GROUPINGS_FILE, SHIPPED_GROUPINGS, GROUPINGS_HEADER)?);
+    let mut t = match src.bundle {
         Some(b) => crate::pochven::npc::with_triglavians(
             crate::wormhole_sites::with_sleepers(
                 Table::from_bundle(b)?,
@@ -45,7 +77,9 @@ fn load_table(src: &Sources) -> Result<Boxed, String> {
             crate::pochven::FACTION_TRIGLAVIAN,
         ),
         None => Table::fixture(),
-    }))
+    };
+    t.groupings = groupings;
+    Ok(Box::new(t))
 }
 
 /// The bundle files and their header lines, copied from `schema.md` (X1).
@@ -344,6 +378,10 @@ pub struct Table {
     /// read from `types/market.tsv` (rows the market does not list included).
     /// Empty without a bundle.
     pub sentry_types: Vec<(i64, i64)>,
+    /// #205: `npc_grouping_id -> the fleets a live server put out for it`
+    /// ([`GROUPINGS_FILE`], authored, [V-TQ]); `npc_gen::dungeon_squads`
+    /// flies one of them for a spawn row of that grouping.
+    pub groupings: BTreeMap<i64, Vec<Vec<i64>>>,
 }
 
 /// What a type fights with, read from its own attributes and effects

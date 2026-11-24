@@ -22,6 +22,9 @@ pub const KINDS: &[(&str, &str)] = &[
     // DG-2 (#202): `char day slot -> progress state earned_isk` (state o/d/r),
     // and `char day slot key -> content_key`, a GM swap override.
     ("dgoal", "daily_goals"),
+    // #205: `char achievement -> mission_ids` (the NPE career set), and
+    // `char achievement milestone -> reached_unix_secs claimed`.
+    ("ach", "achievements"),
     // HN-1 (#203): `next`; `r id -> running owner location system item type count price
     // restriction created expires status winner end_date is_copy`; `t id number -> owner running`.
     ("raffle", "hypernet"),

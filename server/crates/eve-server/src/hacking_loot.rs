@@ -640,6 +640,10 @@ pub fn loot_source(w: &Registry, id: i64) -> Option<Wreck> {
     if let Some(wr) = w.combat().wreck(id) {
         return Some(*wr);
     }
+    // The AIR tutorial's task wrecks (`crate::air_npe`).
+    if let Some(wr) = crate::air_npe::loot_source(w, id) {
+        return Some(wr);
+    }
     let owner = w.ext::<Loot>().owner(id)?;
     let (p, system) = crate::hacking::can(w, id)?;
     Some(Wreck {
@@ -659,6 +663,9 @@ pub fn loot_source(w: &Registry, id: i64) -> Option<Wreck> {
 /// A loot can's radius, for `combat::plan_loot`'s range (a wreck's is the
 /// wreck constant).
 pub fn can_radius(w: &Registry, id: i64) -> Option<f64> {
+    if crate::air_npe::loot_source(w, id).is_some() {
+        return crate::site::object(w, id).map(|(p, _)| p.radius);
+    }
     w.ext::<Loot>().owner(id)?;
     crate::hacking::can(w, id).map(|(p, _)| p.radius)
 }
@@ -667,8 +674,10 @@ pub fn can_radius(w: &Registry, id: i64) -> Option<f64> {
 /// with the station's type would be a structure to the client (the wreck's
 /// reason, P2.4).
 pub fn self_item(w: &Registry, id: i64) -> Option<Item> {
-    let owner = w.ext::<Loot>().owner(id)?;
-    let (p, system) = crate::hacking::can(w, id)?;
+    let (owner, (p, system)) = match crate::air_npe::loot_source(w, id) {
+        Some(wr) => (wr.owner_id, crate::site::object(w, id)?),
+        None => (w.ext::<Loot>().owner(id)?, crate::hacking::can(w, id)?),
+    };
     let row = type_row(w, p.type_id);
     Some(Item {
         item_id: id,

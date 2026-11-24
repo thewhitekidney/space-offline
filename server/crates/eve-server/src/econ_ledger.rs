@@ -216,6 +216,9 @@ pub const REFS: &[(i64, Flow, &str)] = &[
     (175, Flow::Player, "corporation tax, daily goal rewards"),
     // SKY-1 (#81): the new sov holder's fee for a skyhook it acquires.
     (184, Flow::System, "skyhook claim fee"),
+    // #205: an NPE career achievement's milestone ISK (`crate::achievements`),
+    // granted by the achievement system.
+    (198, Flow::System, "achievement milestone reward"),
     // P-START-2: a new character's starting funds (`crate::start`).
     (10_004, Flow::System, "new character starting funds"),
 ];

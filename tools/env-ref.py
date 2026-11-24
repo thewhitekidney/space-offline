@@ -21,7 +21,8 @@ What counts as "in the code":
     constants, not variables; the doc lists them in its own table.
   * flags: `--name` words in eve-server's USAGE string (server/crates/
     eve-server/src/cli.rs), `name: "--x"` module flags under
-    server/crates/eve-mod-*/src, and `"--x"` literals in
+    server/crates/eve-mod-*/src and in eve-server's own modules
+    (server/crates/eve-server/src, e.g. `air_npe`), and `"--x"` literals in
     server/crates/eve-bot/src/bin/eve-bots.rs. Test modules (after
     `#[cfg(test)]`) are ignored.
 
@@ -135,7 +136,8 @@ def scan_flags(root=ROOT):
     crates = os.path.join(root, MODULE_GLOB_DIR)
     if os.path.isdir(crates):
         for crate in sorted(os.listdir(crates)):
-            if not crate.startswith("eve-mod-"):
+            # eve-server's own modules (`crate::air_npe`) add flags the same way.
+            if not (crate.startswith("eve-mod-") or crate == "eve-server"):
                 continue
             src = os.path.join(crates, crate, "src")
             for dirpath, dirnames, filenames in os.walk(src):
