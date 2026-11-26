@@ -388,7 +388,8 @@ text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:12px}
 <rect x="362.8" y="237.5" width="3" height="3" class="built"/>
 <rect x="366.8" y="237.5" width="3" height="3" class="built"/>
 <rect x="370.8" y="237.5" width="3" height="3" class="built"/>
-<text x="378.8" y="242.0" class="s xs">37/44</text>
+<rect x="374.8" y="237.5" width="3" height="3" class="built"/>
+<text x="382.8" y="242.0" class="s xs">37/45</text>
 <text x="16.0" y="258.0" class="t">Tools and remote clients</text>
 <rect x="198.8" y="253.5" width="3" height="3" class="proved"/>
 <rect x="202.8" y="253.5" width="3" height="3" class="proved"/>

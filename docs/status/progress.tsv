@@ -237,6 +237,7 @@ Market and wallet	Another pilot sees your emblem	client-proved	emblem.rs slim so
 Missions and exploration	Escalations	client-proved	fci_y_escal W10			
 Missions and exploration	Hacking	client-proved	fci_hacking_board W10, fci_hacking_can W10			
 Missions and exploration	A placed wreck in a site shows as empty in the overview and brackets	built-unproved	site.rs slim_extras: a placed wreck's slim carries isEmpty from its contents; unit test a_placed_wreck_says_whether_it_is_empty; nothing fills a placed wreck yet, so all show empty	#205	3.5	Filling and opening tutorial wrecks stays open under #205
+Missions and exploration	A room's triggered squads come one at a time, each when nothing of the room is left in space	built-unproved	site_spawn.rs next_triggered (replaces trigger_due) and its unit test, gated_squads_come_when_the_last_ungated_squad_dies; seen by hand on 3707965 (19NOV2026): career mission 1 (dungeon 2055) put out one rat, then two, then one, as on TQ	#205	3.5	The order of triggered squads is row order [A]; TQ's dungeon 14205 came in reverse
 Missions and exploration	Probing a signature and warping to it	client-proved	fci_probe_site W10			
 Missions and exploration	Wormhole space as the client shows it	client-proved	fci_y_wh W10			An earlier green proved little; the scenario was tightened since
 Missions and exploration	Epic arcs	client-proved	fci_epic_arc (regress-w28a): a talk-start arc offered, accepted, completed, and the next missions offered, read through the client's journal; epic_arc.rs			

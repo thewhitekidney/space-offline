@@ -15,10 +15,11 @@
 //!   object's radius plus `orbitRange` and within `jitterRadius` of it
 //!   **[V fields]**. Every NPC is stamped through `site::tag` with its
 //!   `dunObjectID` (the spawn's object) and `entityGroupID` (the entity).
-//! - **Triggers (R5's rule, [A]).** An entity without `triggerSpawn` spawns
-//!   on arrival. A `triggerSpawn` one waits for the death of the room's last
-//!   ungated squad ([`trigger_due`]); the other half of R5's rule, the next
-//!   room's gate, does not exist yet (only the entry room is placed).
+//! - **Triggers (R5's rule, [V-TQ] timing, [A] order).** An entity without
+//!   `triggerSpawn` spawns on arrival. The `triggerSpawn` ones come one at a
+//!   time, each when the room has nothing left in space ([`next_triggered`]);
+//!   the other half of R5's rule, the next room's gate, does not exist yet
+//!   (only the entry room is placed).
 //! - **In-pocket respawn.** A squad whose ships are all gone comes back
 //!   after `U(min, max)` seconds of its [`window`] **[V fields]**, unless
 //!   it is `entitySpawnOnce` **[V]**, which never respawns.
@@ -93,7 +94,7 @@ pub const DEFAULT_ORBIT: f64 = 1_500.0;
 pub enum Phase {
     /// Ungated, not spawned yet: it spawns on the next step.
     Ready,
-    /// `triggerSpawn`: waits for [`trigger_due`].
+    /// `triggerSpawn`: waits for [`next_triggered`].
     Gated,
     /// In space.
     Live,
@@ -202,17 +203,36 @@ pub fn respawn_at(window: (i64, i64), now: BlueTime, roll: f64) -> BlueTime {
     now + npc::pick(roll, window.0, window.1) * BLUE_PER_SECOND
 }
 
-/// **R5's trigger rule** (the half that exists, [A]): the gated squads come
-/// when the room's last ungated squad is gone (every ungated one is
-/// respawning or spent). A room with no ungated squad has nothing to wait
-/// for, so its gated ones come on arrival. Falsified by a site whose second
-/// wave the client shows on some other event.
-pub fn trigger_due(groups: &[Group]) -> bool {
-    groups.iter().any(|g| g.phase == Phase::Gated)
-        && groups
-            .iter()
-            .filter(|g| !g.gated)
-            .all(|g| matches!(g.phase, Phase::Respawn(_) | Phase::Spent))
+/// **R5's trigger rule** (the half that exists): of a room's `groups`, the
+/// gated squad that comes now, if any. Gated squads come **one at a time**,
+/// each once nothing of the room is in space or about to be (no squad
+/// `Ready` or `Live`) **[V-TQ]**. Two recorded pockets show it:
+/// - Dungeon 2055, in the TQ recording 20261117_122753 (17NOV2026, build
+///   3707965, Enforcer career mission 1 right after AIR scene 2.5): the
+///   arrival rat died at 454 s and two came at once; the last of them
+///   died at 622 s and the final one came at 625 s.
+/// - Dungeon 14205, in the TQ recording 20261118_090207 (18NOV2026, build
+///   3714173): each of three gated squads came about 2 s after the
+///   previous squad's last ship died (41/43, 71/73, 163/165 s).
+///
+/// A squad's arrival is its ships' first AddBalls2, its death the last
+/// damage or effect on its last ship.
+///
+/// A room with nothing in space has nothing to wait for, so its first gated
+/// squad comes on arrival.
+///
+/// **[A] the order is row order.** The live server's order is not in the
+/// client's data: 2055's gated rows came in row order, 14205's in reverse,
+/// and 14205's fifth row never came. Falsified already by 14205; kept until
+/// the server-side trigger data is known.
+pub fn next_triggered(groups: &[Group]) -> Option<usize> {
+    if groups
+        .iter()
+        .any(|g| matches!(g.phase, Phase::Ready | Phase::Live))
+    {
+        return None;
+    }
+    groups.iter().position(|g| g.phase == Phase::Gated)
 }
 
 /// **C3 §6's completion test** [A]. A site with squads needs G1: at least one
@@ -522,21 +542,17 @@ fn step(w: &mut Registry, site_id: i64, ft: BlueTime) {
             }
         }
         // R5's trigger is per room: a room's gated squads wait for *its*
-        // last ungated squad (Y-COMBAT).
+        // squads in space (Y-COMBAT), one gated squad at a time.
         let rooms: std::collections::BTreeSet<i64> = p.groups.iter().map(|g| g.room).collect();
         for room in rooms {
             let idx: Vec<usize> = (0..p.groups.len())
                 .filter(|i| p.groups[*i].room == room)
                 .collect();
             let there: Vec<Group> = idx.iter().map(|i| p.groups[*i].clone()).collect();
-            if trigger_due(&there) {
-                for gi in idx {
-                    if p.groups[gi].phase == Phase::Gated {
-                        // The trigger fires with pilots in the room: a
-                        // reinforcement warps in.
-                        spawned.extend(spawn_group(w, &mut p, gi, true));
-                    }
-                }
+            if let Some(k) = next_triggered(&there) {
+                // The trigger fires with pilots in the room: a
+                // reinforcement warps in.
+                spawned.extend(spawn_group(w, &mut p, idx[k], true));
             }
         }
         let left = p
@@ -1341,20 +1357,56 @@ mod tests {
             npcs: Vec::new(),
             rounds: 0,
         };
-        assert!(!trigger_due(&[
-            g(false, Phase::Live),
-            g(true, Phase::Gated)
-        ]));
-        assert!(trigger_due(&[
-            g(false, Phase::Respawn(9)),
-            g(false, Phase::Spent),
-            g(true, Phase::Gated)
-        ]));
-        assert!(trigger_due(&[g(true, Phase::Gated)]), "nothing to wait for");
-        assert!(!trigger_due(&[
-            g(false, Phase::Spent),
-            g(true, Phase::Live)
-        ]));
+        assert_eq!(
+            next_triggered(&[g(false, Phase::Live), g(true, Phase::Gated)]),
+            None
+        );
+        assert_eq!(
+            next_triggered(&[g(false, Phase::Ready), g(true, Phase::Gated)]),
+            None
+        );
+        assert_eq!(
+            next_triggered(&[
+                g(false, Phase::Respawn(9)),
+                g(false, Phase::Spent),
+                g(true, Phase::Gated)
+            ]),
+            Some(2)
+        );
+        assert_eq!(
+            next_triggered(&[g(true, Phase::Gated)]),
+            Some(0),
+            "nothing to wait for"
+        );
+        assert_eq!(
+            next_triggered(&[g(false, Phase::Spent), g(true, Phase::Live)]),
+            None
+        );
+        // One at a time: the second gated squad waits for the first's ships.
+        assert_eq!(
+            next_triggered(&[
+                g(false, Phase::Spent),
+                g(true, Phase::Gated),
+                g(true, Phase::Gated)
+            ]),
+            Some(1)
+        );
+        assert_eq!(
+            next_triggered(&[
+                g(false, Phase::Spent),
+                g(true, Phase::Live),
+                g(true, Phase::Gated)
+            ]),
+            None
+        );
+        assert_eq!(
+            next_triggered(&[
+                g(false, Phase::Spent),
+                g(true, Phase::Spent),
+                g(true, Phase::Gated)
+            ]),
+            Some(2)
+        );
     }
 
     #[test]
@@ -1375,9 +1427,12 @@ mod tests {
         kill(&mut reg, *last, t0);
         tick(&mut reg, Instant::now(), t0 + 2 * CHECK_EVERY);
         let p = pocket(&reg);
-        let gated = p.groups.iter().find(|g| g.gated).expect("gated");
-        assert_eq!(gated.phase, Phase::Live);
-        assert!(!gated.npcs.is_empty());
+        let mut gated = p.groups.iter().filter(|g| g.gated);
+        let first = gated.next().expect("gated");
+        assert_eq!(first.phase, Phase::Live);
+        assert!(!first.npcs.is_empty());
+        // The rest wait for the first one's ships.
+        assert!(gated.all(|g| g.phase == Phase::Gated));
         assert!(p.completed.is_none());
     }
 
