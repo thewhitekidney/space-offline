@@ -23,7 +23,7 @@ which, or the row does), `historical` (a finished piece of work, kept as history
 | know what is built and proved | `docs/status/progress.tsv`, the feature index (page: `docs/status/README.md`) |
 | know what comes next, and who has what | the issue tracker: `prio/*` labels, the milestone; open PRs (`tools/next-task.sh` `prs` column) |
 | keep up with a new Tranquility client build | `docs/guides/tracking-tq.md`, then `docs/guides/build-compat.md` |
-| run the server, the client, bots | `docs/guides/getting-started.md` (zero to playing), `docs/reference/launch-and-env.md` (every flag and variable), `README.md`, `docs/guides/dev-mode.md`, `docs/guides/jail.md`, `docs/guides/contributing.md` |
+| run the server, the client, bots | `docs/guides/getting-started.md` (zero to playing), `docs/reference/launch-and-env.md` (every flag and variable), `README.md`, `docs/guides/dev-mode.md`, `docs/guides/jail.md`, `docs/guides/windows.md` (the native Windows client), `docs/guides/contributing.md` |
 | test what only the client can show | `docs/guides/client-ci.md` |
 | debug the client against the server | `docs/guides/debugging-the-client.md` |
 | run a debug world where nothing waits | `docs/guides/dev-mode.md` |
@@ -64,6 +64,7 @@ findings/                 tables generated from the client (TSV and text), cited
 | `docs/guides/working-together.md` | GUIDE | current | How several people's agents share one tree: overlap checks, the open-PR cap, the layering rule, generated files. |
 | `docs/guides/gm-commands.md` | GUIDE | current | The GM slash commands and the server flags. |
 | `docs/guides/hosting.md` | GUIDE | current | Hosting on a dedicated box: frozen bundle, the owner listener, host bots, backups, wipe. |
+| `docs/guides/windows.md` | GUIDE | current | The native Windows client on one PC, the server in WSL2: the patcher, `tools/windows_launch.py`, and no jail. |
 | `docs/guides/patcher.md` | GUIDE | current | Preparing a client copy: `tools/eve_patch.py` and its per-build manifests. |
 | `docs/guides/census.md` | GUIDE | current | The census: proving the client phones nobody. |
 | `docs/guides/build-compat.md` | GUIDE | current | Adding, checking and retiring a client build (`tools/new-build.sh`); the provisional status and the re-pin cadence. |

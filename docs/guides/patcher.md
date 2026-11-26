@@ -124,7 +124,10 @@ run with `--tier A,P,B` skips `code.ccp`). `revert` exits 1 and names an unknown
 path>_*/settings*/prefs.ini`. On Windows (an install on a drive such as
 `C:\CCP\EVE\tq`): `%LOCALAPPDATA%\CCP\EVE\c_ccp_eve_tq_*\settings*\prefs.ini`,
 the drive letter in front of the same lowercased path. `--prefs PATH` always
-wins. The Windows rule is a unit test and has not met a real Windows install.
+wins. On a real Windows install (build 3707965, 24 Nov 2026) `status` found the
+client's own folder, `<folder>_127.0.0.1`. Before the client's first launch there is
+no folder, and `apply` creates `<folder>_tranquility`, which a client launched with
+`/server:127.0.0.1` does not read; [windows.md](windows.md) step 4 passes `--prefs`.
 
 **`--server ADDR`: the folder the client really reads.** The settings folder is
 `<install folder name>_<server name>`, and a client started with `/server:ADDR` uses

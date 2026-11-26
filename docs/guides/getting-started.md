@@ -48,7 +48,9 @@ Every flag and `EVE_*` variable is in
 - Docker, for `tools/dev.sh` (builds and tests) and `tools/analysis.sh`.
 - Ubuntu 22.04 (Python 3.10) and macOS are not supported.
 - The client does not run under WSL. It needs Linux with Steam and Proton,
-  or a separate Windows machine; a server-only checkout needs neither.
+  or Windows: the native client on the same PC as the server in WSL2
+  ([windows.md](windows.md)), or a separate Windows machine. A server-only
+  checkout needs neither.
 
 ## 2. Build the server
 
@@ -102,8 +104,8 @@ server was closed". The patcher uses only the Python standard library:
 It knows each build by its `start.ini` and refuses a build it has no manifest for, a
 file it does not recognise, and an install named `tq` (the one you play online with).
 `revert` undoes it. On Windows, run the same commands with `py -3 -I` against the copy's
-folder (for example `C:\CCP\EVE\tq-offline`); that path is not yet tested on a real
-Windows install. What it changes and why: [patcher guide](patcher.md). The server-only
+folder; [windows.md](windows.md) step 4 has the commands and the prefs folder to pass.
+What it changes and why: [patcher guide](patcher.md). The server-only
 and content steps below need no prepared client.
 
 ## 4. Build the content bundle
