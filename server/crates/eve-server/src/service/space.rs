@@ -233,11 +233,20 @@ pub(crate) fn dispatch(reg: &mut Registry, req: &Request<'_>) -> Result<PyValue,
                     let station = named
                         .or_else(|| reg.character(actor).and_then(|c| c.station_id))
                         .and_then(|id| reg.dock_target(actor, id));
-                    if !station.is_some_and(|s| reg.dock_at(actor, s)) {
+                    let Some(station) = station.filter(|s| reg.dock_at(actor, *s)) else {
                         return Err(ServiceError::Raise(eve_proto::user_error(
                             NOT_DOCKABLE,
                             vec![],
                         )));
+                    };
+                    // The dock is immediate here, so both notices go with it,
+                    // accepted then finished (`notify::Docking`).
+                    for finished in [false, true] {
+                        reg.push(crate::notify::Docking {
+                            to: actor,
+                            station: station.station_id,
+                            finished,
+                        });
                     }
                 }
                 undocked_no_longer(reg, req.actor);
@@ -3657,7 +3666,24 @@ mod dock_tests {
         let home = reg.character(DOCK_ALICE).and_then(|c| c.station_id);
         assert_ne!(home, Some(SECOND), "setup: two different stations");
 
+        let _ = reg.take_pending();
         assert_eq!(cmd_dock(&mut reg, SECOND).expect("docks"), PyValue::None);
+        // The docker is told the dock was accepted, then that it finished,
+        // both naming the station.
+        let docking: Vec<(&str, Vec<PyValue>)> = reg
+            .take_pending()
+            .into_iter()
+            .filter(|(_, p)| p.audience() == Some(vec![DOCK_ALICE]))
+            .map(|(_, p)| p.to_push())
+            .filter(|(n, _)| n.starts_with("OnDocking"))
+            .collect();
+        assert_eq!(
+            docking,
+            vec![
+                ("OnDockingAccepted", vec![PyValue::Int(SECOND)]),
+                ("OnDockingFinished", vec![PyValue::Int(SECOND)]),
+            ]
+        );
         // `dispatch::session_change_for` runs this after the answer.
         let change = reg.dock_change(Some(DOCK_ALICE)).expect("a dock change");
         assert_eq!(

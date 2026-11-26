@@ -4795,6 +4795,51 @@ modifier\t990581104\tcharID\tItemModifier\t458\t459\t2\t\t\n"
         assert_eq!(d.firing, None);
     }
 
+    /// **A rock mined out ends the lock on it as `Exploding`, on the clock**:
+    /// the pilot who held it is told `OnTarget('lost', rock, 'Exploding')`,
+    /// which is what the client's target box and the node graphs' `Target
+    /// Exploded` read. Mined out inside an open clock call, as a module cycle
+    /// is, the `lost` is scheduled, never left in `pending` (where it sat
+    /// unsent on a live client).
+    #[test]
+    fn a_rock_mined_out_ends_its_lock_as_exploding() {
+        let (mut reg, ids) = mining_world(300, 1_000.0, 1);
+        crate::targeting::lock(&mut reg, ALICE, ROCK).expect("locked");
+        let _ = reg.take_pending();
+        let _ = reg.take_due(std::time::Instant::now() + std::time::Duration::from_secs(600));
+        mine(&mut reg, Some(ALICE), &ids, ROCK);
+        let period = find_in(reg.content(), MINING_DRONE)
+            .expect("kind")
+            .weapon_period();
+        let t0 = crate::pyutil::filetime_now();
+        let left_pending = crate::sov_hub::on_the_clock(&mut reg, |r| {
+            for k in 0..=4 {
+                tick(r, t0 + k * period);
+            }
+            r.take_pending_raw()
+                .into_iter()
+                .filter(|(_, p)| p.to_push().0 == "OnTarget")
+                .count()
+        });
+        assert_eq!(left_pending, 0, "the lost is not left in pending");
+        assert!(reg.rocks().get(ROCK).is_none(), "mined out");
+        let pushes = reg.take_due(std::time::Instant::now() + std::time::Duration::from_secs(600));
+        let lost = pushes.iter().any(|p| {
+            let (name, args) = p.to_push();
+            name == "OnTarget"
+                && p.audience() == Some(vec![ALICE])
+                && args
+                    == [
+                        PyValue::Bytes(b"lost".to_vec()),
+                        PyValue::Int(ROCK),
+                        PyValue::Bytes(b"Exploding".to_vec()),
+                    ]
+        });
+        let names: Vec<&str> = pushes.iter().map(|p| p.to_push().0).collect();
+        assert!(lost, "no OnTarget lost/Exploding among {names:?}");
+        assert!(!reg.locks().targeters_of(ROCK).into_iter().any(|_| true));
+    }
+
     /// **A full hold stops the drone**: the hold is never over capacity, and
     /// the drone is idle with its beam off.
     #[test]

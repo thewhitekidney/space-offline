@@ -1049,9 +1049,20 @@ fn depleted(w: &mut Registry, rock: &crate::asteroid::Rock, at: i64) {
             w.locks_mut().remove(locker_ship, rock.id);
             continue;
         };
-        on_clock(w, |w| {
-            crate::targeting::unlock(w, locker, rock.id, crate::targeting::Reason::Exploding)
-        });
+        // **On the clock, never with an answer**: a rock runs out on a module
+        // cycle, which nobody called, and `targeting::Delivery` says such a
+        // teardown must not go into `pending`. It did, through `on_clock`,
+        // which runs its body in place when a clock call is already open --
+        // as it is on a cycle -- so the `lost` waited in `pending` and never
+        // left; watched on a V24.02 client in the AIR tutorial, whose task
+        // 2.1.02 waits on exactly this `('lost', rock, 'Exploding')`.
+        crate::targeting::unlock_via(
+            w,
+            locker,
+            rock.id,
+            crate::targeting::Reason::Exploding,
+            crate::targeting::Delivery::OnTheClock,
+        );
     }
 }
 

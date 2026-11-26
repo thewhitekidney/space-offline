@@ -116,6 +116,12 @@ impl Push for Completes {
         self.change.to_push()
     }
 
+    /// The wrapped change's own wire form: a completion goes in an
+    /// `OnMultiEvent` batch like every other `OnTarget` ([`TargetChange`]).
+    fn to_wire(&self) -> (&'static str, Vec<PyValue>) {
+        self.change.to_wire()
+    }
+
     fn audience(&self) -> Option<Vec<i64>> {
         self.change.audience()
     }
@@ -306,9 +312,18 @@ pub fn room_for_another(held: usize, max_locked_targets: f64) -> bool {
 /// box's `anim_disappear()` instead of closing it flat `[V]`. So any string
 /// is safe and that one is load-bearing.
 ///
-/// **Not `OnTargets`.** That one is produced *inside* godma's own
-/// `OnMultiEvent_` batcher, is client-local, and has a second subscriber in
-/// the nodegraph. Sending it is a way to drive code nobody meant us to drive.
+/// **On the wire it rides in an `OnMultiEvent` batch** ([`Push::to_wire`]),
+/// as a live server sends it: every `OnTarget` in a recorded session of a
+/// new character, 808 of them of all six kinds, came as a `dogmaMessages`
+/// entry `(('OnTarget', what, tid, reason), stamp)` and none on its own
+/// **[V-TQ]**. godma's `OnMultiEvent_` gathers those entries and scatters
+/// `OnTargets(entries)`, which `targetMgr.OnTargets` turns back into
+/// `OnTarget(*entry[1:])` -- the handler above, unchanged -- and which the
+/// node graphs' `Target Exploded` event (atom 167) also hears, firing on a
+/// `('lost', tid, 'Exploding')` entry **[V]**. Sent as a bare `OnTarget`,
+/// the target bar worked and that event never fired: the AIR tutorial's
+/// task 2.1.02 waits on it for its mined-out rock. `OnTargets` itself is
+/// still not sent; the client builds it.
 #[derive(Debug, Clone, PartialEq)]
 pub struct TargetChange {
     /// Character ids. A lock is between ships; an audience is always
@@ -399,6 +414,21 @@ impl Push for TargetChange {
             }
         }
         ("OnTarget", args)
+    }
+
+    /// `OnMultiEvent([(('OnTarget', *args), stamp)])`: one batch of one
+    /// entry, the shape godma's `OnMultiEvent` groups by its last element
+    /// **[V]** (`godma.OnMultiEvent`, `itemgetter(-1)`). The stamp is the
+    /// blue time now, as a live server's was **[V-TQ]**.
+    fn to_wire(&self) -> (&'static str, Vec<PyValue>) {
+        let (name, args) = self.to_push();
+        let mut event = vec![PyValue::Bytes(name.as_bytes().to_vec())];
+        event.extend(args);
+        let entry = PyValue::Tuple(vec![
+            PyValue::Tuple(event),
+            PyValue::Int(crate::pyutil::filetime_now()),
+        ]);
+        ("OnMultiEvent", vec![PyValue::List(vec![entry])])
     }
 
     fn audience(&self) -> Option<Vec<i64>> {
@@ -1363,6 +1393,44 @@ fn silently() -> crate::service::ServiceError {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A target change goes on the wire as a one-entry `OnMultiEvent` whose
+    /// entry is `(('OnTarget', what, tid, reason), stamp)`, while `to_push`
+    /// stays the bare `OnTarget` the server's own readers match on.
+    #[test]
+    fn a_target_change_rides_in_a_multi_event_batch() {
+        let lost = TargetChange {
+            to: vec![7],
+            what: What::Lost,
+            ship: Some(42),
+            reason: Some(Reason::Exploding),
+        };
+        let (name, args) = lost.to_push();
+        assert_eq!(name, "OnTarget");
+        let (wire, batch) = lost.to_wire();
+        assert_eq!(wire, "OnMultiEvent");
+        let [PyValue::List(entries)] = &batch[..] else {
+            panic!("one list: {batch:?}")
+        };
+        let [PyValue::Tuple(entry)] = &entries[..] else {
+            panic!("one entry: {entries:?}")
+        };
+        let [PyValue::Tuple(call), PyValue::Int(stamp)] = &entry[..] else {
+            panic!("(call, stamp): {entry:?}")
+        };
+        assert!(*stamp > 0);
+        let mut want = vec![PyValue::Bytes(b"OnTarget".to_vec())];
+        want.extend(args);
+        assert_eq!(call, &want);
+        assert_eq!(
+            call[1..],
+            [
+                PyValue::Bytes(b"lost".to_vec()),
+                PyValue::Int(42),
+                PyValue::Bytes(b"Exploding".to_vec())
+            ]
+        );
+    }
 
     const ALICE: i64 = 1_000_001;
     const BOB: i64 = 1_980_002;

@@ -1711,7 +1711,39 @@ pub fn notification(frame: &PyValue) -> Option<(String, Vec<PyValue>)> {
         Some(args.clone())
     })()
     .unwrap_or_default();
-    Some((event, args))
+    Some(unbatched(event, args))
+}
+
+/// **A one-entry `OnMultiEvent` is read as the event it carries.** The server
+/// sends `OnTarget` inside one, `[(('OnTarget', *args), stamp)]`, as a live
+/// server does (`eve_server::targeting::TargetChange`); every reader here
+/// matches on `OnTarget`, so the batch is opened once, at the frame, and a
+/// reader never sees it. A batch of several entries, or of anything else,
+/// comes back as it is.
+///
+/// **A one-row `OnItemsChanged` is read as `OnItemChange`** the same way: the
+/// server sends every item change as `OnItemsChanged([row], change,
+/// location)` (`eve_server::notify::ItemChange`), and the readers here match
+/// on the singular.
+fn unbatched(event: String, args: Vec<PyValue>) -> (String, Vec<PyValue>) {
+    if event == "OnMultiEvent"
+        && let [PyValue::List(entries)] = &args[..]
+        && let [PyValue::Tuple(entry)] = &entries[..]
+        && let Some(PyValue::Tuple(call)) = entry.first()
+        && let Some((PyValue::Bytes(name), rest)) = call.split_first()
+    {
+        return (String::from_utf8_lossy(name).into_owned(), rest.to_vec());
+    }
+    if event == "OnItemsChanged"
+        && let [PyValue::List(rows), change, location] = &args[..]
+        && let [row] = &rows[..]
+    {
+        return (
+            "OnItemChange".to_owned(),
+            vec![row.clone(), change.clone(), location.clone()],
+        );
+    }
+    (event, args)
 }
 
 /// What a `SetState` told us: the clock, the ego, and the park.
@@ -2074,6 +2106,51 @@ fn login_request(token: &str) -> PyValue {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A one-entry `OnMultiEvent` reads as the call it carries; a batch of
+    /// two, and any other event, read as they came.
+    #[test]
+    fn a_one_entry_multi_event_reads_as_its_call() {
+        let call = |what: &[u8]| {
+            PyValue::Tuple(vec![
+                PyValue::Tuple(vec![
+                    PyValue::Bytes(b"OnTarget".to_vec()),
+                    PyValue::Bytes(what.to_vec()),
+                    PyValue::Int(42),
+                ]),
+                PyValue::Int(9),
+            ])
+        };
+        let one = vec![PyValue::List(vec![call(b"lost")])];
+        assert_eq!(
+            unbatched("OnMultiEvent".into(), one),
+            (
+                "OnTarget".to_owned(),
+                vec![PyValue::Bytes(b"lost".to_vec()), PyValue::Int(42)]
+            )
+        );
+        let two = vec![PyValue::List(vec![call(b"lost"), call(b"add")])];
+        assert_eq!(
+            unbatched("OnMultiEvent".into(), two.clone()).0,
+            "OnMultiEvent"
+        );
+        assert_eq!(
+            unbatched("OnTarget".into(), vec![PyValue::Int(1)]),
+            ("OnTarget".to_owned(), vec![PyValue::Int(1)])
+        );
+        let items = vec![
+            PyValue::List(vec![PyValue::Int(5)]),
+            PyValue::Dict(vec![]),
+            PyValue::None,
+        ];
+        assert_eq!(
+            unbatched("OnItemsChanged".into(), items),
+            (
+                "OnItemChange".to_owned(),
+                vec![PyValue::Int(5), PyValue::Dict(vec![]), PyValue::None]
+            )
+        );
+    }
 
     /// Read one framed value off a fixture stream.
     fn read_value(stream: &mut TcpStream, buf: &mut Vec<u8>) -> PyValue {

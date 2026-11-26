@@ -2202,7 +2202,7 @@ pub(crate) fn encode_bodies(
     min_pushes: usize,
 ) -> Vec<(&'static str, PyValue)> {
     let one = |o: &Outgoing| {
-        let (event, args) = o.push.to_push();
+        let (event, args) = o.push.to_wire();
         (event, eve_proto::MachoPacket::notification_body(args))
     };
     crate::par::par_map_with(threads, frames, min_pushes, one)
@@ -2301,7 +2301,7 @@ pub(crate) fn stage_frames_with(
     threads: usize,
 ) -> Vec<(i64, Frame)> {
     let one = |o: &Outgoing| {
-        let (event, args) = o.push.to_push();
+        let (event, args) = o.push.to_wire();
         match PartSrc::of(event, &args) {
             Some(src) => Staged::Part(src),
             None => Staged::Body(event, eve_proto::MachoPacket::notification_body(args)),

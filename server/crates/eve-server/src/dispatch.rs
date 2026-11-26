@@ -2174,7 +2174,7 @@ impl GpsSession {
             // `docs/lanes/README.md` rule 2 has the reason. This loop used to
             // be 170 lines and every new push in the project edited it.
             let audience = n.audience();
-            let (event, args) = n.to_push();
+            let (event, args) = n.to_wire();
             let Some(audience) = audience else {
                 // **Before login there is no acting character.** A push with
                 // no audience left on the queue by the clock or by another

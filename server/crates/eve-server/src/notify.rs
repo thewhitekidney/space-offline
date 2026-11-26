@@ -56,6 +56,16 @@ pub trait Push: std::fmt::Debug + Send + Sync {
     /// them.
     fn to_push(&self) -> (&'static str, Vec<PyValue>);
 
+    /// **What goes on the wire**, when that is not [`Self::to_push`] itself:
+    /// the event a client is sent, while `to_push` stays the event the push
+    /// *is* (what the server's own readers, the logs and the tests match on).
+    /// The default is `to_push`. The one override is
+    /// `crate::targeting::TargetChange`, which a live server delivers inside
+    /// an `OnMultiEvent` batch rather than on its own.
+    fn to_wire(&self) -> (&'static str, Vec<PyValue>) {
+        self.to_push()
+    }
+
     /// **Who the notification is for**, when it is not the caller.
     ///
     /// Every notification shipped before fleets told the actor about their own
@@ -349,6 +359,22 @@ impl Push for ItemChange {
             ],
         )
     }
+
+    /// **On the wire it is `OnItemsChanged([row], change, location)`**, as a
+    /// live server sends every item change: 764 `OnItemsChanged` in a
+    /// recorded new-character session and not one `OnItemChange` **[V-TQ]**.
+    /// `invCache.OnItemsChanged` validates the location cache, scatters
+    /// `OnItemChange(row, change, location)` for each row -- the handler the
+    /// bare push reached, unchanged -- and then `OnMultipleItemChange(items,
+    /// change)` **[V]** (decompiled 3707965), which only that path raises and
+    /// which the node graphs' `Inventory Items Changed` event (atom 69)
+    /// hears: the AIR tutorial's task 2.1.05 completes on it once the black
+    /// box is in the hold.
+    fn to_wire(&self) -> (&'static str, Vec<PyValue>) {
+        let (_, mut args) = self.to_push();
+        args[0] = PyValue::List(vec![args[0].clone()]);
+        ("OnItemsChanged", args)
+    }
 }
 
 /// Another push, readdressed: how the store's pushes leave a clock tick.
@@ -368,6 +394,10 @@ pub struct Addressed {
 impl Push for Addressed {
     fn to_push(&self) -> (&'static str, Vec<PyValue>) {
         self.inner.to_push()
+    }
+
+    fn to_wire(&self) -> (&'static str, Vec<PyValue>) {
+        self.inner.to_wire()
     }
 
     fn audience(&self) -> Option<Vec<i64>> {
@@ -453,6 +483,37 @@ impl Push for InvalidateLocations {
                     .collect(),
             )],
         )
+    }
+}
+
+/// `OnDockingAccepted(stationID)` or `OnDockingFinished(stationID)`, to the
+/// pilot who docks. A live server sent the first straight after `CmdDock`
+/// and the second once the dock was done, each with the station's id
+/// **[V-TQ]** (a recorded session: `+0.00 s` and `+5.50 s`).
+/// `tacticalNavigationService` turns them into `OnClientEvent_DockingStarted`
+/// and `OnClientEvent_DockingFinished` **[V]**, which the node graphs'
+/// `Docking Accepted` (83) and `Docking Completed` (223) hear -- the AIR
+/// tutorial's task 2.1.06 waits on them.
+#[derive(Debug, Clone, PartialEq)]
+pub struct Docking {
+    pub to: i64,
+    pub station: i64,
+    /// `false`: accepted; `true`: finished.
+    pub finished: bool,
+}
+
+impl Push for Docking {
+    fn to_push(&self) -> (&'static str, Vec<PyValue>) {
+        let name = if self.finished {
+            "OnDockingFinished"
+        } else {
+            "OnDockingAccepted"
+        };
+        (name, vec![PyValue::Int(self.station)])
+    }
+
+    fn audience(&self) -> Option<Vec<i64>> {
+        Some(vec![self.to])
     }
 }
 
@@ -650,6 +711,26 @@ mod tests {
             .with_location(place.clone())
             .to_push();
         assert_eq!(args[2], place);
+    }
+
+    /// On the wire an item change is `OnItemsChanged([row], change,
+    /// location)`, the same row, change and location as the bare push; and
+    /// `Addressed` keeps the wire form of what it wraps.
+    #[test]
+    fn an_item_change_goes_out_as_a_one_row_items_changed() {
+        let c = ItemChange::spawned(PyValue::Int(1)).with_location(PyValue::Int(7));
+        let (_, bare) = c.to_push();
+        let (event, args) = c.to_wire();
+        assert_eq!(event, "OnItemsChanged");
+        assert_eq!(args.len(), 3);
+        assert_eq!(args[0], PyValue::List(vec![bare[0].clone()]));
+        assert_eq!(args[1..], bare[1..]);
+        let wrapped = Addressed {
+            to: Some(vec![9]),
+            inner: Box::new(c),
+        };
+        assert_eq!(wrapped.to_push().0, "OnItemChange");
+        assert_eq!(wrapped.to_wire().0, "OnItemsChanged");
     }
 
     #[test]

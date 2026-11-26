@@ -2705,6 +2705,19 @@ fn a_call_that_returns_an_object_hands_out_a_usable_reference() {
 /// rather than asserting on bytes is what makes this test say "the client
 /// would have dispatched this event with these arguments" rather than "the
 /// frame looked right".
+/// An item change goes out as `OnItemsChanged([row], change, location)`, as
+/// a live server sends it (`eve_server::notify::ItemChange::to_wire`): the
+/// arguments with the one row taken out of its list, so the assertions below
+/// read `(row, change, location)` as the client's per-row `OnItemChange` does.
+fn one_row(mut args: Vec<PyValue>) -> Vec<PyValue> {
+    let PyValue::List(rows) = &args[0] else {
+        panic!("OnItemsChanged's first argument is a list: {:?}", args[0])
+    };
+    assert_eq!(rows.len(), 1, "one row per push");
+    args[0] = rows[0].clone();
+    args
+}
+
 fn expect_notification(v: &PyValue) -> (String, Vec<PyValue>) {
     let PyValue::Instance { class, state } = v else {
         panic!("not an instance: {v:?}")
@@ -2882,11 +2895,11 @@ fn createitem_puts_a_ship_in_the_hangar_and_asks_the_client_to_re_ask() {
     // races the add.
     let (event, _) = expect_notification(&client.recv());
     assert_eq!(
-        event, "OnItemChange",
+        event, "OnItemsChanged",
         "per-item push precedes the invalidation"
     );
     let (event, _) = expect_notification(&client.recv());
-    assert_eq!(event, "OnItemChange", "two Rifters, two pushes");
+    assert_eq!(event, "OnItemsChanged", "two Rifters, two pushes");
 
     let (event, args) = expect_notification(&client.recv());
     assert_eq!(event, "OnInvalidateCacheForLocations");
@@ -2932,8 +2945,9 @@ fn createitem_pushes_a_real_dbrow_and_an_integer_keyed_change() {
     expect_call_rsp(&client.recv());
 
     let (event, args) = expect_notification(&client.recv());
-    assert_eq!(event, "OnItemChange");
-    assert_eq!(args.len(), 3, "OnItemChange(item, change, location)");
+    assert_eq!(event, "OnItemsChanged");
+    assert_eq!(args.len(), 3, "OnItemsChanged([item], change, location)");
+    let args = one_row(args);
 
     assert!(
         matches!(args[0], PyValue::DbRow(_)),
@@ -3045,7 +3059,7 @@ fn a_real_mission_is_offered_accepted_and_pushed() {
         events.push(event);
     }
     assert!(
-        events.contains(&"OnItemChange".to_string()),
+        events.contains(&"OnItemsChanged".to_string()),
         "the briefing tells the player to load cargo, so it must exist: {events:?}"
     );
     assert_eq!(
@@ -3582,7 +3596,7 @@ fn a_zero_delay_push_is_sent_after_the_payloads_in_one_flush() {
     let (second, _) = expect_notification(&client.recv());
     assert_eq!(
         (first.as_str(), second.as_str()),
-        ("OnItemChange", "OnInvalidateCacheForLocations"),
+        ("OnItemsChanged", "OnInvalidateCacheForLocations"),
         "the item has to exist for the window before the window is told to \
          re-read it"
     );
@@ -4674,7 +4688,8 @@ fn a_booster_is_taken_over_the_socket_and_its_bonus_shows() {
     ));
     expect_call_rsp(&client.recv());
     let (event, args) = expect_notification(&client.recv());
-    assert_eq!(event, "OnItemChange");
+    assert_eq!(event, "OnItemsChanged");
+    let args = one_row(args);
     let PyValue::DbRow(row) = &args[0] else {
         panic!("a packed item row, got {:?}", args[0])
     };
@@ -4842,7 +4857,8 @@ fn an_attribute_implant_is_plugged_over_the_socket_and_its_bonus_shows() {
         ));
         expect_call_rsp(&client.recv());
         let (event, args) = expect_notification(&client.recv());
-        assert_eq!(event, "OnItemChange");
+        assert_eq!(event, "OnItemsChanged");
+        let args = one_row(args);
         let PyValue::DbRow(row) = &args[0] else {
             panic!("a packed item row, got {:?}", args[0])
         };
@@ -4910,7 +4926,7 @@ fn an_attribute_implant_is_plugged_over_the_socket_and_its_bonus_shows() {
     while !events.contains(&"OnServerImplantsChanged".to_owned()) && events.len() < 8 {
         events.push(expect_notification(&client.recv()).0);
     }
-    assert!(events.contains(&"OnItemChange".to_owned()), "{events:?}");
+    assert!(events.contains(&"OnItemsChanged".to_owned()), "{events:?}");
     assert!(
         events.contains(&"OnServerImplantsChanged".to_owned()),
         "{events:?}"
