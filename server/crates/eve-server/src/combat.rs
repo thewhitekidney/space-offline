@@ -1296,29 +1296,39 @@ pub(crate) fn entity_gun_reach(w: &Registry, ship: i64) -> Option<f64> {
     ((optimal - 1.0).abs() > f64::EPSILON).then_some(optimal)
 }
 
-/// The share of an entity's volleys that still land under a disruptor, from
-/// the gun's `base` numbers: the disrupted chance over the undisrupted one,
-/// so an entity untouched by any module keeps hitting as it always did and
-/// only the disruptor takes shots away. `None` when `base` cannot hit this
-/// aim at all (nothing to take away from) or the factors are all 1.
-fn disrupted_share(
+/// An entity gun's chance to hit `aim`: the turret formula on the type's
+/// own optimal, falloff, tracking and signature resolution, with a
+/// disruptor's (or remote tracking computer's) factors applied when one holds
+/// it.
+///
+/// **A rat's gun rolls like a player's turret** **[V-TQ]**, from the TQ
+/// recording 20261117_122753 (17NOV2026, build 3707965, the Enforcer career's
+/// first mission, dungeon 2055): four rat frigates against a new pilot's
+/// starter frigate. 52 rat volleys: 27 were `hitQuality` 0 for 0 damage, the
+/// rest landed at qualities 1-6, about 1.2 to 6.75 damage each, and the
+/// pilot's shield never fell below 87%. Every volley landing in full, which
+/// this server did undisrupted, took the same frigate from full to dead in
+/// about a minute in the same pocket. The quality rolls and their damage
+/// multiplier are `drone_skills::verdict`'s, which the turrets already use.
+fn entity_chance(
     base: Application,
     factors: (f64, f64, f64),
     aim: crate::drone_skills::Aim,
-) -> Option<f64> {
-    if factors == (1.0, 1.0, 1.0) {
-        return None;
-    }
-    let before = base.chance(aim);
-    (before > 0.0).then(|| (disrupted(base, factors).chance(aim) / before).clamp(0.0, 1.0))
+) -> f64 {
+    let app = if factors == (1.0, 1.0, 1.0) {
+        base
+    } else {
+        disrupted(base, factors)
+    };
+    app.chance(aim)
 }
 
 /// The verdict for one volley of the entity `shooter` (a roster key and its
-/// ship id) at `victim`, while a tracking disruptor or computer holds its
-/// guns (#137): optimal range (attribute 54), falloff (158) and tracking
-/// speed (160) of the entity's type, times the module's factors, through the
-/// same hit formula a turret uses. `None` leaves the volley as it was: no
-/// disruptor, a type with no tracking speed, or an aim it could not hit.
+/// ship id) at `victim`: [`entity_chance`] from the type's optimal range
+/// (attribute 54), falloff (158), tracking speed (160) and signature
+/// resolution (620), with a disruptor's factors when one holds it (#137),
+/// then the hit and quality rolls a turret makes. `None` leaves the volley
+/// whole: a type with no tracking speed, which the formula cannot aim.
 pub(crate) fn entity_gun_verdict(
     w: &Registry,
     shooter: &crate::space_state::Presence,
@@ -1326,10 +1336,6 @@ pub(crate) fn entity_gun_verdict(
     victim: &crate::space_state::Presence,
     at: i64,
 ) -> Option<crate::drone_skills::Verdict> {
-    let factors = crate::ewar::gun_factors(w, shooter.ship_id);
-    if factors == (1.0, 1.0, 1.0) {
-        return None;
-    }
     let get = |attr: i64| crate::typedata::attribute_in(w.content(), type_id, attr);
     let base = Application {
         optimal: get(ATTR_OPTIMAL).unwrap_or(0.0),
@@ -1337,9 +1343,10 @@ pub(crate) fn entity_gun_verdict(
         tracking: get(crate::drone_skills::ATTR_TRACKING).filter(|t| *t > 0.0)?,
         sig_resolution: get(crate::drone_skills::ATTR_SIG_RESOLUTION).unwrap_or(0.0),
     };
-    let share = disrupted_share(base, factors, turret_aim(w, shooter, victim))?;
+    let factors = crate::ewar::gun_factors(w, shooter.ship_id);
+    let chance = entity_chance(base, factors, turret_aim(w, shooter, victim));
     Some(crate::drone_skills::verdict(
-        share,
+        chance,
         crate::drone_skills::roll(shooter.ship_id, at, w.world().seed.wrapping_add(1)),
         crate::drone_skills::roll(shooter.ship_id, at, w.world().seed.wrapping_add(2)),
     ))
@@ -3411,28 +3418,28 @@ pub(crate) mod tests {
     /// An invented world seed for the tests.
     const SEED: u64 = 0x5eed_0000_0000_0001;
 
-    /// #137: a disruptor takes shots away from an entity's gun by the ratio
-    /// of its disrupted chance to its own, and nothing else does.
+    /// A rat's gun rolls the turret formula undisrupted, as a live server's
+    /// does (27 of 52 rat volleys missed in a recorded mission), and a
+    /// disruptor's factors lower that chance further.
     #[test]
-    fn a_disruptor_takes_a_share_of_an_entitys_volleys() {
+    fn an_entitys_gun_rolls_the_turret_formula_and_a_disruptor_lowers_it() {
         let near = aim(5_000.0, 100.0, 40.0);
-        assert_eq!(disrupted_share(APP, (1.0, 1.0, 1.0), near), None);
-        let base = APP.chance(near);
-        let slow = disrupted_share(APP, (1.0, 1.0, 0.5), near).expect("a share");
-        assert!(slow < 1.0 && slow > 0.0, "{slow}");
-        let want = disrupted(APP, (1.0, 1.0, 0.5)).chance(near) / base;
-        assert!((slow - want).abs() < 1e-12);
-        // Past the falloff cut the gun could not hit: nothing to take away.
+        let own = entity_chance(APP, (1.0, 1.0, 1.0), near);
+        assert_eq!(own, APP.chance(near));
+        assert!(own < 1.0 && own > 0.0, "{own}");
+        let slow = entity_chance(APP, (1.0, 1.0, 0.5), near);
+        assert!(slow < own, "{slow} !< {own}");
+        assert_eq!(slow, disrupted(APP, (1.0, 1.0, 0.5)).chance(near));
+        // Past the hard cut nothing lands, disrupted or not.
         assert_eq!(
-            disrupted_share(APP, (0.5, 0.5, 0.5), aim(1.0e6, 0.0, 40.0)),
-            None
+            entity_chance(APP, (1.0, 1.0, 1.0), aim(1.0e6, 0.0, 40.0)),
+            0.0
         );
-        // Help (a factor above 1) cannot raise the share past 1.
-        assert_eq!(disrupted_share(APP, (1.0, 1.0, 2.0), near), Some(1.0));
-        // Halving optimal and falloff at range costs more than tracking alone.
+        // Halving optimal and falloff at range costs a ranged shot.
         let far = aim(12_000.0, 0.0, 40.0);
-        let ranged = disrupted_share(APP, (0.5, 0.5, 1.0), far).expect("a share");
-        assert!(ranged < 0.5, "{ranged}");
+        assert!(
+            entity_chance(APP, (0.5, 0.5, 1.0), far) < entity_chance(APP, (1.0, 1.0, 1.0), far)
+        );
     }
 
     /// #137: the reach factor follows the entity's told optimal factor, and

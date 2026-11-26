@@ -1658,8 +1658,9 @@ fn shoot(w: &mut Registry, npc: &Npc, target: i64, at: BlueTime, now: BlueTime, 
     if victim.solar_system_id != npc.solar_system_id {
         return;
     }
-    // A tracking disruptor on the rat (#137) takes volleys away, as it does
-    // from a player's turret; undisrupted, every volley lands in full.
+    // The turret formula on the rat's own gun (`combat::entity_chance`),
+    // with a tracking disruptor's factors when one holds it (#137): a rat
+    // misses and grazes as a player's turret does [V-TQ].
     let verdict = w
         .roster()
         .get(npc.id)

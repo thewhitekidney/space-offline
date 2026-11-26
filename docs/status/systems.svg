@@ -91,7 +91,8 @@ text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:12px}
 <rect x="354.8" y="45.5" width="3" height="3" class="built"/>
 <rect x="358.8" y="45.5" width="3" height="3" class="built"/>
 <rect x="362.8" y="45.5" width="3" height="3" class="built"/>
-<text x="370.8" y="50.0" class="s xs">31/42</text>
+<rect x="366.8" y="45.5" width="3" height="3" class="built"/>
+<text x="374.8" y="50.0" class="s xs">31/43</text>
 <text x="16.0" y="66.0" class="t">Fitting and ships</text>
 <rect x="198.8" y="61.5" width="3" height="3" class="proved"/>
 <rect x="202.8" y="61.5" width="3" height="3" class="proved"/>

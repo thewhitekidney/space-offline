@@ -42,6 +42,7 @@ Latest client wave: **11**, 135 of 136 passed (full).
 - [ ] A lost lock tells the old HUD the module is winding down (OnModulesDeactivating): *built-unproved*, modules.rs advance sends OnModulesDeactivating once when a running targeted module loses its lock mid-cycle, so the old button blinks (the new HUD draws nothing from it); a re-lock before the boundary sends a fresh start; none on a player stop; unit tests; [A] TQ sends it
 - [ ] The new ship HUD works on our server when a player opts in (off by default): *built-unproved*, tools/client-ci/scenarios/fci_hud_new.py (two clients, regress.list): turns the preview on in-client and off again in finally; cycle timer and clock, charge counts, consumption gauge, stop window, reload, overload, remote repair, jam, stance; round f on 3707965: 78 of 81 checks passed, the three misses were the scenario's own expectations and are fixed, rerun pending
 - [ ] Turret, drone and remote-repair range, falloff and hit chance count the gap between ball surfaces (both radii off the centre distance, never below 0) against ships, NPCs, deployables and structures: *built-unproved*, combat.rs surface_gap_between and ship_radius feed turret_aim, the deployable aim and the structure aim; drones.rs aim_of and remote_rep.rs strength use them too; tests a_large_target_is_in_range_by_surface_not_by_centre, surface_gap_matches_the_structure_reading, surface_gap_clamps_at_zero, turret_aim_counts_both_hulls_and_the_fallback, a_drones_aim_is_the_surface_gap, range_and_falloff_scale_the_amount; ewar.rs falloff and the NPC brain still use centre distance; no client scenario yet
+- [ ] An NPC's turret rolls the turret hit chance and hit quality, so rats miss and graze as on TQ: *built-unproved*, combat.rs entity_chance and entity_gun_verdict, test an_entitys_gun_rolls_the_turret_formula_and_a_disruptor_lowers_it; seen by hand on 3707965 (19NOV2026): career mission 1's combat log showed 15 misses in 64 rat volleys, 1 to 3 damage a hit (TQ: 27 of 52, about 1.2 to 6.75). A type with no tracking speed still lands every volley whole
 
 ### 3.3 PvP
 
@@ -195,7 +196,7 @@ Latest client wave: **11**, 135 of 136 passed (full).
 |---|--:|--:|--:|--:|--:|
 | Login and sessions | 9 | 2 | 0 | 0 | 0 |
 | Space and movement | 14 | 1 | 0 | 1 | 0 |
-| Combat | 31 | 11 | 0 | 0 | 0 |
+| Combat | 31 | 12 | 0 | 0 | 0 |
 | Fitting and ships | 13 | 8 | 0 | 0 | 0 |
 | Modules | 13 | 4 | 0 | 0 | 0 |
 | Market and wallet | 24 | 11 | 0 | 0 | 0 |
@@ -295,7 +296,7 @@ Closed by default; each line says how much of the system is proved.
 
 </details>
 
-<details><summary><b>Combat</b>: 31 of 42 proved, 11 open</summary>
+<details><summary><b>Combat</b>: 31 of 43 proved, 12 open</summary>
 
 - [x] Turrets hit and miss by the client's formula: *client-proved*, fci_doc_0 W10
 - [x] A gun stops when its target is gone: *client-proved*, fci_engine_fix W10
@@ -339,6 +340,7 @@ Closed by default; each line says how much of the system is proved.
 - [ ] Drone limits follow the sheet: the active drone count and the control range: *built-unproved*, drone_skills.rs max_active and control_range read attributes 352 and 458 off the sheet's character node (dogma.rs CHARACTER_READS), so a hull's assigned drone count and a rig's range penalty count and the augmentor is no longer added by hand; drones/restat_tests.rs the_active_drone_count_comes_off_the_sheets_character_node, the_control_range_comes_off_the_sheets_character_node; the drones test fixture gains the Drones skill and Drone Avionics effects on 352 and 458; no client scenario yet
 - [ ] The new ship HUD works on our server when a player opts in (off by default): *built-unproved*, tools/client-ci/scenarios/fci_hud_new.py (two clients, regress.list): turns the preview on in-client and off again in finally; cycle timer and clock, charge counts, consumption gauge, stop window, reload, overload, remote repair, jam, stance; round f on 3707965: 78 of 81 checks passed, the three misses were the scenario's own expectations and are fixed, rerun pending
 - [ ] Turret, drone and remote-repair range, falloff and hit chance count the gap between ball surfaces (both radii off the centre distance, never below 0) against ships, NPCs, deployables and structures: *built-unproved*, combat.rs surface_gap_between and ship_radius feed turret_aim, the deployable aim and the structure aim; drones.rs aim_of and remote_rep.rs strength use them too; tests a_large_target_is_in_range_by_surface_not_by_centre, surface_gap_matches_the_structure_reading, surface_gap_clamps_at_zero, turret_aim_counts_both_hulls_and_the_fallback, a_drones_aim_is_the_surface_gap, range_and_falloff_scale_the_amount; ewar.rs falloff and the NPC brain still use centre distance; no client scenario yet
+- [ ] An NPC's turret rolls the turret hit chance and hit quality, so rats miss and graze as on TQ: *built-unproved*, combat.rs entity_chance and entity_gun_verdict, test an_entitys_gun_rolls_the_turret_formula_and_a_disruptor_lowers_it; seen by hand on 3707965 (19NOV2026): career mission 1's combat log showed 15 misses in 64 rat volleys, 1 to 3 damage a hit (TQ: 27 of 52, about 1.2 to 6.75). A type with no tracking speed still lands every volley whole
 
 </details>
 
