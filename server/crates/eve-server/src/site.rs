@@ -786,6 +786,9 @@ pub fn slim_extras(w: &Registry, ids: &[i64]) -> SlimExtras {
                 (KEY_DUN_OBJECT, PyValue::Int(dun)),
                 (KEY_ENTITY_GROUP, group.map_or(PyValue::None, PyValue::Int)),
             ];
+            if s.placed(*id).is_some() {
+                pairs.extend(dun_pairs(w, *id, dun));
+            }
             // Y-COMBAT: a gate says so.
             if is_gate(w, *id) {
                 pairs.push((
@@ -813,6 +816,37 @@ pub fn slim_extras(w: &Registry, ids: &[i64]) -> SlimExtras {
             Some((*id, pairs))
         })
         .collect()
+}
+
+/// The slim keys a live server puts on every dungeon object **[V-TQ]** (the
+/// AIR void pocket's `SetState`): the dungeon, the object's catalogue
+/// position (room-relative) and, when the catalogue has one, its rotation.
+/// The client draws scenery from them: `BackgroundObject.LoadModel` sets the
+/// model's translation from `dunPosition`, `SpaceObject.SetStaticRotation`
+/// reads `dunRotation`, and `LoadDungeonAssetManipulations` looks the object
+/// up by `dunID` and `dunObjectID` **[V]** (read on client build 3707965).
+pub const KEY_DUN_ID: &str = "dunID";
+pub const KEY_DUN_POSITION: &str = "dunPosition";
+pub const KEY_DUN_ROTATION: &str = "dunRotation";
+
+fn dun_pairs(w: &Registry, item_id: i64, dun_object: i64) -> Vec<(&'static str, PyValue)> {
+    let Some(dungeon_id) = w.ext::<Sites>().of_item(item_id).map(|i| i.dungeon_id) else {
+        return Vec::new();
+    };
+    let mut pairs = vec![(KEY_DUN_ID, PyValue::Int(dungeon_id))];
+    let object = w
+        .content()
+        .try_get::<dungeon_data::Table>()
+        .and_then(|t| t.dungeons.get(&dungeon_id))
+        .and_then(|d| d.objects.iter().find(|o| o.id == dun_object));
+    if let Some(o) = object {
+        let triple = |v: [f64; 3]| PyValue::Tuple(v.iter().map(|x| PyValue::Real(*x)).collect());
+        pairs.push((KEY_DUN_POSITION, triple(o.pos)));
+        if let (Some(y), Some(p), Some(r)) = (o.yaw, o.pitch, o.roll) {
+            pairs.push((KEY_DUN_ROTATION, triple([y, p, r])));
+        }
+    }
+    pairs
 }
 
 /// Whether a placed object is an acceleration gate: a catalogue object that
@@ -1487,7 +1521,21 @@ mod tests {
         assert_eq!(extras.iter().map(|(id, _)| *id).collect::<Vec<_>>(), ids);
         for (_, kv) in &extras {
             let keys: Vec<&str> = kv.iter().map(|(k, _)| *k).collect();
-            assert_eq!(keys, [KEY_DUN_OBJECT, KEY_ENTITY_GROUP]);
+            // dunRotation only where the catalogue has one.
+            assert_eq!(
+                keys[..4],
+                [
+                    KEY_DUN_OBJECT,
+                    KEY_ENTITY_GROUP,
+                    KEY_DUN_ID,
+                    KEY_DUN_POSITION
+                ]
+            );
+            assert!(
+                keys.len() == 4 || keys[4..] == [KEY_DUN_ROTATION],
+                "{keys:?}"
+            );
+            assert!(kv.contains(&(KEY_DUN_ID, PyValue::Int(inst.dungeon_id))));
         }
         assert!(slim_extras(&reg, &[ALICE_SHIP, 1]).is_empty());
     }
