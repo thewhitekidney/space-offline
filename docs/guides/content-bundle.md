@@ -145,6 +145,7 @@ bundle being built.
 | `fighters` | `tools/content_fighters.py` | `fighters/*` |
 | `geodes` | `tools/content_geodes.py` | `mining/*` |
 | `moon` | `tools/content_moon.py` | `moon/*` |
+| `nodegraphs` | `tools/content_nodegraphs.py` | `nodegraphs/*` |
 | `npc` | `tools/content_npc.py` | `npc/{factions,corporations,types,components,reactive-spawn,bounty}.tsv` |
 | `npc_regions` | `tools/content_npc_regions.py` | `npc/{regions,home-pirate,trades,loot}.tsv` |
 | `police` | `tools/content_police.py` | `npc/{police,concord}.tsv` |

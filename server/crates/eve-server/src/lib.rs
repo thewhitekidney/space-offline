@@ -240,6 +240,7 @@ pub(crate) mod movement_guard;
 pub mod mutator_data;
 pub mod nes;
 pub mod nes_vault;
+pub mod node_graph;
 pub mod notes;
 pub mod notify;
 pub mod owner_groups;
