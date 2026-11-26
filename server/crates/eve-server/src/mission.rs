@@ -1607,7 +1607,10 @@ pub fn objective_info_at(w: &Registry, actor: Option<i64>, agent: i64) -> PyValu
                     "objectiveCompleted",
                     if done { PyValue::Int(1) } else { PyValue::None },
                 ),
-                ("location", dungeon::location_wrap(site(&c))),
+                (
+                    "location",
+                    dungeon_location(agent, site(&c), w.ext::<Live>().pockets.get(&(ch, agent))),
+                ),
                 ("dungeonID", PyValue::Int(c.m.dungeon.unwrap_or_default())),
             ])],
         )
@@ -1669,6 +1672,33 @@ pub fn objective_info_at(w: &Registry, actor: Option<i64>, agent: i64) -> PyValu
     }
     entries.push(("contentID", PyValue::Int(c.m.id)));
     pydict(entries)
+}
+
+/// The `location` of a kill mission's `dungeons` entry in
+/// `GetMissionObjectiveInfo`. A live server's carries, beside the three keys
+/// `LocationWrapper` subscripts, `coords` (the pocket's x, y, z),
+/// `locationType` `'dungeon'`, `agentID`, `locationNumber` 0 and `shipTypeID`
+/// None **[V-TQ]** (a recorded Enforcer career mission 1, dungeon 2055). With
+/// the system alone, the agent window's objective location has nothing to
+/// warp to and the pilot never finds the pocket. With no pocket
+/// (none spawned yet, or gone) it is the system alone, as before.
+fn dungeon_location(agent: i64, system: i64, pocket: Option<&Pocket>) -> PyValue {
+    let Some(pk) = pocket else {
+        return dungeon::location_wrap(system);
+    };
+    pydict(vec![
+        ("solarsystemID", PyValue::Int(pk.solar_system_id)),
+        ("typeID", PyValue::Int(dungeon::TYPE_SOLAR_SYSTEM)),
+        ("locationID", PyValue::Int(pk.solar_system_id)),
+        ("shipTypeID", PyValue::None),
+        ("locationNumber", PyValue::Int(0)),
+        ("agentID", PyValue::Int(agent)),
+        (
+            "coords",
+            PyValue::List(pk.position.iter().map(|v| PyValue::Real(*v)).collect()),
+        ),
+        ("locationType", bstr("dungeon")),
+    ])
 }
 
 /// The `'dungeon'` bookmark of an accepted kill mission: a `KeyVal`, because
@@ -2343,6 +2373,36 @@ mod tests {
         }
         assert_eq!(progress(&again, ME, RUNNER), progress(&w, ME, RUNNER));
         assert_eq!(journal(&again, Some(ME), None), journal(&w, Some(ME), None));
+    }
+
+    /// A kill mission's objective location names its pocket the way a live
+    /// server does: coords, `locationType` `'dungeon'`, the agent, location
+    /// number 0 and no ship type, beside the system keys **[V-TQ]**; with no
+    /// pocket it is the system alone.
+    #[test]
+    fn a_kill_objective_location_carries_its_pocket_coords() {
+        let pk = Pocket {
+            solar_system_id: 30_990_001,
+            position: [1.0e11, -2.0e10, 3.5e11],
+            npc_ids: Vec::new(),
+        };
+        let v = dungeon_location(3_990_001, 30_990_001, Some(&pk));
+        let get = |k: &str| crate::pyutil::dict_get(&v, k.as_bytes()).cloned();
+        assert_eq!(
+            get("coords"),
+            Some(PyValue::List(vec![
+                PyValue::Real(1.0e11),
+                PyValue::Real(-2.0e10),
+                PyValue::Real(3.5e11)
+            ]))
+        );
+        assert_eq!(get("locationType"), Some(bstr("dungeon")));
+        assert_eq!(get("agentID"), Some(PyValue::Int(3_990_001)));
+        assert_eq!(get("locationNumber"), Some(PyValue::Int(0)));
+        assert_eq!(get("shipTypeID"), Some(PyValue::None));
+        assert_eq!(get("solarsystemID"), Some(PyValue::Int(30_990_001)));
+        let bare = dungeon_location(3_990_001, 30_990_001, None);
+        assert_eq!(bare, dungeon::location_wrap(30_990_001));
     }
 
     /// **CP26a**: the pocket's NPCs are `npc_data` types of the mission's
