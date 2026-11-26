@@ -439,16 +439,27 @@ fn type_radius(w: &Registry, type_id: i64) -> Option<f64> {
 
 /// An ore's law: the world's typedata's three attributes, else the law of
 /// any loaded rock of that type.
+///
+/// **A type's own growth factor (1980) is what marks it as an ore**; its unit
+/// size and max radius are then read as the client's `GetTypeAttribute`
+/// reads them, the type's value else the attribute's `defaultValue` **[V]**
+/// (`typedata::Table::attribute`). In build 3707965, 156 asteroid types carry
+/// 1980 and 1981 but leave 2727 at its default (16 255 m) **[V-data]**, the
+/// AIR tutorial ore type 60771 among them: read from the row alone, its
+/// rocks had no law, were laid out as scenery and could not be locked. A gas
+/// type carries none of the three (all 32 of group 711 in that build) and
+/// keeps the cloud law.
 fn law_for(w: &Registry, type_id: i64) -> Option<Law> {
     let from_types = w
         .content()
         .try_get::<crate::typedata::Installed>()
-        .and_then(|i| i.table().get(type_id))
-        .and_then(|t| {
+        .and_then(|i| {
+            let table = i.table();
+            table.get(type_id)?.attribute(ATTR_GROWTH)?;
             Some(Law {
-                growth: t.attribute(ATTR_GROWTH)?,
-                unit_size: t.attribute(ATTR_UNIT_SIZE)?,
-                max_radius: t.attribute(ATTR_MAX_RADIUS)?,
+                growth: table.attribute(type_id, ATTR_GROWTH),
+                unit_size: table.attribute(type_id, ATTR_UNIT_SIZE),
+                max_radius: table.attribute(type_id, ATTR_MAX_RADIUS),
             })
         })
         .filter(usable);
@@ -1580,6 +1591,38 @@ mod tests {
         };
         assert_eq!(is_empty(&reg, wreck), Some(PyValue::Bool(true)));
         assert_eq!(is_empty(&reg, beacon), None, "only a wreck says");
+    }
+
+    /// An ore type that leaves its max radius (2727) to the attribute's
+    /// default still has a law, with that default, as the client reads it;
+    /// a type with no growth factor of its own (a gas cloud) has none.
+    #[test]
+    fn an_ore_law_takes_an_unstated_max_radius_from_its_default() {
+        const DEFAULTED: i64 = 990_301_001;
+        const NO_GROWTH: i64 = 990_301_002;
+        let rows = format!(
+            "{}attribute\t{ATTR_GROWTH}\t1.0\tasteroidRadiusGrowthFactor\n\
+             attribute\t{ATTR_UNIT_SIZE}\t90.0\tasteroidRadiusUnitSize\n\
+             attribute\t{ATTR_MAX_RADIUS}\t16255.0\tasteroidMaxRadius\n\
+             type\t{DEFAULTED}\t99701\t25\t1\t333\t0.1\t0.0\t4000.0\t1.0\t0\t\t{ATTR_GROWTH}=0.15;{ATTR_UNIT_SIZE}=6000.0\tFixture Tutorial Ore\n\
+             type\t{NO_GROWTH}\t711\t2\t1\t1\t10.0\t0.0\t0.0\t1.0\t0\t\t\tFixture Cloud\n",
+            crate::typedata::FIXTURE
+        );
+        let mut c = Content::fixture();
+        c.insert(
+            "typedata",
+            crate::typedata::Installed::build(crate::typedata::Table::parse(&rows).unwrap()),
+        );
+        let reg = Registry::new(SandboxConfig::default()).with_content(Arc::new(c));
+        assert_eq!(
+            law_for(&reg, DEFAULTED),
+            Some(Law {
+                growth: 0.15,
+                unit_size: 6000.0,
+                max_radius: 16_255.0,
+            })
+        );
+        assert_eq!(law_for(&reg, NO_GROWTH), None);
     }
 
     /// **Ore rocks go through `asteroid::Field`**: each entry-room rock is
