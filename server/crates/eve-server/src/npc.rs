@@ -933,6 +933,14 @@ pub fn ball(content: &crate::content::Content, n: &Npc, motion: &Motion) -> dest
 ///   (`idCheckers.py:283`) **[V]**;
 /// - `charID` `None`: no pilot, so `uix.GetSlimItemName:488` names the ball
 ///   by its type's name **[V]**;
+/// - **`corpID` `None`**: a live server's NPC slims carry no `corpID` at all
+///   -- 6,640 in a recorded session, owned by factions (500021, 500011, ...)
+///   and by corporations (1000125, 1000172) alike **[V-TQ]**. With one,
+///   `targetInBar.SetTargetLabel` looks up `cfg.corptickernames.Get(corpID)`
+///   for the target box's label **[V]**, and an owner that is a faction, not
+///   a corporation (the AIR tutorial's 500021), raised `KeyError:
+///   RecordNotFound` inside `targetMgr.OnTargetAdded`: the lock completed on
+///   the server and no target box ever appeared;
 /// - both response thresholds, as floats: see `destiny::Slim`.
 pub fn slim(n: &Npc) -> destiny::Slim {
     destiny::Slim {
@@ -940,7 +948,7 @@ pub fn slim(n: &Npc) -> destiny::Slim {
         type_id: n.kind.type_id,
         owner_id: n.kind.owner_corp_id,
         char_id: None,
-        corp_id: Some(n.kind.owner_corp_id),
+        corp_id: None,
         response_thresholds: Some((n.kind.hostile_threshold, n.kind.friendly_threshold)),
     }
 }
@@ -2581,6 +2589,7 @@ mod tests {
         assert!(9_999 < s.owner_id && s.owner_id < 90_000_000, "IsNPC");
         assert!(!(90_000_000..=2_147_483_647).contains(&s.owner_id));
         assert_eq!(s.char_id, None, "named by type, no pilot to prime");
+        assert_eq!(s.corp_id, None, "no corpID, as live: no ticker lookup");
         let (hostile, friendly) = s.response_thresholds.expect("both sent");
         assert_eq!(
             (hostile, friendly),
