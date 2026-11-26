@@ -163,6 +163,7 @@ Latest client wave: **11**, 135 of 136 passed (full).
 
 - [ ] The public gateway (h2c) holds up against a slow or hostile peer: *built-unproved*, gateway.rs: frames split at the peer's max frame size, flow-control windows with held-DATA caps, at most 100 streams (#226); writes run against a deadline, a failed write drops the connection from the hub, publish drops the hub lock before writing (#229); in-process tests; publish only enqueues to a bounded per-connection outbox drained by the connection's own writer thread, joined when the connection ends (#233); at most 64 connections, 4 per address off loopback (an IPv6 /64 counts as one), and a connection with no served request yet is PINGed and closed when it answers none (#296)
 - [ ] The public gateway serves a pilot only while the owning account has that pilot selected in a live session: *built-unproved*, gateway_auth.rs (a pilot is answered only while a live session of the account that may play it exists, only when the account the request claims is that session's, only to a peer at the address that session's game connection came from (loopback addresses count as one, a global IPv6 address by its /64), and only to the client process that asked first, which another process at that address claiming the account may replace only once the first has no gateway connection open and has been silent for 30 s, unbinding the old connection's notices; a pilot-less request only from the client process pinned to a live pilot of the account it claims; else 403; a connection's notice binding ends with its session; every refusal is decided under the world read lock); in-process tests; fci_plex_vault checks the server log; no credential or encryption on the gateway, the rule is stated in the unpublished remote-clients note
+- [ ] The character select card shows the skill in training and the pilot's skill points: *built-unproved*, service.rs character_selection_data and to_row_deleting: skillPoints is the trained total and the training fields are the queue's head (queueEndTime its last entry), none for an empty or paused queue; test the_select_row_shows_the_skill_in_training; seen by hand on 3707965 (19NOV2026): a dev char's card showed the skill in training, its time left and the pilot's SP. An empty or paused queue still draws no training bar
 - [ ] Client kit and hosted server tools: *built-unproved*, tools/client-kit.sh, tools/client-setup.sh; no dry run. Hosting is issue 141
 - [ ] Client kit dry run end to end: *built-unproved*, #180 dry run in --network none containers on a synthetic install: kit built, unpacked, check and copy, remote listener up, probe login and sign-up; fixed the tunnel script mode, the recovery order (never advising rm of the only pinned copy) and the pin-failure output (the unpublished remote-clients note "Dry run (#180)"); the real client patch, tunnel, jail relay and a real client connecting are left for the owner
 - [ ] No-jail route for Windows remote players: *missing*, the always-jailed rule stands until a census proves it
@@ -193,7 +194,7 @@ Latest client wave: **11**, 135 of 136 passed (full).
 
 | system | proved | built | part | missing | unknown |
 |---|--:|--:|--:|--:|--:|
-| Login and sessions | 9 | 2 | 0 | 0 | 0 |
+| Login and sessions | 9 | 3 | 0 | 0 | 0 |
 | Space and movement | 14 | 1 | 0 | 1 | 0 |
 | Combat | 31 | 11 | 0 | 0 | 0 |
 | Fitting and ships | 13 | 8 | 0 | 0 | 0 |
@@ -258,7 +259,7 @@ A wave is one run of `tools/client-ci/regress.list` against real clients. Compar
 
 Closed by default; each line says how much of the system is proved.
 
-<details><summary><b>Login and sessions</b>: 9 of 11 proved, 2 open</summary>
+<details><summary><b>Login and sessions</b>: 9 of 12 proved, 3 open</summary>
 
 - [x] Log in and reach space; every scenario depends on this: *client-proved*, fci_reads W10; ballpark_smoke W11
 - [x] Two clients at once, each seen in the station guest list: *client-proved*, lobby_guests W8
@@ -271,6 +272,7 @@ Closed by default; each line says how much of the system is proved.
 - [x] Delete a character: *client-proved*, fci_char_delete W10. Wait is a world setting (1 hour default, 0 in CI); deleted characters keep assets, orders and name
 - [ ] The public gateway (h2c) holds up against a slow or hostile peer: *built-unproved*, gateway.rs: frames split at the peer's max frame size, flow-control windows with held-DATA caps, at most 100 streams (#226); writes run against a deadline, a failed write drops the connection from the hub, publish drops the hub lock before writing (#229); in-process tests; publish only enqueues to a bounded per-connection outbox drained by the connection's own writer thread, joined when the connection ends (#233); at most 64 connections, 4 per address off loopback (an IPv6 /64 counts as one), and a connection with no served request yet is PINGed and closed when it answers none (#296)
 - [ ] The public gateway serves a pilot only while the owning account has that pilot selected in a live session: *built-unproved*, gateway_auth.rs (a pilot is answered only while a live session of the account that may play it exists, only when the account the request claims is that session's, only to a peer at the address that session's game connection came from (loopback addresses count as one, a global IPv6 address by its /64), and only to the client process that asked first, which another process at that address claiming the account may replace only once the first has no gateway connection open and has been silent for 30 s, unbinding the old connection's notices; a pilot-less request only from the client process pinned to a live pilot of the account it claims; else 403; a connection's notice binding ends with its session; every refusal is decided under the world read lock); in-process tests; fci_plex_vault checks the server log; no credential or encryption on the gateway, the rule is stated in the unpublished remote-clients note
+- [ ] The character select card shows the skill in training and the pilot's skill points: *built-unproved*, service.rs character_selection_data and to_row_deleting: skillPoints is the trained total and the training fields are the queue's head (queueEndTime its last entry), none for an empty or paused queue; test the_select_row_shows_the_skill_in_training; seen by hand on 3707965 (19NOV2026): a dev char's card showed the skill in training, its time left and the pilot's SP. An empty or paused queue still draws no training bar
 
 </details>
 

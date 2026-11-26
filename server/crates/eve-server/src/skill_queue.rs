@@ -941,6 +941,57 @@ mod skill_training_tests {
         assert_eq!(field(&rows[1], "trainingStartTime"), &PyValue::Int(*end));
     }
 
+    /// The select screen's row carries the head of the queue and the
+    /// trained total, so the slot shows the skill in training and its SP
+    /// (`characterSlots.LoadSlot`), not "No skill in training" and 0.
+    #[test]
+    fn the_select_row_shows_the_skill_in_training() {
+        let mut reg = with_frigate_bought();
+        let id = actor(&reg).expect("a character");
+        call(
+            &mut reg,
+            "SaveNewQueue",
+            &[queue_info(&[(MINMATAR_FRIGATE, 1), (MINMATAR_FRIGATE, 2)])],
+            &activate(true),
+        )
+        .expect("saved");
+        let rows = queue(&mut reg);
+        let PyValue::Tuple(sel) = reg.character_selection_data() else {
+            panic!("a tuple")
+        };
+        let PyValue::List(chars) = &sel[2] else {
+            panic!("the character rows")
+        };
+        let me = chars
+            .iter()
+            .find(|r| field(r, "characterID") == &PyValue::Int(id))
+            .expect("this character");
+        assert_eq!(field(me, "skillTypeID"), &PyValue::Int(MINMATAR_FRIGATE));
+        assert_eq!(field(me, "toLevel"), &PyValue::Int(1));
+        assert_eq!(
+            field(me, "trainingStartTime"),
+            field(&rows[0], "trainingStartTime")
+        );
+        assert_eq!(
+            field(me, "trainingEndTime"),
+            field(&rows[0], "trainingEndTime")
+        );
+        assert_eq!(
+            field(me, "queueEndTime"),
+            field(&rows[1], "trainingEndTime")
+        );
+        assert_eq!(
+            field(me, "finishSP"),
+            field(&rows[0], "trainingDestinationSP")
+        );
+        let total = reg
+            .skills
+            .get(&id)
+            .map(|s| s.total_points())
+            .expect("skills");
+        assert_eq!(field(me, "skillPoints"), &PyValue::Int(total));
+    }
+
     /// Lane clock: at scale N the head trains N times sooner, the row the
     /// client reads says so, and the clock trains it at that end.
     #[test]

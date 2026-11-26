@@ -201,11 +201,23 @@ impl Character {
     /// (`start::prepare_delete`).
     #[cfg(test)]
     fn to_row(&self) -> PyValue {
-        self.to_row_deleting(None)
+        self.to_row_deleting(None, self.skill_points, &[])
     }
 
-    fn to_row_deleting(&self, delete_at: Option<i64>) -> PyValue {
+    /// `sp` is the character's trained total and `queue` its skill queue in
+    /// order (`skill::Queue::rows_in`); an empty or paused queue is "not in
+    /// training".
+    fn to_row_deleting(
+        &self,
+        delete_at: Option<i64>,
+        sp: i64,
+        queue: &[crate::skill::QueueRow],
+    ) -> PyValue {
         let opt = |v: Option<i64>| v.map(PyValue::Int).unwrap_or(PyValue::None);
+        // Training: the queue's first entry, while it has times (not paused).
+        let head = queue
+            .first()
+            .filter(|r| r.start.is_some() && r.end.is_some());
         keyval(vec![
             ("characterID", PyValue::Int(self.character_id)),
             ("characterName", PyValue::Unicode(self.name.clone())),
@@ -217,27 +229,49 @@ impl Character {
             ("factionID", opt(self.faction_id)),
             ("balance", PyValue::Real(self.balance)),
             ("balanceChange", PyValue::Real(0.0)),
-            ("skillPoints", PyValue::Int(self.skill_points)),
+            ("skillPoints", PyValue::Int(sp)),
             ("unreadMailCount", PyValue::Int(0)),
             ("shipTypeID", PyValue::Int(self.ship_type_id)),
             ("paperdollState", PyValue::Int(self.paperdoll_state)),
             ("finishedSkills", PyValue::List(vec![])),
-            // Not in training. `GetSkillInTrainingInfo` branches on exactly
-            // this and returns an all-None dict when it is None, so the six
-            // fields below are never reached -- the slot code then checks
-            // `currentSkill is not None` and draws no training bar.
-            //
-            // They are carried anyway because the names are confirmed (they
-            // are read in the other branch) and a row that names its whole
-            // column set is a truer stand-in for the real server's. Filling
-            // them in is how a future sandbox puts a skill in training.
-            ("skillTypeID", PyValue::None),
-            ("toLevel", PyValue::None),
-            ("trainingStartTime", PyValue::None),
-            ("trainingEndTime", PyValue::None),
-            ("queueEndTime", PyValue::None),
-            ("finishSP", PyValue::None),
-            ("trainedSP", PyValue::None),
+            // The head of the queue, as `characterSlots.LoadSlot` reads it
+            // **[V decompiled characterSlots.pyc, build 3707965]**: progress is
+            // `(trainedSP + (now - trainingStartTime) / (trainingEndTime -
+            // trainingStartTime) * (finishSP - trainedSP)) / finishSP`, so
+            // `trainedSP` is the points at the start and `finishSP` the
+            // points at `toLevel`; `queueEndTime` is the last entry's end.
+            // `skillTypeID` `None` (an empty or paused queue) draws no bar.
+            (
+                "skillTypeID",
+                head.map_or(PyValue::None, |r| PyValue::Int(r.type_id)),
+            ),
+            (
+                "toLevel",
+                head.map_or(PyValue::None, |r| PyValue::Int(r.to_level)),
+            ),
+            (
+                "trainingStartTime",
+                head.and_then(|r| r.start)
+                    .map_or(PyValue::None, PyValue::Int),
+            ),
+            (
+                "trainingEndTime",
+                head.and_then(|r| r.end).map_or(PyValue::None, PyValue::Int),
+            ),
+            (
+                "queueEndTime",
+                head.and(queue.last())
+                    .and_then(|r| r.end)
+                    .map_or(PyValue::None, PyValue::Int),
+            ),
+            (
+                "finishSP",
+                head.map_or(PyValue::None, |r| PyValue::Int(r.destination_sp)),
+            ),
+            (
+                "trainedSP",
+                head.map_or(PyValue::None, |r| PyValue::Int(r.start_sp)),
+            ),
             // Read as `bool(...)` by `IsPreparingForDeletion`, and returned
             // raw by `GetDeletePrepareTime` -- which the **mouse-over**
             // handler calls, so a missing one throws on every hover.
@@ -3697,7 +3731,7 @@ impl Registry {
     /// - `characterDetails` is iterated and read by attribute — which is why
     ///   `KeyVal` suffices and the rowset layer is not needed here.
     /// - `wars` is grouped by `.characterID`; empty is fine.
-    fn character_selection_data(&self) -> PyValue {
+    pub(crate) fn character_selection_data(&self) -> PyValue {
         let user = keyval(vec![
             // From the caller, so the select screen, `initialstate` and the
             // session read one value once accounts land (account-spec §5).
@@ -3730,7 +3764,20 @@ impl Registry {
                     .iter()
                     .filter(|c| self.may_play(self.caller, c))
                     .map(|c| {
-                        c.to_row_deleting(crate::start::delete_due(&self.deltas, c.character_id))
+                        let id = c.character_id;
+                        let sp = self
+                            .skills
+                            .get(&id)
+                            .map_or(c.skill_points, |s| s.total_points());
+                        let queue = match (self.skills.get(&id), self.skill_queues.get(id)) {
+                            (Some(skills), Some(q)) => q.rows_in(
+                                self.content(),
+                                skills,
+                                &crate::skill_queue::paced_attribute(self, id),
+                            ),
+                            _ => Vec::new(),
+                        };
+                        c.to_row_deleting(crate::start::delete_due(&self.deltas, id), sp, &queue)
                     })
                     .collect(),
             ),
